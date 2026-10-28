@@ -10,7 +10,7 @@ env:
 
 jobs:
   test:
-    name: Testes headless (Godot ${{ env.GODOT_VERSION }})
+    name: Testes headless (Godot 4.7.2)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
