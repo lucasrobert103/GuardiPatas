@@ -50,7 +50,7 @@ func _ready() -> void:
 	mrow.add_child(mtext)
 	cbox.add_child(mrow)
 	UiKit.pop_in(mi, 0.2)
-	cbox.add_child(UiKit.label("Fase %s · %s" % [_data["base_id"], _data["base_name"]], 26))
+	cbox.add_child(UiKit.label(tr("Fase %s · %s") % [_data["base_id"], tr(_data["base_name"])], 26))
 	var animals := UiKit.hbox(4)
 	animals.alignment = BoxContainer.ALIGNMENT_CENTER
 	for a in _data.get("animals", []):
@@ -77,7 +77,7 @@ func _ready() -> void:
 	fi.modulate = Color.WHITE if alive and streak > 0 else Color(1, 1, 1, 0.3)
 	srow.add_child(fi)
 	var shown := streak if alive else 0
-	srow.add_child(UiKit.label("Sequência: %d %s" % [shown, "dia" if shown == 1 else "dias"], 28))
+	srow.add_child(UiKit.label(tr("Sequência: %d %s") % [shown, tr("dia") if shown == 1 else tr("dias")], 28))
 	box.add_child(srow)
 	if done:
 		var ok := UiKit.hbox(8)
@@ -94,7 +94,7 @@ func _ready() -> void:
 		coin.icon = "coin"
 		coin.custom_minimum_size = Vector2(44, 44)
 		prize.add_child(coin)
-		prize.add_child(UiKit.label("Prêmio: +%d moedas" % Daily.reward(streak + 1 if alive else 1), 28))
+		prize.add_child(UiKit.label(tr("Prêmio: +%d moedas") % Daily.reward(streak + 1 if alive else 1), 28))
 		box.add_child(prize)
 	_countdown = UiKit.label("", 22, Color(Palette.UI_TEXT, 0.7))
 	box.add_child(_countdown)
@@ -114,4 +114,4 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var t := Time.get_time_dict_from_system()
 	var left := 86400 - (int(t["hour"]) * 3600 + int(t["minute"]) * 60 + int(t["second"]))
-	_countdown.text = "Novo desafio em %02d:%02d:%02d" % [left / 3600, (left / 60) % 60, left % 60]
+	_countdown.text = tr("Novo desafio em %02d:%02d:%02d") % [left / 3600, (left / 60) % 60, left % 60]

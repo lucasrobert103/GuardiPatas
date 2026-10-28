@@ -60,7 +60,7 @@ func _build_top() -> void:
 	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(mid)
-	var title_text := "%s  %s" % [level.data.get("id", ""), level.data.get("name", "")] if level.mode == "campaign" else str(level.data.get("name", ""))
+	var title_text := "%s  %s" % [level.data.get("id", ""), tr(str(level.data.get("name", "")))] if level.mode == "campaign" else str(level.data.get("name", ""))
 	title_label = UiKit.label(title_text, 26, Palette.WHITE, 10, Palette.OUTLINE)
 	title_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title_label.clip_text = true
@@ -162,19 +162,19 @@ func _process(_delta: float) -> void:
 	if level == null:
 		return
 	if level.state == Level.State.RUNNING:
-		status_label.text = "Aguente firme! %d" % int(ceil(maxf(level.time_left, 0.0)))
+		status_label.text = tr("Aguente firme! %d") % int(ceil(maxf(level.time_left, 0.0)))
 	elif level.state == Level.State.RUNNING and level.goal != null:
-		status_label.text = "Rumo à toca! %d" % int(ceil(maxf(level.time_left, 0.0)))
+		status_label.text = tr("Rumo à toca! %d") % int(ceil(maxf(level.time_left, 0.0)))
 	elif level.state == Level.State.DRAWING and level.free_mode:
-		status_label.text = "Modo Livre: tinta infinita!"
+		status_label.text = tr("Modo Livre: tinta infinita!")
 	elif level.state == Level.State.DRAWING and level.strokes_total > 1:
-		status_label.text = "Traços: %d" % level.strokes_left
+		status_label.text = tr("Traços: %d") % level.strokes_left
 	elif level.state == Level.State.DRAWING and level.ink_mode == "static":
-		status_label.text = "Tinta Firme: a linha não cai!"
+		status_label.text = tr("Tinta Firme: a linha não cai!")
 	elif level.state == Level.State.DRAWING:
 		status_label.text = ""
 	if level.state == Level.State.RUNNING and level.goal != null:
-		status_label.text = "Rumo à toca! %d" % int(ceil(maxf(level.time_left, 0.0)))
+		status_label.text = tr("Rumo à toca! %d") % int(ceil(maxf(level.time_left, 0.0)))
 
 
 func _on_state(_s: int) -> void:
@@ -204,7 +204,7 @@ func _on_hint() -> void:
 func _show_buy_hint() -> void:
 	var box := _open_overlay()
 	box.add_child(UiKit.label("Sem dicas!", 44))
-	box.add_child(UiKit.label("Troque %d moedas por 1 dica.\nVocê tem %d moedas." % [Game.HINT_PRICE, Game.coins()], 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
+	box.add_child(UiKit.label(tr("Troque %d moedas por 1 dica.\nVocê tem %d moedas.") % [Game.HINT_PRICE, Game.coins()], 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
 	var row := UiKit.hbox()
 	box.add_child(row)
 	var no := UiKit.button("Agora não", Palette.UI_MUTED)
@@ -246,11 +246,12 @@ func _open_pause() -> void:
 	box.add_child(toggles)
 	for key in ["music", "sfx"]:
 		var on: bool = float(Game.setting(key)) > 0.01
-		var b := UiKit.button(("Música" if key == "music" else "Sons") + (": sim" if on else ": não"), Palette.UI_PANEL, "", 200, 76)
+		var names := {true: tr("Música: sim") if key == "music" else tr("Sons: sim"), false: tr("Música: não") if key == "music" else tr("Sons: não")}
+		var b := UiKit.button(names[on], Palette.UI_PANEL, "", 200, 76)
 		b.pressed.connect(func():
 			var now_on: bool = float(Game.setting(key)) > 0.01
 			Game.set_setting(key, 0.0 if now_on else (0.6 if key == "music" else 0.9))
-			b.text = ("Música" if key == "music" else "Sons") + (": não" if now_on else ": sim"))
+			b.text = names[not now_on])
 		toggles.add_child(b)
 
 
@@ -332,7 +333,7 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 		box.add_child(UiKit.label("Sem limites, só diversão! Estrelas e moedas valem no modo normal.", 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
 		var got_free: Array = info.get("achievements", [])
 		for a in got_free:
-			box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(a)["name"], 26, Palette.UI_GOOD))
+			box.add_child(UiKit.label(tr("Conquista: %s") % tr(Game.achievement_info(a)["name"]), 26, Palette.UI_GOOD))
 		var frow := UiKit.hbox(16)
 		box.add_child(frow)
 		var fhome := UiKit.icon_button("home", Palette.UI_PANEL, 96)
@@ -361,7 +362,7 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 			var snd := "star%d" % (i + 1)
 			get_tree().create_timer(0.25 + i * 0.3).timeout.connect(func(): Sfx.play(snd))
 	var used := int(round(float(info.get("ink_used", 0.0)) * 100.0))
-	box.add_child(UiKit.label("Tinta usada: %d%%" % used, 26))
+	box.add_child(UiKit.label(tr("Tinta usada: %d%%") % used, 26))
 	var coin_row := UiKit.hbox(8)
 	var ci := UiIcon.new()
 	ci.icon = "coin"
@@ -372,13 +373,13 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 	get_tree().create_timer(1.3).timeout.connect(func(): Sfx.play("coin"))
 	for f in info.get("new_friends", []):
 		if f != "capi" or Game.data["met"].size() > 1:
-			box.add_child(UiKit.label("Novo amigo: %s!" % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
+			box.add_child(UiKit.label(tr("Novo amigo: %s!") % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
 	_add_medals(box, info)
 	var got: Array = info.get("achievements", [])
 	for k in mini(got.size(), 2):
-		box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(got[k])["name"], 26, Palette.UI_GOOD))
+		box.add_child(UiKit.label(tr("Conquista: %s") % tr(Game.achievement_info(got[k])["name"]), 26, Palette.UI_GOOD))
 	if got.size() > 2:
-		box.add_child(UiKit.label("+%d conquistas! Veja em Bichinhos." % (got.size() - 2), 24, Palette.UI_GOOD))
+		box.add_child(UiKit.label(tr("+%d conquistas! Veja em Bichinhos.") % (got.size() - 2), 24, Palette.UI_GOOD))
 	if not got.is_empty():
 		get_tree().create_timer(1.6).timeout.connect(func(): Sfx.play("unlock"))
 	var row := UiKit.hbox(16)
@@ -438,7 +439,7 @@ func _take_photo(btn: Button) -> void:
 		hint_btn.visible = false
 		play_btn.visible = false
 	overlay.visible = true
-	var cap := "%s %s" % [level.data.get("id", ""), level.data.get("name", "")] if level.mode == "campaign" else str(level.data.get("name", ""))
+	var cap := "%s %s" % [level.data.get("id", ""), tr(str(level.data.get("name", "")))] if level.mode == "campaign" else str(level.data.get("name", ""))
 	Game.add_photo(img, cap)
 	Sfx.play("ui_click", 2.0, 0.6)
 	var flash := ColorRect.new()
@@ -461,14 +462,14 @@ func _take_photo(btn: Button) -> void:
 func _build_daily_win(box: VBoxContainer, info: Dictionary) -> void:
 	box.add_child(UiKit.title("Desafio vencido!", 54))
 	var mod := Daily.mod_info(str(level.data.get("daily_mod", "")))
-	box.add_child(UiKit.label("%s · fase %s" % [mod["name"], level.data.get("base_id", "")], 24))
+	box.add_child(UiKit.label(tr("%s · fase %s") % [tr(mod["name"]), level.data.get("base_id", "")], 24))
 	var flame := UiKit.hbox(8)
 	var fi := UiIcon.new()
 	fi.icon = "flame"
 	fi.custom_minimum_size = Vector2(56, 56)
 	flame.add_child(fi)
 	var streak := int(info.get("streak", 1))
-	flame.add_child(UiKit.label("%d %s seguido%s!" % [streak, "dia" if streak == 1 else "dias", "" if streak == 1 else "s"], 30, Palette.UI_PRIMARY))
+	flame.add_child(UiKit.label((tr("%d dia seguido!") if streak == 1 else tr("%d dias seguidos!")) % streak, 30, Palette.UI_PRIMARY))
 	box.add_child(flame)
 	UiKit.pop_in(fi, 0.3)
 	if info.get("repeat", false):
@@ -483,7 +484,7 @@ func _build_daily_win(box: VBoxContainer, info: Dictionary) -> void:
 		box.add_child(coin_row)
 		get_tree().create_timer(0.8).timeout.connect(func(): Sfx.play("coin"))
 	for a in info.get("achievements", []):
-		box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(a)["name"], 26, Palette.UI_GOOD))
+		box.add_child(UiKit.label(tr("Conquista: %s") % tr(Game.achievement_info(a)["name"]), 26, Palette.UI_GOOD))
 	var row := UiKit.hbox(16)
 	box.add_child(row)
 	var home := UiKit.button("Voltar", Palette.UI_PRIMARY, "calendar", 220, 96)

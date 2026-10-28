@@ -37,6 +37,7 @@ func _ready() -> void:
 			daily_all = true
 	Game.persist = false
 	Game.load_save()
+	Game.set_setting("lang", "pt_BR")
 	await get_tree().process_frame
 	if daily_all:
 		await _test_daily_all()
@@ -46,6 +47,7 @@ func _ready() -> void:
 		return
 	if only_level == "" and only_world == 0:
 		_unit_medals_daily()
+		_unit_i18n()
 		_unit_line_math()
 		_unit_scoring()
 		_unit_progress()
@@ -229,6 +231,24 @@ func _test_daily_all() -> void:
 			var d := Daily.build("2026-01-01", i, str(m["id"]))
 			var r := await _run_level(-1, d, true)
 			check(r["state"] == Level.State.WON, "%s + %s (motivo=%s)" % [d["base_id"], m["id"], r["reason"]])
+
+
+func _unit_i18n() -> void:
+	print("[Idiomas]")
+	for spec in [["en", "Play", "Hold on! %d"], ["es", "Jugar", "¡Aguanta! %d"], ["pt_BR", "Jogar", "Aguente firme! %d"]]:
+		TranslationServer.set_locale(spec[0])
+		check(tr("Jogar") == spec[1], "%s: Jogar → %s (veio %s)" % [spec[0], spec[1], tr("Jogar")])
+		check(tr("Aguente firme! %d") == spec[2], "%s: texto com formato traduzido" % spec[0])
+		check(tr("Oi, Capitu!") != "" and tr(str(LevelDB.get_level(0)["tip"])) != "", "%s: fase 1-1 tem nome e dica" % spec[0])
+	TranslationServer.set_locale("en")
+	var untranslated := 0
+	for i in LevelDB.count():
+		var lv := LevelDB.get_level(i)
+		if tr(str(lv["name"])) == str(lv["name"]) and not ["Mosquito", "Editor", "Normal"].has(str(lv["name"])):
+			untranslated += 1
+			print("    sem inglês: ", lv["name"])
+	check(untranslated <= 2, "nomes de fase traduzidos para inglês (%d sem tradução)" % untranslated)
+	TranslationServer.set_locale("pt_BR")
 
 
 func _unit_medals_daily() -> void:

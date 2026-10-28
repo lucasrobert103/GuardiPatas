@@ -14,16 +14,30 @@ func _ready() -> void:
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var panel := UiKit.panel()
-	panel.custom_minimum_size = Vector2(620, 0)
+	panel.custom_minimum_size = Vector2(640, 0)
 	center.add_child(panel)
-	var box := UiKit.vbox(16)
-	panel.add_child(box)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(600, minf(1120.0, get_viewport_rect().size.y - 120.0))
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
+	var box := UiKit.vbox(14)
+	box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(box)
 	box.add_child(UiKit.label("Ajustes", 52))
+	box.add_child(_cycler("Idioma", _lang_names(), _lang_index(), func(i: int):
+		Game.set_setting("lang", Game.LANGS[i][0])
+		Game.apply_settings()
+		go.emit("settings", null)))
 	box.add_child(_slider("Música", "music"))
 	box.add_child(_slider("Efeitos sonoros", "sfx"))
 	box.add_child(_toggle("Vibração", "vibration"))
 	box.add_child(_toggle("Reduzir movimento", "reduce_motion"))
 	box.add_child(_toggle("Destacar insetos (alto contraste)", "high_contrast"))
+	var big := _toggle("Texto grande", "big_text")
+	(big as Button).pressed.connect(func(): go.emit("settings", null))
+	box.add_child(big)
+	box.add_child(_cycler("Daltonismo", ["Nenhum", "Protanopia (vermelho)", "Deuteranopia (verde)", "Tritanopia (azul)"],
+		int(Game.setting("colorblind")), func(i: int): Game.set_setting("colorblind", i)))
 	var priv := UiKit.label("Privacidade: o GuardiPatas não coleta dados pessoais. Seu progresso fica salvo só neste aparelho.", 22, Color(Palette.UI_TEXT, 0.8), 0, Palette.WHITE, true)
 	priv.custom_minimum_size = Vector2(560, 0)
 	box.add_child(priv)
@@ -36,7 +50,7 @@ func _ready() -> void:
 	back.pressed.connect(func(): go.emit("title", null))
 	row.add_child(back)
 	box.add_child(UiKit.label("Desenvolvido por RetroNexa · retronexa.com.br", 22, Color("9b4fd6")))
-	box.add_child(UiKit.label("Versão %s" % ProjectSettings.get_setting("application/config/version", "dev"), 20, Color(Palette.UI_TEXT, 0.6)))
+	box.add_child(UiKit.label(tr("Versão %s") % ProjectSettings.get_setting("application/config/version", "dev"), 20, Color(Palette.UI_TEXT, 0.6)))
 	UiKit.pop_in(panel)
 
 
@@ -57,14 +71,38 @@ func _slider(text: String, key: String) -> Control:
 	return v
 
 
+func _lang_names() -> Array:
+	return Game.LANGS.map(func(l): return l[1])
+
+
+func _lang_index() -> int:
+	var code := Game.lang_code()
+	for i in Game.LANGS.size():
+		if Game.LANGS[i][0] == code:
+			return i
+	return 0
+
+
+## Botão que passa pelas opções a cada toque ("Idioma: English").
+func _cycler(title: String, options: Array, current: int, on_change: Callable) -> Control:
+	var state := {"i": current}
+	var b := UiKit.button("%s: %s" % [tr(title), tr(options[current])], Palette.UI_PANEL, "", 560, 76)
+	b.add_theme_font_size_override("font_size", UiKit.fs(24))
+	b.pressed.connect(func():
+		state["i"] = (int(state["i"]) + 1) % options.size()
+		b.text = "%s: %s" % [tr(title), tr(options[state["i"]])]
+		on_change.call(state["i"]))
+	return b
+
+
 func _toggle(text: String, key: String) -> Control:
 	var on: bool = Game.setting(key)
-	var b := UiKit.button(("[x]  " if on else "[  ]  ") + text, Palette.UI_SECONDARY if on else Palette.UI_MUTED, "", 560, 76)
+	var b := UiKit.button(("[x]  " if on else "[  ]  ") + tr(text), Palette.UI_SECONDARY if on else Palette.UI_MUTED, "", 560, 76)
 	b.add_theme_font_size_override("font_size", 24)
 	b.pressed.connect(func():
 		var now: bool = not bool(Game.setting(key))
 		Game.set_setting(key, now)
-		b.text = ("[x]  " if now else "[  ]  ") + text
+		b.text = ("[x]  " if now else "[  ]  ") + tr(text)
 		b.add_theme_stylebox_override("normal", UiKit.btn_style(Palette.UI_SECONDARY if now else Palette.UI_MUTED, false)))
 	return b
 

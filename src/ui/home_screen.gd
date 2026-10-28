@@ -73,7 +73,7 @@ func _build_ui() -> void:
 	var treat := UiKit.tile("Petisco", "heart", Color("ffb3c7"), 150)
 	treat.pressed.connect(_give_treat)
 	bottom.add_child(treat)
-	var album := UiKit.tile("Álbum (%d)" % Game.data["album"].size(), "camera", Palette.UI_SECONDARY, 150)
+	var album := UiKit.tile(tr("Álbum (%d)") % Game.data["album"].size(), "camera", Palette.UI_SECONDARY, 150)
 	album.pressed.connect(func(): go.emit("album", null))
 	bottom.add_child(album)
 	var friends := UiKit.tile("Roupinhas", "paw", Palette.UI_PRIMARY, 150)

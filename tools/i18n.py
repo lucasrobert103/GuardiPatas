@@ -18,6 +18,12 @@ OUT_DIR = os.path.join(ROOT, "data", "i18n")
 STR_RE = re.compile(r'"((?:[^"\\]|\\.)*)"')
 SKIP_RE = re.compile(r'^(res://|user://|[a-z0-9_]+$|[a-z_]+/[a-z_/]+$|%[^ ]*$|#|[A-Z_0-9]+$)')
 SKIP_FILES = {"src/core/layers.gd"}
+# textos que não são traduzidos: nomes próprios, marcas, chaves internas e formatos sem palavras
+IGNORE = {"%s · %s", "%s  %s", "%s %s", "%d / %d", "     Tempo %ds", "     Tinta: %s", "     Traços: %d", ": sim", ": não",
+          "%d %s seguido%s!", "[x]  ", "modulate:a", "RetroNexa", "retronexa.com.br", "GuardiPatas", "RetroNexa · retronexa.com.br",
+          "Label", "Button", "PanelContainer", "T12:00:00", "levels.json não encontrado", "levels.json inválido", ".wav",
+          "Music", "Master", "World", "Fx", "Capitu", "Brasa", "Pingo", "Lulu", "Tuca", "Nino", "Gelinho", "Tatá", "Pompom",
+          "Nuvem", "Fofa", "Tito", "Patinha", "Kiko", "Português", "English", "Español", "%s: %s"}
 
 
 def looks_like_text(s):
@@ -97,7 +103,7 @@ def build():
 def check():
     T = table()
     items = extract()
-    missing = [s for s in items if s not in T]
+    missing = [s for s in items if s not in T and s not in IGNORE]
     for s in missing:
         print("SEM TRADUÇÃO:", repr(s))
     for pt, (en, es) in T.items():

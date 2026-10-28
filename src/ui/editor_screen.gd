@@ -48,7 +48,7 @@ func _ready() -> void:
 
 
 static func new_draft(n: int) -> Dictionary:
-	return {"name": "Minha fase %d" % n, "world": 1, "survive": 8.0, "ink": 750, "strokes": 1,
+	return {"name": UiKit.tr_text("Minha fase %d") % n, "world": 1, "survive": 8.0, "ink": 750, "strokes": 1,
 		"animals": [], "nests": [], "rocks": [], "blocks": [], "verified": false}
 
 
@@ -109,10 +109,12 @@ func _build_ui() -> void:
 		_option_text(b, key)
 		opts.add_child(b)
 
-	_status = UiKit.label("", 24, Palette.WHITE, 8, Palette.OUTLINE)
+	_status = UiKit.label("", 22, Palette.WHITE, 8, Palette.OUTLINE, true)
 	_status.anchor_right = 1.0
+	_status.offset_left = 20
+	_status.offset_right = -20
 	_status.offset_top = 196
-	_status.offset_bottom = 236
+	_status.offset_bottom = 256
 	_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_status)
 
@@ -151,15 +153,15 @@ func _build_ui() -> void:
 func _option_text(b: Button, key: String) -> void:
 	match key:
 		"time":
-			b.text = "     Tempo %ds" % int(draft["survive"])
+			b.text = "     " + tr("Tempo %ds") % int(draft["survive"])
 		"ink":
 			var name := "Média"
 			for k in INKS:
 				if int(k[1]) == int(draft["ink"]):
 					name = k[0]
-			b.text = "     Tinta: %s" % name
+			b.text = "     " + tr("Tinta: %s") % tr(name)
 		"strokes":
-			b.text = "     Traços: %d" % int(draft["strokes"])
+			b.text = "     " + tr("Traços: %d") % int(draft["strokes"])
 
 
 func _cycle(key: String) -> void:
@@ -193,14 +195,14 @@ func _select(id: String) -> void:
 
 func _update_labels() -> void:
 	var w := LevelDB.world_info(int(draft["world"]))
-	_name_label.text = str(w.get("name", "Mundo %d" % int(draft["world"])))
+	_name_label.text = tr(str(w.get("name", ""))) if w.has("name") else tr("Mundo %d") % int(draft["world"])
 	var msg := ""
 	match tool:
-		"animal": msg = "Toque para pôr: %s (toque de novo no botão para trocar)" % Animal.SPECIES[_species[species_i]]["name"]
-		"erase": msg = "Toque perto de algo para apagar"
-		"bee", "mosquito": msg = "Toque no céu para pôr o ninho"
-		"ant", "beetle": msg = "Toque no chão para pôr o formigueiro"
-		_: msg = "Toque para pôr"
+		"animal": msg = tr("Toque para pôr: %s (toque de novo no botão para trocar)") % Animal.SPECIES[_species[species_i]]["name"]
+		"erase": msg = tr("Toque perto de algo para apagar")
+		"bee", "mosquito": msg = tr("Toque no céu para pôr o ninho")
+		"ant", "beetle": msg = tr("Toque no chão para pôr o formigueiro")
+		_: msg = tr("Toque para pôr")
 	_status.text = msg
 
 
@@ -262,7 +264,7 @@ func _place(p: Vector2) -> void:
 		return
 	if _count(kind) >= int(MAX[kind]):
 		Sfx.play("ui_locked")
-		_status.text = "Limite atingido! Apague algo primeiro."
+		_status.text = tr("Limite atingido! Apague algo primeiro.")
 		return
 	match kind:
 		"animal":
@@ -315,7 +317,7 @@ func _erase(p: Vector2) -> void:
 func _test() -> void:
 	if draft["animals"].is_empty() or draft["nests"].is_empty():
 		Sfx.play("ui_locked")
-		_status.text = "Coloque pelo menos 1 bichinho e 1 ninho!"
+		_status.text = tr("Coloque pelo menos 1 bichinho e 1 ninho!")
 		return
 	custom_index = Game.save_custom(custom_index, draft)
 	go.emit("level", playable(draft, custom_index))

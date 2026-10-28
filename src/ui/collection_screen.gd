@@ -98,7 +98,7 @@ func _build_friends() -> void:
 		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(info)
 		var cast: Dictionary = Cast.INFO[sp]
-		var name_l := UiKit.label((Animal.SPECIES[sp]["name"] + " · " + cast["species"]) if known else "???", 30)
+		var name_l := UiKit.label((Animal.SPECIES[sp]["name"] + " · " + tr(cast["species"])) if known else "???", 30)
 		name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		info.add_child(name_l)
 		var bio := UiKit.label(cast["bio"] if known else "Salve este bichinho numa fase para conhecê-lo!", 21, Palette.UI_TEXT, 0, Palette.WHITE, true)
@@ -168,7 +168,7 @@ func _build_wardrobe() -> void:
 
 func _build_trophies() -> void:
 	var have: int = Game.data["achievements"].size()
-	_content.add_child(UiKit.label("%d de %d conquistas" % [have, Game.ACHIEVEMENT_LIST.size()], 28, Palette.WHITE, 10, Palette.OUTLINE))
+	_content.add_child(UiKit.label(tr("%d de %d conquistas") % [have, Game.ACHIEVEMENT_LIST.size()], 28, Palette.WHITE, 10, Palette.OUTLINE))
 	for entry in Game.ACHIEVEMENT_LIST:
 		var k: String = entry[0]
 		var cfg := {"name": entry[1], "desc": entry[2]}

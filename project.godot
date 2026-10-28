@@ -39,6 +39,11 @@ window/handheld/orientation=1
 
 pointing/emulate_mouse_from_touch=true
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://data/i18n/translations.pt_BR.translation", "res://data/i18n/translations.en.translation", "res://data/i18n/translations.es.translation")
+locale/fallback="pt_BR"
+
 [physics]
 
 common/physics_ticks_per_second=60

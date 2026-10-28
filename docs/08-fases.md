@@ -1,6 +1,6 @@
-# 08 — Campanha: 60 fases em 8 mundos
+# 08 — Campanha: 63 fases em 8 mundos
 
-**Todas as 60 fases estão implementadas** em `data/levels.json`, cada uma com solução registrada verificada pelo teste automático (ver status dos testes no doc 12).
+**Todas as 63 fases estão implementadas** em `data/levels.json`, cada uma com solução registrada verificada pelo teste automático (ver status dos testes no doc 12).
 **Estrelas:** o orçamento de tinta é calibrado para a solução registrada usar ~55 %; 3★ exige ≤ 60 %, 2★ ≤ 80 %.
 Regra de ouro: **toda solução pode ser deduzida olhando a cena** — ninhos visíveis com contagem, zonas proibidas hachuradas, lâmpada com contador, plataforma com trajeto pontilhado.
 
@@ -67,6 +67,7 @@ Regra de ouro: **toda solução pode ser deduzida olhando a cena** — ninhos vi
 | ✅ 6-8 Tobogã do Gelinho | Gelinho | 3 abelhas, 9 s | Bichinho que escorrega + objetivo. | O Gelinho escorrega no gelo! Faça um tobogã de Tinta Firme até o iglu. | sim (testado) |
 | ✅ 6-9 Abrigo na Rocha | Kiko | 6 mosquitos, 9 s | Usar o cenário e economizar tinta. | Pouquíssima tinta! Use o paredão de pedra como parede e faça só um telhadinho. | — |
 | ✅ 6-10 Pico Nevado | Nuvem, Gelinho | 12 formigas, 6 abelhas, 10 s | Revisão: buracos + dois traços. | Dois amigos, dois traços e buracos dos dois lados. Tampe tudo! | sim (testado) |
+| ✅ 6-11 **Coruja Nevasca** (chefão) | Nuvem | 6 abelhas + bolas de neve, 13 s | A Coruja marca X no chão e derruba neve ali a cada 3 s | Abrigo firme em arco sobre a Nuvem | — |
 
 ## Mundo 7 — Praia do Sol (tocas, coco, mel, vespas)
 | Fase | Bichinhos | Perigos | Mecânica | Dica no jogo | Círculo genérico perde? |
@@ -81,6 +82,7 @@ Regra de ouro: **toda solução pode ser deduzida olhando a cena** — ninhos vi
 | ✅ 7-8 Rumo ao Guarda-Sol | Pingo | levar até a toca, 10 s | Rampa sobre a água. | O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca. | sim (testado) |
 | ✅ 7-9 Coco e Caranguejo | Patinha | 4 caranguejos, 9 s | Combinar regras. | Coco caindo E caranguejos nos buracos. Abrigo firme com as pontas nos buracos! | sim (testado) |
 | ✅ 7-10 Festa na Praia | Pompom, Fofa | 4 caranguejos, 6 abelhas, 10 s | Revisão da praia. | Dois traços para dois amigos. Cuidado com as tocas e com o coco da Fofa! | sim (testado) |
+| ✅ 7-11 **Caranguejo Rei** (chefão) | Pompom | 4 caranguejos nas tocas + conchas em arco, 12 s | O rei mostra o arco pontilhado e arremessa conchas | Arco com as pontas nas tocas | sim (testado) |
 
 ## Mundo 8 — Fundo do Mar (águas-vivas, baiacus, correnteza)
 | Fase | Bichinhos | Perigos | Mecânica | Dica no jogo | Círculo genérico perde? |
@@ -95,6 +97,9 @@ Regra de ouro: **toda solução pode ser deduzida olhando a cena** — ninhos vi
 | ✅ 8-8 Polvo e Caranguejo | Tito | 4 caranguejos, 2 baiacus, 10 s | Tampar + espaço. | Tocas de caranguejo e baiacu. Pontas nos buracos e abrigo espaçoso! | sim (testado) |
 | ✅ 8-9 Correnteza Forte | Tito | 6 águas-vivas, 11 s | Travar o abrigo. | Correnteza fortíssima! Trave o abrigo entre as duas pedras. | — |
 | ✅ 8-10 Rei dos Mares | Tito, Fofa | 4 caranguejos, 2 baiacus, 4 águas-vivas, 11 s | Revisão final. | O grande final do fundo do mar: dois traços, tocas, baiacus e águas-vivas! | sim (testado) |
+| ✅ 8-11 **Polvo Gigante** (chefão) | Tito | 10 águas-vivas + sucção, 12 s | O polvo incha e suga linhas e caixas; depois solta tinta (só visual) | Arco com "pezinhos" passando por baixo das duas pedras | sim (testado: o arco comum é sugado) |
+
+<img src="img/chefe-coruja.png" width="200"> <img src="img/chefe-caranguejo.png" width="200"> <img src="img/chefe-polvo.png" width="200">
 
 <img src="img/fase-buracos.png" width="200"> <img src="img/fase-toca.png" width="200"> <img src="img/fase-praia.png" width="200"> <img src="img/fase-mar.png" width="200">
 

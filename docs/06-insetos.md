@@ -33,5 +33,11 @@ Implementação: `src/game/insects/*.gd` (base `Insect`, comportamento em `_beha
 ### Chefona (sem violência) ✅
 **Rainha Zumbina** — abelha-rainha gigante (fase 5-6) que **não pica**: paira indo de um lado ao outro e, a cada 3,2 s, **infla as bochechas** (aviso de 1 s com "!") e **sopra** uma rajada que empurra linhas, caixas e bichinhos para longe dela (e deixa as operárias tontas). Vence-se aguentando 14 s com um abrigo travado entre duas pedras. (Implementação: `src/game/insects/queen_bee.gd`.)
 
+### Chefões dos mundos 6–8 ✅ (`src/game/insects/boss.gd`)
+Todos avisam 1 s antes de agir (ícone "!" piscando + marcação na tela) e ninguém se machuca:
+- **Coruja Nevasca** (6-11): pousada num galho, levanta as asas e derruba **bolas de neve** nos **X** marcados no chão (perto do bichinho, alternando dois lados / centro). Neve que acerta o bichinho = "Bonk de neve!". As bolas de neve ficam numa camada própria de colisão: não "atiram" abelhas através da linha.
+- **Caranguejo Rei** (7-11): anda de lado na areia, levanta a garra mostrando o **arco pontilhado** e arremessa uma **concha** no bichinho mais perto. Os caranguejinhos saem das tocas.
+- **Polvo Gigante** (8-11): incha (aviso) e por 1,4 s **suga** linhas e caixas na direção dele (insetos sentem só um pouco); depois solta uma nuvem de tinta, só visual. Se um bichinho chegar até ele: "Abraço apertado!". Bloqueio justo: passar as pontas do abrigo por baixo das pedras.
+
 ### Progressão da dificuldade
 Mundo 1: abelha → formiga → abelha+formiga. Mundo 2: mosquito, mariposa+luz, vários bichinhos, dois traços. Mundo 3: besouro, abismos, plataformas móveis, cupim. Mundo 4: água, Lulu e Tuca, vespa, lagarta. Mundo 5: noite, lâmpadas como isca, combinações e chefão. Mundo 6 (Montanha): buracos, grilos, aranha, abelha broca, vento, Tinta Firme. Mundo 7 (Praia): caranguejos nas tocas, coco caindo, isca de mel, vespas. Mundo 8 (Mar): águas-vivas, baiacus, correnteza, caranguejos do fundo.

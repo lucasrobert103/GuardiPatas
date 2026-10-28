@@ -24,5 +24,5 @@
 
 ## Estado atual (esta entrega)
 - Documentação de design completa (este diretório).
-- **Jogo jogável**: 60 fases em 8 mundos, 14 bichinhos (cada um com seu susto), 14 criaturas com IA + chefona, mecânicas de estratégia (buracos, Tinta Firme, tocas, mel, coco, vento), Modo Livre, 39 conquistas, abertura RetroNexa, desenho por toque validado, física, vitória/derrota, estrelas, moedas, dicas, guarda-roupa, conquistas, ajustes de acessibilidade, salvamento, efeitos sonoros e músicas sintetizados.
+- **Jogo jogável**: 63 fases em 8 mundos, 4 chefões, Desafio do Dia, medalhas, Casinha, Álbum, editor de fases, português/inglês/espanhol, 14 bichinhos (cada um com seu susto), 14 criaturas com IA + chefona, mecânicas de estratégia (buracos, Tinta Firme, tocas, mel, coco, vento), Modo Livre, 39 conquistas, abertura RetroNexa, desenho por toque validado, física, vitória/derrota, estrelas, moedas, dicas, guarda-roupa, conquistas, ajustes de acessibilidade, salvamento, efeitos sonoros e músicas sintetizados.
 - Ver o que foi testado e o que falta em [12-plano-de-desenvolvimento.md](12-plano-de-desenvolvimento.md).

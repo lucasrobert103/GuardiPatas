@@ -85,8 +85,8 @@ static func build(key: String, index: int, mod_id: String) -> Dictionary:
 	d["daily_key"] = key
 	d["daily_mod"] = mod_id
 	var m := mod_info(mod_id)
-	d["name"] = "Desafio: %s" % m["name"]
-	d["tip"] = "%s  %s" % [m["desc"], str(d.get("tip", ""))]
+	d["name"] = UiKit.tr_text("Desafio: %s") % UiKit.tr_text(m["name"])
+	d["tip"] = "%s  %s" % [UiKit.tr_text(m["desc"]), UiKit.tr_text(str(d.get("tip", "")))]
 	match mod_id:
 		"curta":
 			d["ink"] = int(float(d["ink"]) * 0.8)

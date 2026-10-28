@@ -511,3 +511,16 @@ T = {
 "Relâmpago": ("Lightning", "Relámpago"),
 "Termine o desenho em até 6 segundos.": ("Finish drawing within 6 seconds.", "Termina el dibujo en 6 segundos o menos."),
 }
+
+# ---------------------------------------------------------------- frases em duas linhas e nomes curtos
+T["Ganhe moedas salvando bichinhos e conquistando estrelas.\nAcessórios são só enfeites: não mudam o jogo."] = (
+    "Earn coins by saving critters and winning stars.\nAccessories are just for fun: they don't change the game.",
+    "Gana monedas salvando animalitos y consiguiendo estrellas.\nLos accesorios son solo adornos: no cambian el juego.")
+T["Apagar todo o progresso?\nEstrelas, moedas e acessórios serão perdidos."] = (
+    "Erase all progress?\nStars, coins and accessories will be lost.",
+    "¿Borrar todo el progreso?\nSe perderán estrellas, monedas y accesorios.")
+for pt, en, es in [("Abelha", "Bee", "Abeja"), ("Formiga", "Ant", "Hormiga"), ("Mosquito", "Mosquito", "Mosquito"),
+                   ("Vespa", "Wasp", "Avispa"), ("Mariposa", "Moth", "Polilla"), ("Cupim", "Termite", "Termita"),
+                   ("Lagarta", "Caterpillar", "Oruga"), ("Grilo", "Cricket", "Grillo"), ("Aranha", "Spider", "Araña"),
+                   ("Caranguejo", "Crab", "Cangrejo"), ("Água-viva", "Jellyfish", "Medusa"), ("Baiacu", "Puffer", "Pez globo")]:
+    T[pt] = (en, es)

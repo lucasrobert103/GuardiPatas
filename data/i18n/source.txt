@@ -175,9 +175,9 @@ Muita
 Minha fase %d
 Fase criada por você!
 Testar
-     Tempo %ds
-     Tinta: %s
-     Traços: %d
+Tempo %ds
+Tinta: %s
+Traços: %d
 Mundo %d
 Toque para pôr: %s (toque de novo no botão para trocar)
 Toque perto de algo para apagar
@@ -198,7 +198,6 @@ modulate:a
 Aguente firme! %d
 Rumo à toca! %d
 Modo Livre: tinta infinita!
-Traços: %d
 Tinta Firme: a linha não cai!
 Sem dicas!
 Troque %d moedas por 1 dica.
@@ -209,10 +208,10 @@ Pausa
 Continuar
 Recomeçar
 Mapa
-Música
-Sons
-: sim
-: não
+Música: sim
+Sons: sim
+Música: não
+Sons: não
 O tempo acabou!
 Desenhe uma rampa de Tinta Firme que leve o bichinho até a toca.
 Bonk!
@@ -247,20 +246,30 @@ Próxima
 Foto salva no Álbum da Casinha!
 Desafio vencido!
 %s · fase %s
-%d %s seguido%s!
+%d dia seguido!
+%d dias seguidos!
 O prêmio de hoje já foi pego. Volte amanhã para um desafio novo!
 Voltar
 De novo!
 %d / %d
 Insetos deste mundo
 Ajustes
+Idioma
+Música
 Efeitos sonoros
 Vibração
 Reduzir movimento
 Destacar insetos (alto contraste)
+Texto grande
+Daltonismo
+Nenhum
+Protanopia (vermelho)
+Deuteranopia (verde)
+Tritanopia (azul)
 Privacidade: o GuardiPatas não coleta dados pessoais. Seu progresso fica salvo só neste aparelho.
 Apagar progresso
 Desenvolvido por RetroNexa · retronexa.com.br
+%s: %s
 [x]  
 Apagar todo o progresso?
 Estrelas, moedas e acessórios serão perdidos.
@@ -481,6 +490,9 @@ Nunca Desista
 Tente de novo 10 vezes.
 Teimosia do Bem
 Tente de novo 50 vezes.
+Português
+English
+Español
 Pegada Dourada
 Passe a linha pela pegada dourada.
 De Primeira

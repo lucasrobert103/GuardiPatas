@@ -23,6 +23,13 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(out_dir)
 	Game.persist = false
 	Game.load_save()
+	Game.data["settings"]["lang"] = "pt_BR"
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--lang="):
+			Game.data["settings"]["lang"] = a.substr(7)
+		if a == "--big-text":
+			Game.data["settings"]["big_text"] = true
+	Game.apply_settings()
 	Game.data["met"] = ["capi", "brasa", "pingo", "nino", "tuca", "lulu"]
 	Game.data["coins"] = 340
 	Game.data["owned"] = ["oculos", "laco"]
@@ -33,6 +40,9 @@ func _ready() -> void:
 		Game.data["levels"][str(LevelDB.get_level(i)["id"])] = {"stars": 2, "paw": i % 4 == 0}
 	if "--ui" in OS.get_cmdline_user_args():
 		await _screen(TitleScreen.new(), "01_titulo", 1.5)
+		await _screen(SettingsScreen.new(), "04_ajustes", 0.8)
+		await _screen(CollectionScreen.new(), "03_colecao", 0.8)
+		await _level("1-1", "hint", 0.0)
 		await _screen(DailyScreen.new(), "05_desafio", 0.9)
 		var m6 := LevelSelect.new()
 		m6.setup(6)

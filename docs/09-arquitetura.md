@@ -20,20 +20,25 @@ src/
     line_math.gd         Simplificação/medição do traço (testável)
     scoring.gd           Estrelas e moedas (testável)
     cast.gd              Textos do elenco
+    daily.gd             Desafio do Dia (sorteio pela data + regras)
+    daltonize.gdshader   Correção de cores para daltonismo (tela inteira)
   game/                  Jogo
     level.gd             Monta a fase a partir dos dados; máquina de estados
     line_drawer.gd       Entrada de toque + validação + prévia do traço
     drawn_line.gd        Linha física (RigidBody2D de cápsulas)
     animal.gd / animal_art.gd       Bichinho (física) / arte e expressões
     insects/insect.gd + bee, ant, beetle, mosquito, wasp, moth, termite, caterpillar, queen_bee,
-            cricket, carpenter_bee, spider, crab, jellyfish, puffer, insect_art
-    props/ crate, lamp, water, platform, nest, honey_pot, coconut, wind_zone, goal_zone
+            cricket, carpenter_bee, spider, crab, jellyfish, puffer, boss (coruja/caranguejo rei/polvo), insect_art
+    props/ crate, lamp, water, platform, nest, honey_pot, coconut, wind_zone, goal_zone, projectile, golden_paw
     terrain.gd, background.gd, fx.gd
   ui/                    Telas e HUD (construídos em código, tema único)
     main.gd              Roteador de telas + botão voltar do Android
-    title_screen, level_select, collection_screen, settings_screen, hud, ui_kit, ui_icon, menu_bg
+    title_screen, level_select, collection_screen, settings_screen, hud, ui_kit, ui_icon, menu_bg,
+    daily_screen, home_screen (Casinha), album_screen, editor_list, editor_screen, splash_screen
 tests/test_runner.gd     Testes headless (unitários + validação + solubilidade das fases)
-tools/                   Geradores de áudio e de fases
+tools/                   Geradores: áudio, fases, ícones, logo, idiomas (i18n.py + i18n_table.py), loja
+data/i18n/               translations.csv (pt_BR/en/es) — o Godot importa e traduz Labels/Buttons sozinho
+store/                   Imagem de destaque e capturas da Play Store (geradas pelo jogo)
 .github/workflows/ci.yml CI: importa o projeto e roda os testes com Godot 4.7.2
 ```
 
@@ -98,4 +103,4 @@ Animal.body_entered(Insect) ──► Level.lose ──► Hud (resultado)      
 - **ADR-007 — Testes headless no CI** com o binário oficial. Fases impossíveis ou triviais quebram o build.
 
 ## Expansão prevista
-Novo inseto = nova subclasse de `Insect` + `Nest.make_insect` + arte em `InsectArt`. Novo bichinho = entrada em `Animal.SPECIES` + função de desenho + `Cast`. Novo objeto = classe em `props/` + caso em `Level._build_prop`. Tradução: textos de UI estão concentrados nas telas e em `Cast`; próximo passo é extrair para CSV de tradução do Godot.
+Novo inseto = nova subclasse de `Insect` + `Nest.make_insect` + arte em `InsectArt`. Novo bichinho = entrada em `Animal.SPECIES` + função de desenho + `Cast`. Novo objeto = classe em `props/` + caso em `Level._build_prop`. Tradução: o texto em português é a chave. `python3 tools/i18n.py check` lista o que falta traduzir; escreva em `tools/i18n_table.py` e rode `python3 tools/i18n.py build`. Labels e botões com o texto exato são traduzidos pelo Godot; textos montados com `%` usam `tr()` antes da formatação.

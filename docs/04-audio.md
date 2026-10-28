@@ -25,7 +25,23 @@ Todo o áudio é **sintetizado do zero** por `tools/gen_audio.py` (Python + nump
 | `star1..3`, `coin`, `win`, `unlock`, `pop` | Recompensas e comemoração |
 | `lose` | Derrota (após 1 s, sem pressa) |
 | `hint` | Dica aparece |
-| `music_menu` (92 bpm, 21 s) / `music_level` (112 bpm, 17 s) | Músicas em loop com crossfade |
+| `music_menu` (92 bpm, 21 s) / `music_level` (112 bpm, 17 s) | Menu e mundo 1 — loop com crossfade |
+| `quack`, `baa`, `bloop` | Vozes de susto da Patinha, da Nuvem e da Lulu/Tito (as outras espécies usam `gasp` com tom próprio) |
+
+## Uma trilha por mundo (`world_music()`)
+Cada trilha tem 16 compassos (A B A C) e instrumentos próprios, com o mesmo volume médio (`even_loudness`). `Sfx.level_track` escolhe pela fase.
+
+| Trilha | Mundo | Clima | Instrumentos |
+|---|---|---|---|
+| `music_level` | 1 Jardim | brincalhão, 112 bpm | marimba, sininhos, bateria leve |
+| `music_forest` | 2 Floresta | ré dórico, 100 bpm | flauta, harpa (Karplus-Strong), chocalho |
+| `music_valley` | 3 Vale das Formigas | faroeste, 120 bpm, swing | violão dedilhado, blocos de madeira "cavalgando" |
+| `music_pond` | 4 Lagoa | fá maior, 96 bpm | marimba e bolhinhas |
+| `music_camp` | 5 Acampamento | canção de ninar, 84 bpm | caixinha de música, harpa, grilos |
+| `music_mountain` | 6 Montanha | mi menor, 108 bpm | glockenspiel, guizos de trenó |
+| `music_beach` | 7 Praia | calipso, 116 bpm | steel drum, violão "skank", clave |
+| `music_sea` | 8 Mar | sonhador, 80 bpm | colchão de sintetizador, sinos, bolhas |
+| `music_boss` | chefões | lá menor harmônico, 132 bpm | quadrada macia, marcha com palmas (animada, não assustadora) |
 
 ## Mixagem
 Barramentos `Music` e `SFX` (criados em código), volumes ajustáveis em Ajustes; *pool* de 12 players com variação de tom para repetições; intervalo mínimo por som para não "empilhar" 20 bonks no mesmo quadro.

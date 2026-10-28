@@ -686,8 +686,9 @@ func _draw_scare_text(off: Vector2) -> void:
 	var font := ThemeDB.fallback_font
 	var a := clampf(1.0 - (_mood_t - 0.8) / 0.4, 0.0, 1.0)
 	var pos := off + Vector2(10.0 * facing, -_base_y() - 26.0 - _mood_t * 10.0)
-	draw_string_outline(font, pos + Vector2(-30, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, 6, Color(1, 1, 1, a))
-	draw_string(font, pos + Vector2(-30, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, Color(Palette.OUTLINE, a))
+	msg = tr(msg)
+	draw_string_outline(font, pos + Vector2(-40, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 80, 18, 6, Color(1, 1, 1, a))
+	draw_string(font, pos + Vector2(-40, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 80, 18, Color(Palette.OUTLINE, a))
 
 
 # ------------------------------------------------------------------ acessórios

@@ -58,7 +58,7 @@ static func sparkle(parent: Node, pos: Vector2, color: Color = Palette.GOLD) -> 
 
 static func popup_text(parent: Node, pos: Vector2, msg: String, color: Color = Palette.OUTLINE, life: float = 1.2) -> void:
 	var fx := _new_burst(parent, pos)
-	fx.text = msg
+	fx.text = String(TranslationServer.translate(msg))
 	fx.text_color = color
 	fx._text_life = life
 

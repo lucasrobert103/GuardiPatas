@@ -4,9 +4,29 @@ extends Node
 var _current: Node
 var _fade: ColorRect
 var _busy := false
+var _cb_filter: ColorRect
+
+
+func _apply_colorblind() -> void:
+	var mode := int(Game.setting("colorblind"))
+	_cb_filter.visible = mode > 0
+	(_cb_filter.material as ShaderMaterial).set_shader_parameter("mode", mode)
 
 
 func _ready() -> void:
+	# filtro de daltonismo (Ajustes): corrige as cores da tela toda, abaixo da transição
+	var cb_layer := CanvasLayer.new()
+	cb_layer.layer = 99
+	add_child(cb_layer)
+	_cb_filter = ColorRect.new()
+	_cb_filter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_cb_filter.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://src/core/daltonize.gdshader")
+	_cb_filter.material = mat
+	cb_layer.add_child(_cb_filter)
+	_apply_colorblind()
+	Game.settings_changed.connect(_apply_colorblind)
 	var layer := CanvasLayer.new()
 	layer.layer = 100
 	add_child(layer)

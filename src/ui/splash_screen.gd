@@ -68,7 +68,7 @@ func _draw() -> void:
 		draw_string(FONT_BOLD, Vector2(x, base_y + (1.0 - e) * 36.0), BRAND[i], HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(1, 1, 1, k * fade_out))
 	# "desenvolvido por" em cima, site embaixo
 	var a_top := clampf((_t - 0.1) / 0.4, 0.0, 1.0) * fade_out
-	draw_string(FONT_MEDIUM, Vector2(0, center.y - fs * 0.72), "desenvolvido por", HORIZONTAL_ALIGNMENT_CENTER, w, int(fs * 0.24), Color(SOFT, 0.8 * a_top))
+	draw_string(FONT_MEDIUM, Vector2(0, center.y - fs * 0.72), tr("desenvolvido por"), HORIZONTAL_ALIGNMENT_CENTER, w, int(fs * 0.24), Color(SOFT, 0.8 * a_top))
 	var a_site := clampf((_t - 1.0) / 0.45, 0.0, 1.0) * fade_out
 	draw_string(FONT_MEDIUM, Vector2(0, base_y + fs * 0.78 + (1.0 - a_site) * 10.0), SITE, HORIZONTAL_ALIGNMENT_CENTER, w, int(fs * 0.36), Color(SOFT, a_site))
-	draw_string(FONT_MEDIUM, Vector2(0, h - 60), "toque para continuar", HORIZONTAL_ALIGNMENT_CENTER, w, 20, Color(1, 1, 1, 0.4 * a_site))
+	draw_string(FONT_MEDIUM, Vector2(0, h - 60), tr("toque para continuar"), HORIZONTAL_ALIGNMENT_CENTER, w, 20, Color(1, 1, 1, 0.4 * a_site))

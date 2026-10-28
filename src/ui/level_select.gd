@@ -107,7 +107,7 @@ func _switch(dir: int) -> void:
 func _refresh() -> void:
 	_bg.world_id = world_id
 	var info := LevelDB.world_info(world_id)
-	_title.text = str(info.get("name", "Mundo %d" % world_id))
+	_title.text = tr(str(info.get("name", ""))) if info.has("name") else tr("Mundo %d") % world_id
 	_stars.text = "%d / %d" % [Game.total_stars(), LevelDB.count() * 3]
 	var ids := _worlds()
 	_prev.disabled = ids.find(world_id) <= 0

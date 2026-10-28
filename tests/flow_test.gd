@@ -11,6 +11,8 @@ var failures := 0
 func _ready() -> void:
 	Game.persist = false
 	Game.load_save()
+	# o fluxo procura botões pelo texto em português
+	Game.set_setting("lang", "pt_BR")
 	main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
 	await _wait(0.5)
@@ -155,6 +157,24 @@ func _ready() -> void:
 	await _press_text("Editor", true)
 	await _wait(0.6)
 	_expect(main._current is EditorScreen, "vitória → volta para o editor")
+
+	# idiomas: troca para inglês nos Ajustes e o título traduz; volta para português
+	Game.set_setting("lang", "en")
+	main.go("title", null)
+	await _wait(0.6)
+	_expect(_find_button(main, "Play", false) != null, "em inglês o título mostra \"Play\"")
+	Game.set_setting("lang", "es")
+	main.go("title", null)
+	await _wait(0.6)
+	_expect(_find_button(main, "Jugar", false) != null, "em espanhol o título mostra \"Jugar\"")
+	Game.set_setting("lang", "pt_BR")
+	Game.set_setting("colorblind", 2)
+	await _wait(0.2)
+	_expect(main._cb_filter.visible, "filtro de daltonismo liga")
+	Game.set_setting("colorblind", 0)
+	_expect(not main._cb_filter.visible, "filtro de daltonismo desliga")
+	main.go("settings", null)
+	await _wait(0.6)
 
 	# volta ao título pelo botão voltar do Android
 	main._notification(NOTIFICATION_WM_GO_BACK_REQUEST)

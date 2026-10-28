@@ -91,7 +91,11 @@ const DEFAULT_SETTINGS := {
 	"vibration": true,
 	"reduce_motion": false,
 	"high_contrast": false,
+	"lang": "",          # "" = idioma do aparelho (pt/en/es), senão "pt_BR" | "en" | "es"
+	"big_text": false,
+	"colorblind": 0,     # 0 nenhum, 1 protanopia, 2 deuteranopia, 3 tritanopia
 }
+const LANGS := [["pt_BR", "Português"], ["en", "English"], ["es", "Español"]]
 
 var data: Dictionary = {}
 ## Testes automatizados desligam a persistência para não tocar no save real.
@@ -543,3 +547,13 @@ func set_setting(key: String, value: Variant) -> void:
 
 func apply_settings() -> void:
 	Sfx.set_volumes(float(setting("music")), float(setting("sfx")))
+	TranslationServer.set_locale(lang_code())
+
+
+## Idioma em uso: o escolhido nos Ajustes ou, se nenhum, o do aparelho (inglês/espanhol/português).
+func lang_code() -> String:
+	var l := str(setting("lang"))
+	if l != "":
+		return l
+	var sys := OS.get_locale_language()
+	return sys if sys in ["en", "es"] else "pt_BR"

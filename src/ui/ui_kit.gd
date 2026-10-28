@@ -8,6 +8,15 @@ const FONT_SIZE := 30
 static var _font: FontVariation
 
 
+## Tamanho de fonte com o ajuste "Texto grande".
+static func fs(size: int) -> int:
+	return int(round(size * 1.15)) if bool(Game.setting("big_text")) else size
+
+
+static func tr_text(s: String) -> String:
+	return String(TranslationServer.translate(s))
+
+
 static func font() -> Font:
 	if _font == null:
 		_font = FontVariation.new()
@@ -80,7 +89,7 @@ static func button(text: String, color: Color = Palette.UI_PRIMARY, icon: String
 	b.add_theme_stylebox_override("pressed", btn_style(color, true))
 	b.add_theme_stylebox_override("disabled", btn_style(Palette.UI_MUTED, false))
 	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	b.add_theme_font_size_override("font_size", FONT_SIZE)
+	b.add_theme_font_size_override("font_size", fs(FONT_SIZE))
 	b.add_theme_color_override("font_color", Palette.OUTLINE)
 	b.add_theme_color_override("font_hover_color", Palette.OUTLINE)
 	b.add_theme_color_override("font_pressed_color", Palette.OUTLINE)
@@ -108,7 +117,7 @@ static func button(text: String, color: Color = Palette.UI_PRIMARY, icon: String
 			ic.offset_left = 16.0
 			ic.offset_right = 16.0 + height * 0.52
 			b.add_theme_constant_override("h_separation", 0)
-			b.text = "     " + text
+			b.text = "     " + tr_text(text)
 		b.add_child(ic)
 	b.pressed.connect(func(): Sfx.play("ui_click", -2.0, 1.0, 0.05))
 	return b
@@ -126,7 +135,7 @@ static func tile(text: String, icon: String, color: Color = Palette.UI_PANEL, w:
 	ic.offset_top = 12
 	ic.offset_bottom = h - 46
 	b.add_child(ic)
-	var l := label(text, 19)
+	var l := label(text, 17 if bool(Game.setting("big_text")) else 19)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	l.anchor_right = 1.0
 	l.anchor_top = 1.0
@@ -165,7 +174,7 @@ static func label(text: String, size: int = FONT_SIZE, color: Color = Palette.UI
 	l.text = text
 	var ls := LabelSettings.new()
 	ls.font = font()
-	ls.font_size = size
+	ls.font_size = fs(size)
 	ls.font_color = color
 	ls.outline_size = outline
 	ls.outline_color = outline_color

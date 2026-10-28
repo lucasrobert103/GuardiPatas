@@ -51,7 +51,7 @@ func _draw() -> void:
 		# mel escorrendo
 		DrawUtil.oval(self, Vector2(-8, -12), Vector2(7, 9), Palette.GOLD, o, 2.0)
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(-24, 12), "MEL", HORIZONTAL_ALIGNMENT_CENTER, 48, 16, o)
+	draw_string(font, Vector2(-24, 12), tr("MEL"), HORIZONTAL_ALIGNMENT_CENTER, 48, 16, o)
 	# medidor
 	draw_rect(Rect2(-26, 32, 52, 9), Color.WHITE, true)
 	draw_rect(Rect2(-26, 32, 52 * frac, 9), Palette.GOLD_DARK, true)
