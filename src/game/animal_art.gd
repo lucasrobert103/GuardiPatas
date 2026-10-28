@@ -82,6 +82,23 @@ func _draw() -> void:
 			if not reduce:
 				off.x = sin(_t * 55.0) * 1.6
 			sc = Vector2(1.03, 0.95)
+			# cada bichinho se assusta do seu jeito (ver _draw_scare_*)
+			var k := clampf(_mood_t * 4.0, 0.0, 1.0)
+			match species:
+				"capi":
+					if not reduce:
+						off.y = -sin(k * PI) * 12.0
+				"nuvem":
+					sc = Vector2.ONE * (1.0 + 0.12 * k)
+				"tata":
+					rot = sin(_t * 12.0) * 0.15 if not reduce else 0.0
+				"tuca":
+					rot = sin(_t * 30.0) * 0.03 if not reduce else 0.0
+				"pompom":
+					if not reduce:
+						off.y = -absf(sin(_t * 18.0)) * 6.0
+				"gelinho":
+					sc = Vector2(0.95, 1.06)
 		"ouch":
 			var k := clampf(_mood_t * 6.0, 0.0, 1.0)
 			sc = Vector2.ONE * (1.0 + 0.12 * sin(k * PI))
@@ -100,6 +117,9 @@ func _draw() -> void:
 	var base_y := _base_y()
 	off.y += base_y * (1.0 - sc.y)
 	draw_set_transform(off, rot, Vector2(sc.x * facing, sc.y))
+	var scared := mood == "scared"
+	if scared:
+		_draw_scare_back()
 	match species:
 		"capi": _draw_capi()
 		"brasa": _draw_brasa()
@@ -116,11 +136,15 @@ func _draw() -> void:
 		"patinha": _draw_patinha()
 		"kiko": _draw_kiko()
 	_draw_accessory()
+	if scared:
+		_draw_scare_front()
 	draw_set_transform(Vector2.ZERO)
 	if mood == "ouch":
 		_draw_ouch_stars()
-	elif mood == "scared" and not preview:
-		_draw_sweat()
+	elif scared:
+		_draw_scare_text(off)
+		if not preview:
+			_draw_sweat()
 
 
 func _base_y() -> float:
@@ -426,7 +450,7 @@ func _draw_tata() -> void:
 
 func _draw_pompom() -> void:
 	var m := _c("main")
-	var droop := 10.0 if mood in ["sad", "scared"] else 0.0
+	var droop := 10.0 if mood == "sad" else (-6.0 if mood == "scared" else 0.0)
 	DrawUtil.oval(self, Vector2(-8, -40 + droop * 0.5), Vector2(7, 18), m, Palette.OUTLINE, Palette.OUTLINE_W, -0.2 - droop * 0.03)
 	DrawUtil.oval(self, Vector2(-8, -40 + droop * 0.5), Vector2(3, 12), _c("light"), Palette.OUTLINE, 0.0, -0.2 - droop * 0.03)
 	DrawUtil.oval(self, Vector2(10, -42 + droop * 0.5), Vector2(7, 18), m, Palette.OUTLINE, Palette.OUTLINE_W, 0.2 + droop * 0.03)
@@ -552,6 +576,118 @@ func _draw_kiko() -> void:
 			draw_colored_polygon(PackedVector2Array([Vector2(ex - 5, -22), Vector2(ex + 5, -22), Vector2(ex + 5, -17), Vector2(ex - 5, -17)]), m)
 			draw_line(Vector2(ex - 5, -17), Vector2(ex + 5, -17), Palette.OUTLINE, 2.5, true)
 	_mouth(Vector2(5, 2), 6.0)
+
+
+# ------------------------------------------------------------------ sustos individuais
+## Atrás do corpo (coordenadas do bichinho virado para a direita).
+func _draw_scare_back() -> void:
+	var k := clampf(_mood_t * 4.0, 0.0, 1.0)
+	match species:
+		"brasa":
+			# cauda arrepiada: espinhos de pelo em volta da cauda
+			var spikes := PackedVector2Array()
+			for i in 16:
+				var a := TAU * i / 16.0
+				var r := (40.0 if i % 2 == 0 else 27.0) * (0.75 + 0.25 * k)
+				spikes.append(Vector2(-28, 18) + Vector2(cos(a) * r, sin(a) * r * 0.62).rotated(-0.7))
+			DrawUtil.shape(self, spikes, _c("main"), Palette.OUTLINE, 3.0)
+		"tito":
+			# nuvem de tinta de polvo que cresce e some
+			var a := clampf(1.0 - _mood_t / 1.6, 0.0, 1.0)
+			for i in 5:
+				var p := Vector2(-28 + i * 6, 10 - i * 7) * (0.6 + k * 0.8)
+				draw_circle(p, (10.0 + i * 3.0) * (0.5 + k), Color(0.25, 0.12, 0.35, 0.55 * a), true, -1.0, true)
+		"lulu":
+			# brânquias brilhando
+			for g in [Vector2(14, -22), Vector2(4, -12), Vector2(8, 10)]:
+				draw_circle(g, 10.0 + sin(_t * 12.0) * 2.0, Color(1.0, 0.4, 0.75, 0.45), true, -1.0, true)
+
+
+## Na frente do corpo.
+func _draw_scare_front() -> void:
+	var k := clampf(_mood_t * 4.0, 0.0, 1.0)
+	var o := Palette.OUTLINE
+	match species:
+		"capi":
+			# risquinhos de "susto" em volta da laranja
+			for i in 3:
+				var a := -PI * 0.8 + i * 0.5
+				var c := Vector2(26, -46)
+				draw_line(c + Vector2.from_angle(a) * 14.0, c + Vector2.from_angle(a) * (22.0 + 4.0 * k), o, 3.0, true)
+		"brasa":
+			# pelo da cabeça em pé
+			for i in 3:
+				var x := -6.0 + i * 8.0
+				draw_line(Vector2(x, -36), Vector2(x + (i - 1) * 3.0, -46 - 4.0 * k), o, 3.0, true)
+		"pingo":
+			# a folhinha voa dos espinhos
+			var lp := Vector2(-16, -30) + Vector2(-20.0 * k, -40.0 * k + 30.0 * maxf(_mood_t - 0.4, 0.0) * maxf(_mood_t - 0.4, 0.0))
+			DrawUtil.oval(self, lp, Vector2(9, 5), Color("5cc46a"), o, 2.5, -0.6 + _mood_t * 4.0)
+		"nino":
+			# abraça a bolota tremendo
+			var ac := Vector2(17, 9) + Vector2(sin(_t * 40.0) * 1.5, 0)
+			DrawUtil.oval(self, ac, Vector2(6, 7), Color("c98a4a"), o, 2.5)
+			DrawUtil.oval(self, Vector2(12, 10), Vector2(5, 7), _c("main"), o, 2.0, 0.4)
+		"gelinho":
+			# floquinhos de neve pulando
+			for i in 4:
+				var a := TAU * i / 4.0 + _t * 2.0
+				var p := Vector2(0, -10) + Vector2.from_angle(a) * (30.0 + 10.0 * k)
+				for j in 3:
+					var d := Vector2.from_angle(PI * j / 3.0) * 4.0
+					draw_line(p - d, p + d, Color("bfe9ff"), 2.0, true)
+		"nuvem":
+			# tufinhos de lã soltando
+			for i in 3:
+				var y := -40.0 - fmod(_mood_t * 30.0 + i * 14.0, 40.0)
+				DrawUtil.disc(self, Vector2(-20 + i * 16, y), 5.0, _c("main"), o, 2.0)
+		"kiko":
+			# acorda e a folha de eucalipto cai
+			var lp := Vector2(16, 14) + Vector2(10.0 * k, 26.0 * k)
+			DrawUtil.oval(self, lp, Vector2(10, 5), Color("7fbf8a"), o, 2.5, -0.6 + k * 1.5)
+		"pompom":
+			# cenoura tremendo
+			for i in 2:
+				draw_line(Vector2(28, 14 + i * 10), Vector2(34, 12 + i * 10), o, 2.0, true)
+		"patinha":
+			# peninhas voando
+			for i in 3:
+				var p := Vector2(-10 + i * 12, -10 - fmod(_mood_t * 40.0 + i * 12.0, 46.0))
+				DrawUtil.oval(self, p, Vector2(5, 2.5), _c("light"), o, 1.5, 0.6 + i)
+		"fofa":
+			# nadadeiras tapando os olhos (espiando)
+			DrawUtil.oval(self, Vector2(30, -12), Vector2(8, 5), _c("dark"), o, 2.5, 0.3)
+			DrawUtil.oval(self, Vector2(42, -13), Vector2(7, 5), _c("dark"), o, 2.5, -0.3)
+		"lulu":
+			# bolhas subindo rápido
+			for i in 4:
+				var p := Vector2(30 + i * 3, -14 - fmod(_mood_t * 80.0 + i * 15.0, 60.0))
+				draw_arc(p, 3.0 + i % 2, 0.0, TAU, 10, Color(0.8, 0.95, 1.0, 0.9), 1.5, true)
+		"tuca":
+			# casco batendo: linhas de "toc"
+			for i in 2:
+				var x := -30.0 + i * 50.0
+				draw_line(Vector2(x, -30), Vector2(x + (6 if i == 1 else -6), -38), o, 2.5, true)
+
+
+## Textos curtinhos (fora do espelhamento, para não ficarem ao contrário).
+func _draw_scare_text(off: Vector2) -> void:
+	if _mood_t > 1.2:
+		return
+	var msg := ""
+	match species:
+		"patinha": msg = "Quá!"
+		"kiko": msg = "?!"
+		"tuca": msg = "toc!"
+		"nuvem": msg = "Bééé!"
+		"pompom": msg = "!"
+	if msg == "":
+		return
+	var font := ThemeDB.fallback_font
+	var a := clampf(1.0 - (_mood_t - 0.8) / 0.4, 0.0, 1.0)
+	var pos := off + Vector2(10.0 * facing, -_base_y() - 26.0 - _mood_t * 10.0)
+	draw_string_outline(font, pos + Vector2(-30, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, 6, Color(1, 1, 1, a))
+	draw_string(font, pos + Vector2(-30, 0), msg, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, Color(Palette.OUTLINE, a))
 
 
 # ------------------------------------------------------------------ acessórios

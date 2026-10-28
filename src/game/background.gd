@@ -13,7 +13,7 @@ func setup(p_world: int) -> void:
 	z_index = -100
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1000 + world_id
-	var cloud_count := 4 if world_id != 5 else 0
+	var cloud_count := 4 if world_id != 5 and world_id != 8 else 0
 	for i in cloud_count:
 		var c := CloudPuff.new()
 		c.position = Vector2(rng.randf_range(-200, 900), rng.randf_range(120, 520))

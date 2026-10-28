@@ -1,4 +1,4 @@
-# 05 — Os seis bichinhos protagonistas
+# 05 — Os 14 bichinhos protagonistas
 
 Todos são **originais**. As formas de colisão estão em `src/game/animal.gd` (`SPECIES`) e a arte em `src/game/animal_art.gd`. Animações implementadas para todos: **idle** (respiração + piscadas), **susto** (tremor, olhos arregalados, suor, pupilas seguindo o inseto mais perto), **picadinha** (olhos "><", bochecha vermelha, estrelinhas girando), **comemoração** (pulos com amassadinha), **derrota** (pálpebras caídas, lagriminha).
 
@@ -66,5 +66,42 @@ Todos são **originais**. As formas de colisão estão em `src/game/animal.gd` (
 
 ---
 
+## A turma nova (mundos 6–8)
+
+<img src="img/bichinhos-1.png" width="300"> <img src="img/bichinhos-2.png" width="300">
+
+*(colunas: parado · **assustado** · feliz · picadinha)*
+
+| # | Nome | Espécie | Corpo / física | Personalidade e história | Característica de jogo |
+|---|---|---|---|---|---|
+| 7 | **Gelinho** | Pinguim | cápsula em pé r22 h72, massa 1,4, **atrito 0,05**, nada | Desceu da montanha de barriga e nunca mais quis andar. Cachecol tricotado pela Tuca. | **Escorrega**: um empurrão e ele desliza — nas fases de toca vira "tobogã" |
+| 8 | **Nuvem** | Ovelha | círculo r32, massa 2,2 | Tão fofa que passarinhos tentam fazer ninho nela; conta estrelas e perde a conta. | **Lã grossa: aguenta 2 picadinhas** |
+| 9 | **Kiko** | Coala | cápsula r24 h76, massa 0,7 | Dorme 20 h por dia; as outras 4 procura o eucalipto perfeito. | Levinho e sonolento (pálpebras caídas) |
+| 10 | **Tatá** | Tatu-bola | círculo r24, massa 1,6, **rola** | Diz que rolar ladeira abaixo é esporte. | Rola: leve-o até a toca com uma rampa de Tinta Firme |
+| 11 | **Pompom** | Coelho | cápsula r22 **h84**, massa 0,8 | Nunca solta a cenoura da sorte; o mais rápido e o mais medroso. | Orelhas compridas: abrigo bem alto |
+| 12 | **Patinha** | Pato | círculo r22, massa 0,5, nada | Nada desde que saiu do ovo; faz "quá" quando está feliz. | Levinha e nadadora |
+| 13 | **Fofa** | Foca | cápsula deitada r24 **h100**, massa 3, nada | Equilibra qualquer coisa no nariz (até a laranja da Capitu). | Grandona: abrigo comprido |
+| 14 | **Tito** | Polvo | círculo r24, massa 1, nada | Marinheiro do fundo do mar; usa os oito braços para abraçar. | Vive no mar: águas-vivas e baiacus |
+
+## Cada um se assusta do seu jeito
+Quando um inseto chega perto (210 px), além do tremor, olhos arregalados e suor, **cada bichinho tem uma reação e uma voz próprias** (`_draw_scare_back/_front/_text` em `animal_art.gd`, `SCARE_VOICE` em `animal.gd`; tudo respeita "Reduzir movimento"):
+
+| Bichinho | Reação visual | Som |
+|---|---|---|
+| Capitu | Dá um pulinho e a **laranja salta** com risquinhos de susto | suspiro grave |
+| Brasa | **Cauda arrepiada** (espinhos de pelo) e topete em pé, orelhas murcham | suspiro agudo |
+| Pingo | Vira bolinha e a **folhinha voa** dos espinhos | suspiro bem agudo |
+| Nino | **Abraça a bolota** tremendo | suspiro fininho |
+| Tuca | Esconde a cabeça; o casco treme fazendo **"toc!"** | suspiro bem grave |
+| Lulu | **Brânquias brilham** e solta bolhas rápidas | "blup" |
+| Gelinho | Estica o corpo e **floquinhos de neve** giram em volta | suspiro |
+| Nuvem | A lã **incha** como pipoca, solta tufinhos e grita **"Bééé!"** | balido |
+| Kiko | Acorda de olhos arregalados (**"?!"**) e a folha de eucalipto cai | suspiro |
+| Tatá | Fecha-se em bola e **balança** | suspiro |
+| Pompom | **Orelhas em pé**, pulinhos nervosos, cenoura tremendo, "!" | suspiro agudíssimo |
+| Patinha | **Peninhas voando** e um **"Quá!"** | "quá" |
+| Fofa | **Tapa os olhos** com as nadadeiras (espiando) | suspiro grave |
+| Tito | Solta uma **nuvem de tinta** que se espalha e some | "blup" grave |
+
 ## Cosméticos já implementados (todas as espécies)
-Boné listrado · Laço de bolinhas · Óculos de sol · Coroa de flores · Cachecol quentinho · Coroa dourada — comprados com moedas do jogo, **apenas visuais**.
+Boné listrado · Laço de bolinhas · Óculos de sol · Chapéu de palha · Presilha estrela-do-mar · Coroa de flores · Cachecol quentinho · Touca de lã · Coroa dourada — comprados com moedas do jogo, **apenas visuais**.

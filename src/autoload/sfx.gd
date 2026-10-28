@@ -8,7 +8,7 @@ const SOUNDS := [
 	"ui_click", "ui_back", "ui_locked", "draw_loop", "draw_end", "ink_empty", "draw_blocked",
 	"line_land", "buzz_bee", "buzz_mosquito", "wasp_charge", "wasp_dash", "ant_step", "beetle_step",
 	"moth_flutter", "bonk", "sting", "gasp", "splash", "star1", "star2", "star3", "coin", "tick",
-	"pop", "hint", "win", "lose", "unlock", "music_menu", "music_level", "retro_jingle",
+	"pop", "hint", "win", "lose", "unlock", "music_menu", "music_level", "retro_jingle", "quack", "baa", "bloop",
 ]
 
 var _streams: Dictionary = {}

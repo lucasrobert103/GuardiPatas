@@ -11,6 +11,8 @@ var on_time := 2.0
 var off_time := 2.0
 var delay := 1.0
 var underwater := false
+## Quanto os insetos/criaturas sentem o vento (as linhas sentem 100 %).
+var insect_scale := 0.3
 var active := false
 var warning := false
 var _cycle := 0.0
@@ -27,6 +29,7 @@ func setup(cfg: Dictionary, p_underwater: bool) -> void:
 	on_time = float(cfg.get("on", 2.0))
 	off_time = float(cfg.get("off", 2.0))
 	delay = float(cfg.get("delay", 1.0))
+	insect_scale = float(cfg.get("insects", 0.3))
 	underwater = p_underwater
 	z_index = 25
 

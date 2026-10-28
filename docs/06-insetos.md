@@ -19,8 +19,19 @@ Implementação: `src/game/insects/*.gd` (base `Insect`, comportamento em `_beha
 | 7 | **Cupim Roque-Roque** | 55 px/s | Vai até a **caixa/tábua de madeira** mais próxima (até 420 px) e a rói: rachaduras aparecem e ela quebra após 1,6 s de roída acumulada | Destrói barreiras de madeira | Não afeta a linha de tinta nem pedra | Não confiar só em madeira; abrigo de tinta | ✅ |
 | 8 | **Lagarta Gulosa** | 42 px/s | Anda pelo chão e **sobe qualquer parede** (terreno, caixa ou a sua linha), descendo do outro lado | Paredes e tendas não a seguram | Muito lenta; não voa; água a leva | **Abrigo fechado** (arco) ou água | ✅ |
 
+| 9 | **Grilo Saltitante** | anda + **pulo** | Anda e, perto de uma parede, **pula por cima** | Parede/tenda não bastam | Não fura nem empurra | Abrigo **com teto** | ✅ |
+| 10 | **Abelha Broca** | 220 px/s | Voa até a linha e, encostada nela por **2,2 s acumulados**, **fura um buraco** (marca visível) | Atravessa uma parede simples | Precisa ficar parada furando | **Parede dupla** (dois traços) | ✅ |
+| 11 | **Aranha Fiandeira** | anda no teto | Anda pelo alto até ficar acima do bichinho e **desce reto pelo fio** | Vem de cima, onde ninguém olha | Só desce na vertical | **Teto** firme | ✅ |
+| 12 | **Caranguejo Belisco** | anda | Sai das **tocas na areia**, anda de lado e **empurra forte** (650); **não tem medo de água** | Mora em buracos, empurra | Lento | **Tampar a toca** com a ponta da linha, ou abrigo pesado | ✅ |
+| 13 | **Água-viva Gelatina** | pulsos | Nada em **pulsos lentos** (0,9 s) até o bichinho | Muitas de uma vez | Lenta, fraca | Abrigo sem frestas; a correnteza a desvia | ✅ |
+| 14 | **Baiacu Bolha** | nada | Perto do alvo **incha** (raio 13 → 27) e empurra tudo | Cresce dentro de frestas | Murcha de novo | Abrigo **espaçoso** | ✅ |
+
+<img src="img/criaturas.png" width="420">
+
+**Ninhos e tocas:** colmeia, formigueiro, teia, coral e **buraco/toca** (14 tipos de ninho). Um buraco **tampado** por linha ou caixa (raio 10 px) não solta mais ninguém — aparece "Tampado!".
+
 ### Chefona (sem violência) ✅
 **Rainha Zumbina** — abelha-rainha gigante (fase 5-6) que **não pica**: paira indo de um lado ao outro e, a cada 3,2 s, **infla as bochechas** (aviso de 1 s com "!") e **sopra** uma rajada que empurra linhas, caixas e bichinhos para longe dela (e deixa as operárias tontas). Vence-se aguentando 14 s com um abrigo travado entre duas pedras. (Implementação: `src/game/insects/queen_bee.gd`.)
 
 ### Progressão da dificuldade
-Mundo 1: abelha → formiga → abelha+formiga. Mundo 2: mosquito, mariposa+luz, vários bichinhos, dois traços. Mundo 3: besouro, abismos, plataformas móveis, cupim. Mundo 4: água, Lulu e Tuca, vespa, lagarta. Mundo 5: noite, lâmpadas como isca, combinações e chefão.
+Mundo 1: abelha → formiga → abelha+formiga. Mundo 2: mosquito, mariposa+luz, vários bichinhos, dois traços. Mundo 3: besouro, abismos, plataformas móveis, cupim. Mundo 4: água, Lulu e Tuca, vespa, lagarta. Mundo 5: noite, lâmpadas como isca, combinações e chefão. Mundo 6 (Montanha): buracos, grilos, aranha, abelha broca, vento, Tinta Firme. Mundo 7 (Praia): caranguejos nas tocas, coco caindo, isca de mel, vespas. Mundo 8 (Mar): águas-vivas, baiacus, correnteza, caranguejos do fundo.

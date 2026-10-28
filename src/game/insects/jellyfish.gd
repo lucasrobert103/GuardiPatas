@@ -18,7 +18,7 @@ func _configure() -> void:
 func _behave(delta: float) -> void:
 	_pulse -= delta
 	if _pulse <= 0.0:
-		_pulse = 1.1
+		_pulse = 0.9
 		var dir := (target_point() - global_position).normalized()
-		apply_central_impulse(dir.rotated(randf_range(-0.3, 0.3)) * 110.0 * mass)
+		apply_central_impulse(dir.rotated(randf_range(-0.3, 0.3)) * 150.0 * mass)
 		art.squash = 1.0

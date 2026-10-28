@@ -25,8 +25,9 @@ src/
     line_drawer.gd       Entrada de toque + validação + prévia do traço
     drawn_line.gd        Linha física (RigidBody2D de cápsulas)
     animal.gd / animal_art.gd       Bichinho (física) / arte e expressões
-    insects/insect.gd + bee, ant, beetle, mosquito, wasp, moth, insect_art
-    props/ crate, lamp, water, platform, nest
+    insects/insect.gd + bee, ant, beetle, mosquito, wasp, moth, termite, caterpillar, queen_bee,
+            cricket, carpenter_bee, spider, crab, jellyfish, puffer, insect_art
+    props/ crate, lamp, water, platform, nest, honey_pot, coconut, wind_zone, goal_zone
     terrain.gd, background.gd, fx.gd
   ui/                    Telas e HUD (construídos em código, tema único)
     main.gd              Roteador de telas + botão voltar do Android
@@ -71,10 +72,17 @@ Animal.body_entered(Insect) ──► Level.lose ──► Hud (resultado)      
   "props":   [{"type": "crate|plank", "pos": [x,y], "size": [w,h], "rot": 0},
               {"type": "lamp", "pos": [x,y], "duration": 4},
               {"type": "water", "rect": [x,y,w,h]},
-              {"type": "platform", "rect": [x,y,w,h], "travel": [dx,dy], "period": 3}],
+              {"type": "platform", "rect": [x,y,w,h], "travel": [dx,dy], "period": 3},
+              {"type": "honey", "pos": [x,y], "amount": 6},
+              {"type": "coconut", "pos": [x,y], "drop": 3}],
+  "winds":   [{"rect": [x,y,w,h], "dir": [1,0], "force": 700, "on": 2, "off": 2, "delay": 1, "insects": 0.3}],
+  "goal":    {"rect": [x,y,w,h]},          // opcional: vence ao levar todos até a toca
+  "ink_mode": "static",                    // opcional: Tinta Firme (a linha não cai)
+  "underwater": true,                      // opcional: fundo do mar
+  "naive":   [[[x,y], ...]],               // opcional: círculo genérico que TEM que perder
   "nodraw":  [[x,y,w,h]],
-  "animals": [{"type": "capi|brasa|pingo|nino|tuca|lulu", "pos": [x,y], "flip": false}],
-  "nests":   [{"insect": "bee|ant|beetle|mosquito|wasp|moth", "pos": [x,y], "count": 6, "interval": 0.5, "delay": 0.2}],
+  "animals": [{"type": "capi|brasa|pingo|nino|tuca|lulu|gelinho|nuvem|kiko|tata|pompom|patinha|fofa|tito", "pos": [x,y], "flip": false}],
+  "nests":   [{"insect": "bee|ant|beetle|mosquito|wasp|moth|termite|caterpillar|cricket|broca|spider|crab|jellyfish|puffer", "pos": [x,y], "count": 6, "interval": 0.5, "delay": 0.2, "hole": false}],
   "solution": [[[x,y], ...]]
 }
 ```

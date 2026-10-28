@@ -10,17 +10,22 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 <p>
 <img src="docs/img/fase-todos.png" width="200"> <img src="docs/img/fase-rainha.png" width="200"> <img src="docs/img/colecao.png" width="200"> <img src="docs/img/vitoria.png" width="200">
 </p>
+<p>
+<img src="docs/img/abertura.png" width="200"> <img src="docs/img/fase-buracos.png" width="200"> <img src="docs/img/fase-praia.png" width="200"> <img src="docs/img/fase-mar.png" width="200">
+</p>
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
 ## O que já tem
-- **30 fases em 5 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento) + chefona **Rainha Zumbina** (que sopra vento, sem violência).
-- **6 bichinhos** originais com traços de física próprios: Capitu (capivara pesada), Brasa (raposa alta), Pingo (ouriço que rola), Nino (esquilo levinho), Tuca (tartaruga cujo casco aguenta uma picada) e Lulu (axolote que vive na água).
-- **8 insetos** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim e lagarta.
+- **60 fases em 8 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, **Montanha Gelada, Praia do Sol, Fundo do Mar**) + chefona **Rainha Zumbina** (que sopra vento, sem violência).
+- **Estratégia de verdade:** buracos para tampar, Tinta Firme para rampas e tobogãs, tocas de destino, abelha que fura a linha, iscas de mel, cocos caindo, vento e correnteza — e o teste automático garante que o **círculo genérico perde** nessas fases.
+- **14 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca) e Tito (polvo) — **cada um com seu próprio jeito e som de susto**.
+- **14 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva e baiacu.
+- **Modo Livre** com tinta infinita nas fases já vencidas, **39 conquistas**, 9 acessórios e abertura **"desenvolvido por RetroNexa"**.
 - Linha com **peso real** (corpo rígido de cápsulas), validação do traço por física, tinta limitada com metas de estrela visíveis, caixas, lâmpadas, água, plataformas móveis, zonas proibidas.
 - Menus, mapa, coleção com histórias, **guarda-roupa cosmético**, conquistas, dicas, ajustes de acessibilidade (alto contraste, reduzir movimento), salvamento local, botão voltar do Android.
-- **28 efeitos sonoros + 2 músicas** sintetizados do zero (`tools/gen_audio.py`).
-- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. 156 verificações + teste de fluxo da interface, 0 falhas.
+- **Dezenas de efeitos sonoros + músicas** sintetizados do zero (`tools/gen_audio.py`).
+- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas fases de estratégia, a solução ingênua (círculo) tem que perder. **268 verificações** + teste de fluxo da interface, 0 falhas.
 - **Sem anúncios, sem compras, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
 
 ## Rodar
@@ -36,10 +41,10 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 02 | [Pesquisa tecnológica, comparação Unity × Godot × Defold, fontes e recomendação](docs/02-pesquisa-tecnologica.md) |
 | 03 | [Identidade visual](docs/03-identidade-visual.md) |
 | 04 | [Som e música](docs/04-audio.md) |
-| 05 | [Ficha dos seis bichinhos](docs/05-personagens.md) |
+| 05 | [Ficha dos 14 bichinhos](docs/05-personagens.md) |
 | 06 | [Ficha dos insetos](docs/06-insetos.md) |
 | 07 | [Mecânicas e regras de física](docs/07-mecanicas-e-fisica.md) |
-| 08 | [As 30 fases (cenário, objetivo, perigos, mecânica, solução)](docs/08-fases.md) |
+| 08 | [As 60 fases (cenário, objetivo, perigos, mecânica, solução)](docs/08-fases.md) |
 | 09 | [Arquitetura técnica e decisões](docs/09-arquitetura.md) |
 | 10 | [Progressão, recompensas e acessibilidade](docs/10-progressao-e-acessibilidade.md) |
 | 11 | [Monetização, privacidade e classificação](docs/11-monetizacao-e-privacidade.md) |

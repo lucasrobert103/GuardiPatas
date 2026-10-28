@@ -368,7 +368,7 @@ func _apply_wind(delta: float) -> void:
 		for i in insects:
 			if is_instance_valid(i) and i.flying:
 				# insetos sentem o vento mais fraco: ele desvia, mas não decide a fase
-				w.push(i, 0.3)
+				w.push(i, w.insect_scale)
 
 
 func _check_goal(delta: float) -> void:

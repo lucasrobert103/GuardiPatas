@@ -275,11 +275,13 @@ def campaign():
                 [dome_over("capi", 480)], survive=12,
                 props=[{"type": "crate", "pos": [330, 965], "size": [70, 70]}, {"type": "crate", "pos": [330, 894], "size": [70, 70]}],
                 teaches="Barreiras frágeis."))
+    cp36 = animal("capi", 360)
     lv.append(L("3-6", 3, "Formigueiro Gigante",
-                "Formigas dos dois lados e um besouro. Hora de um abrigo caprichado!",
-                [animal("capi", 360)], [mound(70, count=8, interval=0.5), mound(650, count=6, interval=0.6, delay=0.5), mound(130, insect="beetle", count=1, delay=1.0)],
+                "Os formigueiros estão BEM do lado da Capitu! Pouse as pontas da linha em cima dos buracos.",
+                [cp36], holes_beside("capi", 360, count=4, interval=0.6) + [mound(80, insect="beetle", count=1, delay=1.0)],
                 [dome_over("capi", 360, pad=30)], survive=12,
-                teaches="Revisão do mundo."))
+                naive=[wide_dome([cp36])],
+                teaches="Tampar formigueiros com a própria linha."))
     # ------------------------------------------------------------ Mundo 4
     pond = [{"poly": [[-400, 1000], [200, 1000], [200, 1080], [520, 1080], [520, 1000], [1120, 1000], [1120, 1800], [-400, 1800]], "style": "ground"}]
     pond_water = {"type": "water", "rect": [200, 1000, 320, 80]}
@@ -428,10 +430,10 @@ def new_worlds():
                 naive=[wide_dome([cp])],
                 teaches="Parede dupla contra quem fura."))
     lv.append(L("6-7", 6, "Ventania",
-                "Rajadas de vento empurram a linha! Encoste o abrigo na pedra para ele não escorregar.",
+                "Rajadas de vento empurram a linha! Encoste o abrigo no paredão de pedra para ele não voar.",
                 [animal("nuvem", 340)], [hive(90, 340, count=6, delay=1.0)],
                 [dome_over("nuvem", 340)], survive=10,
-                rocks=[{"pos": [470, 1000], "r": 34}],
+                terrain=[ground(), block(420, 870, 480, 1000, "stone")],
                 winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 950, "on": 2.0, "off": 1.5, "delay": 0.5}],
                 teaches="Vento empurra linhas e insetos."))
     # Gelinho escorrega (quase sem atrito) por um tobogã de Tinta Firme até o iglu
@@ -557,7 +559,7 @@ def new_worlds():
                 teaches="Tocas no fundo do mar."))
     lv.append(L("8-4", 8, "Correnteza",
                 "A correnteza empurra as águas-vivas e a sua linha! Apoie o abrigo na pedra.",
-                [animal("lulu", 340)], [coral(80, 380, count=5, interval=0.7)],
+                [animal("lulu", 340)], [coral(130, 560, count=5, interval=0.7)],
                 [dome_over("lulu", 340)], survive=11,
                 rocks=[{"pos": [450, 1000], "r": 32}],
                 winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 500, "on": 2.5, "off": 1.5, "delay": 0.5}],
@@ -591,10 +593,10 @@ def new_worlds():
                 teaches="Tampar + espaço."))
     lv.append(L("8-9", 8, "Correnteza Forte",
                 "Correnteza fortíssima! Trave o abrigo entre as duas pedras.",
-                [animal("tito", 360)], [coral(80, 360, count=6, interval=0.6)],
+                [animal("tito", 360)], [coral(130, 560, count=6, interval=0.6)],
                 [dome_over("tito", 360, pad=30)], survive=11,
                 rocks=[{"pos": [270, 1000], "r": 26}, {"pos": [450, 1000], "r": 26}],
-                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 1100, "on": 2.0, "off": 1.0, "delay": 0.5}],
+                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 1100, "on": 2.0, "off": 1.0, "delay": 0.5, "insects": 0.05}],
                 **sea, teaches="Travar o abrigo."))
     tt10 = animal("tito", 190)
     ff10b = animal("fofa", 500)

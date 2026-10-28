@@ -317,6 +317,22 @@ def sfx_all():
     mix_at(buf, soft_kick() * 0.7, int(0.6 * SR))
     write_wav("retro_jingle", buf, peak=0.7)
 
+    # Sustos com "voz" própria (Patinha, Nuvem, Tito/Lulu)
+    def formant_voice(f0, f1, dur, vib=0.0, bright=1800):
+        n = int(dur * SR)
+        t = t_axis(dur)
+        f = np.linspace(f0, f1, n) * (1 + vib * np.sin(2 * np.pi * 7 * t))
+        ph = 2 * np.pi * np.cumsum(f) / SR
+        return lowpass(saw(ph) + 0.4 * saw(ph * 2), bright) * env_adsr(n, 0.01, 0.04, 0.8, 0.06)
+    write_wav("quack", np.concatenate([formant_voice(520, 420, 0.11, 0, 1400), np.zeros(int(0.03 * SR)), formant_voice(560, 380, 0.16, 0, 1300)]), peak=0.6)
+    write_wav("baa", formant_voice(330, 300, 0.5, 0.06, 1700), peak=0.55)
+    n = int(0.3 * SR)
+    bl = np.sin(sweep_phase(300, 1100, n, 0.5)) * env_exp(n, 0.1)
+    for k in range(3):
+        bn = int(0.06 * SR)
+        mix_at(bl, np.sin(sweep_phase(700 + 200 * k, 1500 + 200 * k, bn)) * env_exp(bn, 0.02) * 0.5, int((0.08 + k * 0.06) * SR))
+    write_wav("bloop", bl, peak=0.55)
+
     # Desbloqueio: fanfarrinha
     buf = np.zeros(int(1.4 * SR))
     for i, nm in enumerate(["G5", "C6", "E6", "G6"]):

@@ -2568,8 +2568,8 @@
    "id": "3-6",
    "world": 3,
    "name": "Formigueiro Gigante",
-   "tip": "Formigas dos dois lados e um besouro. Hora de um abrigo caprichado!",
-   "teaches": "Revisão do mundo.",
+   "tip": "Os formigueiros estão BEM do lado da Capitu! Pouse as pontas da linha em cima dos buracos.",
+   "teaches": "Tampar formigueiros com a própria linha.",
    "ink": 490,
    "survive": 12,
    "stars": [
@@ -2617,27 +2617,29 @@
     {
      "insect": "ant",
      "pos": [
-      70,
-      980
+      274,
+      1000
      ],
-     "count": 8,
-     "interval": 0.5,
-     "delay": 0.2
+     "count": 4,
+     "interval": 0.6,
+     "delay": 0.4,
+     "hole": true
     },
     {
      "insect": "ant",
      "pos": [
-      650,
-      980
+      446,
+      1000
      ],
-     "count": 6,
+     "count": 4,
      "interval": 0.6,
-     "delay": 0.5
+     "delay": 0.4,
+     "hole": true
     },
     {
      "insect": "beetle",
      "pos": [
-      130,
+      80,
       980
      ],
      "count": 1,
@@ -2714,6 +2716,78 @@
      ],
      [
       446,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      254.0,
+      988
+     ],
+     [
+      254.0,
+      966
+     ],
+     [
+      257,
+      951
+     ],
+     [
+      264,
+      937
+     ],
+     [
+      277,
+      924
+     ],
+     [
+      294,
+      914
+     ],
+     [
+      314,
+      906
+     ],
+     [
+      336,
+      901
+     ],
+     [
+      360,
+      899
+     ],
+     [
+      384,
+      901
+     ],
+     [
+      406,
+      906
+     ],
+     [
+      426,
+      914
+     ],
+     [
+      443,
+      924
+     ],
+     [
+      456,
+      937
+     ],
+     [
+      463,
+      951
+     ],
+     [
+      466.0,
+      966
+     ],
+     [
+      466.0,
       988
      ]
     ]
@@ -6206,7 +6280,7 @@
    "id": "6-7",
    "world": 6,
    "name": "Ventania",
-   "tip": "Rajadas de vento empurram a linha! Encoste o abrigo na pedra para ele não escorregar.",
+   "tip": "Rajadas de vento empurram a linha! Encoste o abrigo no paredão de pedra para ele não voar.",
    "teaches": "Vento empurra linhas e insetos.",
    "ink": 410,
    "survive": 10,
@@ -6236,17 +6310,30 @@
       ]
      ],
      "style": "ground"
-    }
-   ],
-   "rocks": [
+    },
     {
-     "pos": [
-      470,
-      1000
+     "poly": [
+      [
+       420,
+       870
+      ],
+      [
+       480,
+       870
+      ],
+      [
+       480,
+       1000
+      ],
+      [
+       420,
+       1000
+      ]
      ],
-     "r": 34
+     "style": "stone"
     }
    ],
+   "rocks": [],
    "props": [],
    "nodraw": [],
    "animals": [
@@ -9817,8 +9904,8 @@
     {
      "insect": "jellyfish",
      "pos": [
-      80,
-      380
+      130,
+      560
      ],
      "count": 5,
      "interval": 0.7,
@@ -10714,8 +10801,8 @@
     {
      "insect": "jellyfish",
      "pos": [
-      80,
-      360
+      130,
+      560
      ],
      "count": 6,
      "interval": 0.6,
@@ -10810,7 +10897,8 @@
      "force": 1100,
      "on": 2.0,
      "off": 1.0,
-     "delay": 0.5
+     "delay": 0.5,
+     "insects": 0.05
     }
    ],
    "underwater": true

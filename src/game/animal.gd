@@ -24,6 +24,13 @@ const SPECIES := {
 }
 
 const SCARE_RADIUS := 210.0
+## Som do susto de cada bichinho: [efeito, tom].
+const SCARE_VOICE := {
+	"capi": ["gasp", 0.75], "brasa": ["gasp", 1.2], "pingo": ["gasp", 1.45], "nino": ["gasp", 1.7],
+	"tuca": ["gasp", 0.6], "lulu": ["bloop", 1.2], "gelinho": ["gasp", 1.3], "nuvem": ["baa", 1.0],
+	"kiko": ["gasp", 0.9], "tata": ["gasp", 1.1], "pompom": ["gasp", 1.6], "patinha": ["quack", 1.0],
+	"fofa": ["gasp", 0.8], "tito": ["bloop", 0.9],
+}
 
 var species := "capi"
 var art: AnimalArt
@@ -104,7 +111,8 @@ func _physics_process(_delta: float) -> void:
 			art.mood = "scared"
 			if not _scared_announced:
 				_scared_announced = true
-				Sfx.play("gasp", -6.0, 1.0, 0.15)
+				var voice: Array = SCARE_VOICE.get(species, ["gasp", 1.0])
+				Sfx.play(voice[0], -6.0, voice[1], 0.08)
 			return
 	art.mood = "idle"
 

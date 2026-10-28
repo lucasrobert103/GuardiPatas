@@ -34,9 +34,27 @@ Avaliadas três abordagens:
 
 Parâmetros: espessura 14 px; uma `CapsuleShape2D` por segmento (altura = comprimento + espessura, cantos arredondados → sem quinas que prendem); **massa = 0,01 × comprimento** (0,8–9 kg) → linhas longas são mais fortes contra empurrões, mas gastam tinta (tensão com as estrelas); atrito 0,9; quique 0,05; **CCD por forma**; amortecimento angular 0,8. A cápsula raio 7 + folga de validação 3 px garante que a linha nasce sem sobreposição.
 
+## Mecânicas de estratégia (mundos 3–8)
+Para que "um círculo em volta de todo mundo" **não resolva tudo**, cada fase nova tem uma regra que pune a solução genérica. O teste automático guarda essa solução ingênua (`naive`) e **exige que ela perca** em 24 fases.
+
+| Mecânica | Como funciona | O que pede do jogador |
+|---|---|---|
+| **Buracos / tocas** | Formigas e caranguejos saem de buracos no chão; uma linha ou caixa a ≤ 10 px do buraco **tampa** | Desenhar com as **pontas em cima dos buracos** — um círculo folgado deixa os buracos dentro |
+| **Abelha Broca** | Fura a linha após 2,2 s encostada | **Parede dupla** (dois traços) |
+| **Grilo / Aranha** | Pulam por cima ou descem do teto | Abrigo com teto |
+| **Tinta Firme** (`ink_mode: static`) | A linha não cai: fica parada onde foi desenhada (cor azul) | Construir **rampas, tobogãs e portinhas** |
+| **Toca de destino** (`goal`) | Vence quando todos os bichinhos ficam 0,35 s dentro da toca; perde se o tempo acabar | Levar Tatá/Gelinho/Pingo **rolando ou escorregando** até a toca |
+| **Pote de mel** | Abelhas e vespas vão primeiro ao mel; quando acaba, atacam quem estiver **mais perto do pote** | Descobrir quem está em perigo de verdade |
+| **Coco que cai** | Cai do coqueiro (trajeto pontilhado); se acertar um bichinho, "bonk!" e perde | Abrigo **firme** que aguente o impacto |
+| **Vento / correnteza** | Zona que empurra linhas e caixas (100 %) e insetos (fração configurável) | **Travar** o abrigo em pedras/paredes |
+| **Tinta apertada** | Orçamento abaixo do necessário para o círculo | Usar o cenário como parede |
+
+## Modo Livre (tinta infinita)
+Em fase **já vencida**, o botão **Livre** (canto inferior esquerdo) liga a tinta infinita (barra arco-íris "∞") e até 20 traços: o jogador desenha o que quiser só por diversão. Vitórias no Modo Livre **não mudam estrelas nem moedas**, mas contam para a conquista "Artista Livre".
+
 ## Física geral
 - 60 ticks/s, **20 iterações** do solver, interpolação de física ligada (suave em 90/120 Hz).
-- Camadas (`src/core/layers.gd`): terreno · linha · bichinho · voador · andarilho · objeto. Voadores colidem entre si (enxame faz pressão); andarilhos **não** colidem entre si (fila fluida, sem pilhas instáveis); voadores e andarilhos se ignoram.
+- Camadas (`src/core/layers.gd`): terreno · linha · bichinho · voador · andarilho · objeto · ninho. Voadores colidem entre si (enxame faz pressão); andarilhos **não** colidem entre si (fila fluida, sem pilhas instáveis); voadores e andarilhos se ignoram.
 - **Teto de 45 insetos** por fase; insetos que saem da área são removidos.
 - **Detecção de picada:** `contact_monitor` no bichinho (`body_entered`) — só conta durante RODANDO.
 - **Derrota por queda:** bichinho abaixo de y = 1360. **Derrota por água:** bichinho que não nada entra na água.
@@ -51,6 +69,7 @@ Parâmetros: espessura 14 px; uma `CapsuleShape2D` por segmento (altura = compri
 | Rabisco infinito | Orçamento de tinta |
 | Desenhar fora da tela | Área desenhável limitada (`bounds`) |
 | Fase "resolvida" sem desenhar | Teste automático exige derrota sem linha |
+| Fase "resolvida" com o círculo genérico | Teste automático exige derrota da solução ingênua (`naive`) |
 | Fase impossível | Teste automático exige vitória com a solução registrada |
 | App minimizado no meio da fase | Pausa automática (`NOTIFICATION_APPLICATION_PAUSED`) |
 
