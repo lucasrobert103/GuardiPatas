@@ -20,7 +20,7 @@ Ver doc 09 para a arquitetura. Resumo: desenho validado por física; linha como 
 - **Motor real — Godot 4.7.2** compilado do código-fonte oficial (tag `4.7.2-stable`) dentro do ambiente de desenvolvimento, porque o download do binário estava bloqueado pela rede e o GitHub Actions não iniciou runners nesta conta (ver abaixo):
   - importação do projeto (`--import`) sem erros;
   - **compilação dos 45 scripts** (`tests/check_scripts.tscn`) sem erros;
-  - **119 verificações** (`tests/test_runner.tscn`): unitários de `LineMath`, `Scoring` e progresso/salvamento; validação do desenho (traço não entra em chão, bichinho ou zona proibida e para encostado no obstáculo); e, para **cada uma das 30 fases**, *a solução registrada vence* e *sem linha a fase é perdida*;
+  - **156 verificações** (`tests/test_runner.tscn`): unitários de `LineMath`, `Scoring`, progresso/salvamento e áudio (31 sons importados, 6 com loop lido do WAV); validação do desenho (traço não entra em chão, bichinho ou zona proibida e para encostado no obstáculo); e, para **cada uma das 30 fases**, *a solução registrada vence* e *sem linha a fase é perdida*;
   - a bateria completa foi executada **7 vezes** após as correções (os insetos têm variação estética aleatória) — 0 falhas em todas;
   - **capturas de tela reais** renderizadas com OpenGL (Mesa/Xvfb) em 720×1280 para revisar arte e interface (`tests/screenshots.tscn`; amostras em `docs/img/`). Problemas encontrados e corrigidos assim: ícones descentralizados nos botões, textos quebrando letra a letra, botão de dica fora da tela, balão de dica cobrindo a colmeia, título do mundo 5 empurrando botões, tendas escondidas atrás das colinas.
 - **Teste de fluxo da interface** (`tests/flow_test.tscn`): título → mapa → fase → pausa → derrota → dica → vitória → próxima → recomeçar → mapa → troca de mundo → coleção (compra/equipa) → conquistas → ajustes → cancelar apagar → voltar do Android. 21 verificações OK. Achou e corrigiu: **a pausa não pausava**.
@@ -61,7 +61,7 @@ Ver doc 09 para a arquitetura. Resumo: desenho validado por física; linha como 
   5-4 Pouca Tinta            solução=VENCEU (9.0s, tinta 81%, 3★)  sem-linha=PERDEU (2.7s, sting)
   5-5 Todos Juntos           solução=VENCEU (12.0s, tinta 55%, 3★)  sem-linha=PERDEU (3.3s, sting)
   5-6 Rainha Zumbina         solução=VENCEU (14.0s, tinta 56%, 3★)  sem-linha=PERDEU (3.7s, sting)
-==== RESULTADO: 119 ok, 0 falhas ====
+==== RESULTADO: 156 ok, 0 falhas ====  (119 na época desta tabela + 37 checagens de áudio adicionadas depois)
 ```
 
 ## Próximos passos (em ordem)

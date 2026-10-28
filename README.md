@@ -20,7 +20,7 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 - Linha com **peso real** (corpo rígido de cápsulas), validação do traço por física, tinta limitada com metas de estrela visíveis, caixas, lâmpadas, água, plataformas móveis, zonas proibidas.
 - Menus, mapa, coleção com histórias, **guarda-roupa cosmético**, conquistas, dicas, ajustes de acessibilidade (alto contraste, reduzir movimento), salvamento local, botão voltar do Android.
 - **28 efeitos sonoros + 2 músicas** sintetizados do zero (`tools/gen_audio.py`).
-- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. 119 verificações, 0 falhas.
+- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. 156 verificações + teste de fluxo da interface, 0 falhas.
 - **Sem anúncios, sem compras, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
 
 ## Rodar
