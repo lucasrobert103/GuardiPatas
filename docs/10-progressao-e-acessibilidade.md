@@ -19,7 +19,7 @@
 - **Dicas opcionais:** começa com 3; trocar 40 moedas por +1. A dica mostra a solução tracejada animada. **Paga uma vez por fase na sessão** (recomeçar não cobra de novo). Disponível também na tela de derrota.
 
 ## Abertura
-Ao abrir o app aparece uma abertura retrô (estilo synthwave, ~3,6 s, toque para pular) com **"desenvolvido por RetroNexa — retronexa.com.br"** e jingle próprio (`src/ui/splash_screen.gd`). O site não pôde ser consultado daqui (bloqueado pela política de rede do ambiente), então a abertura usa só o nome e o endereço.
+Ao abrir o app aparece a abertura com o **logo oficial da RetroNexa** (~3,6 s, toque para pular): fundo índigo `#4E45DC`, "RetroNexa" em branco com as letras subindo uma a uma, **"desenvolvido por"** em cima e **retronexa.com.br** embaixo, com jingle próprio (`src/ui/splash_screen.gd`). O logo foi redesenhado em alta resolução a partir da imagem enviada (fonte Inter, licença OFL, recortada para ~35 KB): `assets/brand/retronexa_logo.png` e `retronexa_logo_site.png`, gerados por `tools/make_brand.py`.
 
 <img src="img/abertura.png" width="200">
 

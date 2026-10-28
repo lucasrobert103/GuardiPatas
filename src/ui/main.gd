@@ -73,7 +73,7 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 		"collection":
 			_current = CollectionScreen.new()
 		"splash":
-			_fade.color = SplashScreen.NIGHT
+			_fade.color = SplashScreen.INDIGO
 			_current = SplashScreen.new()
 		"settings":
 			_current = SettingsScreen.new()
