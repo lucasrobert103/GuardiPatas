@@ -21,7 +21,7 @@ func _configure() -> void:
 	radius = 13.0
 	max_speed = 200.0
 	agility = 3.0
-	mass = 0.4
+	mass = 0.3
 	linear_damp = 0.3
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 

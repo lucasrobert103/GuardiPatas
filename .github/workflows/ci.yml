@@ -44,6 +44,11 @@ jobs:
           ~/godot/godot --headless --path . --import 2>&1 | tee import.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load script" import.log; then exit 1; fi
 
+      - name: Compilar todos os scripts
+        run: |
+          ~/godot/godot --headless --path . res://tests/check_scripts.tscn 2>&1 | tee check.log
+          grep -q "0 com erro" check.log
+
       - name: Rodar testes
         run: |
           set -o pipefail

@@ -3,7 +3,7 @@ extends StaticBody2D
 ## Ninho/colmeia/formigueiro: de onde os insetos saem. Mostra quantos ainda vão sair.
 ## O tipo visual segue o inseto: colmeia (voadores) ou montinho de terra (andarilhos).
 
-const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle"]
+const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar"]
 const FLYERS := ["bee", "mosquito", "wasp", "moth"]
 
 var insect := "bee"
@@ -27,7 +27,7 @@ func setup(p_level: Level, cfg: Dictionary) -> void:
 	interval = float(cfg.get("interval", 0.3))
 	delay = float(cfg.get("delay", 0.3))
 	remaining = count
-	collision_layer = Layers.TERRAIN
+	collision_layer = Layers.NEST
 	collision_mask = 0
 	var cs := CollisionShape2D.new()
 	var c := CircleShape2D.new()
@@ -68,7 +68,9 @@ func _spawn() -> void:
 		var target := level.nearest_animal(bug.position)
 		if target != null:
 			to = (target.global_position - bug.position).normalized()
-		bug.linear_velocity = (Vector2.DOWN * 0.5 + to * 0.5).normalized() * bug.max_speed * 0.6
+		# leque de saída: cada inseto sai num ângulo um pouco diferente (só estético)
+		var spread := randf_range(-0.7, 0.7)
+		bug.linear_velocity = (Vector2.DOWN * 0.5 + to * 0.5).normalized().rotated(spread) * bug.max_speed * randf_range(0.5, 0.8)
 	queue_redraw()
 
 
@@ -79,6 +81,8 @@ static func make_insect(kind: String) -> Insect:
 		"moth": return Moth.new()
 		"ant": return Ant.new()
 		"beetle": return Beetle.new()
+		"termite": return Termite.new()
+		"caterpillar": return Caterpillar.new()
 	return Bee.new()
 
 

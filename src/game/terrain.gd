@@ -59,6 +59,8 @@ func _draw() -> void:
 	match style:
 		"stone":
 			DrawUtil.shape(self, poly, Palette.STONE)
+			var rb := _bounds()
+			draw_line(rb.position + Vector2(rb.size.x * 0.25, rb.size.y * 0.22), rb.position + Vector2(rb.size.x * 0.5, rb.size.y * 0.14), Color(1, 1, 1, 0.6), 4.0, true)
 		"wood":
 			DrawUtil.shape(self, poly, Palette.WOOD)
 			var r := _bounds()

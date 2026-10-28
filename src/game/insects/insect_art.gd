@@ -40,6 +40,8 @@ func _draw() -> void:
 		"moth": _draw_moth()
 		"ant": _draw_ant()
 		"beetle": _draw_beetle()
+		"termite": _draw_termite()
+		"caterpillar": _draw_caterpillar()
 	draw_set_transform(Vector2.ZERO)
 	_draw_status()
 
@@ -153,6 +155,43 @@ func _draw_beetle() -> void:
 	_eye_pair(Vector2(r * 0.88, -r * 0.05), r * 0.2)
 
 
+func _draw_termite() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var step := sin(_t * 16.0)
+	for i in 3:
+		var lx := -r * 0.4 + r * 0.45 * i
+		var ph := step * (1.0 if i % 2 == 0 else -1.0)
+		draw_line(Vector2(lx, 0), Vector2(lx + ph * 3.0, r * 1.0), o, 2.0, true)
+	var body := Color("f3e3c3")
+	DrawUtil.oval(self, Vector2(-r * 0.7, 0), Vector2(r * 0.8, r * 0.55), body, o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.15, -r * 0.1), r * 0.4, body, o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.85, -r * 0.25), r * 0.55, Color("c98a4a"), o, 2.0)
+	# mandíbulas mastigando
+	var chew := absf(sin(_t * (30.0 if excited else 6.0))) * 0.35
+	draw_line(Vector2(r * 1.3, -r * 0.1), Vector2(r * 1.7, -r * (0.1 + chew)), o, 2.0, true)
+	draw_line(Vector2(r * 1.3, r * 0.05), Vector2(r * 1.7, r * (0.05 + chew)), o, 2.0, true)
+	_eye_pair(Vector2(r * 0.95, -r * 0.45), r * 0.22)
+
+
+func _draw_caterpillar() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var segs := 5
+	for i in segs:
+		var k := segs - 1 - i
+		var x := -k * r * 0.9
+		var y := -absf(sin(_t * 5.0 - k * 0.8)) * r * 0.35
+		var col := Color("8fd16a") if k % 2 == 0 else Color("6fbf5a")
+		DrawUtil.disc(self, Vector2(x + r * 0.6, y), r * (0.75 if k > 0 else 0.85), col, o, 2.0)
+		if k > 0:
+			draw_circle(Vector2(x + r * 0.6, y + r * 0.2), r * 0.15, Color("ffd23f"), true, -1.0, true)
+	var head := Vector2(r * 0.6, -absf(sin(_t * 5.0)) * r * 0.35)
+	_eye_pair(head + Vector2(r * 0.2, -r * 0.15), r * 0.22)
+	draw_line(head + Vector2(0, -r * 0.7), head + Vector2(r * 0.3, -r * 1.3), o, 1.6, true)
+	draw_line(head + Vector2(r * 0.4, -r * 0.6), head + Vector2(r * 0.8, -r * 1.2), o, 1.6, true)
+
+
 func _draw_status() -> void:
 	var top := Vector2(0, -radius * 2.2)
 	if aiming and not calmed:
@@ -166,7 +205,7 @@ func _draw_status() -> void:
 			var a := _t * 6.0 + PI * i
 			var p := top + Vector2(cos(a) * 10.0, sin(a) * 3.0)
 			DrawUtil.shape(self, DrawUtil.star_points(p, 5.0, 2.2), Palette.GOLD, Palette.OUTLINE, 1.5)
-	elif calmed and kind in ["ant", "beetle"]:
+	elif calmed and kind in ["ant", "beetle", "termite", "caterpillar"]:
 		var z := fmod(_t, 1.5) / 1.5
 		var font := ThemeDB.fallback_font
 		draw_string(font, top + Vector2(4, -z * 14.0), "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(Palette.OUTLINE, 1.0 - z))

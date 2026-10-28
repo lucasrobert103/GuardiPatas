@@ -11,6 +11,7 @@ var _title: Label
 var _stars: Label
 var _prev: Button
 var _next: Button
+var _info: PanelContainer
 
 
 func setup(p_world: int) -> void:
@@ -53,8 +54,10 @@ func _ready() -> void:
 	_prev = UiKit.icon_button("back", Palette.UI_SECONDARY, 84)
 	_prev.pressed.connect(func(): _switch(-1))
 	nav.add_child(_prev)
-	_title = UiKit.title("", 44)
-	_title.custom_minimum_size = Vector2(420, 110)
+	_title = UiKit.title("", 42)
+	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_title.custom_minimum_size = Vector2(380, 110)
+	_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	nav.add_child(_title)
 	_next = UiKit.icon_button("next", Palette.UI_SECONDARY, 84)
 	_next.pressed.connect(func(): _switch(1))
@@ -67,6 +70,8 @@ func _ready() -> void:
 	_grid.add_theme_constant_override("h_separation", 22)
 	_grid.add_theme_constant_override("v_separation", 22)
 	panel.add_child(_grid)
+	_info = UiKit.panel(Color(1, 1, 1, 0.82))
+	col.add_child(_info)
 	_refresh()
 	Sfx.music("music_menu")
 
@@ -110,9 +115,37 @@ func _refresh() -> void:
 	for c in _grid.get_children():
 		c.queue_free()
 	var n := 0
+	var kinds: Array = []
 	for i in LevelDB.levels_in_world(world_id):
 		n += 1
 		_grid.add_child(_level_button(i, n))
+		for nest in LevelDB.get_level(i).get("nests", []):
+			if not kinds.has(nest["insect"]):
+				kinds.append(nest["insect"])
+	_build_info(kinds)
+
+
+func _build_info(kinds: Array) -> void:
+	for c in _info.get_children():
+		c.queue_free()
+	var box := UiKit.vbox(8)
+	_info.add_child(box)
+	box.add_child(UiKit.label("Insetos deste mundo", 28))
+	var row := UiKit.hbox(6)
+	box.add_child(row)
+	for k in kinds:
+		var cell := UiKit.vbox(0)
+		var holder := Control.new()
+		holder.custom_minimum_size = Vector2(96, 64)
+		var art := InsectArt.new()
+		art.kind = k
+		art.radius = 16.0
+		art.position = Vector2(48, 36)
+		holder.add_child(art)
+		cell.add_child(holder)
+		var nm: String = Cast.INSECTS[k]["name"].split(" ")[0]
+		cell.add_child(UiKit.label(nm, 18))
+		row.add_child(cell)
 
 
 func _level_button(index: int, n: int) -> Control:

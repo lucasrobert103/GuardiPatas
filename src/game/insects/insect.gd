@@ -36,7 +36,8 @@ func setup(p_level: Level, p_kind: String) -> void:
 	max_contacts_reported = 3
 	can_sleep = false
 	var mat := PhysicsMaterial.new()
-	mat.friction = 0.3 if flying else 0.6
+	# andarilhos: atrito zero; o controle de velocidade em _walk_toward faz o papel do "pé"
+	mat.friction = 0.3 if flying else 0.0
 	mat.bounce = 0.25 if flying else 0.0
 	physics_material_override = mat
 	var cs := CollisionShape2D.new()

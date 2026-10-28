@@ -33,7 +33,11 @@ func bind(p_level: Level) -> void:
 	level.result_ready.connect(_on_result)
 	level.drawer.ink_changed.connect(func(_l, _t): ink_bar.queue_redraw())
 	level.drawer.stroke_started.connect(hide_tip)
-	Game.hints_changed.connect(func(_h): refresh())
+	Game.hints_changed.connect(_on_hints_changed)
+	refresh()
+
+
+func _on_hints_changed(_h: int) -> void:
 	refresh()
 
 
@@ -67,17 +71,17 @@ func _build_top() -> void:
 	restart.pressed.connect(func(): action.emit("restart"))
 	row.add_child(restart)
 	status_label = UiKit.label("", 34, Palette.WHITE, 12, Palette.OUTLINE)
-	status_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	status_label.position.y = 150
-	status_label.size.y = 60
+	status_label.anchor_left = 0.0
+	status_label.anchor_right = 1.0
+	status_label.offset_top = 150
+	status_label.offset_bottom = 210
 	status_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(status_label)
 
 
 func _build_bottom() -> void:
 	hint_btn = UiKit.icon_button("hint", Palette.GOLD, 96)
-	hint_btn.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
-	hint_btn.position += Vector2(-120, -130)
+	_anchor_box(hint_btn, Vector2(1, 1), Rect2(-120, -226, 96, 96))
 	hint_btn.pressed.connect(_on_hint)
 	root.add_child(hint_btn)
 	hint_badge = UiKit.label("0", 22, Palette.WHITE, 8, Palette.OUTLINE)
@@ -85,24 +89,40 @@ func _build_bottom() -> void:
 	hint_badge.size = Vector2(40, 30)
 	hint_btn.add_child(hint_badge)
 	play_btn = UiKit.button("Pronto!", Palette.UI_GOOD, "play", 260)
-	play_btn.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	play_btn.position += Vector2(-130, -140)
+	_anchor_box(play_btn, Vector2(0.5, 1), Rect2(-130, -236, 260, 96))
 	play_btn.visible = false
 	play_btn.pressed.connect(func(): action.emit("play"))
 	root.add_child(play_btn)
+
+
+## Posiciona um controle por âncora (0..1 do pai) + retângulo de deslocamento fixo.
+static func _anchor_box(c: Control, anchor: Vector2, r: Rect2) -> void:
+	c.anchor_left = anchor.x
+	c.anchor_right = anchor.x
+	c.anchor_top = anchor.y
+	c.anchor_bottom = anchor.y
+	c.offset_left = r.position.x
+	c.offset_top = r.position.y
+	c.offset_right = r.end.x
+	c.offset_bottom = r.end.y
 
 
 func _build_tip() -> void:
 	var tip := str(level.data.get("tip", ""))
 	if tip == "":
 		return
+	# o balão fica na faixa de terra embaixo (nunca cobre ninhos nem bichinhos)
 	tip_panel = UiKit.panel(Palette.CREAM)
-	tip_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	tip_panel.offset_left = 60
-	tip_panel.offset_right = -60
-	tip_panel.offset_top = 210
+	tip_panel.anchor_left = 0.0
+	tip_panel.anchor_right = 1.0
+	tip_panel.anchor_top = 1.0
+	tip_panel.anchor_bottom = 1.0
+	tip_panel.offset_left = 28
+	tip_panel.offset_right = -140
+	tip_panel.offset_top = -250
+	tip_panel.offset_bottom = -130
 	tip_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var l := UiKit.label(tip, 26)
+	var l := UiKit.label(tip, 26, Palette.UI_TEXT, 0, Palette.WHITE, true)
 	tip_panel.add_child(l)
 	root.add_child(tip_panel)
 	UiKit.pop_in(tip_panel, 0.3)
@@ -163,7 +183,7 @@ func _on_hint() -> void:
 func _show_buy_hint() -> void:
 	var box := _open_overlay()
 	box.add_child(UiKit.label("Sem dicas!", 44))
-	box.add_child(UiKit.label("Troque %d moedas por 1 dica.\nVocê tem %d moedas." % [Game.HINT_PRICE, Game.coins()], 26))
+	box.add_child(UiKit.label("Troque %d moedas por 1 dica.\nVocê tem %d moedas." % [Game.HINT_PRICE, Game.coins()], 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
 	var row := UiKit.hbox()
 	box.add_child(row)
 	var no := UiKit.button("Agora não", Palette.UI_MUTED)
@@ -291,8 +311,12 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 	for f in info.get("new_friends", []):
 		if f != "capi" or Game.data["met"].size() > 1:
 			box.add_child(UiKit.label("Novo amigo: %s!" % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
-	for a in info.get("achievements", []):
-		box.add_child(UiKit.label("Conquista: %s" % Game.ACHIEVEMENTS[a]["name"], 26, Palette.UI_GOOD))
+	var got: Array = info.get("achievements", [])
+	for k in mini(got.size(), 2):
+		box.add_child(UiKit.label("Conquista: %s" % Game.ACHIEVEMENTS[got[k]]["name"], 26, Palette.UI_GOOD))
+	if got.size() > 2:
+		box.add_child(UiKit.label("+%d conquistas! Veja em Bichinhos." % (got.size() - 2), 24, Palette.UI_GOOD))
+	if not got.is_empty():
 		get_tree().create_timer(1.6).timeout.connect(func(): Sfx.play("unlock"))
 	var row := UiKit.hbox(16)
 	box.add_child(row)
@@ -312,7 +336,7 @@ func _build_lose(box: VBoxContainer, info: Dictionary) -> void:
 	var reason := str(info.get("reason", "sting"))
 	var txt: Array = LOSE_TEXT.get(reason, LOSE_TEXT["sting"])
 	box.add_child(UiKit.title(txt[0], 52))
-	box.add_child(UiKit.label(txt[1], 26))
+	box.add_child(UiKit.label(txt[1], 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
 	var row := UiKit.hbox(16)
 	box.add_child(row)
 	var home := UiKit.icon_button("home", Palette.UI_PANEL, 96)

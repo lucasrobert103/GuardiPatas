@@ -101,12 +101,12 @@ func _build_friends() -> void:
 		var name_l := UiKit.label((Animal.SPECIES[sp]["name"] + " · " + cast["species"]) if known else "???", 30)
 		name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		info.add_child(name_l)
-		var bio := UiKit.label(cast["bio"] if known else "Salve este bichinho numa fase para conhecê-lo!", 21)
+		var bio := UiKit.label(cast["bio"] if known else "Salve este bichinho numa fase para conhecê-lo!", 21, Palette.UI_TEXT, 0, Palette.WHITE, true)
 		bio.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		bio.custom_minimum_size = Vector2(420, 0)
 		info.add_child(bio)
 		if known:
-			var tr := UiKit.label(cast["trait"], 21, Palette.UI_PRIMARY.darkened(0.2))
+			var tr := UiKit.label(cast["trait"], 21, Palette.UI_PRIMARY.darkened(0.2), 0, Palette.WHITE, true)
 			tr.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 			tr.custom_minimum_size = Vector2(420, 0)
 			info.add_child(tr)
@@ -115,7 +115,7 @@ func _build_friends() -> void:
 
 func _build_wardrobe() -> void:
 	if Game.data["met"].is_empty():
-		_content.add_child(UiKit.label("Salve um bichinho primeiro para vesti-lo!", 28))
+		_content.add_child(UiKit.label("Salve um bichinho primeiro para vesti-lo!", 28, Palette.UI_TEXT, 0, Palette.WHITE, true))
 		return
 	var who := UiKit.hbox(8)
 	_content.add_child(who)
@@ -145,7 +145,7 @@ func _build_wardrobe() -> void:
 		row.add_child(name_l)
 		var it: String = item
 		if Game.owns(item):
-			var on := Game.equipped(_selected) == item
+			var on: bool = Game.equipped(_selected) == it
 			var b := UiKit.button("Tirar" if on else "Vestir", Palette.UI_SECONDARY if on else Palette.UI_GOOD, "", 160, 72)
 			b.pressed.connect(func():
 				Game.equip(_selected, it)
@@ -163,7 +163,7 @@ func _build_wardrobe() -> void:
 					_refresh())
 			row.add_child(b)
 		_content.add_child(card)
-	_content.add_child(UiKit.label("Ganhe moedas salvando bichinhos e conquistando estrelas.\nAcessórios são só enfeites: não mudam o jogo.", 20, Color(Palette.UI_TEXT, 0.8)))
+	_content.add_child(UiKit.label("Ganhe moedas salvando bichinhos e conquistando estrelas.\nAcessórios são só enfeites: não mudam o jogo.", 20, Color(Palette.UI_TEXT, 0.8), 0, Palette.WHITE, true))
 
 
 func _build_trophies() -> void:
@@ -184,7 +184,7 @@ func _build_trophies() -> void:
 		var n := UiKit.label(cfg["name"], 26)
 		n.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		info.add_child(n)
-		var d := UiKit.label(cfg["desc"], 21, Color(Palette.UI_TEXT, 0.8))
+		var d := UiKit.label(cfg["desc"], 21, Color(Palette.UI_TEXT, 0.8), 0, Palette.WHITE, true)
 		d.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 		info.add_child(d)
 		_content.add_child(card)

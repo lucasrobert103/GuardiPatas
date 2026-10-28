@@ -5,6 +5,10 @@ extends Control
 
 signal go(screen: String, arg: Variant)
 
+## Largura aproximada da arte de cada espécie e fração à esquerda da origem.
+const ART_WIDTH := {"capi": 118.0, "brasa": 92.0, "pingo": 80.0, "nino": 64.0, "tuca": 104.0, "lulu": 92.0}
+const ART_LEFT := {"capi": 0.5, "brasa": 0.6, "pingo": 0.5, "nino": 0.55, "tuca": 0.5, "lulu": 0.5}
+
 var _parade: Array[AnimalArt] = []
 var _bee: InsectArt
 var _t := 0.0
@@ -82,12 +86,20 @@ func _process(delta: float) -> void:
 	var w := size.x
 	# os bichinhos ficam em pé sobre a faixa de grama do escudo (ver TitleShield)
 	var ground_top := size.y * 0.9 - 240.0 - 9.0
-	var spacing := minf(w / 6.6, 120.0)
-	var start_x := w * 0.5 - spacing * 2.5
+	# distribui pela largura de cada bichinho (a capivara é bem mais larga que o esquilo)
+	var widths: Array[float] = []
+	var total := 0.0
+	for a in _parade:
+		var wd: float = TitleScreen.ART_WIDTH.get(a.species, 60.0) * a.scale.x
+		widths.append(wd)
+		total += wd
+	var gap := clampf((w * 0.86 - total) / 5.0, 2.0, 30.0)
+	var x := w * 0.5 - (total + gap * 5.0) * 0.5
 	for i in _parade.size():
 		var a := _parade[i]
 		var half := Animal.half_height(a.species) * a.scale.y
-		a.position = Vector2(start_x + spacing * i, ground_top - half)
+		a.position = Vector2(x + widths[i] * TitleScreen.ART_LEFT.get(a.species, 0.5), ground_top - half)
+		x += widths[i] + gap
 		var now := Time.get_ticks_msec() / 1000.0
 		a.mood = "happy" if float(_happy_until.get(i, 0.0)) > now else ("scared" if _bee.position.distance_to(a.position) < 300.0 else "idle")
 		a.look = (_bee.position - a.position).normalized() * Vector2(a.facing, 1)

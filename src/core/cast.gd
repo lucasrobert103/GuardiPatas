@@ -43,4 +43,6 @@ const INSECTS := {
 	"mosquito": {"name": "Mosquito Zizi", "desc": "Pequeno e rápido: passa por qualquer brechinha."},
 	"wasp": {"name": "Vespa Faísca", "desc": "Mira (\"!\") e dá uma investida em linha reta."},
 	"moth": {"name": "Mariposa Lumi", "desc": "Ama a luz: gira em volta das lâmpadas acesas."},
+	"termite": {"name": "Cupim Roque-Roque", "desc": "Rói caixas e tábuas de madeira até quebrarem."},
+	"caterpillar": {"name": "Lagarta Gulosa", "desc": "Lenta, mas sobe qualquer parede — até a sua linha."},
 }

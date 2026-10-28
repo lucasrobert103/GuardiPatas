@@ -31,8 +31,11 @@ func _draw() -> void:
 		for i in 60:
 			var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(-300, 700))
 			draw_circle(p, rng.randf_range(1.0, 2.6), Color(1, 1, 0.9, rng.randf_range(0.4, 0.9)), true, -1.0, true)
+		draw_circle(Vector2(560, 230), 80.0, Color(1, 1, 0.85, 0.12), true, -1.0, true)
 		DrawUtil.disc(self, Vector2(560, 230), 46.0, Color("fff6cf"), Color(1, 1, 1, 0.0), 0.0)
-		DrawUtil.disc(self, Vector2(580, 220), 40.0, pal["sky_top"], Color(1, 1, 1, 0.0), 0.0)
+		# crescente: a "sombra" usa a cor do céu naquela altura
+		var k := (220.0 - AREA.position.y) / AREA.size.y
+		DrawUtil.disc(self, Vector2(582, 218), 40.0, Color(pal["sky_top"]).lerp(pal["sky_bottom"], k), Color(1, 1, 1, 0.0), 0.0)
 	else:
 		draw_circle(Vector2(590, 230), 90.0, Color(1, 0.95, 0.6, 0.25), true, -1.0, true)
 		DrawUtil.disc(self, Vector2(590, 230), 52.0, Color("ffe066"), Color("f5b83d"), 4.0)
@@ -49,10 +52,10 @@ func _draw() -> void:
 			for i in 10:
 				var x := rng.randf_range(-300, 1000)
 				draw_line(Vector2(x, 830 + i * 8), Vector2(x + 60, 830 + i * 8), Color(1, 1, 1, 0.5), 3.0, true)
-		5:
-			_tent(Vector2(140, 860), Color("e07a5f"))
-			_tent(Vector2(620, 880), Color("81b29a"))
 	_hills(pal["near"], 880.0, 90.0, 0.011, 0.4)
+	if world_id == 5:
+		_tent(Vector2(110, 930), Color("e07a5f"))
+		_tent(Vector2(640, 940), Color("81b29a"))
 
 
 func _hills(color: Color, base_y: float, amp: float, freq: float, phase: float) -> void:

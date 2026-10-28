@@ -86,19 +86,29 @@ static func button(text: String, color: Color = Palette.UI_PRIMARY, icon: String
 	b.add_theme_color_override("font_pressed_color", Palette.OUTLINE)
 	b.add_theme_color_override("font_disabled_color", Color(Palette.OUTLINE, 0.5))
 	if icon != "":
+		# o ícone ocupa um retângulo ancorado no botão (centro ou lado esquerdo) e
+		# se desenha centralizado nele; a borda inferior grossa do botão é compensada
 		var ic := UiIcon.new()
 		ic.icon = icon
-		ic.custom_minimum_size = Vector2(height * 0.5, height * 0.5)
 		ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var pad := height * 0.24
+		ic.anchor_top = 0.0
+		ic.anchor_bottom = 1.0
+		ic.offset_top = pad
+		ic.offset_bottom = -pad - 4.0
 		if text == "":
-			ic.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-			ic.position -= Vector2(0, 3)
+			ic.anchor_left = 0.0
+			ic.anchor_right = 1.0
+			ic.offset_left = pad
+			ic.offset_right = -pad
 			b.custom_minimum_size.x = maxf(b.custom_minimum_size.x, height)
 		else:
-			ic.set_anchors_and_offsets_preset(Control.PRESET_CENTER_LEFT)
-			ic.position += Vector2(18, -3)
-			b.alignment = HORIZONTAL_ALIGNMENT_CENTER
-			b.text = "      " + text
+			ic.anchor_left = 0.0
+			ic.anchor_right = 0.0
+			ic.offset_left = 16.0
+			ic.offset_right = 16.0 + height * 0.52
+			b.add_theme_constant_override("h_separation", 0)
+			b.text = "     " + text
 		b.add_child(ic)
 	b.pressed.connect(func(): Sfx.play("ui_click", -2.0, 1.0, 0.05))
 	return b
@@ -108,7 +118,8 @@ static func icon_button(icon: String, color: Color = Palette.UI_PANEL, size: int
 	return button("", color, icon, size, size)
 
 
-static func label(text: String, size: int = FONT_SIZE, color: Color = Palette.UI_TEXT, outline: int = 0, outline_color: Color = Palette.WHITE) -> Label:
+## `wrap = true` para textos longos (quebra em palavras dentro da largura do contêiner).
+static func label(text: String, size: int = FONT_SIZE, color: Color = Palette.UI_TEXT, outline: int = 0, outline_color: Color = Palette.WHITE, wrap: bool = false) -> Label:
 	var l := Label.new()
 	l.text = text
 	var ls := LabelSettings.new()
@@ -120,7 +131,7 @@ static func label(text: String, size: int = FONT_SIZE, color: Color = Palette.UI
 	l.label_settings = ls
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART if wrap else TextServer.AUTOWRAP_OFF
 	return l
 
 

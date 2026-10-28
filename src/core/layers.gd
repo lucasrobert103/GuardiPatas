@@ -7,11 +7,12 @@ const ANIMAL := 4       # bichinhos
 const FLYER := 8        # insetos voadores
 const WALKER := 16      # insetos que andam
 const PROP := 32        # caixas e tábuas soltas
+const NEST := 64        # ninhos/colmeias/formigueiros (andarilhos passam por cima)
 
-const LINE_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP
-const ANIMAL_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP
-const FLYER_MASK := TERRAIN | LINE | ANIMAL | FLYER | PROP
+const LINE_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP | NEST
+const ANIMAL_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP | NEST
+const FLYER_MASK := TERRAIN | LINE | ANIMAL | FLYER | PROP | NEST
 const WALKER_MASK := TERRAIN | LINE | ANIMAL | PROP
-const PROP_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP
+const PROP_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP | NEST
 ## O que impede o desenho de passar.
-const DRAW_BLOCK := TERRAIN | LINE | ANIMAL | PROP
+const DRAW_BLOCK := TERRAIN | LINE | ANIMAL | PROP | NEST

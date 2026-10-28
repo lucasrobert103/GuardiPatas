@@ -33,6 +33,7 @@ var lamps: Array[Lamp] = []
 var platforms: Array[MovingPlatform] = []
 var props: Array[Crate] = []
 var lines: Array[DrawnLine] = []
+var queens: Array[QueenBee] = []
 
 var world: Node2D
 var fx_layer: Node2D
@@ -80,6 +81,7 @@ func _build() -> void:
 	add_child(fx_layer)
 	camera = Camera2D.new()
 	camera.position = CENTER
+	camera.process_callback = Camera2D.CAMERA2D_PROCESS_PHYSICS
 	add_child(camera)
 	camera.make_current()
 
@@ -101,6 +103,15 @@ func _build() -> void:
 		nest.setup(self, n)
 		world.add_child(nest)
 		nests.append(nest)
+	for b in data.get("bosses", []):
+		var q := QueenBee.new()
+		q.level = self
+		q.home = _v(b.get("pos", [360, 300]))
+		q.sway = float(b.get("sway", 200))
+		q.position = q.home
+		q.z_index = 20
+		world.add_child(q)
+		queens.append(q)
 	for a in data.get("animals", []):
 		var animal := Animal.new()
 		animal.position = _v(a["pos"])
@@ -246,6 +257,8 @@ func start_simulation() -> void:
 		n.begin()
 	for p in platforms:
 		p.begin()
+	for q in queens:
+		q.begin()
 	state_changed.emit(state)
 
 
@@ -291,6 +304,12 @@ func _prune() -> void:
 		if is_instance_valid(i) and not i.is_queued_for_deletion():
 			alive.append(i)
 	insects = alive
+	if not props.is_empty():
+		var kept: Array[Crate] = []
+		for c in props:
+			if is_instance_valid(c) and not c.is_queued_for_deletion():
+				kept.append(c)
+		props = kept
 
 
 func _update_buzz() -> void:
@@ -339,6 +358,19 @@ func nearest_insect(pos: Vector2) -> Insect:
 		if d < best_d:
 			best_d = d
 			best = i
+	return best
+
+
+func nearest_crate(pos: Vector2, max_dist: float) -> Crate:
+	var best: Crate = null
+	var best_d := max_dist * max_dist
+	for c in props:
+		if not is_instance_valid(c) or c.is_queued_for_deletion():
+			continue
+		var d := pos.distance_squared_to(c.global_position)
+		if d < best_d:
+			best_d = d
+			best = c
 	return best
 
 

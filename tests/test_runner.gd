@@ -14,12 +14,15 @@ extends Node
 var failures := 0
 var passed := 0
 var only_level := ""
+var trace := false
 
 
 func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--level="):
 			only_level = a.substr(8)
+		if a == "--trace":
+			trace = true
 	Game.persist = false
 	Game.load_save()
 	await get_tree().process_frame
@@ -31,6 +34,7 @@ func _ready() -> void:
 	await _test_levels()
 	print("")
 	print("==== RESULTADO: %d ok, %d falhas ====" % [passed, failures])
+	await get_tree().process_frame
 	get_tree().quit(1 if failures > 0 else 0)
 
 
@@ -145,6 +149,21 @@ func _test_levels() -> void:
 		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"]])
 
 
+func _trace(lv: Level, with_solution: bool) -> void:
+	var parts: Array = []
+	for i in lv.insects:
+		if is_instance_valid(i):
+			parts.append("%s(%.0f,%.0f v%.0f,%.0f)" % [i.kind, i.global_position.x, i.global_position.y, i.linear_velocity.x, i.linear_velocity.y])
+	for c in lv.props:
+		if is_instance_valid(c):
+			parts.append("caixa(%.0f,%.0f hp%.1f)" % [c.global_position.x, c.global_position.y, c.hp])
+	for l in lv.lines:
+		parts.append("linha(%.0f,%.0f rot%.2f)" % [l.global_position.x, l.global_position.y, l.rotation])
+	for a in lv.animals:
+		parts.append("%s(%.0f,%.0f)" % [a.species, a.global_position.x, a.global_position.y])
+	print("    [%s t=%.0f] %s" % ["sol" if with_solution else "nada", lv._sim_time, ", ".join(parts)])
+
+
 func _run_level(index: int, data: Dictionary, with_solution: bool) -> Dictionary:
 	Game.data = Game._default_data()
 	var lv := Level.new()
@@ -161,8 +180,12 @@ func _run_level(index: int, data: Dictionary, with_solution: bool) -> Dictionary
 	if lv.state == Level.State.DRAWING:
 		lv.start_simulation()
 	var limit := lv.survive + 4.0
+	var next_trace := 0.0
 	while lv.state == Level.State.RUNNING and lv._sim_time < limit:
 		await get_tree().physics_frame
+		if trace and lv._sim_time >= next_trace:
+			next_trace += 1.0
+			_trace(lv, with_solution)
 	var names := {Level.State.DRAWING: "DESENHANDO", Level.State.RUNNING: "RODANDO", Level.State.WON: "VENCEU", Level.State.LOST: "PERDEU"}
 	var out := {
 		"state": lv.state, "state_name": names[lv.state], "reason": lv.lose_reason,
