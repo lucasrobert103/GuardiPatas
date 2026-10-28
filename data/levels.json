@@ -1,0 +1,1760 @@
+{
+ "version": 1,
+ "worlds": [
+  {
+   "id": 1,
+   "name": "Jardim dos Bichinhos"
+  },
+  {
+   "id": 2,
+   "name": "Floresta Encantada"
+  },
+  {
+   "id": 3,
+   "name": "Vale das Formigas"
+  },
+  {
+   "id": 4,
+   "name": "Lagoa Misteriosa"
+  },
+  {
+   "id": 5,
+   "name": "Acampamento no Quintal"
+  }
+ ],
+ "levels": [
+  {
+   "id": "1-1",
+   "world": 1,
+   "name": "Oi, Capitu!",
+   "tip": "Desenhe um abrigo sobre a Capitu. Os insetos saem quando você solta o dedo!",
+   "teaches": "Desenhar, soltar e a linha cair com peso.",
+   "ink": 900,
+   "survive": 6,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      360
+     ],
+     "count": 5,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "1-2",
+   "world": 1,
+   "name": "Zumbido em Dobro",
+   "tip": "Abelhas dos dois lados! Um abrigo fechado protege de todas as direções.",
+   "teaches": "Ameaças de várias direções.",
+   "ink": 850,
+   "survive": 8,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      120,
+      380
+     ],
+     "count": 4,
+     "interval": 0.35,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      380
+     ],
+     "count": 4,
+     "interval": 0.35,
+     "delay": 0.8
+    }
+   ],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "1-3",
+   "world": 1,
+   "name": "Brasa, a Curiosa",
+   "tip": "A Brasa tem orelhas altas: capriche na altura do abrigo!",
+   "teaches": "Bichinhos têm tamanhos diferentes.",
+   "ink": 850,
+   "survive": 8,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "brasa",
+     "pos": [
+      380,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      130,
+      340
+     ],
+     "count": 6,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      332,
+      988
+     ],
+     [
+      332,
+      925
+     ],
+     [
+      333,
+      914
+     ],
+     [
+      337,
+      904
+     ],
+     [
+      342,
+      895
+     ],
+     [
+      350,
+      887
+     ],
+     [
+      359,
+      882
+     ],
+     [
+      369,
+      878
+     ],
+     [
+      380,
+      877
+     ],
+     [
+      391,
+      878
+     ],
+     [
+      401,
+      882
+     ],
+     [
+      410,
+      887
+     ],
+     [
+      418,
+      895
+     ],
+     [
+      423,
+      904
+     ],
+     [
+      427,
+      914
+     ],
+     [
+      428,
+      925
+     ],
+     [
+      428,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "1-4",
+   "world": 1,
+   "name": "Fila de Formigas",
+   "tip": "Formigas andam pelo chão e sobem degraus baixos, mas não paredes íngremes.",
+   "teaches": "Inseto andarilho; parede em vez de teto.",
+   "ink": 600,
+   "survive": 10,
+   "stars": [
+    0.45,
+    0.7
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      520,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      110,
+      980
+     ],
+     "count": 6,
+     "interval": 0.7,
+     "delay": 0.2
+    }
+   ],
+   "solution": [
+    [
+     [
+      265,
+      988
+     ],
+     [
+      292.5,
+      927.5
+     ],
+     [
+      320,
+      878
+     ],
+     [
+      347.5,
+      927.5
+     ],
+     [
+      375,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "1-5",
+   "world": 1,
+   "name": "Bolinha de Espinhos",
+   "tip": "O Pingo é tímido. Abelhas e formigas querem um abraço... não deixe!",
+   "teaches": "Dois tipos de inseto ao mesmo tempo.",
+   "ink": 800,
+   "survive": 9,
+   "stars": [
+    0.45,
+    0.7
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "pingo",
+     "pos": [
+      400,
+      971
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      360
+     ],
+     "count": 4,
+     "interval": 0.35,
+     "delay": 0.3
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      90,
+      980
+     ],
+     "count": 4,
+     "interval": 0.8,
+     "delay": 0.2
+    }
+   ],
+   "solution": [
+    [
+     [
+      350,
+      988
+     ],
+     [
+      350,
+      963
+     ],
+     [
+      351,
+      952
+     ],
+     [
+      355,
+      941
+     ],
+     [
+      361,
+      932
+     ],
+     [
+      369,
+      924
+     ],
+     [
+      378,
+      918
+     ],
+     [
+      389,
+      914
+     ],
+     [
+      400,
+      913
+     ],
+     [
+      411,
+      914
+     ],
+     [
+      422,
+      918
+     ],
+     [
+      431,
+      924
+     ],
+     [
+      439,
+      932
+     ],
+     [
+      445,
+      941
+     ],
+     [
+      449,
+      952
+     ],
+     [
+      450,
+      963
+     ],
+     [
+      450,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "1-6",
+   "world": 1,
+   "name": "Lá no Alto",
+   "tip": "O Nino mora no galho. O abrigo precisa caber em cima dele!",
+   "teaches": "Precisão: a linha tem que pousar numa plataforma estreita.",
+   "ink": 700,
+   "survive": 8,
+   "stars": [
+    0.45,
+    0.7
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       230,
+       720
+      ],
+      [
+       490,
+       720
+      ],
+      [
+       490,
+       760
+      ],
+      [
+       230,
+       760
+      ]
+     ],
+     "style": "wood"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nino",
+     "pos": [
+      360,
+      697
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      610,
+      330
+     ],
+     "count": 6,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      316,
+      708
+     ],
+     [
+      316,
+      689
+     ],
+     [
+      317,
+      679
+     ],
+     [
+      320,
+      670
+     ],
+     [
+      326,
+      662
+     ],
+     [
+      333,
+      655
+     ],
+     [
+      341,
+      649
+     ],
+     [
+      350,
+      646
+     ],
+     [
+      360,
+      645
+     ],
+     [
+      370,
+      646
+     ],
+     [
+      379,
+      649
+     ],
+     [
+      387,
+      655
+     ],
+     [
+      394,
+      662
+     ],
+     [
+      400,
+      670
+     ],
+     [
+      403,
+      679
+     ],
+     [
+      404,
+      689
+     ],
+     [
+      404,
+      708
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-1",
+   "world": 2,
+   "name": "Zizi, o Mosquito",
+   "tip": "Mosquitos passam por qualquer fresta. Feche bem o abrigo!",
+   "teaches": "Inseto pequeno que procura brechas.",
+   "ink": 900,
+   "survive": 8,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "mosquito",
+     "pos": [
+      580,
+      340
+     ],
+     "count": 7,
+     "interval": 0.3,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-2",
+   "world": 2,
+   "name": "Luz da Lanterna",
+   "tip": "As mariposas amam a luz. Quando a lanterna apagar, elas vêm atrás da Brasa!",
+   "teaches": "Atração por luz e tempo visível.",
+   "ink": 850,
+   "survive": 10,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "lamp",
+     "pos": [
+      170,
+      620
+     ],
+     "duration": 4
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "brasa",
+     "pos": [
+      470,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "moth",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 5,
+     "interval": 0.4,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      422,
+      988
+     ],
+     [
+      422,
+      925
+     ],
+     [
+      423,
+      914
+     ],
+     [
+      427,
+      904
+     ],
+     [
+      432,
+      895
+     ],
+     [
+      440,
+      887
+     ],
+     [
+      449,
+      882
+     ],
+     [
+      459,
+      878
+     ],
+     [
+      470,
+      877
+     ],
+     [
+      481,
+      878
+     ],
+     [
+      491,
+      882
+     ],
+     [
+      500,
+      887
+     ],
+     [
+      508,
+      895
+     ],
+     [
+      513,
+      904
+     ],
+     [
+      517,
+      914
+     ],
+     [
+      518,
+      925
+     ],
+     [
+      518,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-3",
+   "world": 2,
+   "name": "Dois Amigos",
+   "tip": "Capitu e Nino são inseparáveis. Um abrigo grande para os dois!",
+   "teaches": "Vários bichinhos.",
+   "ink": 1100,
+   "survive": 8,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      300,
+      969
+     ],
+     "flip": false
+    },
+    {
+     "type": "nino",
+     "pos": [
+      430,
+      977
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      340
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      204,
+      988
+     ],
+     [
+      204,
+      967
+     ],
+     [
+      208,
+      953
+     ],
+     [
+      219,
+      940
+     ],
+     [
+      236,
+      928
+     ],
+     [
+      260,
+      919
+     ],
+     [
+      288,
+      911
+     ],
+     [
+      319,
+      907
+     ],
+     [
+      352,
+      905
+     ],
+     [
+      385,
+      907
+     ],
+     [
+      416,
+      911
+     ],
+     [
+      444,
+      919
+     ],
+     [
+      468,
+      928
+     ],
+     [
+      485,
+      940
+     ],
+     [
+      496,
+      953
+     ],
+     [
+      500,
+      967
+     ],
+     [
+      500,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-4",
+   "world": 2,
+   "name": "Caixa Amiga",
+   "tip": "Use a caixa como parede: assim você gasta menos tinta!",
+   "teaches": "Objetos físicos ajudam (e economizam tinta).",
+   "ink": 850,
+   "survive": 8,
+   "stars": [
+    0.42,
+    0.7
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "crate",
+     "pos": [
+      490,
+      960
+     ],
+     "size": [
+      80,
+      80
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      330,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      360
+     ],
+     "count": 6,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      252,
+      988
+     ],
+     [
+      252,
+      968
+     ],
+     [
+      254,
+      955
+     ],
+     [
+      260,
+      943
+     ],
+     [
+      269,
+      931
+     ],
+     [
+      281,
+      922
+     ],
+     [
+      296,
+      915
+     ],
+     [
+      313,
+      910
+     ],
+     [
+      330,
+      909
+     ],
+     [
+      347,
+      910
+     ],
+     [
+      364,
+      915
+     ],
+     [
+      379,
+      922
+     ],
+     [
+      391,
+      931
+     ],
+     [
+      400,
+      943
+     ],
+     [
+      406,
+      955
+     ],
+     [
+      408,
+      968
+     ],
+     [
+      408,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-5",
+   "world": 2,
+   "name": "Duas Linhas",
+   "tip": "Aqui você tem DOIS traços. Depois do primeiro, toque em Pronto ou desenhe o segundo.",
+   "teaches": "Mais de um traço.",
+   "ink": 1200,
+   "survive": 9,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 2,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      370,
+      1000
+     ],
+     "r": 46
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      180,
+      969
+     ],
+     "flip": false
+    },
+    {
+     "type": "pingo",
+     "pos": [
+      560,
+      971
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      360,
+      330
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.3
+    }
+   ],
+   "solution": [
+    [
+     [
+      102,
+      988
+     ],
+     [
+      102,
+      968
+     ],
+     [
+      104,
+      955
+     ],
+     [
+      110,
+      943
+     ],
+     [
+      119,
+      931
+     ],
+     [
+      131,
+      922
+     ],
+     [
+      146,
+      915
+     ],
+     [
+      163,
+      910
+     ],
+     [
+      180,
+      909
+     ],
+     [
+      197,
+      910
+     ],
+     [
+      214,
+      915
+     ],
+     [
+      229,
+      922
+     ],
+     [
+      241,
+      931
+     ],
+     [
+      250,
+      943
+     ],
+     [
+      256,
+      955
+     ],
+     [
+      258,
+      968
+     ],
+     [
+      258,
+      988
+     ]
+    ],
+    [
+     [
+      510,
+      988
+     ],
+     [
+      510,
+      963
+     ],
+     [
+      511,
+      952
+     ],
+     [
+      515,
+      941
+     ],
+     [
+      521,
+      932
+     ],
+     [
+      529,
+      924
+     ],
+     [
+      538,
+      918
+     ],
+     [
+      549,
+      914
+     ],
+     [
+      560,
+      913
+     ],
+     [
+      571,
+      914
+     ],
+     [
+      582,
+      918
+     ],
+     [
+      591,
+      924
+     ],
+     [
+      599,
+      932
+     ],
+     [
+      605,
+      941
+     ],
+     [
+      609,
+      952
+     ],
+     [
+      610,
+      963
+     ],
+     [
+      610,
+      988
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "2-6",
+   "world": 2,
+   "name": "Zona Proibida",
+   "tip": "Não dá para desenhar na área listrada. Faça um abrigo baixinho!",
+   "teaches": "Espaço limitado para desenhar.",
+   "ink": 850,
+   "survive": 9,
+   "stars": [
+    0.5,
+    0.75
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [
+    [
+     230,
+     640,
+     260,
+     210
+    ]
+   ],
+   "animals": [
+    {
+     "type": "brasa",
+     "pos": [
+      360,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      130,
+      330
+     ],
+     "count": 4,
+     "interval": 0.35,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 4,
+     "interval": 0.35,
+     "delay": 0.6
+    }
+   ],
+   "solution": [
+    [
+     [
+      312,
+      988
+     ],
+     [
+      312,
+      931
+     ],
+     [
+      313,
+      920
+     ],
+     [
+      317,
+      910
+     ],
+     [
+      322,
+      901
+     ],
+     [
+      330,
+      893
+     ],
+     [
+      339,
+      888
+     ],
+     [
+      349,
+      884
+     ],
+     [
+      360,
+      883
+     ],
+     [
+      371,
+      884
+     ],
+     [
+      381,
+      888
+     ],
+     [
+      390,
+      893
+     ],
+     [
+      398,
+      901
+     ],
+     [
+      403,
+      910
+     ],
+     [
+      407,
+      920
+     ],
+     [
+      408,
+      931
+     ],
+     [
+      408,
+      988
+     ]
+    ]
+   ]
+  }
+ ]
+}

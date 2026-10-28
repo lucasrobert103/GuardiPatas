@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.7.2"
+
+jobs:
+  test:
+    name: Testes headless (Godot ${{ env.GODOT_VERSION }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache do Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-${{ env.GODOT_VERSION }}-linux
+
+      - name: Baixar Godot
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          cd ~/godot
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" godot
+          chmod +x godot
+          rm godot.zip
+
+      - name: Validar áudio e fases gerados
+        run: |
+          python3 tools/make_levels.py
+          git diff --exit-code data/levels.json || (echo "data/levels.json desatualizado: rode tools/make_levels.py" && exit 1)
+
+      - name: Importar projeto
+        run: |
+          ~/godot/godot --headless --path . --import 2>&1 | tee import.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load script" import.log; then exit 1; fi
+
+      - name: Rodar testes
+        run: |
+          set -o pipefail
+          ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn 2>&1 | tee test.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access|Invalid assignment" test.log; then
+            echo "::error::Erros de script durante os testes"
+            exit 1
+          fi
+
+      - name: Smoke test do jogo (abre o menu e roda 10 s)
+        run: |
+          ~/godot/godot --headless --fixed-fps 60 --path . --quit-after 600 2>&1 | tee smoke.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access" smoke.log; then exit 1; fi
+
+      - name: Guardar logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: "*.log"

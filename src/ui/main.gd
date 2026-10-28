@@ -1,0 +1,107 @@
+extends Node
+## Raiz do jogo: troca de telas com transição suave e trata o botão "voltar" do Android.
+
+var _current: Node
+var _fade: ColorRect
+var _busy := false
+
+
+func _ready() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 100
+	add_child(layer)
+	_fade = ColorRect.new()
+	_fade.color = Palette.UI_BG
+	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(_fade)
+	_open("title", null, false)
+	var tw := create_tween()
+	tw.tween_property(_fade, "modulate:a", 0.0, 0.5)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if _current is Level:
+			var lv := _current as Level
+			if lv.hud != null:
+				lv.hud.on_back_pressed()
+		elif _current is TitleScreen:
+			get_tree().quit()
+		else:
+			go("title", null)
+	elif what == NOTIFICATION_APPLICATION_PAUSED:
+		# app minimizado no meio da fase: pausa para o jogador não perder a tentativa
+		if _current is Level and (_current as Level).hud != null:
+			var lv := _current as Level
+			if lv.state == Level.State.RUNNING or lv.state == Level.State.DRAWING:
+				lv.hud._open_pause()
+
+
+func go(screen: String, arg: Variant) -> void:
+	if _busy:
+		return
+	_busy = true
+	_fade.mouse_filter = Control.MOUSE_FILTER_STOP
+	var tw := create_tween()
+	tw.tween_property(_fade, "modulate:a", 1.0, 0.18)
+	await tw.finished
+	_open(screen, arg, true)
+	var tw2 := create_tween()
+	tw2.tween_property(_fade, "modulate:a", 0.0, 0.22)
+	await tw2.finished
+	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_busy = false
+
+
+func _open(screen: String, arg: Variant, _animated: bool) -> void:
+	get_tree().paused = false
+	Sfx.stop_all_loops()
+	if _current != null:
+		_current.queue_free()
+		_current = null
+	match screen:
+		"level":
+			_start_level(int(arg))
+			return
+		"map":
+			var m := LevelSelect.new()
+			m.setup(int(arg) if arg != null else -1)
+			_current = m
+		"collection":
+			_current = CollectionScreen.new()
+		"settings":
+			_current = SettingsScreen.new()
+		_:
+			_current = TitleScreen.new()
+	(_current as Control).theme = UiKit.make_theme()
+	_current.connect("go", go)
+	add_child(_current)
+
+
+func _start_level(index: int) -> void:
+	var data := LevelDB.get_level(index)
+	if data.is_empty():
+		_open("map", null, false)
+		return
+	Game.current_index = index
+	var lv := Level.new()
+	lv.setup(index, data, true)
+	lv.navigate.connect(_on_level_nav)
+	_current = lv
+	add_child(lv)
+	Sfx.music("music_level")
+	if Game.pending_hint and lv.hud != null:
+		Game.pending_hint = false
+		lv.hud._on_hint()
+
+
+func _on_level_nav(action: String) -> void:
+	match action:
+		"restart":
+			Game.record_retry()
+			_open("level", Game.current_index, false)
+		"next":
+			go("level", Game.current_index + 1)
+		"menu":
+			go("map", int(LevelDB.get_level(Game.current_index).get("world", 1)))

@@ -1,0 +1,14 @@
+# Godot
+.godot/
+/android/
+*.translation
+export/
+*.apk
+*.aab
+*.idsig
+# Assinatura: NUNCA versionar keystores
+*.keystore
+*.jks
+export_credentials.cfg
+# Python
+__pycache__/

@@ -1,0 +1,119 @@
+class_name Terrain
+extends StaticBody2D
+## Terreno estático a partir de um polígono do levels.json.
+## Estilos: "ground" (terra com grama), "stone", "wood", "glass" (aquário da Lulu).
+
+var poly := PackedVector2Array()
+var style := "ground"
+var world_id := 1
+var _grass_edges: Array = []
+var _decor: Array = []
+
+
+func setup(p_poly: PackedVector2Array, p_style: String, p_world: int) -> void:
+	poly = p_poly
+	style = p_style
+	world_id = p_world
+	collision_layer = Layers.TERRAIN
+	collision_mask = 0
+	var mat := PhysicsMaterial.new()
+	mat.friction = 0.95 if style != "glass" else 0.4
+	physics_material_override = mat
+	var cp := CollisionPolygon2D.new()
+	cp.polygon = poly
+	add_child(cp)
+	_find_top_edges()
+
+
+static func make_circle(center: Vector2, r: float) -> PackedVector2Array:
+	return DrawUtil.ellipse(center, Vector2(r, r), 0.0, 20)
+
+
+func _find_top_edges() -> void:
+	_grass_edges.clear()
+	_decor.clear()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(poly)
+	for i in poly.size():
+		var a := poly[i]
+		var b := poly[(i + 1) % poly.size()]
+		var e := b - a
+		if e.length() < 4.0:
+			continue
+		var n := e.orthogonal().normalized()
+		var mid := (a + b) * 0.5
+		if Geometry2D.is_point_in_polygon(mid + n * 3.0, poly):
+			n = -n
+		if n.y < -0.55:
+			_grass_edges.append([a, b])
+			if style == "ground":
+				var count := int(e.length() / 70.0)
+				for k in count:
+					var p := a.lerp(b, rng.randf_range(0.05, 0.95))
+					if absf(p.x - 360.0) < 520.0:
+						_decor.append([p, rng.randi_range(0, 3), rng.randf_range(0.8, 1.2)])
+
+
+func _draw() -> void:
+	var pal := Palette.world(world_id)
+	match style:
+		"stone":
+			DrawUtil.shape(self, poly, Palette.STONE)
+		"wood":
+			DrawUtil.shape(self, poly, Palette.WOOD)
+			var r := _bounds()
+			var y := r.position.y + 12.0
+			while y < r.end.y - 6.0:
+				draw_line(Vector2(r.position.x + 6, y), Vector2(r.end.x - 6, y), Palette.WOOD_DARK, 2.0, true)
+				y += 14.0
+		"glass":
+			draw_colored_polygon(poly, Color(0.85, 0.95, 1.0, 0.35))
+			draw_polyline(DrawUtil.closed(poly), Color("6fb4d8"), 5.0, true)
+		_:
+			DrawUtil.shape(self, poly, pal["dirt"])
+			# pedrinhas na terra
+			var r := _bounds()
+			var rng := RandomNumberGenerator.new()
+			rng.seed = 77 + hash(poly)
+			for k in int(r.size.x * minf(r.size.y, 500.0) / 9000.0):
+				var p := Vector2(rng.randf_range(r.position.x, r.end.x), rng.randf_range(r.position.y + 30.0, minf(r.end.y, r.position.y + 500.0)))
+				if Geometry2D.is_point_in_polygon(p, poly):
+					draw_circle(p, rng.randf_range(3.0, 7.0), Color(pal["dirt"]).darkened(0.12), true, -1.0, true)
+			for e in _grass_edges:
+				# faixa de grama desenhada para DENTRO do terreno: a superfície visual
+				# coincide com a superfície de colisão
+				draw_line(e[0] + Vector2(0, 8), e[1] + Vector2(0, 8), Palette.OUTLINE, 22.0 + Palette.OUTLINE_W, true)
+			for e in _grass_edges:
+				draw_line(e[0] + Vector2(0, 9), e[1] + Vector2(0, 9), pal["ground"], 20.0, true)
+				draw_circle(e[0] + Vector2(0, 9), 10.0, pal["ground"], true, -1.0, true)
+				draw_circle(e[1] + Vector2(0, 9), 10.0, pal["ground"], true, -1.0, true)
+			for d in _decor:
+				_draw_decor(d[0], d[1], d[2], pal)
+
+
+func _draw_decor(p: Vector2, kind: int, s: float, pal: Dictionary) -> void:
+	var o := Palette.OUTLINE
+	match kind:
+		0:
+			# tufo de grama
+			for k in 3:
+				var dx := (k - 1) * 6.0 * s
+				DrawUtil.tri(self, p + Vector2(dx - 4, -8), p + Vector2(dx + 4, -8), p + Vector2(dx + (k - 1) * 3.0, -22 * s), Color(pal["ground"]).darkened(0.1), o, 2.0)
+		1, 2:
+			# florzinha
+			var c := p + Vector2(0, -20 * s)
+			draw_line(p + Vector2(0, -8), c, Palette.GRASS_DARK, 3.0, true)
+			var col: Color = pal["accent"] if kind == 1 else Palette.WHITE
+			for k in 5:
+				DrawUtil.disc(self, c + Vector2.from_angle(TAU * k / 5.0) * 5.0 * s, 4.0 * s, col, o, 1.5)
+			DrawUtil.disc(self, c, 3.5 * s, Palette.GOLD, o, 1.5)
+		3:
+			# pedrinha
+			DrawUtil.oval(self, p + Vector2(0, -10), Vector2(9, 6) * s, Palette.STONE, o, 2.5)
+
+
+func _bounds() -> Rect2:
+	var r := Rect2(poly[0], Vector2.ZERO)
+	for p in poly:
+		r = r.expand(p)
+	return r
