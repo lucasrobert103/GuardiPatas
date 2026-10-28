@@ -93,7 +93,7 @@ def table():
 def build():
     T = table()
     with open(os.path.join(OUT_DIR, "translations.csv"), "w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["keys", "pt_BR", "en", "es"])
         for pt, (en, es) in T.items():
             w.writerow([pt, pt, en, es])
