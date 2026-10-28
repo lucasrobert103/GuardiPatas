@@ -9,7 +9,14 @@ const SOUNDS := [
 	"line_land", "buzz_bee", "buzz_mosquito", "wasp_charge", "wasp_dash", "ant_step", "beetle_step",
 	"moth_flutter", "bonk", "sting", "gasp", "splash", "star1", "star2", "star3", "coin", "tick",
 	"pop", "hint", "win", "lose", "unlock", "music_menu", "music_level", "retro_jingle", "quack", "baa", "bloop",
+	"music_forest", "music_valley", "music_pond", "music_camp", "music_mountain", "music_beach", "music_sea",
+	"music_boss",
 ]
+## Trilha de cada mundo (tools/gen_audio.py → world_music); fases com chefão usam "music_boss".
+const WORLD_MUSIC := {
+	1: "music_level", 2: "music_forest", 3: "music_valley", 4: "music_pond",
+	5: "music_camp", 6: "music_mountain", 7: "music_beach", 8: "music_sea",
+}
 
 var _streams: Dictionary = {}
 var _pool: Array[AudioStreamPlayer] = []
@@ -113,6 +120,12 @@ func stop_loop(key: String) -> void:
 func stop_all_loops() -> void:
 	for k in _loops.keys():
 		stop_loop(k)
+
+
+static func level_track(data: Dictionary) -> String:
+	if not (data.get("bosses", []) as Array).is_empty():
+		return "music_boss"
+	return WORLD_MUSIC.get(int(data.get("world", 1)), "music_level")
 
 
 ## Troca de música com crossfade suave.

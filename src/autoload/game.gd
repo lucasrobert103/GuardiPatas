@@ -48,6 +48,10 @@ const ACHIEVEMENT_LIST := [
 	["world_7", "Rei da Praia", "Complete a Praia do Sol."],
 	["world_8", "Explorador dos Mares", "Complete o Fundo do Mar."],
 	["queen", "Amiga da Rainha", "Vença a Rainha Zumbina."],
+	["owl", "Abraço Quentinho", "Vença a Coruja Nevasca."],
+	["crab_king", "Rei da Areia", "Vença o Caranguejo Rei."],
+	["octopus", "Oito Braços", "Vença o Polvo Gigante."],
+	["all_bosses", "Domador de Chefões", "Vença os quatro chefões."],
 	["friends_6", "Turma Reunida", "Conheça 6 bichinhos."],
 	["friends_10", "Bando Animado", "Conheça 10 bichinhos."],
 	["friends_14", "Turma Completa", "Conheça os 14 bichinhos."],
@@ -105,7 +109,7 @@ func _default_data() -> Dictionary:
 		"equipped": {},
 		"met": [],
 		"achievements": [],
-		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0},
+		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0, "owl": 0, "crab_king": 0, "octopus": 0},
 		"settings": DEFAULT_SETTINGS.duplicate(),
 	}
 
@@ -185,7 +189,7 @@ func world_completed(world_id: int) -> bool:
 
 
 ## Registra vitória. Retorna um resumo para a tela de resultado.
-func complete_level(id: String, stars: int, ink_used: float, animals: Array, boss: bool = false) -> Dictionary:
+func complete_level(id: String, stars: int, ink_used: float, animals: Array, boss: String = "") -> Dictionary:
 	var prev := stars_of(id)
 	var rec := level_record(id).duplicate()
 	rec["stars"] = maxi(prev, stars)
@@ -195,8 +199,8 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array, bos
 	data["coins"] = coins() + gained
 	data["stats"]["wins"] = int(data["stats"]["wins"]) + 1
 	add_stat("streak", 1, false)
-	if boss:
-		add_stat("queen", 1, false)
+	if boss != "":
+		add_stat(boss, 1, false)
 	var new_friends: Array = []
 	for a in animals:
 		if not data["met"].has(a):
@@ -262,6 +266,8 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"perfect_5": perfect >= 5, "perfect_15": perfect >= 15, "perfect_30": perfect >= 30,
 		"saver": stars > 0 and ink_used <= 0.25, "super_saver": stars > 0 and ink_used <= 0.15,
 		"queen": stat("queen") >= 1,
+		"owl": stat("owl") >= 1, "crab_king": stat("crab_king") >= 1, "octopus": stat("octopus") >= 1,
+		"all_bosses": stat("queen") >= 1 and stat("owl") >= 1 and stat("crab_king") >= 1 and stat("octopus") >= 1,
 		"friends_6": met >= 6, "friends_10": met >= 10, "friends_14": met >= 14,
 		"stylist": not data["equipped"].is_empty(),
 		"shopper": data["owned"].size() >= 3, "wardrobe": data["owned"].size() >= ITEMS.size(),

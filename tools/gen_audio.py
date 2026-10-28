@@ -85,7 +85,9 @@ def mix_at(buf, x, start):
 
 
 def write_wav(name, x, loop=False, peak=0.85):
-    x = normalize(np.asarray(x, dtype=np.float64), peak)
+    x = np.asarray(x, dtype=np.float64)
+    if peak is not None:
+        x = normalize(x, peak)
     pcm = np.clip(x * 32767, -32768, 32767).astype("<i2").tobytes()
     fmt = struct.pack("<HHIIHH", 1, 1, SR, SR * 2, 2, 16)
     chunks = b"fmt " + struct.pack("<I", len(fmt)) + fmt
@@ -423,9 +425,318 @@ def music_all():
     write_wav("music_level", song, loop=True, peak=0.7)
 
 
+# ---------------------------------------------------------------- trilhas por mundo
+# Instrumentos extras (todos sintetizados) para dar cara própria a cada mundo.
+def flute(freq, dur):
+    t = t_axis(dur)
+    n = len(t)
+    vib = 1 + 0.006 * np.sin(2 * np.pi * 5.2 * t) * np.clip(t / 0.25, 0, 1)
+    ph = 2 * np.pi * freq * np.cumsum(vib) / SR
+    x = np.sin(ph) + 0.18 * np.sin(2 * ph) + 0.06 * np.sin(3 * ph)
+    breath = lowpass(noise(n), 2500) * 0.08 * env_exp(n, 0.08)
+    return (x + breath) * env_adsr(n, 0.045, 0.08, 0.8, 0.08)
+
+
+def ks_pluck(freq, dur, bright=0.5):
+    """Karplus-Strong: violão/harpa."""
+    n = int(SR * dur)
+    period = max(2, int(SR / freq))
+    y = np.zeros(n + period + 1)
+    y[: period + 1] = lowpass(noise(period + 1), 1500 + 6000 * bright)
+    k = period + 1
+    while k < len(y):
+        e = min(len(y), k + period)
+        y[k:e] = 0.5 * (y[k - period:e - period] + y[k - period - 1:e - period - 1]) * 0.996
+        k = e
+    return y[:n] * env_adsr(n, 0.001, 0.01, 1.0, 0.05)
+
+
+def steel(freq, dur):
+    t = t_axis(dur)
+    n = len(t)
+    f = freq * (1 + 0.004 * env_exp(n, 0.03))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    x = (np.sin(ph) + 0.6 * np.sin(2 * ph) * env_exp(n, 0.25) + 0.35 * np.sin(3.01 * ph) * env_exp(n, 0.12)
+         + 0.15 * np.sin(4.2 * ph) * env_exp(n, 0.05))
+    return x * env_exp(n, 0.45) * env_adsr(n, 0.003, 0.02, 1.0, 0.04)
+
+
+def music_box(freq, dur):
+    return bell(freq, max(dur, 0.6), 1.3) * 0.9
+
+
+def glock(freq, dur):
+    t = t_axis(max(dur, 0.5))
+    n = len(t)
+    x = np.sin(2 * np.pi * freq * t) + 0.25 * np.sin(2 * np.pi * freq * 3.0 * t) * env_exp(n, 0.05)
+    return x * env_exp(n, 0.3) * env_adsr(n, 0.001, 0.01, 1.0, 0.03)
+
+
+def chip(freq, dur):
+    """Quadrada macia (chefão divertido, nada assustador)."""
+    t = t_axis(dur)
+    n = len(t)
+    x = np.sign(np.sin(2 * np.pi * freq * t)) * 0.5 + 0.5 * np.sin(2 * np.pi * freq * t)
+    return lowpass(x, 3200) * env_adsr(n, 0.005, 0.05, 0.6, 0.05)
+
+
+def pad(freq, dur):
+    t = t_axis(dur)
+    n = len(t)
+    x = sum(saw(2 * np.pi * freq * d * t) for d in (0.996, 1.0, 1.005)) / 3
+    return lowpass(x, 900) * env_adsr(n, min(0.5, dur * 0.3), 0.2, 0.8, min(0.6, dur * 0.3))
+
+
+def woodblock(freq=900, dur=0.07):
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    return (np.sin(2 * np.pi * freq * t) * 0.8 + highpass(noise(n), 2000) * 0.3) * env_exp(n, 0.015)
+
+
+def sleigh(dur=0.12):
+    n = int(SR * dur)
+    x = np.zeros(n)
+    for k in range(4):
+        st = int(k * n / 6)
+        b = highpass(noise(n - st), 6000) * env_exp(n - st, 0.02)
+        x[st:] += b
+    return x * 0.5
+
+
+def bubble(dur=0.12, f0=300, f1=900):
+    n = int(SR * dur)
+    return np.sin(sweep_phase(f0, f1, n, 0.6)) * env_exp(n, 0.04) * env_adsr(n, 0.004, 0.01, 1.0, 0.02)
+
+
+def chirp(dur=0.18):
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    gate = (np.sin(2 * np.pi * 38 * t) > 0.2).astype(float)
+    return np.sin(2 * np.pi * 4300 * t) * gate * env_adsr(n, 0.01, 0.02, 0.8, 0.04) * 0.25
+
+
+def clap(dur=0.12):
+    n = int(SR * dur)
+    x = highpass(noise(n), 1500)
+    e = np.zeros(n)
+    for k in range(3):
+        st = int(k * 0.01 * SR)
+        e[st:] += env_exp(n - st, 0.012 if k < 2 else 0.04)
+    return x * e * 0.6
+
+
+def phrase(spec, scale, octave):
+    """Notação compacta: "5:1 6:.5 3, 8 -:2"  grau[:duração]; ',' oitava abaixo, "'" acima, '-' pausa.
+    Graus acima de 7 sobem de oitava (8 = tônica uma oitava acima)."""
+    out, b = [], 0.0
+    for tok in spec.replace("|", " ").split():
+        deg, _, dur = tok.partition(":")
+        d = float(dur) if dur else 1.0
+        if deg != "-":
+            shift = deg.count("'") - deg.count(",")
+            k = int(deg.strip("',")) - 1
+            name = scale[k % len(scale)]
+            out.append((b, f"{name}{octave + k // len(scale) + shift}", d))
+        b += d
+    assert abs(b - 16) < 1e-6, (spec, b)
+    return out
+
+
+def render_track(bpm, chords, phrases, scale, octave, lead, lead_gain=0.5, accomp="bell", drums="soft",
+                 swing=0.0, extra=None):
+    """16 compassos no formato A B A C (cada frase = 4 compassos)."""
+    beat = 60.0 / bpm
+    order = [phrases[0], phrases[1], phrases[0], phrases[2]]
+    bars = 16
+    total = bars * 4 * beat
+    buf = np.zeros(int(total * SR) + 3 * SR)
+
+    def at(b):
+        if abs(b % 1.0 - 0.5) < 1e-6:
+            b += swing * 0.5
+        return int(b * beat * SR)
+
+    for bar in range(bars):
+        root, third, fifth = chords[bar % len(chords)]
+        base = bar * 4
+        mix_at(buf, pluck_bass(note(root), beat * 0.9) * 0.55, at(base))
+        mix_at(buf, pluck_bass(note(root), beat * 0.9) * 0.42, at(base + 2))
+        mix_at(buf, pluck_bass(note(fifth), beat * 0.5) * 0.3, at(base + 3.5))
+        if accomp == "bell":
+            for b in (0.5, 1.5, 2.5, 3.5):
+                for nm in (third, fifth):
+                    mix_at(buf, bell(note(nm), beat * 0.6, 0.2) * 0.10, at(base + b))
+        elif accomp == "skank":
+            for b in (0.5, 1.5, 2.5, 3.5):
+                for nm in (third, fifth):
+                    mix_at(buf, ks_pluck(note(nm), beat * 0.4, 0.3) * 0.16, at(base + b))
+        elif accomp == "harp":
+            arp = [root, third, fifth, third]
+            for i, b in enumerate(np.arange(0, 4, 0.5)):
+                nm = arp[i % 4]
+                f = note(nm) * (2 if nm == root else 1)
+                mix_at(buf, ks_pluck(f, beat * 0.9, 0.6) * 0.14, at(base + b))
+        elif accomp == "pad":
+            for nm in (third, fifth):
+                mix_at(buf, pad(note(nm), beat * 4.2) * 0.16, at(base))
+            for i, b in enumerate((0, 1, 2, 3)):
+                nm = (root, third, fifth, third)[i]
+                mix_at(buf, bell(note(nm) * 2, beat * 1.2, 0.4) * 0.07, at(base + b + 0.5))
+        if drums == "soft":
+            mix_at(buf, soft_kick() * 0.5, at(base))
+            mix_at(buf, soft_kick() * 0.35, at(base + 2))
+            for b in np.arange(0, 4, 0.5):
+                mix_at(buf, hat() * (0.16 if b % 1 else 0.09), at(base + b))
+        elif drums == "brush":
+            mix_at(buf, soft_kick() * 0.35, at(base))
+            for b in (1, 3):
+                mix_at(buf, shaker() * 0.3, at(base + b))
+            for b in (0.5, 1.5, 2.5, 3.5):
+                mix_at(buf, shaker() * 0.14, at(base + b))
+        elif drums == "trot":
+            mix_at(buf, soft_kick() * 0.4, at(base))
+            mix_at(buf, soft_kick() * 0.3, at(base + 2))
+            for b in (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5):
+                mix_at(buf, woodblock(1100 if b % 1 else 800) * (0.12 if b % 1 else 0.2), at(base + b))
+        elif drums == "calypso":
+            for b in (0, 1.5, 2, 3):
+                mix_at(buf, soft_kick() * 0.42, at(base + b))
+            for b in (0, 0.75, 1.5, 2.5, 3) if bar % 2 == 0 else (0.5, 1, 2, 2.75, 3.5):
+                mix_at(buf, woodblock(1500) * 0.16, at(base + b))
+            for b in np.arange(0, 4, 0.5):
+                mix_at(buf, shaker() * (0.18 if b % 1 else 0.1), at(base + b))
+        elif drums == "jingle":
+            mix_at(buf, soft_kick() * 0.45, at(base))
+            mix_at(buf, soft_kick() * 0.32, at(base + 2))
+            for b in np.arange(0, 4, 0.5):
+                mix_at(buf, sleigh() * (0.28 if b % 1 else 0.14), at(base + b))
+        elif drums == "lullaby":
+            for b in (0, 2):
+                mix_at(buf, shaker() * 0.16, at(base + b + 1))
+        elif drums == "sea":
+            mix_at(buf, soft_kick() * 0.28, at(base))
+        elif drums == "march":
+            for b in range(4):
+                mix_at(buf, soft_kick() * (0.55 if b % 2 == 0 else 0.4), at(base + b))
+            for b in (1, 3):
+                mix_at(buf, clap() * 0.35, at(base + b))
+            for b in np.arange(0, 4, 0.5):
+                mix_at(buf, hat() * 0.14, at(base + b))
+        if extra:
+            extra(buf, at, base, bar)
+
+    for i, ph in enumerate(order):
+        for (b, nm, d) in phrase(ph, scale, octave):
+            mix_at(buf, lead(note(nm), max(0.2, d * beat * 1.15)) * lead_gain, at(i * 16 + b))
+
+    loop_len = int(total * SR)
+    tail = buf[loop_len:]
+    out = buf[:loop_len].copy()
+    out[: len(tail)] += tail
+    return out
+
+
+def even_loudness(x, target_rms=0.088):
+    """Todas as trilhas de mundo com o mesmo volume médio da música das fases (picos suavizados)."""
+    x = np.asarray(x, dtype=np.float64)
+    x = x * (target_rms / np.sqrt(np.mean(x ** 2)))
+    return np.tanh(x / 0.9) * 0.9
+
+
+def world_music():
+    # Mundo 2 — Floresta: flauta e harpa, ré dórico
+    song = render_track(
+        100, [("D3", "F4", "A4"), ("C3", "E4", "G4"), ("G2", "B3", "D4"), ("D3", "F4", "A4")],
+        ["5:1 6:.5 5:.5 3:1 1:1 | 2:1.5 3:.5 4:1 3:1 | 5:1 7:.5 6:.5 5:1 3:1 | 2:3 -:1",
+         "8:1 7:1 6:1 5:1 | 4:1.5 5:.5 6:2 | 5:1 4:1 3:1 2:1 | 1:2 5,:1 7,:1",
+         "5:1 6:.5 5:.5 3:1 1:1 | 2:1 3:1 4:1 5:1 | 6:1.5 5:.5 4:1 2:1 | 1:4"],
+        ["D", "E", "F", "G", "A", "B", "C"], 5, flute, 0.5, accomp="harp", drums="brush", swing=0.1)
+    write_wav("music_forest", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 3 — Vale das Formigas: violão de faroeste e "cavalgada" de blocos de madeira
+    song = render_track(
+        120, [("A2", "C#4", "E4"), ("G2", "B3", "D4"), ("D3", "F#4", "A4"), ("A2", "C#4", "E4")],
+        ["1:.5 3:.5 5:1 5:.5 6:.5 5:1 | 4:.5 3:.5 2:1 1:2 | 7,:.5 1:.5 2:1 3:.5 2:.5 1:1 | 5,:3 -:1",
+         "5:1 8:1 7:.5 6:.5 5:1 | 6:.5 5:.5 4:1 3:2 | 4:1 6:1 5:.5 4:.5 3:1 | 2:2 5,:2",
+         "1:.5 3:.5 5:1 5:.5 6:.5 5:1 | 8:1 7:.5 6:.5 5:2 | 4:.5 3:.5 2:.5 3:.5 2:1 7,:1 | 1:4"],
+        ["A", "B", "C#", "D", "E", "F#", "G"], 4, lambda f, d: ks_pluck(f, d + 0.3, 0.7), 0.75,
+        accomp="bell", drums="trot", swing=0.3)
+    write_wav("music_valley", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 4 — Lagoa: marimba e bolhinhas
+    def pond_extra(buf, at, base, bar):
+        for b in (1.5, 3.25):
+            f0 = 260 + 60 * ((bar * 3 + int(b)) % 5)
+            mix_at(buf, bubble(0.12, f0, f0 * 2.6) * 0.18, at(base + b))
+    song = render_track(
+        96, [("F2", "A3", "C4"), ("D3", "F4", "A4"), ("A#2", "D4", "F4"), ("C3", "E4", "G4")],
+        ["3:1 5:1 6:.5 5:.5 3:1 | 2:1 3:.5 2:.5 1:2 | 4:1 6:1 8:.5 7:.5 6:1 | 5:4",
+         "8:.5 7:.5 6:1 5:1 3:1 | 4:.5 5:.5 6:1 5:2 | 3:.5 4:.5 5:1 6:1 4:1 | 2:2 5:2",
+         "3:1 5:1 6:.5 5:.5 3:1 | 2:1 3:.5 2:.5 1:2 | 6,:1 1:1 2:1 7,:1 | 1:4"],
+        ["F", "G", "A", "A#", "C", "D", "E"], 5, marimba, 0.6, accomp="bell", drums="soft", swing=0.12,
+        extra=pond_extra)
+    write_wav("music_pond", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 5 — Acampamento: caixinha de música e grilos (canção de ninar)
+    def camp_extra(buf, at, base, bar):
+        if bar % 2 == 0:
+            mix_at(buf, chirp() * 0.5, at(base + 0.25))
+            mix_at(buf, chirp() * 0.4, at(base + 0.75))
+    song = render_track(
+        84, [("G2", "B3", "D4"), ("E3", "G4", "B4"), ("C3", "E4", "G4"), ("D3", "F#4", "A4")],
+        ["5:1.5 6:.5 5:1 3:1 | 5:1.5 6:.5 5:2 | 8:1 7:1 6:1 5:1 | 4:2 2:2",
+         "3:1 4:1 5:2 | 6:1 5:1 3:2 | 2:1 3:1 4:1 6:1 | 5:4",
+         "5:1.5 6:.5 5:1 3:1 | 5:1.5 6:.5 5:2 | 8:1.5 7:.5 6:1 4:1 | 1:4"],
+        ["G", "A", "B", "C", "D", "E", "F#"], 5, music_box, 0.55, accomp="harp", drums="lullaby",
+        extra=camp_extra)
+    write_wav("music_camp", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 6 — Montanha: glockenspiel e guizos de trenó, mi menor
+    song = render_track(
+        108, [("E3", "G4", "B4"), ("C3", "E4", "G4"), ("G2", "B3", "D4"), ("D3", "F#4", "A4")],
+        ["1:.5 3:.5 5:1 4:.5 3:.5 2:1 | 3:1 5:1 8:2 | 7:.5 8:.5 7:.5 5:.5 4:1 3:1 | 2:3 -:1",
+         "5:1 6:1 7:1 8:1 | 9:1.5 8:.5 7:2 | 6:1 5:1 4:.5 3:.5 2:1 | 3:2 5,:2",
+         "1:.5 3:.5 5:1 4:.5 3:.5 2:1 | 3:1 5:1 8:2 | 7:1 5:1 2:1 7,:1 | 1:4"],
+        ["E", "F#", "G", "A", "B", "C", "D"], 5, glock, 0.6, accomp="bell", drums="jingle")
+    write_wav("music_mountain", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 7 — Praia: steel drum e calipso
+    song = render_track(
+        116, [("C3", "E4", "G4"), ("F2", "A3", "C4"), ("G2", "B3", "D4"), ("C3", "E4", "G4")],
+        ["5:.5 5:.5 6:.5 5:.5 3:1 1:1 | 2:.5 3:.5 4:1 3:.5 2:.5 1:1 | 5:.5 5:.5 6:.5 8:.5 7:1 5:1 | 6:1 5:1 3:2",
+         "8:1 7:.5 6:.5 5:1 3:1 | 4:.5 4:.5 6:1 5:2 | 3:.5 4:.5 5:1 4:.5 3:.5 2:1 | 1:2 5,:1 7,:1",
+         "5:.5 5:.5 6:.5 5:.5 3:1 1:1 | 2:.5 3:.5 4:1 3:.5 2:.5 1:1 | 6:.5 6:.5 5:.5 4:.5 3:1 2:1 | 1:4"],
+        ["C", "D", "E", "F", "G", "A", "B"], 5, steel, 0.55, accomp="skank", drums="calypso")
+    write_wav("music_beach", even_loudness(song), loop=True, peak=None)
+
+    # Mundo 8 — Fundo do Mar: colchão de sintetizador, sininhos e bolhas, mi bemol
+    def sea_extra(buf, at, base, bar):
+        for k in range(3):
+            f0 = 200 + 90 * ((bar * 7 + k * 3) % 6)
+            mix_at(buf, bubble(0.16, f0, f0 * 3.0) * 0.12, at(base + 0.6 + k * 1.3))
+    song = render_track(
+        80, [("D#3", "G4", "A#4"), ("C3", "D#4", "G4"), ("G#2", "C4", "D#4"), ("A#2", "D4", "F4")],
+        ["5:2 6:1 5:1 | 3:3 2:1 | 1:1 2:1 3:1 5:1 | 2:4",
+         "8:1.5 7:.5 6:2 | 5:1 6:1 3:2 | 4:1 5:1 6:1 7:1 | 5:4",
+         "5:2 6:1 5:1 | 3:3 2:1 | 6,:1 7,:1 1:1 2:1 | 1:4"],
+        ["D#", "F", "G", "G#", "A#", "C", "D"], 5, lambda f, d: bell(f, d + 0.4, 0.5), 0.5, accomp="pad",
+        drums="sea", extra=sea_extra)
+    write_wav("music_sea", even_loudness(song), loop=True, peak=None)
+
+    # Chefões — animada e com "marcha", lá menor harmônico (divertida, não assustadora)
+    song = render_track(
+        132, [("A2", "C4", "E4"), ("F2", "A3", "C4"), ("E2", "G#3", "B3"), ("A2", "C4", "E4")],
+        ["1:.5 1:.5 3:.5 5:.5 8:1 7:1 | 6:.5 5:.5 4:.5 3:.5 2:2 | 7,:.5 7,:.5 2:.5 4:.5 7:1 6:1 | 5:2 3:1 7,:1",
+         "6:1 5:.5 6:.5 8:1 6:1 | 5:1 4:.5 3:.5 2:2 | 3:.5 4:.5 5:.5 6:.5 7:1 9:1 | 8:2 5:2",
+         "1:.5 1:.5 3:.5 5:.5 8:1 7:1 | 6:.5 5:.5 4:.5 3:.5 2:2 | 4:.5 3:.5 2:.5 7,:.5 5,:1 7,:1 | 1:4"],
+        ["A", "B", "C", "D", "E", "F", "G#"], 5, chip, 0.42, accomp="skank", drums="march")
+    write_wav("music_boss", even_loudness(song), loop=True, peak=None)
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     print("Efeitos:")
     sfx_all()
     print("Músicas:")
     music_all()
+    world_music()

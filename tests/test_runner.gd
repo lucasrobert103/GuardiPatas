@@ -16,6 +16,7 @@ var passed := 0
 var only_level := ""
 var only_world := 0
 var trace := false
+var trace_step := 1.0
 var variants := false
 
 
@@ -25,6 +26,8 @@ func _ready() -> void:
 			only_level = a.substr(8)
 		if a.begins_with("--world="):
 			only_world = int(a.substr(8))
+		if a.begins_with("--trace-step="):
+			trace_step = float(a.substr(13))
 		if a == "--trace":
 			trace = true
 		if a == "--variants":
@@ -112,9 +115,15 @@ func _unit_audio() -> void:
 	print("[Áudio]")
 	for s in Sfx.SOUNDS:
 		check(ResourceLoader.exists(Sfx.SFX_DIR + s + ".wav"), "som %s importado" % s)
-	for s in ["draw_loop", "buzz_bee", "buzz_mosquito", "moth_flutter", "music_menu", "music_level"]:
+	var loops := ["draw_loop", "buzz_bee", "buzz_mosquito", "moth_flutter", "music_menu", "music_boss"]
+	loops.append_array(Sfx.WORLD_MUSIC.values())
+	for s in loops:
 		var st: AudioStreamWAV = load(Sfx.SFX_DIR + s + ".wav")
 		check(st != null and st.loop_mode == AudioStreamWAV.LOOP_FORWARD, "%s vem com loop do WAV" % s)
+	for w in range(1, 9):
+		var lv := LevelDB.get_level(LevelDB.index_of("%d-1" % w))
+		check(Sfx.level_track(lv) == Sfx.WORLD_MUSIC[w], "mundo %d tem trilha própria" % w)
+	check(Sfx.level_track(LevelDB.get_level(LevelDB.index_of("5-6"))) == "music_boss", "fase de chefão usa a trilha de chefão")
 
 
 func _test_draw_validation() -> void:
@@ -240,7 +249,7 @@ func _run_level(index: int, data: Dictionary, with_solution: bool, custom: Array
 	while lv.state == Level.State.RUNNING and lv._sim_time < limit:
 		await get_tree().physics_frame
 		if trace and lv._sim_time >= next_trace:
-			next_trace += 1.0
+			next_trace += trace_step
 			_trace(lv, with_solution)
 	var names := {Level.State.DRAWING: "DESENHANDO", Level.State.RUNNING: "RODANDO", Level.State.WON: "VENCEU", Level.State.LOST: "PERDEU"}
 	var out := {

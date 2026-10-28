@@ -34,6 +34,8 @@ var platforms: Array[MovingPlatform] = []
 var props: Array[Crate] = []
 var lines: Array[DrawnLine] = []
 var queens: Array[QueenBee] = []
+var bosses: Array[Boss] = []
+var projectiles: Array[Projectile] = []
 var honeys: Array[HoneyPot] = []
 var coconuts: Array[Coconut] = []
 var winds: Array[WindZone] = []
@@ -121,6 +123,12 @@ func _build() -> void:
 		world.add_child(nest)
 		nests.append(nest)
 	for b in data.get("bosses", []):
+		if str(b.get("kind", "queen")) != "queen":
+			var boss := Boss.new()
+			boss.setup(self, b)
+			world.add_child(boss)
+			bosses.append(boss)
+			continue
 		var q := QueenBee.new()
 		q.level = self
 		q.home = _v(b.get("pos", [360, 300]))
@@ -311,7 +319,21 @@ func start_simulation() -> void:
 		p.begin()
 	for q in queens:
 		q.begin()
+	for b in bosses:
+		b.begin()
 	state_changed.emit(state)
+
+
+func add_projectile(p: Projectile) -> void:
+	world.add_child(p)
+	projectiles.append(p)
+
+
+## Tipo do chefão da fase ("" se não houver) — usado nas conquistas.
+func boss_kind() -> String:
+	if not queens.is_empty():
+		return "queen"
+	return bosses[0].kind if not bosses.is_empty() else ""
 
 
 func add_insect(bug: Insect) -> void:
@@ -405,6 +427,12 @@ func _prune() -> void:
 			if is_instance_valid(c) and not c.is_queued_for_deletion():
 				kept.append(c)
 		props = kept
+	if not projectiles.is_empty():
+		var live: Array[Projectile] = []
+		for pr in projectiles:
+			if is_instance_valid(pr) and not pr.is_queued_for_deletion():
+				live.append(pr)
+		projectiles = live
 
 
 func _update_buzz() -> void:
@@ -511,7 +539,7 @@ func _on_animal_stung(animal: Animal, _insect: Node) -> void:
 	lose("sting")
 
 
-func on_animal_bonked(animal: Animal) -> void:
+func on_animal_bonked(animal: Animal, reason: String = "coconut") -> void:
 	if state != State.RUNNING:
 		return
 	Sfx.play("bonk", 2.0, 0.6)
@@ -519,7 +547,17 @@ func on_animal_bonked(animal: Animal) -> void:
 	shake(8.0)
 	animal.art.mood = "ouch"
 	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Bonk!", Palette.WOOD_DARK)
-	lose("coconut")
+	lose(reason)
+
+
+func on_animal_hugged(animal: Animal) -> void:
+	if state != State.RUNNING:
+		return
+	Sfx.play("bloop", 2.0, 0.6)
+	Sfx.vibrate(80)
+	animal.art.mood = "ouch"
+	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Abraço!", Color("a678e8"))
+	lose("hug")
 
 
 func on_animal_in_water(animal: Animal) -> void:
@@ -558,7 +596,7 @@ func win() -> void:
 		info = {"free": true, "coins": 0, "new_friends": [], "achievements": Game.record_free_win()}
 		stars = 0
 	else:
-		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, queens.size() > 0)
+		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, boss_kind())
 	info["stars"] = stars
 	info["ink_used"] = used
 	last_result = info

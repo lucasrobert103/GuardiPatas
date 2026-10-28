@@ -118,6 +118,14 @@ def wide_dome(animals, pad=50, apex_gap=40, floor=GROUND):
     return dome((x0 + x1) / 2, (x1 - x0) / 2, top, floor, pad=pad, apex_gap=apex_gap)
 
 
+def hooked_dome(kind, x, foot=46, floor=GROUND, **kw):
+    """Arco com "pezinhos" para fora: as pontas passam por baixo de pedras e travam o abrigo
+    contra a sucção do Polvo Gigante."""
+    pts = dome_over(kind, x, floor, **kw)
+    y = pts[0][1]
+    return [[pts[0][0] - foot, y]] + pts + [[pts[-1][0] + foot, y]]
+
+
 def slide(points, steps=6):
     """Rampa suave (para Tinta Firme): interpola os pontos de controle."""
     out = []
@@ -463,6 +471,14 @@ def new_worlds():
                 naive=[wide_dome([nv2], pad=50), wide_dome([gl2], pad=50)],
                 teaches="Revisão: buracos + dois traços."))
 
+    nv11 = animal("nuvem", 360)
+    lv.append(L("6-11", 6, "Coruja Nevasca",
+                "A Coruja derruba bolas de neve onde aparece o X! Um telhado bem firme aguenta e faz a neve escorregar.",
+                [nv11], [hive(90, 330, count=6, interval=0.9, delay=1.5)],
+                [dome_over("nuvem", 360, pad=34, apex_gap=36)], survive=13,
+                bosses=[{"kind": "owl", "pos": [540, 300], "sway": 60, "every": 3.0, "delay": 1.0}],
+                teaches="Chefão: neve caindo do céu."))
+
     # ============================================================ Mundo 7 — Praia do Sol
     lv.append(L("7-1", 7, "Pompom na Praia",
                 "Pompom tem orelhas compridas: capriche na altura do abrigo!",
@@ -538,6 +554,15 @@ def new_worlds():
                 naive=[wide_dome([pp10], pad=50), dome_over("fofa", 500, pad=30)],
                 teaches="Revisão da praia."))
 
+    pp11 = animal("pompom", 230)
+    lv.append(L("7-11", 7, "Caranguejo Rei",
+                "O Caranguejo Rei mira (arco pontilhado) e joga conchas! Tampe as tocas e cubra bem o Pompom.",
+                [pp11], holes_beside("pompom", 230, insect="crab", count=2, interval=1.4),
+                [dome_over("pompom", 230, pad=30)], survive=12,
+                bosses=[{"kind": "crab_king", "pos": [590, 955], "sway": 40, "every": 3.0, "delay": 0.8}],
+                naive=[wide_dome([pp11], pad=50)],
+                teaches="Chefão: arremessos em arco."))
+
     # ============================================================ Mundo 8 — Fundo do Mar
     sea = dict(underwater=True)
     lv.append(L("8-1", 8, "Olá, Tito!",
@@ -606,6 +631,17 @@ def new_worlds():
                 [dome_over("tito", 190, pad=30, apex_gap=40), dome_over("fofa", 500, pad=36, apex_gap=44)], survive=11, strokes=2,
                 naive=[wide_dome([tt10], pad=50), dome_over("fofa", 500, pad=36, apex_gap=44)],
                 **sea, teaches="Revisão final."))
+    tt11 = animal("tito", 360)
+    hd = hooked_dome("tito", 360, foot=80, pad=30, apex_gap=40)
+    feet = [hd[0][0] + 26, hd[-1][0] - 26]
+    lv.append(L("8-11", 8, "Polvo Gigante",
+                "O Polvo Gigante SUGA tudo! Passe as pontas do abrigo por baixo das pedras para ele não subir.",
+                [tt11], [coral(150, 700, count=5, interval=0.9, delay=1.0), coral(570, 700, count=5, interval=0.9, delay=1.6)],
+                [hd], survive=12,
+                rocks=[{"pos": [feet[0], 941], "r": 30}, {"pos": [feet[1], 941], "r": 30}],
+                bosses=[{"kind": "octopus", "pos": [360, 330], "sway": 110, "every": 4.2, "delay": 1.5}],
+                naive=[dome_over("tito", 360, pad=30, apex_gap=40)],
+                **sea, teaches="Chefão: sucção (travar o abrigo)."))
     return lv
 
 

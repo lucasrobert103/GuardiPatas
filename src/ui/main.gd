@@ -95,7 +95,7 @@ func _start_level(index: int) -> void:
 	lv.navigate.connect(_on_level_nav)
 	_current = lv
 	add_child(lv)
-	Sfx.music("music_level")
+	Sfx.music(Sfx.level_track(data))
 	if Game.pending_hint and lv.hud != null:
 		Game.pending_hint = false
 		lv.hud._on_hint()
