@@ -7,9 +7,12 @@ var out_dir := "user://screenshots"
 
 
 func _ready() -> void:
+	var all_levels := false
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--out="):
 			out_dir = a.substr(6)
+		if a == "--all-levels":
+			all_levels = true
 	DirAccess.make_dir_recursive_absolute(out_dir)
 	Game.persist = false
 	Game.load_save()
@@ -19,6 +22,11 @@ func _ready() -> void:
 	Game.data["equipped"] = {"brasa": "oculos", "nino": "laco"}
 	for i in 8:
 		Game.data["levels"][str(LevelDB.get_level(i)["id"])] = {"stars": 3 - i % 3}
+	if all_levels:
+		for i in LevelDB.count():
+			await _level(str(LevelDB.get_level(i)["id"]), "hint", 0.0)
+		get_tree().quit()
+		return
 	await _screen(TitleScreen.new(), "01_titulo", 1.5)
 	var map := LevelSelect.new()
 	map.setup(1)

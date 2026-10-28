@@ -16,7 +16,8 @@ DESENHANDO ──(solta o dedo / acabou os traços / "Pronto!")──► RODANDO
 3. **Validação de cada passo** (círculo de raio = meia espessura + 3 px de folga):
    - dentro dos limites da área desenhável e fora das **zonas proibidas** (hachuradas em vermelho);
    - `intersect_shape` no ponto: não pode estar dentro de terreno, bichinho, caixa ou outra linha;
-   - `cast_motion` do último ponto ao novo: se algo estiver no caminho, o traço **para encostado** no obstáculo (sem atravessar), com um X vermelho e som de bloqueio.
+   - se o dedo entra num obstáculo, o ponto é **empurrado para a posição livre mais próxima** (busca em anéis de 3 a 18 px): o traço **contorna/abraça** o bichinho ou o terreno em vez de parar — perdoa a imprecisão do dedo;
+   - `cast_motion` do último ponto ao novo (com raio 2,5 px menor, para permitir contornar corpos convexos): se algo estiver no caminho, o traço **para encostado** no obstáculo (nunca atravessa), com um X vermelho e som de bloqueio.
    - Movimentos rápidos são subdivididos em passos de 18 px (sem "pular" paredes finas).
 4. **Orçamento de tinta:** cada pixel desenhado consome tinta; o último segmento é cortado no limite. Barra com marcas de 3★/2★; som e vibração quando acaba.
 5. **Toque acidental:** traços < 24 px são descartados e a tinta devolvida.

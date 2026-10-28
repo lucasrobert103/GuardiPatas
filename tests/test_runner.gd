@@ -15,6 +15,7 @@ var failures := 0
 var passed := 0
 var only_level := ""
 var trace := false
+var variants := false
 
 
 func _ready() -> void:
@@ -23,6 +24,8 @@ func _ready() -> void:
 			only_level = a.substr(8)
 		if a == "--trace":
 			trace = true
+		if a == "--variants":
+			variants = true
 	Game.persist = false
 	Game.load_save()
 	await get_tree().process_frame
@@ -30,6 +33,7 @@ func _ready() -> void:
 		_unit_line_math()
 		_unit_scoring()
 		_unit_progress()
+		_unit_audio()
 		await _test_draw_validation()
 	await _test_levels()
 	print("")
@@ -101,6 +105,15 @@ func _unit_progress() -> void:
 	Game.data = Game._default_data()
 
 
+func _unit_audio() -> void:
+	print("[Áudio]")
+	for s in Sfx.SOUNDS:
+		check(ResourceLoader.exists(Sfx.SFX_DIR + s + ".wav"), "som %s importado" % s)
+	for s in ["draw_loop", "buzz_bee", "buzz_mosquito", "moth_flutter", "music_menu", "music_level"]:
+		var st: AudioStreamWAV = load(Sfx.SFX_DIR + s + ".wav")
+		check(st != null and st.loop_mode == AudioStreamWAV.LOOP_FORWARD, "%s vem com loop do WAV" % s)
+
+
 func _test_draw_validation() -> void:
 	print("[Validação do desenho]")
 	var data := LevelDB.get_level(LevelDB.index_of("2-6"))
@@ -146,7 +159,33 @@ func _test_levels() -> void:
 		check(won["state"] == Level.State.WON, "%s: solução vence (estado=%s motivo=%s t=%.1fs linhas=%d)" % [id, won["state_name"], won["reason"], won["time"], won["lines"]])
 		var lost := await _run_level(i, data, false)
 		check(lost["state"] == Level.State.LOST, "%s: sem linha, perde (estado=%s t=%.1fs)" % [id, lost["state_name"], lost["time"]])
+		if variants:
+			await _run_variants(i, data)
 		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"]])
+
+
+## Relatório (não obrigatório): traços "parecidos" com a solução ainda vencem?
+func _run_variants(index: int, data: Dictionary) -> void:
+	var specs := [["mais largo", Vector2(1.15, 1.0), Vector2.ZERO], ["mais alto", Vector2(1.0, 1.15), Vector2(0, -8)], ["deslocado", Vector2.ONE, Vector2(12, -6)], ["apertado", Vector2(0.94, 0.95), Vector2.ZERO]]
+	var line := "    variações %s:" % data["id"]
+	for sp in specs:
+		var strokes: Array = []
+		for st in Level.new()._to_poly_list(data.get("solution", [])):
+			var pts: PackedVector2Array = st
+			var c := LineMath.centroid(pts)
+			var bottom := -INF
+			for p in pts:
+				bottom = maxf(bottom, p.y)
+			var out := PackedVector2Array()
+			for p in pts:
+				var q: Vector2 = Vector2(c.x + (p.x - c.x) * sp[1].x, bottom + (p.y - bottom) * sp[1].y) + sp[2]
+				out.append(q)
+			strokes.append(out)
+		if trace:
+			print("    variante ", sp[0])
+		var r := await _run_level(index, data, true, strokes)
+		line += "  %s=%s" % [sp[0], "ok" if r["state"] == Level.State.WON else "x(%s)" % r["state_name"]]
+	print(line)
 
 
 func _trace(lv: Level, with_solution: bool) -> void:
@@ -158,13 +197,16 @@ func _trace(lv: Level, with_solution: bool) -> void:
 		if is_instance_valid(c):
 			parts.append("caixa(%.0f,%.0f hp%.1f)" % [c.global_position.x, c.global_position.y, c.hp])
 	for l in lv.lines:
-		parts.append("linha(%.0f,%.0f rot%.2f)" % [l.global_position.x, l.global_position.y, l.rotation])
+		var xs := Vector2(INF, -INF)
+		for q in l.points_local:
+			xs = Vector2(minf(xs.x, q.x + l.position.x), maxf(xs.y, q.x + l.position.x))
+		parts.append("linha(%.0f,%.0f rot%.2f pts%d x%.0f..%.0f)" % [l.global_position.x, l.global_position.y, l.rotation, l.points_local.size(), xs.x, xs.y])
 	for a in lv.animals:
 		parts.append("%s(%.0f,%.0f)" % [a.species, a.global_position.x, a.global_position.y])
 	print("    [%s t=%.0f] %s" % ["sol" if with_solution else "nada", lv._sim_time, ", ".join(parts)])
 
 
-func _run_level(index: int, data: Dictionary, with_solution: bool) -> Dictionary:
+func _run_level(index: int, data: Dictionary, with_solution: bool, custom: Array = []) -> Dictionary:
 	Game.data = Game._default_data()
 	var lv := Level.new()
 	lv.setup(index, data, false)
@@ -172,7 +214,9 @@ func _run_level(index: int, data: Dictionary, with_solution: bool) -> Dictionary
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	if with_solution:
-		for stroke in lv.solution_strokes():
+		var strokes := custom if not custom.is_empty() else lv.solution_strokes()
+		lv.drawer.debug_log = trace
+		for stroke in strokes:
 			if lv.state != Level.State.DRAWING:
 				break
 			lv.drawer.feed_stroke(stroke)

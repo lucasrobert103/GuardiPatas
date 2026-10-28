@@ -170,6 +170,13 @@ static func _to_poly(arr: Array) -> PackedVector2Array:
 	return out
 
 
+static func _to_poly_list(arr: Array) -> Array:
+	var out: Array = []
+	for s in arr:
+		out.append(_to_poly(s))
+	return out
+
+
 func solution_strokes() -> Array:
 	var out: Array = []
 	for s in data.get("solution", []):

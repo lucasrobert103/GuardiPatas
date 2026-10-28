@@ -28,12 +28,16 @@ var _blocked_at := Vector2.ZERO
 var _blocked_t := 0.0
 var _empty_warned := false
 var _shape := CircleShape2D.new()
+## Um pouco menor que `_shape`: a corda entre dois pontos livres que contornam um
+## corpo convexo passa ~1 px mais perto dele; sem essa folga o traço "empacaria".
+var _cast_shape := CircleShape2D.new()
 var _t := 0.0
 var _scribble_vol := -40.0
 
 
 func _ready() -> void:
 	_shape.radius = CLEARANCE
+	_cast_shape.radius = CLEARANCE - 2.5
 
 
 func setup(p_ink: float, p_nodraw: Array[Rect2]) -> void:
@@ -98,8 +102,9 @@ func _flush() -> bool:
 
 func _consume(p: Vector2) -> void:
 	if points.is_empty():
-		if _is_free(p):
-			points.append(p)
+		var start := _nudge_free(p)
+		if start.is_finite():
+			points.append(start)
 			stroke_started.emit()
 		else:
 			_flag_blocked(p)
@@ -129,6 +134,17 @@ func _extend_to(target: Vector2) -> bool:
 	if not _in_bounds(target) or _in_nodraw(target):
 		_flag_blocked(target)
 		return false
+	# o dedo encostou num obstáculo: o traço "contorna" para o ponto livre mais
+	# próximo (abraça o bichinho/terreno) em vez de simplesmente parar
+	if not _is_free(target):
+		var nudged := _nudge_free(target, last)
+		if not nudged.is_finite():
+			_flag_blocked(target)
+			return false
+		target = nudged
+		seg = target - last
+		if seg.length() < 1.0:
+			return false
 	var safe := _cast(last, seg)
 	if safe < 1.0:
 		target = last + seg * maxf(safe - 0.05, 0.0)
@@ -184,9 +200,31 @@ func _is_free(p: Vector2) -> bool:
 	return get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
 
 
+## Procura, em anéis crescentes, o ponto livre mais próximo de `p` (até 18 px).
+## Com `prefer`, desempata pelo candidato mais perto do ponto anterior do traço.
+## Retorna Vector2(INF, INF) se não houver.
+func _nudge_free(p: Vector2, prefer: Vector2 = Vector2(INF, INF)) -> Vector2:
+	if _is_free(p):
+		return p
+	for r in [3.0, 6.0, 9.0, 12.0, 15.0, 18.0]:
+		var best := Vector2(INF, INF)
+		var best_d := INF
+		for k in 16:
+			var c: Vector2 = p + Vector2.from_angle(TAU * k / 16.0) * r
+			if not _is_free(c):
+				continue
+			var d := c.distance_squared_to(prefer) if prefer.is_finite() else 0.0
+			if d < best_d:
+				best_d = d
+				best = c
+		if best.is_finite():
+			return best
+	return Vector2(INF, INF)
+
+
 func _cast(from: Vector2, motion: Vector2) -> float:
 	var q := PhysicsShapeQueryParameters2D.new()
-	q.shape = _shape
+	q.shape = _cast_shape
 	q.transform = Transform2D(0.0, from)
 	q.motion = motion
 	q.collision_mask = Layers.DRAW_BLOCK
@@ -196,7 +234,12 @@ func _cast(from: Vector2, motion: Vector2) -> float:
 	return res[0]
 
 
+var debug_log := false
+
+
 func _flag_blocked(p: Vector2) -> void:
+	if debug_log:
+		print("      bloqueado em ", p, " tinta=", ink_left)
 	if _blocked_t <= 0.0:
 		Sfx.play("draw_blocked", -8.0, 1.0, 0.1, 0.25)
 	_blocked_at = p

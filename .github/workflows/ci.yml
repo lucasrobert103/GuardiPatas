@@ -46,21 +46,27 @@ jobs:
 
       - name: Compilar todos os scripts
         run: |
-          ~/godot/godot --headless --path . res://tests/check_scripts.tscn 2>&1 | tee check.log
+          timeout 120 ~/godot/godot --headless --path . res://tests/check_scripts.tscn 2>&1 | tee check.log
           grep -q "0 com erro" check.log
 
       - name: Rodar testes
         run: |
           set -o pipefail
-          ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn 2>&1 | tee test.log
+          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn 2>&1 | tee test.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access|Invalid assignment" test.log; then
             echo "::error::Erros de script durante os testes"
             exit 1
           fi
 
+      - name: Teste de fluxo da interface
+        run: |
+          set -o pipefail
+          timeout 300 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/flow_test.tscn 2>&1 | tee flow.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" flow.log; then exit 1; fi
+
       - name: Smoke test do jogo (abre o menu e roda 10 s)
         run: |
-          ~/godot/godot --headless --fixed-fps 60 --path . --quit-after 600 2>&1 | tee smoke.log
+          timeout 120 ~/godot/godot --headless --fixed-fps 60 --path . --quit-after 600 2>&1 | tee smoke.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access" smoke.log; then exit 1; fi
 
       - name: Guardar logs

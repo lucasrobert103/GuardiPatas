@@ -203,9 +203,10 @@ func _show_buy_hint() -> void:
 func _open_pause() -> void:
 	if overlay != null or level.state == Level.State.WON or level.state == Level.State.LOST:
 		return
+	var box := _open_overlay()
+	# pausa DEPOIS de abrir o painel (_open_overlay fecha o anterior e despausa)
 	get_tree().paused = true
 	Sfx.stop_all_loops()
-	var box := _open_overlay()
 	box.add_child(UiKit.label("Pausa", 52))
 	var cont := UiKit.button("Continuar", Palette.UI_GOOD, "play", 420)
 	cont.pressed.connect(_close_overlay)
