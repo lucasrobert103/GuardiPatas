@@ -52,6 +52,20 @@ const ACHIEVEMENT_LIST := [
 	["crab_king", "Rei da Areia", "Vença o Caranguejo Rei."],
 	["octopus", "Oito Braços", "Vença o Polvo Gigante."],
 	["all_bosses", "Domador de Chefões", "Vença os quatro chefões."],
+	["paws_10", "Caçador de Pegadas", "Pegue 10 pegadas douradas."],
+	["paws_30", "Rastro Dourado", "Pegue 30 pegadas douradas."],
+	["first_10", "De Primeira!", "Vença 10 fases sem perder nenhuma vez."],
+	["quick_10", "Mão Ligeira", "Ganhe 10 medalhas Relâmpago."],
+	["triple_10", "Medalha Tripla", "Ganhe as 3 medalhas em 10 fases."],
+	["builder_1", "Arquiteto Fofo", "Crie e vença uma fase no editor."],
+	["builder_5", "Mestre de Obras", "Crie e vença 5 fases no editor."],
+	["photo_1", "Sorria!", "Tire uma foto da vitória."],
+	["photo_10", "Fotógrafo da Turma", "Tenha tirado 10 fotos."],
+	["pet_20", "Muito Carinho", "Faça carinho nos bichinhos 20 vezes na Casinha."],
+	["daily_1", "Desafiante", "Vença um Desafio do Dia."],
+	["daily_7", "Semana de Desafios", "Vença 7 Desafios do Dia."],
+	["daily_streak_3", "Três Dias Seguidos", "Vença o Desafio do Dia 3 dias seguidos."],
+	["daily_streak_7", "Uma Semana Seguida", "Vença o Desafio do Dia 7 dias seguidos."],
 	["friends_6", "Turma Reunida", "Conheça 6 bichinhos."],
 	["friends_10", "Bando Animado", "Conheça 10 bichinhos."],
 	["friends_14", "Turma Completa", "Conheça os 14 bichinhos."],
@@ -90,6 +104,8 @@ var hinted := {}
 var pending_hint := false
 ## Modo Livre pedido pelo jogador (vale só para fases já vencidas).
 var free_mode := false
+## Fase fora da campanha em jogo agora (Desafio do Dia / editor); vazio = campanha.
+var current_custom: Dictionary = {}
 ## Mostra a abertura (RetroNexa) só uma vez por execução.
 var splash_shown := false
 
@@ -111,6 +127,9 @@ func _default_data() -> Dictionary:
 		"achievements": [],
 		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0, "owl": 0, "crab_king": 0, "octopus": 0},
 		"settings": DEFAULT_SETTINGS.duplicate(),
+		"daily": {"last": "", "streak": 0, "best_streak": 0, "done": 0},
+		"custom": [],
+		"album": [],
 	}
 
 
@@ -189,13 +208,19 @@ func world_completed(world_id: int) -> bool:
 
 
 ## Registra vitória. Retorna um resumo para a tela de resultado.
-func complete_level(id: String, stars: int, ink_used: float, animals: Array, boss: String = "") -> Dictionary:
+func complete_level(id: String, stars: int, ink_used: float, animals: Array, boss: String = "", medals: Dictionary = {}) -> Dictionary:
 	var prev := stars_of(id)
 	var rec := level_record(id).duplicate()
 	rec["stars"] = maxi(prev, stars)
 	rec["best_ink"] = minf(float(rec.get("best_ink", 1.0)), ink_used)
+	# medalhas extras: ganhas uma vez, ficam para sempre (+5 moedas cada)
+	var new_medals: Array = []
+	for m in MEDALS:
+		if bool(medals.get(m, false)) and not bool(rec.get(m, false)):
+			rec[m] = true
+			new_medals.append(m)
 	data["levels"][id] = rec
-	var gained := Scoring.coins_for(prev, stars)
+	var gained := Scoring.coins_for(prev, stars) + 5 * new_medals.size()
 	data["coins"] = coins() + gained
 	data["stats"]["wins"] = int(data["stats"]["wins"]) + 1
 	add_stat("streak", 1, false)
@@ -209,13 +234,155 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array, bos
 	var unlocked := _check_achievements(stars, ink_used)
 	save()
 	coins_changed.emit(coins())
-	return {"coins": gained, "prev_stars": prev, "new_friends": new_friends, "achievements": unlocked}
+	return {"coins": gained, "prev_stars": prev, "new_friends": new_friends, "achievements": unlocked, "new_medals": new_medals}
 
 
-func record_loss() -> void:
+func record_loss(id: String = "") -> void:
 	data["stats"]["losses"] = int(data["stats"]["losses"]) + 1
 	data["stats"]["streak"] = 0
+	if id != "" and LevelDB.index_of(id) >= 0:
+		var rec := level_record(id).duplicate()
+		rec["fails"] = int(rec.get("fails", 0)) + 1
+		data["levels"][id] = rec
 	save()
+
+
+# ------------------------------------------------------------------ medalhas
+const MEDALS := ["paw", "first", "quick"]
+const MEDAL_INFO := {
+	"paw": {"name": "Pegada Dourada", "desc": "Passe a linha pela pegada dourada.", "icon": "gold_paw"},
+	"first": {"name": "De Primeira", "desc": "Vença sem perder nenhuma vez.", "icon": "check"},
+	"quick": {"name": "Relâmpago", "desc": "Termine o desenho em até 6 segundos.", "icon": "bolt"},
+}
+
+
+func has_medal(id: String, medal: String) -> bool:
+	return bool(level_record(id).get(medal, false))
+
+
+## Fase ainda sem nenhuma derrota registrada (vale para a medalha "De Primeira").
+func never_failed(id: String) -> bool:
+	return int(level_record(id).get("fails", 0)) == 0
+
+
+func medal_count(medal: String) -> int:
+	var n := 0
+	for id in data["levels"].keys():
+		if bool(data["levels"][id].get(medal, false)):
+			n += 1
+	return n
+
+
+func triple_medal_count() -> int:
+	var n := 0
+	for id in data["levels"].keys():
+		var rec: Dictionary = data["levels"][id]
+		if MEDALS.all(func(m): return bool(rec.get(m, false))):
+			n += 1
+	return n
+
+
+# ------------------------------------------------------------------ álbum de fotos
+const ALBUM_DIR := "user://album"
+const ALBUM_MAX := 40
+
+
+## Guarda a foto da vitória (PNG no aparelho) e o que aconteceu nela. As mais antigas saem
+## quando passa de ALBUM_MAX.
+func add_photo(img: Image, caption: String) -> Dictionary:
+	if img == null or img.is_empty():
+		return {}
+	DirAccess.make_dir_recursive_absolute(ALBUM_DIR)
+	var stamp := Time.get_datetime_string_from_system().replace(":", "-")
+	var file := "%s/%s_%d.png" % [ALBUM_DIR, stamp, randi() % 1000]
+	var w := img.get_width()
+	if w > 540:
+		img.resize(540, int(img.get_height() * 540.0 / w), Image.INTERPOLATE_BILINEAR)
+	img.save_png(file)
+	var entry := {"file": file, "caption": caption, "date": Time.get_date_string_from_system()}
+	var album: Array = data["album"]
+	album.append(entry)
+	while album.size() > ALBUM_MAX:
+		var old: Dictionary = album.pop_front()
+		DirAccess.remove_absolute(str(old.get("file", "")))
+	add_stat("photos", 1, false)
+	var got := _check_achievements(0, 1.0)
+	save()
+	return {"entry": entry, "achievements": got}
+
+
+func remove_photo(i: int) -> void:
+	var album: Array = data["album"]
+	if i < 0 or i >= album.size():
+		return
+	var old: Dictionary = album[i]
+	album.remove_at(i)
+	DirAccess.remove_absolute(str(old.get("file", "")))
+	save()
+
+
+# ------------------------------------------------------------------ fases do editor
+const CUSTOM_MAX := 12
+
+
+func custom_levels() -> Array:
+	return data["custom"]
+
+
+func save_custom(i: int, draft: Dictionary) -> int:
+	var list: Array = data["custom"]
+	if i >= 0 and i < list.size():
+		list[i] = draft
+	else:
+		list.append(draft)
+		i = list.size() - 1
+	save()
+	return i
+
+
+func delete_custom(i: int) -> void:
+	var list: Array = data["custom"]
+	if i >= 0 and i < list.size():
+		list.remove_at(i)
+		save()
+
+
+## A fase do editor foi vencida pelo próprio autor: ganha o selo "testada".
+func verify_custom(i: int) -> Array:
+	var list: Array = data["custom"]
+	if i < 0 or i >= list.size():
+		return []
+	var first := not bool(list[i].get("verified", false))
+	list[i]["verified"] = true
+	if first:
+		add_stat("custom_verified", 1, false)
+	var got := _check_achievements(0, 1.0)
+	save()
+	return got
+
+
+# ------------------------------------------------------------------ desafio do dia
+func daily_done_today(key: String) -> bool:
+	return str(data["daily"].get("last", "")) == key
+
+
+## Registra o desafio do dia vencido. Só o primeiro do dia dá prêmio e conta na sequência.
+func complete_daily(key: String) -> Dictionary:
+	var d: Dictionary = data["daily"]
+	if str(d.get("last", "")) == key:
+		return {"daily": true, "coins": 0, "repeat": true, "streak": int(d.get("streak", 0)), "achievements": []}
+	var streak := int(d.get("streak", 0)) + 1 if str(d.get("last", "")) == Daily.previous_key(key) else 1
+	d["last"] = key
+	d["streak"] = streak
+	d["best_streak"] = maxi(int(d.get("best_streak", 0)), streak)
+	d["done"] = int(d.get("done", 0)) + 1
+	var gained := Daily.reward(streak)
+	data["coins"] = coins() + gained
+	data["stats"]["wins"] = int(data["stats"]["wins"]) + 1
+	var got := _check_achievements(0, 1.0)
+	save()
+	coins_changed.emit(coins())
+	return {"daily": true, "coins": gained, "repeat": false, "streak": streak, "achievements": got}
 
 
 func record_free_win() -> Array:
@@ -277,6 +444,14 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"lines_100": stat("lines") >= 100, "lines_500": stat("lines") >= 500,
 		"streak_5": stat("streak") >= 5, "streak_15": stat("streak") >= 15,
 		"persistent": stat("retries") >= 10, "stubborn": stat("retries") >= 50,
+		"paws_10": medal_count("paw") >= 10, "paws_30": medal_count("paw") >= 30,
+		"first_10": medal_count("first") >= 10, "quick_10": medal_count("quick") >= 10,
+		"triple_10": triple_medal_count() >= 10,
+		"builder_1": stat("custom_verified") >= 1, "builder_5": stat("custom_verified") >= 5,
+		"photo_1": stat("photos") >= 1, "photo_10": stat("photos") >= 10, "pet_20": stat("pets") >= 20,
+		"daily_1": int(data["daily"].get("done", 0)) >= 1, "daily_7": int(data["daily"].get("done", 0)) >= 7,
+		"daily_streak_3": int(data["daily"].get("best_streak", 0)) >= 3,
+		"daily_streak_7": int(data["daily"].get("best_streak", 0)) >= 7,
 	}
 	for w in range(1, 9):
 		c["world_%d" % w] = world_completed(w)

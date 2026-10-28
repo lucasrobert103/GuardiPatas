@@ -28,7 +28,37 @@ func _ready() -> void:
 	Game.data["owned"] = ["oculos", "laco"]
 	Game.data["equipped"] = {"brasa": "oculos", "nino": "laco"}
 	for i in 8:
-		Game.data["levels"][str(LevelDB.get_level(i)["id"])] = {"stars": 3 - i % 3}
+		Game.data["levels"][str(LevelDB.get_level(i)["id"])] = {"stars": 3 - i % 3, "paw": i % 2 == 0, "first": i % 3 == 0, "quick": i < 4}
+	for i in range(8, LevelDB.count() - 3):
+		Game.data["levels"][str(LevelDB.get_level(i)["id"])] = {"stars": 2, "paw": i % 4 == 0}
+	if "--ui" in OS.get_cmdline_user_args():
+		await _screen(TitleScreen.new(), "01_titulo", 1.5)
+		await _screen(DailyScreen.new(), "05_desafio", 0.9)
+		var m6 := LevelSelect.new()
+		m6.setup(6)
+		await _screen(m6, "02c_mapa_mundo6", 0.8)
+		await _level_result("1-1")
+		for id in ["2-3", "7-4"]:
+			await _level(id, "solve", 2.0)
+			Game.add_photo(get_viewport().get_texture().get_image(), id)
+		Game.data["met"] = Cast.ORDER.duplicate()
+		Game.data["equipped"] = {"capi": "coroa", "pompom": "laco", "gelinho": "touca"}
+		await _screen(HomeScreen.new(), "06_casinha", 2.0)
+		await _screen(AlbumScreen.new(), "07_album", 0.8)
+		Game.data["custom"] = [EditorScreen.new_draft(1), EditorScreen.new_draft(2)]
+		Game.data["custom"][0]["animals"] = [{"type": "pompom", "pos": [360, 957]}]
+		Game.data["custom"][0]["verified"] = true
+		Game.data["custom"][1]["world"] = 7
+		Game.data["custom"][1]["animals"] = [{"type": "patinha", "pos": [300, 977]}]
+		await _screen(EditorList.new(), "08_editor_lista", 0.8)
+		var ed := EditorScreen.new()
+		ed.custom_index = 1
+		Game.data["custom"][1]["nests"] = [{"insect": "bee", "pos": [600, 400], "count": 6, "interval": 0.4, "delay": 0.4}]
+		Game.data["custom"][1]["rocks"] = [{"pos": [450, 980], "r": 30}]
+		Game.data["custom"][1]["blocks"] = [[120, 930, 220, 1000]]
+		await _screen(ed, "09_editor", 1.0)
+		get_tree().quit()
+		return
 	if not shots.is_empty():
 		for spec in shots:
 			await _level(spec[0], spec[1], spec[2])
@@ -48,6 +78,10 @@ func _ready() -> void:
 	await _screen(map5, "02b_mapa_mundo5", 0.8)
 	await _screen(CollectionScreen.new(), "03_colecao", 0.8)
 	await _screen(SettingsScreen.new(), "04_ajustes", 0.8)
+	await _screen(DailyScreen.new(), "05_desafio", 0.9)
+	var map6 := LevelSelect.new()
+	map6.setup(6)
+	await _screen(map6, "02c_mapa_mundo6", 0.8)
 	for spec in [["1-1", "hint", 0.0], ["1-1", "solve", 2.5], ["1-4", "solve", 5.0], ["2-2", "solve", 3.0], ["3-3", "solve", 2.0], ["4-1", "solve", 3.0], ["4-3", "solve", 4.0], ["5-5", "solve", 3.0], ["5-6", "solve", 3.5], ["1-2", "none", 2.2], ["2-6", "draw", 0.0]]:
 		await _level(spec[0], spec[1], spec[2])
 	await _level_result("1-1")

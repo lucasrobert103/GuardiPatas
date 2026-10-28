@@ -18,6 +18,7 @@ var only_world := 0
 var trace := false
 var trace_step := 1.0
 var variants := false
+var daily_all := false
 
 
 func _ready() -> void:
@@ -32,16 +33,27 @@ func _ready() -> void:
 			trace = true
 		if a == "--variants":
 			variants = true
+		if a == "--daily-all":
+			daily_all = true
 	Game.persist = false
 	Game.load_save()
 	await get_tree().process_frame
+	if daily_all:
+		await _test_daily_all()
+		print("")
+		print("==== RESULTADO: %d ok, %d falhas ====" % [passed, failures])
+		get_tree().quit(1 if failures > 0 else 0)
+		return
 	if only_level == "" and only_world == 0:
+		_unit_medals_daily()
 		_unit_line_math()
 		_unit_scoring()
 		_unit_progress()
 		_unit_audio()
 		await _test_draw_validation()
 	await _test_levels()
+	if only_level == "" and only_world == 0:
+		await _test_daily()
 	print("")
 	print("==== RESULTADO: %d ok, %d falhas ====" % [passed, failures])
 	await get_tree().process_frame
@@ -171,6 +183,7 @@ func _test_levels() -> void:
 		check(not data.get("solution", []).is_empty(), "%s tem solução registrada" % id)
 		var won := await _run_level(i, data, true)
 		check(won["state"] == Level.State.WON, "%s: solução vence (estado=%s motivo=%s t=%.1fs linhas=%d)" % [id, won["state_name"], won["reason"], won["time"], won["lines"]])
+		check(won["paw"], "%s: a solução passa pela pegada dourada" % id)
 		var lost := await _run_level(i, data, false)
 		check(lost["state"] == Level.State.LOST, "%s: sem linha, perde (estado=%s t=%.1fs)" % [id, lost["state_name"], lost["time"]])
 		var naive_txt := ""
@@ -183,6 +196,69 @@ func _test_levels() -> void:
 		if variants:
 			await _run_variants(i, data)
 		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)%s" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"], naive_txt])
+
+
+## Desafio do Dia: 14 dias seguidos a partir de uma data fixa — a solução da fase base tem
+## que continuar vencendo com a regra do dia.
+func _test_daily() -> void:
+	print("[Desafio do Dia]")
+	var pool := Daily.pool(true)
+	var key := "2026-11-01"
+	var seen := {}
+	for k in 14:
+		var p := Daily.pick(key, pool)
+		var d := Daily.build(key, int(p["index"]), str(p["mod"]["id"]))
+		seen[str(p["mod"]["id"])] = true
+		var r := await _run_level(-1, d, true)
+		check(r["state"] == Level.State.WON, "desafio %s (%s + %s) vence com a solução (motivo=%s)" % [key, d["base_id"], d["daily_mod"], r["reason"]])
+		print("  %s  %-5s %-11s %s" % [key, d["base_id"], d["daily_mod"], r["state_name"]])
+		key = _next_key(key)
+	check(seen.size() >= 3, "o desafio varia as regras ao longo dos dias (%d regras)" % seen.size())
+
+
+func _next_key(key: String) -> String:
+	var t := Time.get_unix_time_from_datetime_string(key + "T12:00:00")
+	return Time.get_date_string_from_unix_time(t + 86400)
+
+
+## Varredura completa (opcional, --daily-all): toda fase elegível × toda regra.
+func _test_daily_all() -> void:
+	print("[Desafio do Dia — todas as combinações]")
+	for i in Daily.pool(true):
+		for m in Daily.mods_for(i):
+			var d := Daily.build("2026-01-01", i, str(m["id"]))
+			var r := await _run_level(-1, d, true)
+			check(r["state"] == Level.State.WON, "%s + %s (motivo=%s)" % [d["base_id"], m["id"], r["reason"]])
+
+
+func _unit_medals_daily() -> void:
+	print("[Medalhas e Desafio do Dia]")
+	Game.data = Game._default_data()
+	var id := str(LevelDB.get_level(0)["id"])
+	check(Game.never_failed(id), "fase nova não tem derrotas")
+	Game.record_loss(id)
+	check(not Game.never_failed(id), "derrota fica registrada na fase")
+	check(not Game.is_completed(id), "registrar derrota não conta como fase vencida")
+	var info := Game.complete_level(id, 3, 0.5, ["capi"], "", {"paw": true, "first": false, "quick": true})
+	check(info["new_medals"] == ["paw", "quick"], "medalhas novas são informadas (%s)" % [info["new_medals"]])
+	check(Game.has_medal(id, "paw") and not Game.has_medal(id, "first"), "medalhas ficam salvas por fase")
+	var again := Game.complete_level(id, 3, 0.5, ["capi"], "", {"paw": true})
+	check(again["new_medals"].is_empty(), "medalha repetida não dá prêmio de novo")
+	check(Daily.previous_key("2026-03-01") == "2026-02-28", "dia anterior atravessa o mês")
+	var c0 := Game.coins()
+	var d1 := Game.complete_daily("2026-03-01")
+	check(d1["streak"] == 1 and Game.coins() == c0 + Daily.reward(1), "primeiro desafio dá prêmio")
+	var d1b := Game.complete_daily("2026-03-01")
+	check(d1b["repeat"] and d1b["coins"] == 0, "repetir no mesmo dia não dá prêmio")
+	var d2 := Game.complete_daily("2026-03-02")
+	check(d2["streak"] == 2, "dias seguidos aumentam a sequência")
+	var d4 := Game.complete_daily("2026-03-04")
+	check(d4["streak"] == 1, "pular um dia zera a sequência")
+	check(Game.data["achievements"].has("daily_1"), "conquista do primeiro desafio")
+	var a := Daily.pick("2026-05-05", Daily.pool(true))
+	var b := Daily.pick("2026-05-05", Daily.pool(true))
+	check(a["index"] == b["index"] and a["mod"]["id"] == b["mod"]["id"], "mesmo dia = mesmo desafio")
+	Game.data = Game._default_data()
 
 
 ## Relatório (não obrigatório): traços "parecidos" com a solução ainda vencem?
@@ -256,6 +332,7 @@ func _run_level(index: int, data: Dictionary, with_solution: bool, custom: Array
 		"state": lv.state, "state_name": names[lv.state], "reason": lv.lose_reason,
 		"time": lv._sim_time, "lines": lv.lines.size(), "ink": lv.ink_used(),
 		"stars": int(lv.last_result.get("stars", 0)),
+		"paw": lv.paw_got,
 	}
 	lv.queue_free()
 	await get_tree().process_frame

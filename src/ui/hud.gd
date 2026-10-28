@@ -60,7 +60,8 @@ func _build_top() -> void:
 	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(mid)
-	title_label = UiKit.label("%s  %s" % [level.data.get("id", ""), level.data.get("name", "")], 26, Palette.WHITE, 10, Palette.OUTLINE)
+	var title_text := "%s  %s" % [level.data.get("id", ""), level.data.get("name", "")] if level.mode == "campaign" else str(level.data.get("name", ""))
+	title_label = UiKit.label(title_text, 26, Palette.WHITE, 10, Palette.OUTLINE)
 	title_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title_label.clip_text = true
 	mid.add_child(title_label)
@@ -311,6 +312,21 @@ func _on_result(won: bool, info: Dictionary) -> void:
 
 
 func _build_win(box: VBoxContainer, info: Dictionary) -> void:
+	if info.get("daily", false):
+		_build_daily_win(box, info)
+		return
+	if info.get("custom", false):
+		box.add_child(UiKit.title("Salvos!", 60))
+		box.add_child(UiKit.label("Sua fase funciona! Agora desafie alguém a resolver.", 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		var crow := UiKit.hbox(16)
+		box.add_child(crow)
+		var cback := UiKit.button("Editor", Palette.UI_PRIMARY, "pencil", 220, 96)
+		cback.pressed.connect(func(): action.emit("menu"))
+		crow.add_child(cback)
+		var cagain := UiKit.button("De novo", Palette.UI_SECONDARY, "restart", 220, 96)
+		cagain.pressed.connect(func(): action.emit("restart"))
+		crow.add_child(cagain)
+		return
 	if info.get("free", false):
 		box.add_child(UiKit.title("Modo Livre!", 60))
 		box.add_child(UiKit.label("Sem limites, só diversão! Estrelas e moedas valem no modo normal.", 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
@@ -357,6 +373,7 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 	for f in info.get("new_friends", []):
 		if f != "capi" or Game.data["met"].size() > 1:
 			box.add_child(UiKit.label("Novo amigo: %s!" % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
+	_add_medals(box, info)
 	var got: Array = info.get("achievements", [])
 	for k in mini(got.size(), 2):
 		box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(got[k])["name"], 26, Palette.UI_GOOD))
@@ -372,10 +389,109 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 	var again := UiKit.icon_button("restart", Palette.UI_SECONDARY, 96)
 	again.pressed.connect(func(): action.emit("restart"))
 	row.add_child(again)
+	var cam := UiKit.icon_button("camera", Palette.UI_PANEL, 96)
+	cam.pressed.connect(func(): _take_photo(cam))
+	row.add_child(cam)
 	var has_next := level.index + 1 < LevelDB.count()
 	var nxt := UiKit.button("Próxima" if has_next else "Mapa", Palette.UI_GOOD, "next", 240, 96)
 	nxt.pressed.connect(func(): action.emit("next" if has_next else "menu"))
 	row.add_child(nxt)
+
+
+## Três medalhas extras: pegada dourada, de primeira e relâmpago (as novas pulam na tela).
+func _add_medals(box: VBoxContainer, info: Dictionary) -> void:
+	var id := str(level.data.get("id", ""))
+	var fresh: Array = info.get("new_medals", [])
+	var row := UiKit.hbox(14)
+	box.add_child(row)
+	for i in Game.MEDALS.size():
+		var m: String = Game.MEDALS[i]
+		var got := Game.has_medal(id, m)
+		var cell := UiKit.vbox(0)
+		var ic := UiIcon.new()
+		ic.icon = Game.MEDAL_INFO[m]["icon"]
+		ic.custom_minimum_size = Vector2(60, 60)
+		ic.modulate = Color.WHITE if got else Color(1, 1, 1, 0.28)
+		cell.add_child(ic)
+		cell.add_child(UiKit.label(Game.MEDAL_INFO[m]["name"], 18, Palette.UI_TEXT if got else Palette.UI_MUTED))
+		row.add_child(cell)
+		if fresh.has(m):
+			UiKit.pop_in(ic, 1.0 + i * 0.2)
+			get_tree().create_timer(1.0 + i * 0.2).timeout.connect(func(): Sfx.play("pop", 0.0, 1.2 + i * 0.1))
+
+
+## Foto da vitória: esconde o painel por um instante, captura a tela e guarda no Álbum.
+func _take_photo(btn: Button) -> void:
+	btn.disabled = true
+	overlay.visible = false
+	for c in root.get_children():
+		if c != overlay:
+			c.visible = false
+	await RenderingServer.frame_post_draw
+	await RenderingServer.frame_post_draw
+	var img := get_viewport().get_texture().get_image()
+	for c in root.get_children():
+		c.visible = true
+	refresh()
+	if level.state != Level.State.DRAWING:
+		free_btn.visible = false
+		hint_btn.visible = false
+		play_btn.visible = false
+	overlay.visible = true
+	var cap := "%s %s" % [level.data.get("id", ""), level.data.get("name", "")] if level.mode == "campaign" else str(level.data.get("name", ""))
+	Game.add_photo(img, cap)
+	Sfx.play("ui_click", 2.0, 0.6)
+	var flash := ColorRect.new()
+	flash.color = Color.WHITE
+	flash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(flash)
+	var tw := flash.create_tween()
+	tw.tween_property(flash, "modulate:a", 0.0, 0.35)
+	tw.tween_callback(flash.queue_free)
+	var note := UiKit.label("Foto salva no Álbum da Casinha!", 26, Palette.WHITE, 10, Palette.OUTLINE)
+	note.anchor_right = 1.0
+	note.offset_top = 1120
+	note.offset_bottom = 1170
+	note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(note)
+	get_tree().create_timer(2.0).timeout.connect(note.queue_free)
+
+
+func _build_daily_win(box: VBoxContainer, info: Dictionary) -> void:
+	box.add_child(UiKit.title("Desafio vencido!", 54))
+	var mod := Daily.mod_info(str(level.data.get("daily_mod", "")))
+	box.add_child(UiKit.label("%s · fase %s" % [mod["name"], level.data.get("base_id", "")], 24))
+	var flame := UiKit.hbox(8)
+	var fi := UiIcon.new()
+	fi.icon = "flame"
+	fi.custom_minimum_size = Vector2(56, 56)
+	flame.add_child(fi)
+	var streak := int(info.get("streak", 1))
+	flame.add_child(UiKit.label("%d %s seguido%s!" % [streak, "dia" if streak == 1 else "dias", "" if streak == 1 else "s"], 30, Palette.UI_PRIMARY))
+	box.add_child(flame)
+	UiKit.pop_in(fi, 0.3)
+	if info.get("repeat", false):
+		box.add_child(UiKit.label("O prêmio de hoje já foi pego. Volte amanhã para um desafio novo!", 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
+	else:
+		var coin_row := UiKit.hbox(8)
+		var ci := UiIcon.new()
+		ci.icon = "coin"
+		ci.custom_minimum_size = Vector2(44, 44)
+		coin_row.add_child(ci)
+		coin_row.add_child(UiKit.label("+%d   (total %d)" % [int(info.get("coins", 0)), Game.coins()], 30))
+		box.add_child(coin_row)
+		get_tree().create_timer(0.8).timeout.connect(func(): Sfx.play("coin"))
+	for a in info.get("achievements", []):
+		box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(a)["name"], 26, Palette.UI_GOOD))
+	var row := UiKit.hbox(16)
+	box.add_child(row)
+	var home := UiKit.button("Voltar", Palette.UI_PRIMARY, "calendar", 220, 96)
+	home.pressed.connect(func(): action.emit("menu"))
+	row.add_child(home)
+	var again := UiKit.icon_button("restart", Palette.UI_SECONDARY, 96)
+	again.pressed.connect(func(): action.emit("restart"))
+	row.add_child(again)
 
 
 func _build_lose(box: VBoxContainer, info: Dictionary) -> void:

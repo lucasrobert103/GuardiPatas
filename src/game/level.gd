@@ -48,6 +48,16 @@ var underwater := false
 ## Modo Livre: tinta infinita e vários traços; não vale estrelas nem moedas.
 var free_mode := false
 var _goal_t := 0.0
+## "campaign" | "daily" | "custom" (fase criada no editor)
+var mode := "campaign"
+var insect_speed := 1.0
+## Medalhas extras (ver Game.MEDALS)
+const QUICK_TIME := 6.0
+var paw: GoldenPaw
+var paw_got := false
+var first_try := true
+var quick := false
+var _draw_clock := 0.0
 
 var world: Node2D
 var fx_layer: Node2D
@@ -70,7 +80,10 @@ func setup(p_index: int, p_data: Dictionary, p_with_hud: bool = true) -> void:
 	strokes_total = int(data.get("strokes", 1))
 	ink_mode = str(data.get("ink_mode", "normal"))
 	underwater = bool(data.get("underwater", false))
-	free_mode = Game.free_mode and Game.is_completed(str(data.get("id", "")))
+	mode = str(data.get("mode", "campaign"))
+	insect_speed = float(data.get("insect_speed", 1.0))
+	free_mode = mode == "campaign" and Game.free_mode and Game.is_completed(str(data.get("id", "")))
+	first_try = Game.never_failed(str(data.get("id", "")))
 	if free_mode:
 		strokes_total = 20
 	strokes_left = strokes_total
@@ -165,6 +178,13 @@ func _build() -> void:
 	drawer.setup(1000000.0 if free_mode else float(data.get("ink", 800)), nodraw)
 	drawer.stroke_finished.connect(_on_stroke_finished)
 	add_child(drawer)
+	if mode == "campaign" and not free_mode:
+		var pp := paw_point()
+		if pp != Vector2.INF:
+			paw = GoldenPaw.new()
+			paw.position = pp
+			paw.z_index = 25
+			world.add_child(paw)
 
 
 func _build_prop(p: Dictionary) -> void:
@@ -226,6 +246,48 @@ static func _to_poly_list(arr: Array) -> Array:
 	return out
 
 
+## Onde fica a pegada dourada: num ombro do primeiro traço da solução, um pouquinho para fora
+## (o traço registrado passa a menos de GoldenPaw.RADIUS dela). "paw": [x, y] no JSON força o lugar.
+func paw_point() -> Vector2:
+	if data.has("paw"):
+		return _v(data["paw"])
+	var strokes := solution_strokes()
+	if strokes.is_empty() or (strokes[0] as PackedVector2Array).size() < 3:
+		return Vector2.INF
+	var s: PackedVector2Array = strokes[0]
+	var total := 0.0
+	for i in range(1, s.size()):
+		total += s[i - 1].distance_to(s[i])
+	var goal_len := total * 0.32
+	var acc := 0.0
+	var centroid := Vector2.ZERO
+	for p in s:
+		centroid += p
+	centroid /= s.size()
+	for i in range(1, s.size()):
+		var seg := s[i - 1].distance_to(s[i])
+		if acc + seg >= goal_len and seg > 0.0:
+			var p := s[i - 1].lerp(s[i], (goal_len - acc) / seg)
+			var n := (s[i] - s[i - 1]).normalized().orthogonal()
+			if n.dot(p - centroid) < 0.0:
+				n = -n
+			return p + n * 14.0
+		acc += seg
+	return Vector2.INF
+
+
+func _check_paw(points: PackedVector2Array) -> void:
+	if paw == null or paw_got:
+		return
+	for i in range(1, points.size()):
+		var q := Geometry2D.get_closest_point_to_segment(paw.position, points[i - 1], points[i])
+		if q.distance_to(paw.position) <= GoldenPaw.RADIUS:
+			paw_got = true
+			paw.collect()
+			Fx.popup_text(fx_layer, paw.position + Vector2(0, -30), "Pegada!", Palette.GOLD_DARK)
+			return
+
+
 func solution_strokes() -> Array:
 	var out: Array = []
 	for s in data.get("solution", []):
@@ -258,6 +320,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_stroke_finished(points: PackedVector2Array) -> void:
 	if state != State.DRAWING:
 		return
+	_check_paw(points)
 	var line := DrawnLine.new()
 	line.build(points, Palette.INK, ink_mode == "static")
 	if not line.static_ink:
@@ -301,6 +364,9 @@ func start_simulation() -> void:
 	if state != State.DRAWING:
 		return
 	state = State.RUNNING
+	quick = _draw_clock <= QUICK_TIME
+	if paw != null and not paw_got:
+		paw.visible = false
 	drawer.enabled = false
 	drawer.hint_strokes = []
 	drawer.queue_redraw()
@@ -340,12 +406,15 @@ func add_insect(bug: Insect) -> void:
 	if insects.size() >= MAX_INSECTS:
 		bug.queue_free()
 		return
+	bug.max_speed *= insect_speed
 	world.add_child(bug)
 	insects.append(bug)
 
 
 func _physics_process(delta: float) -> void:
 	_prune()
+	if state == State.DRAWING and not get_tree().paused:
+		_draw_clock += delta
 	if state == State.RUNNING:
 		_sim_time += delta
 		time_left -= delta
@@ -591,12 +660,20 @@ func win() -> void:
 	for a in animals:
 		met.append(a.species)
 	var info: Dictionary
-	if free_mode:
+	if mode == "daily":
+		info = Game.complete_daily(str(data.get("daily_key", "")))
+		stars = 0
+	elif mode == "custom":
+		info = {"custom": true, "coins": 0, "new_friends": [], "achievements": Game.verify_custom(int(data.get("custom_index", -1)))}
+		stars = 0
+	elif free_mode:
 		# Modo Livre: só diversão — não mexe em estrelas nem moedas
 		info = {"free": true, "coins": 0, "new_friends": [], "achievements": Game.record_free_win()}
 		stars = 0
 	else:
-		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, boss_kind())
+		var medals := {"paw": paw_got, "first": first_try, "quick": quick}
+		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, boss_kind(), medals)
+		info["medals"] = medals
 	info["stars"] = stars
 	info["ink_used"] = used
 	last_result = info
@@ -617,7 +694,7 @@ func lose(reason: String) -> void:
 		n.running = false
 	for a in animals:
 		a.be_sad()
-	Game.record_loss()
+	Game.record_loss(str(data.get("id", "")) if mode == "campaign" and not free_mode else "")
 	last_result = {"reason": reason}
 	state_changed.emit(state)
 	if reason == "fall":

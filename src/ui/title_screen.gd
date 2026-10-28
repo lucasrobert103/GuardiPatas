@@ -59,14 +59,25 @@ func _ready() -> void:
 	play.pressed.connect(func(): go.emit("map", -1))
 	bottom.add_child(play)
 	UiKit.pop_in(play, 0.3)
-	var row := UiKit.hbox(18)
+	var row := UiKit.hbox(12)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	bottom.add_child(row)
-	var friends := UiKit.button("Bichinhos", Palette.UI_PRIMARY, "paw", 260)
-	friends.pressed.connect(func(): go.emit("collection", null))
-	row.add_child(friends)
-	var settings := UiKit.icon_button("gear", Palette.UI_PANEL, 96)
-	settings.pressed.connect(func(): go.emit("settings", null))
-	row.add_child(settings)
+	var tiles := [
+		["Desafio", "calendar", Color("ffb340"), "daily"],
+		["Bichinhos", "paw", Palette.UI_PRIMARY, "collection"],
+		["Casinha", "house", Color("8fd3a0"), "home"],
+		["Criar", "pencil", Color("b18cff"), "editor"],
+		["Ajustes", "gear", Palette.UI_PANEL, "settings"],
+	]
+	for i in tiles.size():
+		var spec: Array = tiles[i]
+		var b := UiKit.tile(spec[0], spec[1], spec[2])
+		var dest: String = spec[3]
+		b.pressed.connect(func(): go.emit(dest, null))
+		row.add_child(b)
+		UiKit.pop_in(b, 0.4 + i * 0.06)
+		if dest == "daily" and not Game.daily_done_today(Daily.today_key()):
+			UiKit.badge(b)
 
 	var coins := UiKit.hbox(6)
 	coins.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)

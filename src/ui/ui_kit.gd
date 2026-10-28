@@ -114,6 +114,47 @@ static func button(text: String, color: Color = Palette.UI_PRIMARY, icon: String
 	return b
 
 
+## Azulejo: ícone grande com legenda embaixo (menus com várias opções lado a lado).
+static func tile(text: String, icon: String, color: Color = Palette.UI_PANEL, w: int = 112, h: int = 118) -> Button:
+	var b := button("", color, "", w, h)
+	var ic := UiIcon.new()
+	ic.icon = icon
+	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ic.anchor_right = 1.0
+	ic.offset_left = w * 0.24
+	ic.offset_right = -w * 0.24
+	ic.offset_top = 12
+	ic.offset_bottom = h - 46
+	b.add_child(ic)
+	var l := label(text, 19)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.anchor_right = 1.0
+	l.anchor_top = 1.0
+	l.anchor_bottom = 1.0
+	l.offset_top = -44
+	l.offset_bottom = -12
+	l.autowrap_mode = TextServer.AUTOWRAP_OFF
+	b.add_child(l)
+	return b
+
+
+## Bolinha vermelha de aviso no canto de um botão ("tem novidade aqui").
+static func badge(on: Control, text: String = "!") -> void:
+	var p := PanelContainer.new()
+	p.add_theme_stylebox_override("panel", panel_style(Palette.DANGER, 18))
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.anchor_left = 1.0
+	p.anchor_right = 1.0
+	p.offset_left = -26
+	p.offset_top = -8
+	p.offset_right = 4
+	p.offset_bottom = 24
+	var l := label(text, 20, Palette.WHITE)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	p.add_child(l)
+	on.add_child(p)
+
+
 static func icon_button(icon: String, color: Color = Palette.UI_PANEL, size: int = 84) -> Button:
 	return button("", color, icon, size, size)
 

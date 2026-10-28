@@ -96,6 +96,66 @@ func _ready() -> void:
 	await _press_text("Cancelar")
 	_expect(Game.is_unlocked(1), "cancelar não apaga o progresso")
 
+	# Desafio do Dia: abre, joga e volta para a tela do desafio
+	main.go("daily", null)
+	await _wait(0.6)
+	_expect(main._current is DailyScreen, "abre o Desafio do Dia")
+	await _press_text("Jogar")
+	await _wait(0.6)
+	_expect(main._current is Level and (main._current as Level).mode == "daily", "joga o desafio")
+	(main._current as Level).hud.action.emit("menu")
+	await _wait(0.6)
+	_expect(main._current is DailyScreen, "desafio → volta para a tela do desafio")
+
+	# Casinha: carinho e petisco; Álbum
+	main.go("home", null)
+	await _wait(0.6)
+	_expect(main._current is HomeScreen, "abre a Casinha")
+	var home: HomeScreen = main._current
+	var pets_before := Game.stat("pets")
+	var ev := InputEventMouseButton.new()
+	ev.button_index = MOUSE_BUTTON_LEFT
+	ev.pressed = true
+	ev.position = home._pets[0].art.position
+	home._gui_input(ev)
+	_expect(Game.stat("pets") == pets_before + 1, "carinho num bichinho")
+	await _press_text("Petisco")
+	await _press_text("Álbum", true)
+	await _wait(0.6)
+	_expect(main._current is AlbumScreen, "abre o Álbum")
+
+	# Editor: nova fase com a Capitu e uma colmeia, testa e vence com o traço da 1-1
+	main.go("editor", null)
+	await _wait(0.6)
+	_expect(main._current is EditorList, "abre o editor")
+	await _press_text("Nova fase", true)
+	await _wait(0.6)
+	_expect(main._current is EditorScreen, "nova fase no editor")
+	var ed: EditorScreen = main._current
+	var base := LevelDB.get_level(0)
+	ed.draft["animals"] = base["animals"].duplicate(true)
+	ed.draft["nests"] = base["nests"].duplicate(true)
+	ed._select("rock")
+	ed._place(Vector2(600, 980))
+	_expect(ed.draft["rocks"].size() == 1, "editor coloca uma pedra")
+	ed._select("erase")
+	ed._place(Vector2(600, 980))
+	_expect(ed.draft["rocks"].is_empty(), "editor apaga a pedra")
+	await _press_text("Testar", true)
+	await _wait(0.6)
+	_expect(main._current is Level and (main._current as Level).mode == "custom", "testa a fase criada")
+	var clv: Level = main._current
+	for s in Level._to_poly_list(base["solution"]):
+		clv.drawer.feed_stroke(s)
+		await get_tree().physics_frame
+	await _wait_until(func(): return clv.state == Level.State.WON or clv.state == Level.State.LOST, 20.0)
+	_expect(clv.state == Level.State.WON, "a fase criada pode ser vencida")
+	_expect(bool(Game.custom_levels()[0].get("verified", false)), "fase criada ganha o selo de testada")
+	await _wait(1.5)
+	await _press_text("Editor", true)
+	await _wait(0.6)
+	_expect(main._current is EditorScreen, "vitória → volta para o editor")
+
 	# volta ao título pelo botão voltar do Android
 	main._notification(NOTIFICATION_WM_GO_BACK_REQUEST)
 	await _wait(0.6)
@@ -136,6 +196,10 @@ func _press_text(text: String, contains: bool = false) -> void:
 func _find_button(n: Node, text: String, contains: bool) -> Button:
 	if n is Button and (n as Button).is_visible_in_tree() and not (n as Button).disabled:
 		var t := (n as Button).text.strip_edges()
+		# azulejos (UiKit.tile) guardam o texto num Label filho
+		for c in n.get_children():
+			if c is Label and t == "":
+				t = (c as Label).text.strip_edges()
 		if t == text or (contains and t.contains(text)):
 			return n
 	for c in n.get_children():

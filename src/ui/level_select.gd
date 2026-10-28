@@ -166,6 +166,26 @@ func _level_button(index: int, n: int) -> Control:
 			ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.add_child(ic)
 		b.add_child(row)
+		# medalhas extras no topo do botão (apagadas até serem ganhas)
+		var medals := UiKit.hbox(2)
+		medals.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		medals.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+		medals.position += Vector2(-42, 6)
+		for m in Game.MEDALS:
+			var mi := UiIcon.new()
+			mi.icon = Game.MEDAL_INFO[m]["icon"]
+			mi.custom_minimum_size = Vector2(26, 26)
+			mi.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			mi.modulate = Color.WHITE if Game.has_medal(str(lv["id"]), m) else Color(1, 1, 1, 0.22)
+			medals.add_child(mi)
+		b.add_child(medals)
+		if not (lv.get("bosses", []) as Array).is_empty():
+			var crown := UiIcon.new()
+			crown.icon = "trophy"
+			crown.custom_minimum_size = Vector2(34, 34)
+			crown.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			crown.position = Vector2(140, 4)
+			b.add_child(crown)
 		b.pressed.connect(func(): go.emit("level", index))
 	else:
 		b.pressed.connect(func(): Sfx.play("ui_locked"))

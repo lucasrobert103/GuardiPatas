@@ -64,14 +64,33 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 		_current = null
 	match screen:
 		"level":
-			_start_level(int(arg))
+			if arg is Dictionary:
+				_start_custom(arg)
+			else:
+				Game.current_custom = {}
+				_start_level(int(arg))
 			return
+		"daily":
+			_current = DailyScreen.new()
 		"map":
 			var m := LevelSelect.new()
 			m.setup(int(arg) if arg != null else -1)
 			_current = m
 		"collection":
-			_current = CollectionScreen.new()
+			var cs := CollectionScreen.new()
+			if arg is String:
+				cs._tab = arg
+			_current = cs
+		"home":
+			_current = HomeScreen.new()
+		"editor":
+			_current = EditorList.new()
+		"edit":
+			var ed := EditorScreen.new()
+			ed.custom_index = int(arg) if arg != null else -1
+			_current = ed
+		"album":
+			_current = AlbumScreen.new()
 		"splash":
 			_fade.color = SplashScreen.INDIGO
 			_current = SplashScreen.new()
@@ -101,7 +120,35 @@ func _start_level(index: int) -> void:
 		lv.hud._on_hint()
 
 
+## Fase fora da campanha (Desafio do Dia ou fase do editor): os dados vêm prontos.
+func _start_custom(data: Dictionary) -> void:
+	Game.current_custom = data
+	var lv := Level.new()
+	lv.setup(-1, data, true)
+	lv.navigate.connect(_on_level_nav)
+	_current = lv
+	add_child(lv)
+	Sfx.music(Sfx.level_track(data))
+	if Game.pending_hint and lv.hud != null:
+		Game.pending_hint = false
+		lv.hud._on_hint()
+
+
 func _on_level_nav(action: String) -> void:
+	if not Game.current_custom.is_empty():
+		match action:
+			"restart":
+				Game.record_retry()
+				_open("level", Game.current_custom, false)
+			_:
+				var daily := str(Game.current_custom.get("mode", "")) == "daily"
+				var ci := int(Game.current_custom.get("custom_index", -1))
+				Game.current_custom = {}
+				if daily:
+					go("daily", null)
+				else:
+					go("edit", ci)
+		return
 	match action:
 		"restart":
 			Game.record_retry()
