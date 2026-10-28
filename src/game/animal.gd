@@ -13,6 +13,14 @@ const SPECIES := {
 	"lulu": {"name": "Lulu", "shape": "hcapsule", "r": 18.0, "h": 74.0, "mass": 0.9, "rolls": false, "shell": 0, "swims": true},
 	"tuca": {"name": "Tuca", "shape": "hcapsule", "r": 24.0, "h": 92.0, "mass": 5.0, "rolls": false, "shell": 1, "swims": true},
 	"nino": {"name": "Nino", "shape": "circle", "r": 22.0, "h": 0.0, "mass": 0.6, "rolls": false, "shell": 0, "swims": false},
+	"gelinho": {"name": "Gelinho", "shape": "vcapsule", "r": 22.0, "h": 72.0, "mass": 1.4, "rolls": false, "shell": 0, "swims": true, "friction": 0.05},
+	"tata": {"name": "Tatá", "shape": "circle", "r": 24.0, "h": 0.0, "mass": 1.6, "rolls": true, "shell": 0, "swims": false},
+	"pompom": {"name": "Pompom", "shape": "vcapsule", "r": 22.0, "h": 84.0, "mass": 0.8, "rolls": false, "shell": 0, "swims": false},
+	"nuvem": {"name": "Nuvem", "shape": "circle", "r": 32.0, "h": 0.0, "mass": 2.2, "rolls": false, "shell": 2, "swims": false},
+	"fofa": {"name": "Fofa", "shape": "hcapsule", "r": 24.0, "h": 100.0, "mass": 3.0, "rolls": false, "shell": 0, "swims": true},
+	"tito": {"name": "Tito", "shape": "circle", "r": 24.0, "h": 0.0, "mass": 1.0, "rolls": false, "shell": 0, "swims": true},
+	"patinha": {"name": "Patinha", "shape": "circle", "r": 22.0, "h": 0.0, "mass": 0.5, "rolls": false, "shell": 0, "swims": true},
+	"kiko": {"name": "Kiko", "shape": "vcapsule", "r": 24.0, "h": 76.0, "mass": 0.7, "rolls": false, "shell": 0, "swims": false},
 }
 
 const SCARE_RADIUS := 210.0
@@ -46,7 +54,7 @@ func setup(p_species: String, p_level: Level, flip: bool) -> void:
 	can_sleep = false
 	freeze = true
 	var mat := PhysicsMaterial.new()
-	mat.friction = 0.9
+	mat.friction = float(cfg.get("friction", 0.9))
 	mat.bounce = 0.0
 	physics_material_override = mat
 	var cs := CollisionShape2D.new()

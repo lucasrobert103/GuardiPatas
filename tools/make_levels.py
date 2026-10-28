@@ -21,8 +21,10 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "le
 
 GROUND = 1000
 # metade da altura de cada espécie (casa com Animal.SPECIES)
-HALF_H = {"capi": 30, "brasa": 46, "pingo": 28, "lulu": 18, "tuca": 24, "nino": 22}
-HALF_W = {"capi": 56, "brasa": 26, "pingo": 28, "lulu": 37, "tuca": 46, "nino": 22}
+HALF_H = {"capi": 30, "brasa": 46, "pingo": 28, "lulu": 18, "tuca": 24, "nino": 22,
+          "gelinho": 36, "tata": 24, "pompom": 42, "nuvem": 32, "fofa": 24, "tito": 24, "patinha": 22, "kiko": 38}
+HALF_W = {"capi": 56, "brasa": 26, "pingo": 28, "lulu": 37, "tuca": 46, "nino": 22,
+          "gelinho": 22, "tata": 24, "pompom": 22, "nuvem": 32, "fofa": 50, "tito": 24, "patinha": 22, "kiko": 24}
 
 
 def ground(y=GROUND, x0=-400, x1=1120):
@@ -93,6 +95,41 @@ def dome_over(kind, x, floor=GROUND, **kw):
     return dome(x, HALF_W[kind], top, floor, **kw)
 
 
+def hole(x, insect="ant", count=4, interval=0.7, delay=0.4, floor=GROUND):
+    """Buraco no chão: insetos saem dele, a não ser que uma linha esteja em cima."""
+    return {"insect": insect, "pos": [x, floor], "count": count, "interval": interval, "delay": delay, "hole": True}
+
+
+def holes_beside(kind, x, gap=30, **kw):
+    """Dois buracos a `gap` px da borda do bichinho: onde as pernas de um abrigo justo pousam."""
+    hw = HALF_W[kind]
+    return [hole(x - hw - gap, **kw), hole(x + hw + gap, **kw)]
+
+
+def coral(x, y, insect="jellyfish", count=4, interval=0.8, delay=0.4):
+    return {"insect": insect, "pos": [x, y], "count": count, "interval": interval, "delay": delay}
+
+
+def wide_dome(animals, pad=50, apex_gap=40, floor=GROUND):
+    """O "círculo ingênuo": um abrigo folgado em volta de todos os bichinhos."""
+    x0 = min(a["pos"][0] - HALF_W[a["type"]] for a in animals)
+    x1 = max(a["pos"][0] + HALF_W[a["type"]] for a in animals)
+    top = min(a["pos"][1] - HALF_H[a["type"]] for a in animals)
+    return dome((x0 + x1) / 2, (x1 - x0) / 2, top, floor, pad=pad, apex_gap=apex_gap)
+
+
+def slide(points, steps=6):
+    """Rampa suave (para Tinta Firme): interpola os pontos de controle."""
+    out = []
+    for i in range(len(points) - 1):
+        a, b = points[i], points[i + 1]
+        for k in range(steps):
+            t = k / steps
+            out.append([round(a[0] + (b[0] - a[0]) * t, 1), round(a[1] + (b[1] - a[1]) * t, 1)])
+    out.append(points[-1])
+    return out
+
+
 def tent(x, height=110, half_w=55, floor=GROUND):
     """Parede em "Λ": fica em pé sozinha e é íngreme demais para formigas."""
     y = floor - 12
@@ -105,6 +142,9 @@ WORLDS = [
     {"id": 3, "name": "Vale das Formigas"},
     {"id": 4, "name": "Lagoa Misteriosa"},
     {"id": 5, "name": "Acampamento no Quintal"},
+    {"id": 6, "name": "Montanha Gelada"},
+    {"id": 7, "name": "Praia do Sol"},
+    {"id": 8, "name": "Fundo do Mar"},
 ]
 
 
@@ -117,7 +157,8 @@ DEFAULT_STARS = (0.6, 0.8)
 
 
 def L(id_, world, name, tip, animals, nests, solution, ink=None, survive=8, stars=DEFAULT_STARS, strokes=1,
-      terrain=None, props=None, rocks=None, nodraw=None, teaches="", bosses=None):
+      terrain=None, props=None, rocks=None, nodraw=None, teaches="", bosses=None, **extra):
+    """extra: winds, goal, ink_mode, underwater, naive (traços "ingênuos" que DEVEM perder)."""
     if ink is None:
         ink = int(round(sum(stroke_len(st) for st in solution) / INK_RATIO / 10.0) * 10)
     return {
@@ -126,6 +167,7 @@ def L(id_, world, name, tip, animals, nests, solution, ink=None, survive=8, star
         "terrain": terrain if terrain is not None else [ground()],
         "rocks": rocks or [], "props": props or [], "nodraw": nodraw or [],
         "animals": animals, "nests": nests, "bosses": bosses or [], "solution": solution,
+        **extra,
     }
 
 
@@ -318,15 +360,250 @@ def campaign():
                 rocks=[{"pos": [230, 1000], "r": 30}, {"pos": [490, 1000], "r": 30}],
                 bosses=[{"pos": [360, 330], "sway": 180}],
                 teaches="Chefão sem violência."))
+    lv.extend(new_worlds())
     # ajustes finos de tinta/estrelas onde a fase pede outra lógica
     for lvl in lv:
         if lvl["id"] == "2-4":
             # o arco completo dá 2★; usar a caixa como parede (meia-água) dá 3★
             lvl["stars"] = [0.42, 0.8]
+        if lvl["id"] in ("6-9", "7-7", "8-5"):
+            # tinta curtinha: só a solução "esperta" cabe; o arco completo (ingênuo) não
+            sol = stroke_len(lvl["solution"][0])
+            naive = sum(stroke_len(st) for st in lvl.get("naive", [])) or sol * 2
+            lvl["ink"] = int(min(sol / 0.85, naive * 0.9))
+            assert lvl["ink"] > sol * 1.03, lvl["id"]
+            lvl["stars"] = [0.94, 0.99]
         if lvl["id"] == "5-4":
             # "Pouca Tinta": quase não sobra — só a meia-água apoiada no bloco cabe
             lvl["ink"] = int(round(stroke_len(lvl["solution"][0]) / 0.82 / 10.0) * 10)
             lvl["stars"] = [0.9, 0.97]
+    return lv
+
+
+def new_worlds():
+    lv = []
+    # ============================================================ Mundo 6 — Montanha Gelada
+    lv.append(L("6-1", 6, "Olá, Gelinho!",
+                "O Gelinho chegou escorregando da montanha. Proteja ele das abelhas!",
+                [animal("gelinho", 360)], [hive(600, 340, count=5)],
+                [dome_over("gelinho", 360)], survive=7,
+                teaches="Novo bichinho; cenário de neve."))
+    nv = animal("nuvem", 360)
+    lv.append(L("6-2", 6, "Buracos na Neve",
+                "Formigas vão sair dos BURACOS! Desenhe com as pontas da linha EM CIMA deles para tampar.",
+                [nv], holes_beside("nuvem", 360, count=3, interval=0.8) + [hive(610, 330, count=4, delay=1.0)],
+                [dome_over("nuvem", 360, pad=30)], survive=9,
+                naive=[wide_dome([nv])],
+                teaches="Tampar buracos com a própria linha (um círculo folgado deixa os buracos dentro!)."))
+    lv.append(L("6-3", 6, "Grilos Pulões",
+                "Grilos pulam por cima de paredes! Só um abrigo com teto segura.",
+                [animal("kiko", 470)], [hole(110, insect="cricket", count=4, interval=1.0, delay=0.3)],
+                [dome_over("kiko", 470)], survive=11,
+                naive=[tent(320, height=120)],
+                teaches="Inseto que pula: parede não basta."))
+    # Tatá rola pela rampa de Tinta Firme até a toca
+    plateau = {"poly": [[-400, 700], [0, 700], [200, 716], [200, 1800], [-400, 1800]], "style": "ground"}
+    right = ground(x0=520, x1=1120)
+    lv.append(L("6-4", 6, "Rumo à Toca do Tatá",
+                "TINTA FIRME: a linha não cai! Faça uma rampa para o Tatá rolar até a toca.",
+                [{"type": "tata", "pos": [122, 685], "flip": False}], [],
+                [slide([[214, 730], [330, 820], [440, 915], [532, 986]])], survive=10,
+                terrain=[plateau, right, block(660, 880, 760, 1000, "stone")],
+                ink_mode="static", goal={"rect": [560, 900, 100, 100]},
+                naive=[dome_over("tata", 122, floor=708)],
+                teaches="Tinta Firme e objetivo de levar o bichinho até a toca."))
+    lv.append(L("6-5", 6, "Teia na Caverna",
+                "A aranha anda pelo teto e DESCE reto. Formigas vêm pelo chão. Abrigo com teto!",
+                [animal("gelinho", 420)], [{"insect": "spider", "pos": [250, 830], "count": 2, "interval": 2.0, "delay": 0.5}, mound(80, count=4, interval=0.8)],
+                [dome_over("gelinho", 420)], survive=10,
+                terrain=[ground(), block(150, 760, 600, 800, "stone")],
+                naive=[tent(300, height=110)],
+                teaches="Aranha que desce do teto."))
+    cp = animal("capi", 360)
+    lv.append(L("6-6", 6, "Abelha Broca",
+                "A Abelha Broca FURA a linha depois de um tempinho. Dois traços = parede dupla!",
+                [cp], [hive(590, 420, insect="broca", count=3, interval=0.8)],
+                [dome_over("capi", 360, pad=20, apex_gap=26), dome_over("capi", 360, pad=50, apex_gap=60)],
+                survive=6.0, strokes=2,
+                naive=[wide_dome([cp])],
+                teaches="Parede dupla contra quem fura."))
+    lv.append(L("6-7", 6, "Ventania",
+                "Rajadas de vento empurram a linha! Encoste o abrigo na pedra para ele não escorregar.",
+                [animal("nuvem", 340)], [hive(90, 340, count=6, delay=1.0)],
+                [dome_over("nuvem", 340)], survive=10,
+                rocks=[{"pos": [470, 1000], "r": 34}],
+                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 950, "on": 2.0, "off": 1.5, "delay": 0.5}],
+                teaches="Vento empurra linhas e insetos."))
+    # Gelinho escorrega (quase sem atrito) por um tobogã de Tinta Firme até o iglu
+    ice_hill = {"poly": [[-400, 660], [60, 660], [190, 700], [190, 1800], [-400, 1800]], "style": "ice"}
+    lv.append(L("6-8", 6, "Tobogã do Gelinho",
+                "O Gelinho escorrega no gelo! Faça um tobogã de Tinta Firme até o iglu.",
+                [{"type": "gelinho", "pos": [90, 631], "flip": False}], [hive(620, 330, count=3, delay=2.5)],
+                [slide([[204, 714], [320, 800], [430, 900], [534, 986]])], survive=9,
+                terrain=[ice_hill, ground(x0=520, x1=1120), block(670, 880, 760, 1000, "stone")],
+                ink_mode="static", goal={"rect": [560, 900, 110, 100]},
+                naive=[dome_over("gelinho", 90, floor=667)],
+                teaches="Bichinho que escorrega + objetivo."))
+    kk = animal("kiko", 330)
+    lean_k = [[422, 866], [390, 868], [356, 876], [322, 890], [292, 910], [270, 940], [258, 988]]
+    lv.append(L("6-9", 6, "Abrigo na Rocha",
+                "Pouquíssima tinta! Use o paredão de pedra como parede e faça só um telhadinho.",
+                [kk], [hive(100, 330, insect="mosquito", count=6, interval=0.35)],
+                [lean_k], survive=9,
+                terrain=[ground(), block(400, 880, 470, 1000, "stone")],
+                teaches="Usar o cenário e economizar tinta."))
+    nv2 = animal("nuvem", 200)
+    gl2 = animal("gelinho", 520)
+    lv.append(L("6-10", 6, "Pico Nevado",
+                "Dois amigos, dois traços e buracos dos dois lados. Tampe tudo!",
+                [nv2, gl2], holes_beside("nuvem", 200, count=3, interval=0.8) + holes_beside("gelinho", 520, count=3, interval=0.8) + [hive(360, 300, count=6, delay=1.2)],
+                [dome_over("nuvem", 200, pad=30), dome_over("gelinho", 520, pad=30)], survive=10, strokes=2,
+                naive=[wide_dome([nv2], pad=50), wide_dome([gl2], pad=50)],
+                teaches="Revisão: buracos + dois traços."))
+
+    # ============================================================ Mundo 7 — Praia do Sol
+    lv.append(L("7-1", 7, "Pompom na Praia",
+                "Pompom tem orelhas compridas: capriche na altura do abrigo!",
+                [animal("pompom", 380)], [hive(130, 330, count=6)],
+                [dome_over("pompom", 380)], survive=8,
+                teaches="Novo bichinho; cenário de praia."))
+    lv.append(L("7-2", 7, "Coqueiro Traiçoeiro",
+                "Um coco vai cair (veja a linha pontilhada)! Um abrigo firme aguenta o bonk.",
+                [animal("pompom", 360)], [hive(620, 340, count=4, delay=2.0)],
+                [dome_over("pompom", 360)], survive=8,
+                props=[{"type": "coconut", "pos": [360, 520], "drop": 2.0}],
+                teaches="Objetos que caem."))
+    pt = animal("patinha", 360)
+    lv.append(L("7-3", 7, "Caranguejos da Toca",
+                "Caranguejos moram nos buracos da areia. Tampe os buracos com as pontas da linha!",
+                [pt], holes_beside("patinha", 360, insect="crab", count=2, interval=1.2) + [hive(600, 330, count=4, delay=1.0)],
+                [dome_over("patinha", 360, pad=30)], survive=9,
+                naive=[wide_dome([pt])],
+                teaches="Tampar tocas (de novo, agora com caranguejos)."))
+    pt4 = animal("patinha", 130)
+    pp4 = animal("pompom", 600)
+    lv.append(L("7-4", 7, "Piquenique",
+                "As abelhas vão PRIMEIRO no mel. Quando acabar, atacam quem estiver mais perto do pote!",
+                [pt4, pp4], [hive(560, 330, count=6, interval=0.3)],
+                [dome_over("patinha", 130)], survive=10,
+                props=[{"type": "honey", "pos": [250, 978], "amount": 4.0}],
+                naive=[dome_over("pompom", 600)],
+                teaches="Isca de mel: quem está em perigo de verdade?"))
+    lv.append(L("7-5", 7, "Siri Teimoso",
+                "Caranguejos empurram com força e não têm medo de água. Abrigo largo e pesado!",
+                [animal("fofa", 380)], [mound(70, insect="crab", count=3, interval=1.2), hive(640, 330, count=4, delay=1.5)],
+                [dome_over("fofa", 380, pad=30)], survive=11,
+                teaches="Inseto que empurra na praia."))
+    lv.append(L("7-6", 7, "Vespas no Quiosque",
+                "Vespas avisam com \"!\" antes da investida, e ainda tem coco caindo!",
+                [animal("pompom", 400)], [hive(110, 330, insect="wasp", count=2, interval=1.5)],
+                [dome_over("pompom", 400, pad=28)], survive=9,
+                props=[{"type": "coconut", "pos": [400, 500], "drop": 3.0}],
+                teaches="Combinação: investida + queda."))
+    shelf = {"poly": [[300, 860], [720, 860], [720, 1000], [560, 1000], [560, 900], [300, 900]], "style": "stone"}
+    lv.append(L("7-7", 7, "Toca no Rochedo",
+                "Tinta Firme e quase nada de tinta: feche só a entrada da toca da Patinha!",
+                [animal("patinha", 470)], [hive(90, 760, insect="mosquito", count=7, interval=0.3)],
+                [[[288, 913], [288, 950], [288, 988]]], survive=9,
+                terrain=[ground(), shelf], ink_mode="static",
+                naive=[dome_over("patinha", 470, apex_gap=20)],
+                teaches="Tinta Firme como portinha."))
+    dune = {"poly": [[-400, 740], [40, 740], [190, 760], [190, 1800], [-400, 1800]], "style": "ground"}
+    beach_pit = [dune, {"poly": [[190, 1060], [470, 1060], [470, 1800], [190, 1800]], "style": "ground"}, ground(x0=470, x1=1120), block(680, 890, 760, 1000, "stone")]
+    lv.append(L("7-8", 7, "Rumo ao Guarda-Sol",
+                "O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca.",
+                [{"type": "pingo", "pos": [110, 718], "flip": False}], [],
+                [slide([[202, 772], [300, 840], [400, 920], [482, 986]])], survive=10,
+                terrain=beach_pit, props=[{"type": "water", "rect": [190, 990, 280, 70]}],
+                ink_mode="static", goal={"rect": [540, 900, 130, 100]},
+                naive=[dome_over("pingo", 110, floor=748)],
+                teaches="Rampa sobre a água."))
+    pt9 = animal("patinha", 360)
+    lv.append(L("7-9", 7, "Coco e Caranguejo",
+                "Coco caindo E caranguejos nos buracos. Abrigo firme com as pontas nos buracos!",
+                [pt9], holes_beside("patinha", 360, insect="crab", count=2, interval=1.2),
+                [dome_over("patinha", 360, pad=30)], survive=9,
+                props=[{"type": "coconut", "pos": [360, 540], "drop": 2.5}],
+                naive=[wide_dome([pt9])],
+                teaches="Combinar regras."))
+    pp10 = animal("pompom", 190)
+    ff10 = animal("fofa", 500)
+    lv.append(L("7-10", 7, "Festa na Praia",
+                "Dois traços para dois amigos. Cuidado com as tocas e com o coco da Fofa!",
+                [pp10, ff10], holes_beside("pompom", 190, insect="crab", count=2, interval=1.2) + [hive(360, 300, count=6, delay=1.0)],
+                [dome_over("pompom", 190, pad=30), dome_over("fofa", 500, pad=30)], survive=10, strokes=2,
+                props=[{"type": "coconut", "pos": [500, 520], "drop": 3.0}],
+                naive=[wide_dome([pp10], pad=50), dome_over("fofa", 500, pad=30)],
+                teaches="Revisão da praia."))
+
+    # ============================================================ Mundo 8 — Fundo do Mar
+    sea = dict(underwater=True)
+    lv.append(L("8-1", 8, "Olá, Tito!",
+                "No fundo do mar, as águas-vivas nadam devagarinho até o Tito.",
+                [animal("tito", 360)], [coral(600, 380, count=4)],
+                [dome_over("tito", 360)], survive=10, **sea,
+                teaches="Novo mundo: fundo do mar."))
+    lv.append(L("8-2", 8, "Baiacu Bolha",
+                "O baiacu INCHA quando chega perto e empurra tudo. Deixe o abrigo bem espaçoso!",
+                [animal("tito", 360)], [coral(620, 400, insect="puffer", count=3, interval=1.2)],
+                [dome_over("tito", 360, pad=40, apex_gap=44)], survive=10, **sea,
+                teaches="Criatura que cresce."))
+    ff3 = animal("fofa", 360)
+    lv.append(L("8-3", 8, "Caranguejos do Fundo",
+                "Até no fundo do mar tem toca de caranguejo! Tampe com as pontas da linha.",
+                [ff3], holes_beside("fofa", 360, insect="crab", count=2, interval=1.2) + [coral(620, 380, count=3, delay=1.5)],
+                [dome_over("fofa", 360, pad=30)], survive=10, **sea,
+                naive=[wide_dome([ff3])],
+                teaches="Tocas no fundo do mar."))
+    lv.append(L("8-4", 8, "Correnteza",
+                "A correnteza empurra as águas-vivas e a sua linha! Apoie o abrigo na pedra.",
+                [animal("lulu", 340)], [coral(80, 380, count=5, interval=0.7)],
+                [dome_over("lulu", 340)], survive=11,
+                rocks=[{"pos": [450, 1000], "r": 32}],
+                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 500, "on": 2.5, "off": 1.5, "delay": 0.5}],
+                **sea, teaches="Correnteza (vento submarino)."))
+    cave = [ground(), block(200, 880, 260, 1000, "stone"), block(400, 880, 460, 1000, "stone")]
+    lv.append(L("8-5", 8, "Toca do Polvo",
+                "O Tito se escondeu entre as pedras. Só falta uma tampa na entrada de cima!",
+                [animal("tito", 330)], [coral(600, 360, count=5, interval=0.6)],
+                [[[246, 866], [300, 866], [360, 866], [414, 866]]], survive=10,
+                terrain=cave,
+                naive=[dome(330, 130, 880, pad=10, apex_gap=30)],
+                **sea, teaches="Usar o cenário: uma tampinha basta."))
+    tt6 = animal("tito", 300)
+    ll6 = animal("lulu", 440)
+    lv.append(L("8-6", 8, "Cardume Gelatinoso",
+                "Muitas águas-vivas dos dois lados! Um abrigo grande para os dois amigos.",
+                [tt6, ll6], [coral(80, 360, count=5, interval=0.6), coral(640, 360, count=5, interval=0.6, delay=0.8)],
+                [dome(370, 107, 952, pad=24)], survive=11, **sea,
+                teaches="Muitas criaturas."))
+    lv.append(L("8-7", 8, "Recife de Coral",
+                "Baiacus E águas-vivas. Espaço para inchar e nada de frestas!",
+                [animal("fofa", 360)], [coral(620, 360, insect="puffer", count=2, interval=1.5), coral(100, 360, count=4, interval=0.8)],
+                [dome_over("fofa", 360, pad=40, apex_gap=44)], survive=11, **sea,
+                teaches="Combinação no recife."))
+    tt8 = animal("tito", 360)
+    lv.append(L("8-8", 8, "Polvo e Caranguejo",
+                "Tocas de caranguejo e baiacu. Pontas nos buracos e abrigo espaçoso!",
+                [tt8], holes_beside("tito", 360, insect="crab", count=2, interval=1.2, gap=34) + [coral(620, 380, insect="puffer", count=2, interval=1.5, delay=1.5)],
+                [dome_over("tito", 360, pad=34, apex_gap=44)], survive=10, **sea,
+                naive=[wide_dome([tt8], pad=56)],
+                teaches="Tampar + espaço."))
+    lv.append(L("8-9", 8, "Correnteza Forte",
+                "Correnteza fortíssima! Trave o abrigo entre as duas pedras.",
+                [animal("tito", 360)], [coral(80, 360, count=6, interval=0.6)],
+                [dome_over("tito", 360, pad=30)], survive=11,
+                rocks=[{"pos": [270, 1000], "r": 26}, {"pos": [450, 1000], "r": 26}],
+                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 1100, "on": 2.0, "off": 1.0, "delay": 0.5}],
+                **sea, teaches="Travar o abrigo."))
+    tt10 = animal("tito", 190)
+    ff10b = animal("fofa", 500)
+    lv.append(L("8-10", 8, "Rei dos Mares",
+                "O grande final do fundo do mar: dois traços, tocas, baiacus e águas-vivas!",
+                [tt10, ff10b], holes_beside("tito", 190, insect="crab", count=2, interval=1.2) + [coral(360, 330, insect="puffer", count=2, interval=1.5), coral(640, 360, count=4, interval=0.8)],
+                [dome_over("tito", 190, pad=30, apex_gap=40), dome_over("fofa", 500, pad=36, apex_gap=44)], survive=11, strokes=2,
+                naive=[wide_dome([tt10], pad=50), dome_over("fofa", 500, pad=36, apex_gap=44)],
+                **sea, teaches="Revisão final."))
     return lv
 
 

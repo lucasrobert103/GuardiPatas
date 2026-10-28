@@ -27,6 +27,9 @@ func _draw() -> void:
 	DrawUtil.vgradient(self, AREA, pal["sky_top"], pal["sky_bottom"])
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 42 + world_id
+	if world_id == 8:
+		_draw_sea(pal, rng)
+		return
 	if world_id == 5:
 		for i in 60:
 			var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(-300, 700))
@@ -39,7 +42,13 @@ func _draw() -> void:
 	else:
 		draw_circle(Vector2(590, 230), 90.0, Color(1, 0.95, 0.6, 0.25), true, -1.0, true)
 		DrawUtil.disc(self, Vector2(590, 230), 52.0, Color("ffe066"), Color("f5b83d"), 4.0)
-	_hills(pal["far"], 760.0, 140.0, 0.006, 1.3)
+	if world_id == 6:
+		_mountains(pal)
+	elif world_id == 7:
+		_beach(pal, rng)
+		return
+	else:
+		_hills(pal["far"], 760.0, 140.0, 0.006, 1.3)
 	match world_id:
 		2:
 			for i in 9:
@@ -56,6 +65,78 @@ func _draw() -> void:
 	if world_id == 5:
 		_tent(Vector2(110, 930), Color("e07a5f"))
 		_tent(Vector2(640, 940), Color("81b29a"))
+
+
+func _mountains(pal: Dictionary) -> void:
+	# picos nevados em duas camadas
+	var peaks := [[Vector2(-120, 860), 330.0, 260.0], [Vector2(260, 860), 420.0, 330.0], [Vector2(640, 860), 380.0, 280.0], [Vector2(980, 860), 300.0, 240.0]]
+	for pk in peaks:
+		var base: Vector2 = pk[0]
+		var h: float = pk[2]
+		var w: float = pk[1]
+		var tip := base + Vector2(0, -h)
+		draw_colored_polygon(PackedVector2Array([base + Vector2(-w * 0.6, 0), tip, base + Vector2(w * 0.6, 0)]), pal["far"])
+		var cap := PackedVector2Array([tip, tip + Vector2(w * 0.17, h * 0.28), tip + Vector2(w * 0.06, h * 0.22), tip + Vector2(-w * 0.04, h * 0.3), tip + Vector2(-w * 0.17, h * 0.28)])
+		draw_colored_polygon(cap, Color.WHITE)
+	_hills(pal["near"], 900.0, 70.0, 0.009, 2.0)
+	# pinheirinhos com neve
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 606
+	for i in 7:
+		var b := Vector2(-150 + i * 170 + rng.randf_range(-30, 30), 905 + rng.randf_range(-10, 10))
+		_tree(b, rng.randf_range(0.6, 0.9), Color("5f8f88"))
+		draw_colored_polygon(PackedVector2Array([b + Vector2(-20, -126), b + Vector2(0, -150), b + Vector2(20, -126)]), Color.WHITE)
+
+
+func _beach(pal: Dictionary, rng: RandomNumberGenerator) -> void:
+	# mar no horizonte com ondinhas, barquinho e coqueiros
+	draw_rect(Rect2(-700, 760, 2120, 260), pal["far"], true)
+	draw_rect(Rect2(-700, 760, 2120, 6), Color(1, 1, 1, 0.6), true)
+	for i in 14:
+		var x := rng.randf_range(-300, 1000)
+		var y := rng.randf_range(790, 900)
+		draw_arc(Vector2(x, y), 12.0, PI * 1.1, PI * 1.9, 8, Color(1, 1, 1, 0.55), 3.0, true)
+	var boat := Vector2(170, 780)
+	DrawUtil.shape(self, PackedVector2Array([boat + Vector2(-40, 0), boat + Vector2(40, 0), boat + Vector2(28, 16), boat + Vector2(-28, 16)]), Color("e07a5f"), Palette.OUTLINE, 3.0)
+	DrawUtil.tri(self, boat + Vector2(-2, -4), boat + Vector2(-2, -54), boat + Vector2(26, -8), Color.WHITE, Palette.OUTLINE, 3.0)
+	_hills(pal["ground"].darkened(0.06), 930.0, 30.0, 0.008, 1.0)
+	_palm(Vector2(30, 960), 1.0)
+	_palm(Vector2(690, 950), 0.85)
+
+
+func _palm(base: Vector2, s: float) -> void:
+	var trunk := PackedVector2Array()
+	for i in 9:
+		var t := float(i) / 8.0
+		trunk.append(base + Vector2(sin(t * 1.6) * 30.0 * s, -t * 230.0 * s))
+	draw_polyline(trunk, Palette.OUTLINE, 22.0 * s, true)
+	draw_polyline(trunk, Color("b57a45"), 16.0 * s, true)
+	var top := trunk[trunk.size() - 1]
+	for a in [-2.6, -2.0, -1.2, -0.5, 0.2]:
+		var d := Vector2.from_angle(a)
+		DrawUtil.oval(self, top + d * 55.0 * s, Vector2(60, 14) * s, Color("4fae5a"), Palette.OUTLINE, 3.0, a)
+
+
+func _draw_sea(pal: Dictionary, rng: RandomNumberGenerator) -> void:
+	# fundo do mar: raios de luz, bolhas, algas e corais ao longe
+	for i in 6:
+		var x := -200.0 + i * 220.0
+		draw_colored_polygon(PackedVector2Array([Vector2(x, -800), Vector2(x + 90, -800), Vector2(x + 260, 1100), Vector2(x + 140, 1100)]), Color(1, 1, 1, 0.06))
+	for i in 40:
+		var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(-200, 900))
+		draw_arc(p, rng.randf_range(3.0, 8.0), 0.0, TAU, 12, Color(1, 1, 1, 0.35), 2.0, true)
+	_hills(pal["far"], 860.0, 110.0, 0.007, 0.8)
+	for i in 10:
+		var b := Vector2(-200 + i * 130 + rng.randf_range(-30, 30), 930)
+		var pts := PackedVector2Array()
+		for k in 8:
+			pts.append(b + Vector2(sin(k * 0.9 + i) * 10.0, -k * 22.0))
+		draw_polyline(pts, Color("2f9e6e"), 10.0, true)
+	_hills(pal["near"], 940.0, 50.0, 0.012, 2.4)
+	for i in 5:
+		var c := Vector2(-100 + i * 220 + rng.randf_range(-40, 40), 950)
+		for k in 3:
+			DrawUtil.disc(self, c + Vector2(-14 + k * 14, -10 - (k % 2) * 12), 12.0, Color("ff8a8a").lerp(Color("ffb3c7"), k * 0.3), Color(0, 0, 0, 0), 0.0)
 
 
 func _hills(color: Color, base_y: float, amp: float, freq: float, phase: float) -> void:

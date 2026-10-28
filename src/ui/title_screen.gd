@@ -6,8 +6,8 @@ extends Control
 signal go(screen: String, arg: Variant)
 
 ## Largura aproximada da arte de cada espécie e fração à esquerda da origem.
-const ART_WIDTH := {"capi": 118.0, "brasa": 92.0, "pingo": 80.0, "nino": 64.0, "tuca": 104.0, "lulu": 92.0}
-const ART_LEFT := {"capi": 0.5, "brasa": 0.6, "pingo": 0.5, "nino": 0.55, "tuca": 0.5, "lulu": 0.5}
+const ART_WIDTH := {"capi": 118.0, "brasa": 92.0, "pingo": 80.0, "nino": 64.0, "tuca": 104.0, "lulu": 92.0, "gelinho": 60.0, "tata": 70.0, "pompom": 60.0, "nuvem": 80.0, "fofa": 120.0, "tito": 60.0, "patinha": 62.0, "kiko": 70.0}
+const ART_LEFT := {"capi": 0.5, "brasa": 0.6, "pingo": 0.5, "nino": 0.55, "tuca": 0.5, "lulu": 0.5, "gelinho": 0.5, "tata": 0.45, "pompom": 0.5, "nuvem": 0.45, "fofa": 0.5, "tito": 0.5, "patinha": 0.5, "kiko": 0.5}
 
 var _parade: Array[AnimalArt] = []
 var _bee: InsectArt
@@ -20,9 +20,9 @@ func _ready() -> void:
 	add_child(MenuBg.new())
 	var shield := TitleShield.new()
 	add_child(shield)
-	for i in Cast.ORDER.size():
+	for sp in _parade_species():
 		var a := AnimalArt.new()
-		a.species = Cast.ORDER[i]
+		a.species = sp
 		a.preview = true
 		a.accessory = Game.equipped(a.species)
 		a.scale = Vector2(1.15, 1.15)
@@ -78,7 +78,30 @@ func _ready() -> void:
 	coins.add_child(ci)
 	coins.add_child(UiKit.label(str(Game.coins()), 30, Palette.WHITE, 10, Palette.OUTLINE))
 	add_child(coins)
+	var credit := UiKit.label("RetroNexa · retronexa.com.br", 18, Palette.WHITE, 6, Palette.OUTLINE)
+	credit.anchor_left = 0.0
+	credit.anchor_right = 1.0
+	credit.anchor_top = 1.0
+	credit.anchor_bottom = 1.0
+	credit.offset_top = -46
+	credit.offset_bottom = -14
+	credit.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(credit)
 	Sfx.music("music_menu")
+
+
+## Seis bichinhos no desfile: os já conhecidos primeiro (sorteados), completando com a turma inicial.
+func _parade_species() -> Array:
+	var met: Array = Game.data["met"].duplicate()
+	met.shuffle()
+	var out: Array = []
+	for sp in met:
+		if out.size() < 6 and Cast.ORDER.has(sp):
+			out.append(sp)
+	for sp in Cast.ORDER:
+		if out.size() < 6 and not out.has(sp):
+			out.append(sp)
+	return out
 
 
 func _process(delta: float) -> void:

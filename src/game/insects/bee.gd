@@ -5,6 +5,7 @@ extends Insect
 
 
 func _configure() -> void:
+	lured_by_honey = true
 	radius = 11.0
 	max_speed = 230.0
 	agility = 2.6

@@ -16,26 +16,56 @@ const ITEMS := {
 	"bone": {"name": "Boné Listrado", "price": 60},
 	"laco": {"name": "Laço de Bolinhas", "price": 60},
 	"oculos": {"name": "Óculos de Sol", "price": 90},
+	"palha": {"name": "Chapéu de Palha", "price": 90},
+	"estrela": {"name": "Presilha Estrela-do-mar", "price": 100},
 	"flores": {"name": "Coroa de Flores", "price": 120},
 	"cachecol": {"name": "Cachecol Quentinho", "price": 120},
+	"touca": {"name": "Touca de Lã", "price": 140},
 	"coroa": {"name": "Coroa Dourada", "price": 250},
 }
 
-const ACHIEVEMENTS := {
-	"first_win": {"name": "Primeiro Abraço", "desc": "Vença a primeira fase."},
-	"stars_10": {"name": "Céu Estrelado", "desc": "Junte 10 estrelas."},
-	"stars_30": {"name": "Constelação", "desc": "Junte 30 estrelas."},
-	"perfect_5": {"name": "Traço Mestre", "desc": "Consiga 3 estrelas em 5 fases."},
-	"saver": {"name": "Pouca Tinta, Muito Amor", "desc": "Vença usando até 25% da tinta."},
-	"world_1": {"name": "Jardineiro", "desc": "Complete o Jardim dos Bichinhos."},
-	"world_2": {"name": "Guardião da Floresta", "desc": "Complete a Floresta Encantada."},
-	"world_3": {"name": "Amigo das Formigas", "desc": "Complete o Vale das Formigas."},
-	"world_4": {"name": "Mestre da Lagoa", "desc": "Complete a Lagoa Misteriosa."},
-	"world_5": {"name": "Rei do Acampamento", "desc": "Vença a Rainha Zumbina."},
-	"friends_6": {"name": "Turma Completa", "desc": "Conheça os seis bichinhos."},
-	"stylist": {"name": "Estilista", "desc": "Equipe um acessório."},
-	"persistent": {"name": "Nunca Desista", "desc": "Tente de novo 10 vezes."},
-}
+## Conquistas: [id, nome, descrição]. As condições estão em _achievement_checks().
+const ACHIEVEMENT_LIST := [
+	["first_win", "Primeiro Abraço", "Vença a primeira fase."],
+	["wins_10", "Protetor de Plantão", "Vença 10 fases."],
+	["wins_50", "Herói do Quintal", "Vença 50 fases."],
+	["stars_10", "Céu Estrelado", "Junte 10 estrelas."],
+	["stars_30", "Constelação", "Junte 30 estrelas."],
+	["stars_60", "Via Láctea", "Junte 60 estrelas."],
+	["stars_100", "Chuva de Estrelas", "Junte 100 estrelas."],
+	["stars_150", "Universo Fofo", "Junte 150 estrelas."],
+	["perfect_5", "Traço Mestre", "Consiga 3 estrelas em 5 fases."],
+	["perfect_15", "Mão de Artista", "Consiga 3 estrelas em 15 fases."],
+	["perfect_30", "Perfeição Pura", "Consiga 3 estrelas em 30 fases."],
+	["saver", "Pouca Tinta, Muito Amor", "Vença usando até 25% da tinta."],
+	["super_saver", "Uma Gotinha Só", "Vença usando até 15% da tinta."],
+	["world_1", "Jardineiro", "Complete o Jardim dos Bichinhos."],
+	["world_2", "Guardião da Floresta", "Complete a Floresta Encantada."],
+	["world_3", "Amigo das Formigas", "Complete o Vale das Formigas."],
+	["world_4", "Mestre da Lagoa", "Complete a Lagoa Misteriosa."],
+	["world_5", "Rei do Acampamento", "Complete o Acampamento no Quintal."],
+	["world_6", "Alpinista", "Complete a Montanha Gelada."],
+	["world_7", "Rei da Praia", "Complete a Praia do Sol."],
+	["world_8", "Explorador dos Mares", "Complete o Fundo do Mar."],
+	["queen", "Amiga da Rainha", "Vença a Rainha Zumbina."],
+	["friends_6", "Turma Reunida", "Conheça 6 bichinhos."],
+	["friends_10", "Bando Animado", "Conheça 10 bichinhos."],
+	["friends_14", "Turma Completa", "Conheça os 14 bichinhos."],
+	["stylist", "Estilista", "Equipe um acessório."],
+	["shopper", "Comprinhas", "Tenha 3 acessórios."],
+	["wardrobe", "Guarda-roupa Lotado", "Tenha todos os acessórios."],
+	["rich", "Cofrinho Cheio", "Tenha 500 moedas de uma vez."],
+	["plumber", "Tampa-Buracos", "Tampe 5 buracos de insetos."],
+	["delivery", "Entrega Fofa", "Leve bichinhos até a toca 3 vezes."],
+	["artist", "Artista Livre", "Vença uma fase no Modo Livre."],
+	["hint_1", "Pedindo Ajuda", "Use uma dica."],
+	["lines_100", "Rabiscador", "Desenhe 100 linhas."],
+	["lines_500", "Mestre do Giz", "Desenhe 500 linhas."],
+	["streak_5", "Embalado", "Vença 5 fases seguidas sem perder."],
+	["streak_15", "Imparável", "Vença 15 fases seguidas sem perder."],
+	["persistent", "Nunca Desista", "Tente de novo 10 vezes."],
+	["stubborn", "Teimosia do Bem", "Tente de novo 50 vezes."],
+]
 
 const DEFAULT_SETTINGS := {
 	"music": 0.6,
@@ -54,6 +84,10 @@ var current_index := 0
 var hinted := {}
 ## Pedido de dica vindo da tela de derrota (aplicado ao recomeçar a fase).
 var pending_hint := false
+## Modo Livre pedido pelo jogador (vale só para fases já vencidas).
+var free_mode := false
+## Mostra a abertura (RetroNexa) só uma vez por execução.
+var splash_shown := false
 
 
 func _ready() -> void:
@@ -71,7 +105,7 @@ func _default_data() -> Dictionary:
 		"equipped": {},
 		"met": [],
 		"achievements": [],
-		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0},
+		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0},
 		"settings": DEFAULT_SETTINGS.duplicate(),
 	}
 
@@ -151,7 +185,7 @@ func world_completed(world_id: int) -> bool:
 
 
 ## Registra vitória. Retorna um resumo para a tela de resultado.
-func complete_level(id: String, stars: int, ink_used: float, animals: Array) -> Dictionary:
+func complete_level(id: String, stars: int, ink_used: float, animals: Array, boss: bool = false) -> Dictionary:
 	var prev := stars_of(id)
 	var rec := level_record(id).duplicate()
 	rec["stars"] = maxi(prev, stars)
@@ -160,6 +194,9 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array) -> 
 	var gained := Scoring.coins_for(prev, stars)
 	data["coins"] = coins() + gained
 	data["stats"]["wins"] = int(data["stats"]["wins"]) + 1
+	add_stat("streak", 1, false)
+	if boss:
+		add_stat("queen", 1, false)
 	var new_friends: Array = []
 	for a in animals:
 		if not data["met"].has(a):
@@ -173,7 +210,26 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array) -> 
 
 func record_loss() -> void:
 	data["stats"]["losses"] = int(data["stats"]["losses"]) + 1
+	data["stats"]["streak"] = 0
 	save()
+
+
+func record_free_win() -> Array:
+	add_stat("free_wins", 1, false)
+	var got := _check_achievements(0, 1.0)
+	save()
+	return got
+
+
+func stat(key: String) -> int:
+	return int(data["stats"].get(key, 0))
+
+
+## Soma em uma estatística (ex.: buracos tampados) e confere conquistas.
+func add_stat(key: String, amount: int, check: bool = true) -> void:
+	data["stats"][key] = stat(key) + amount
+	if check:
+		_check_achievements(0, 1.0)
 
 
 func record_retry() -> void:
@@ -184,30 +240,48 @@ func record_retry() -> void:
 
 func _check_achievements(stars: int, ink_used: float) -> Array:
 	var got: Array = []
-	var perfect := 0
-	for id in data["levels"].keys():
-		if int(data["levels"][id].get("stars", 0)) == 3:
-			perfect += 1
-	var checks := {
-		"first_win": int(data["stats"]["wins"]) >= 1,
-		"stars_10": total_stars() >= 10,
-		"stars_30": total_stars() >= 30,
-		"perfect_5": perfect >= 5,
-		"saver": stars > 0 and ink_used <= 0.25,
-		"world_1": world_completed(1),
-		"world_2": world_completed(2),
-		"world_3": world_completed(3),
-		"world_4": world_completed(4),
-		"world_5": world_completed(5),
-		"friends_6": data["met"].size() >= 6,
-		"stylist": not data["equipped"].is_empty(),
-		"persistent": int(data["stats"]["retries"]) >= 10,
-	}
+	var checks := _achievement_checks(stars, ink_used)
 	for k in checks.keys():
 		if checks[k] and not data["achievements"].has(k):
 			data["achievements"].append(k)
 			got.append(k)
 	return got
+
+
+func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
+	var perfect := 0
+	for id in data["levels"].keys():
+		if int(data["levels"][id].get("stars", 0)) == 3:
+			perfect += 1
+	var ts := total_stars()
+	var wins := stat("wins")
+	var met: int = data["met"].size()
+	var c := {
+		"first_win": wins >= 1, "wins_10": wins >= 10, "wins_50": wins >= 50,
+		"stars_10": ts >= 10, "stars_30": ts >= 30, "stars_60": ts >= 60, "stars_100": ts >= 100, "stars_150": ts >= 150,
+		"perfect_5": perfect >= 5, "perfect_15": perfect >= 15, "perfect_30": perfect >= 30,
+		"saver": stars > 0 and ink_used <= 0.25, "super_saver": stars > 0 and ink_used <= 0.15,
+		"queen": stat("queen") >= 1,
+		"friends_6": met >= 6, "friends_10": met >= 10, "friends_14": met >= 14,
+		"stylist": not data["equipped"].is_empty(),
+		"shopper": data["owned"].size() >= 3, "wardrobe": data["owned"].size() >= ITEMS.size(),
+		"rich": coins() >= 500,
+		"plumber": stat("plugs") >= 5, "delivery": stat("goals") >= 3, "artist": stat("free_wins") >= 1,
+		"hint_1": stat("hints_used") >= 1,
+		"lines_100": stat("lines") >= 100, "lines_500": stat("lines") >= 500,
+		"streak_5": stat("streak") >= 5, "streak_15": stat("streak") >= 15,
+		"persistent": stat("retries") >= 10, "stubborn": stat("retries") >= 50,
+	}
+	for w in range(1, 9):
+		c["world_%d" % w] = world_completed(w)
+	return c
+
+
+func achievement_info(id: String) -> Dictionary:
+	for a in ACHIEVEMENT_LIST:
+		if a[0] == id:
+			return {"name": a[1], "desc": a[2]}
+	return {"name": id, "desc": ""}
 
 
 # ------------------------------------------------------------------ economia
@@ -223,6 +297,7 @@ func use_hint() -> bool:
 	if hints() <= 0:
 		return false
 	data["hints"] = hints() - 1
+	add_stat("hints_used", 1)
 	save()
 	hints_changed.emit(hints())
 	return true

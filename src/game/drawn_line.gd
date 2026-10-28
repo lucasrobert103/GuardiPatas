@@ -14,9 +14,18 @@ var length_px := 0.0
 var _landed := false
 var _fill: Line2D
 var _shine: Line2D
+## "Tinta Firme": a linha não cai nem se mexe (vira parede/rampa fixa).
+var static_ink := false
+var holes: Array[Vector2] = []
+var _holes_node: Node2D
 
 
-func build(world_points: PackedVector2Array, color: Color = Palette.INK) -> void:
+func build(world_points: PackedVector2Array, color: Color = Palette.INK, p_static: bool = false) -> void:
+	static_ink = p_static
+	if static_ink:
+		color = Palette.INK_STATIC
+		freeze_mode = RigidBody2D.FREEZE_MODE_STATIC
+		freeze = true
 	collision_layer = Layers.LINE
 	collision_mask = Layers.LINE_MASK
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
@@ -77,9 +86,41 @@ func _add_visuals(color: Color) -> void:
 		shine_pts.append(p + Vector2(-1.5, -2.5))
 	_shine.points = shine_pts
 	_shine.width = 3.0
-	_shine.default_color = Color(Palette.INK_HI, 0.8)
+	_shine.default_color = Color(Palette.INK_STATIC_HI if static_ink else Palette.INK_HI, 0.8)
 	_round(_shine)
 	add_child(_shine)
+
+
+## Marca visual de um furo (feito pela abelha-broca). Guardado em coordenadas locais.
+func add_hole(world_pos: Vector2) -> void:
+	var local := to_local(world_pos)
+	var best := local
+	var best_d := INF
+	for i in range(1, points_local.size()):
+		var c := Geometry2D.get_closest_point_to_segment(local, points_local[i - 1], points_local[i])
+		var d := c.distance_squared_to(local)
+		if d < best_d:
+			best_d = d
+			best = c
+	holes.append(best)
+	if _holes_node == null:
+		_holes_node = HoleMarks.new()
+		add_child(_holes_node)
+	(_holes_node as HoleMarks).holes = holes
+	_holes_node.queue_redraw()
+
+
+class HoleMarks:
+	extends Node2D
+	var holes: Array[Vector2] = []
+
+	func _draw() -> void:
+		for h in holes:
+			draw_circle(h, 8.0, Palette.OUTLINE, true, -1.0, true)
+			draw_circle(h, 5.0, Color("1a1420"), true, -1.0, true)
+			for k in 5:
+				var a := TAU * k / 5.0
+				draw_line(h + Vector2.from_angle(a) * 8.0, h + Vector2.from_angle(a + 0.3) * 11.0, Palette.WOOD_DARK, 2.0, true)
 
 
 static func _round(l: Line2D) -> void:

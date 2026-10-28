@@ -14,6 +14,7 @@ var tip_panel: PanelContainer
 var hint_btn: Button
 var hint_badge: Label
 var play_btn: Button
+var free_btn: Button
 var overlay: Control
 
 
@@ -93,6 +94,14 @@ func _build_bottom() -> void:
 	play_btn.visible = false
 	play_btn.pressed.connect(func(): action.emit("play"))
 	root.add_child(play_btn)
+	# Modo Livre: liberado depois de vencer a fase uma vez
+	free_btn = UiKit.button("Livre: sim" if level.free_mode else "Livre", Color("b18cff"), "ink", 0, 96)
+	free_btn.add_theme_font_size_override("font_size", 24)
+	_anchor_box(free_btn, Vector2(0, 1), Rect2(24, -226, 190, 96))
+	free_btn.pressed.connect(func():
+		Game.free_mode = not level.free_mode
+		action.emit("restart"))
+	root.add_child(free_btn)
 
 
 ## Posiciona um controle por âncora (0..1 do pai) + retângulo de deslocamento fixo.
@@ -144,6 +153,7 @@ func refresh() -> void:
 	hint_btn.visible = drawing and not level.solution_strokes().is_empty()
 	hint_badge.text = "" if level.hint_shown else str(Game.hints())
 	play_btn.visible = drawing and level.strokes_total > 1 and not level.lines.is_empty()
+	free_btn.visible = drawing and level.lines.is_empty() and not level.drawer.drawing and Game.is_completed(str(level.data.get("id", "")))
 	ink_bar.queue_redraw()
 
 
@@ -152,14 +162,24 @@ func _process(_delta: float) -> void:
 		return
 	if level.state == Level.State.RUNNING:
 		status_label.text = "Aguente firme! %d" % int(ceil(maxf(level.time_left, 0.0)))
+	elif level.state == Level.State.RUNNING and level.goal != null:
+		status_label.text = "Rumo à toca! %d" % int(ceil(maxf(level.time_left, 0.0)))
+	elif level.state == Level.State.DRAWING and level.free_mode:
+		status_label.text = "Modo Livre: tinta infinita!"
 	elif level.state == Level.State.DRAWING and level.strokes_total > 1:
 		status_label.text = "Traços: %d" % level.strokes_left
+	elif level.state == Level.State.DRAWING and level.ink_mode == "static":
+		status_label.text = "Tinta Firme: a linha não cai!"
 	elif level.state == Level.State.DRAWING:
 		status_label.text = ""
+	if level.state == Level.State.RUNNING and level.goal != null:
+		status_label.text = "Rumo à toca! %d" % int(ceil(maxf(level.time_left, 0.0)))
 
 
 func _on_state(_s: int) -> void:
 	refresh()
+	if level.state != Level.State.DRAWING:
+		free_btn.visible = false
 	if level.state == Level.State.RUNNING:
 		hide_tip()
 		UiKit.pop_in(status_label)
@@ -269,6 +289,8 @@ func _close_overlay() -> void:
 
 # ------------------------------------------------------------------ resultado
 const LOSE_TEXT := {
+	"time": ["O tempo acabou!", "Desenhe uma rampa de Tinta Firme que leve o bichinho até a toca."],
+	"coconut": ["Bonk!", "O coco cai onde a linha pontilhada mostra. Proteja por cima ou desvie!"],
 	"sting": ["Ai! Uma picadinha!", "Procure frestas: os insetos deslizam pela linha até achar uma brecha."],
 	"fall": ["Ops! Caiu!", "Cuidado com o peso da linha: ela cai e pode empurrar o bichinho."],
 	"water": ["Molhou!", "Esse bichinho não nada. Segure-o longe da água!"],
@@ -286,6 +308,26 @@ func _on_result(won: bool, info: Dictionary) -> void:
 
 
 func _build_win(box: VBoxContainer, info: Dictionary) -> void:
+	if info.get("free", false):
+		box.add_child(UiKit.title("Modo Livre!", 60))
+		box.add_child(UiKit.label("Sem limites, só diversão! Estrelas e moedas valem no modo normal.", 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		var got_free: Array = info.get("achievements", [])
+		for a in got_free:
+			box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(a)["name"], 26, Palette.UI_GOOD))
+		var frow := UiKit.hbox(16)
+		box.add_child(frow)
+		var fhome := UiKit.icon_button("home", Palette.UI_PANEL, 96)
+		fhome.pressed.connect(func(): action.emit("menu"))
+		frow.add_child(fhome)
+		var fagain := UiKit.button("De novo", Palette.UI_SECONDARY, "restart", 220, 96)
+		fagain.pressed.connect(func(): action.emit("restart"))
+		frow.add_child(fagain)
+		var fnormal := UiKit.button("Normal", Palette.UI_GOOD, "star", 200, 96)
+		fnormal.pressed.connect(func():
+			Game.free_mode = false
+			action.emit("restart"))
+		frow.add_child(fnormal)
+		return
 	box.add_child(UiKit.title("Salvos!" if level.animals.size() > 1 else "Salvo!", 60))
 	var stars_row := UiKit.hbox(8)
 	box.add_child(stars_row)
@@ -314,7 +356,7 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 			box.add_child(UiKit.label("Novo amigo: %s!" % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
 	var got: Array = info.get("achievements", [])
 	for k in mini(got.size(), 2):
-		box.add_child(UiKit.label("Conquista: %s" % Game.ACHIEVEMENTS[got[k]]["name"], 26, Palette.UI_GOOD))
+		box.add_child(UiKit.label("Conquista: %s" % Game.achievement_info(got[k])["name"], 26, Palette.UI_GOOD))
 	if got.size() > 2:
 		box.add_child(UiKit.label("+%d conquistas! Veja em Bichinhos." % (got.size() - 2), 24, Palette.UI_GOOD))
 	if not got.is_empty():
@@ -370,6 +412,16 @@ class InkBar:
 		sb.set_border_width_all(4)
 		sb.border_color = o
 		draw_style_box(sb, r)
+		if level.free_mode:
+			var rainbow := StyleBoxFlat.new()
+			rainbow.bg_color = Color.from_hsv(fmod(Time.get_ticks_msec() / 4000.0, 1.0), 0.45, 1.0)
+			rainbow.set_corner_radius_all(int(r.size.y * 0.5) - 4)
+			draw_style_box(rainbow, Rect2(r.position + Vector2(5, 5), r.size - Vector2(10, 10)))
+			var c := r.get_center()
+			draw_arc(c + Vector2(-11, 0), 10.0, 0.0, TAU, 20, o, 4.0, true)
+			draw_arc(c + Vector2(11, 0), 10.0, 0.0, TAU, 20, o, 4.0, true)
+			queue_redraw()
+			return
 		var frac := clampf(level.drawer.ink_left / maxf(level.drawer.ink_total, 1.0), 0.0, 1.0)
 		if frac > 0.0:
 			var fill := StyleBoxFlat.new()

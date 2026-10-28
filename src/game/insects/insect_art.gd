@@ -11,6 +11,7 @@ var calmed := false
 var aiming := false
 var excited := false
 var squash := 0.0
+var thread := 0.0
 
 var _t := 0.0
 var _hc := false
@@ -28,6 +29,8 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	if kind == "spider" and thread > 1.0:
+		draw_line(Vector2(0, -thread), Vector2(0, -radius), Color(1, 1, 1, 0.8), 1.5, true)
 	if _hc and not calmed:
 		draw_circle(Vector2.ZERO, radius * 1.9, Palette.DANGER_SOFT, true, -1.0, true)
 		draw_arc(Vector2.ZERO, radius * 1.9, 0.0, TAU, 24, Palette.DANGER, 3.0, true)
@@ -42,6 +45,12 @@ func _draw() -> void:
 		"beetle": _draw_beetle()
 		"termite": _draw_termite()
 		"caterpillar": _draw_caterpillar()
+		"cricket": _draw_cricket()
+		"broca": _draw_broca()
+		"spider": _draw_spider()
+		"crab": _draw_crab()
+		"jellyfish": _draw_jellyfish()
+		"puffer": _draw_puffer()
 	draw_set_transform(Vector2.ZERO)
 	_draw_status()
 
@@ -192,6 +201,109 @@ func _draw_caterpillar() -> void:
 	draw_line(head + Vector2(r * 0.4, -r * 0.6), head + Vector2(r * 0.8, -r * 1.2), o, 1.6, true)
 
 
+func _draw_cricket() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var col := Color("7cc04a")
+	var hop := squash
+	# perna traseira grande dobrada
+	DrawUtil.shape(self, PackedVector2Array([Vector2(-r * 0.4, 0), Vector2(-r * 1.4, -r * (1.2 + hop)), Vector2(-r * 1.6, r * 0.9), Vector2(-r * 1.2, r * 0.9)]), Color("5f9e3a"), o, 2.0)
+	DrawUtil.oval(self, Vector2(-r * 0.2, 0), Vector2(r * 1.1, r * 0.6), col, o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.9, -r * 0.2), r * 0.5, col, o, 2.0)
+	draw_line(Vector2(r * 0.4, r * 0.4), Vector2(r * 0.6, r), o, 1.6, true)
+	_eye_pair(Vector2(r * 1.05, -r * 0.35), r * 0.24)
+	draw_line(Vector2(r * 1.0, -r * 0.6), Vector2(r * 2.0, -r * 1.6), o, 1.4, true)
+	draw_line(Vector2(r * 0.9, -r * 0.6), Vector2(r * 1.6, -r * 1.9), o, 1.4, true)
+
+
+func _draw_broca() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var flap := _wing_flap()
+	DrawUtil.oval(self, Vector2(-r * 0.2, -r * 0.9 * flap), Vector2(r * 0.6, r * 0.8 * flap), Color(0.85, 0.85, 1.0, 0.7), o, 2.0, -0.4)
+	DrawUtil.oval(self, Vector2.ZERO, Vector2(r * 1.15, r * 0.9), Color("2d2f5e"), o, 2.5)
+	DrawUtil.oval(self, Vector2(r * 0.1, -r * 0.35), Vector2(r * 0.6, r * 0.35), Color("ffd23f"), o, 0.0)
+	# "broca" no nariz: gira quando está furando
+	var spin := _t * (30.0 if excited else 4.0)
+	var tip := Vector2(r * 1.15, 0)
+	DrawUtil.tri(self, tip + Vector2(0, -4), tip + Vector2(0, 4), tip + Vector2(r * 0.8, 0), Color("b8b5c9"), o, 2.0)
+	draw_line(tip + Vector2(r * 0.2, sin(spin) * 3.0), tip + Vector2(r * 0.5, -sin(spin) * 2.0), o, 1.5, true)
+	_eye_pair(Vector2(r * 0.55, -r * 0.1), r * 0.3)
+
+
+func _draw_spider() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var wig := sin(_t * 10.0) * 2.0
+	for i in 4:
+		var y := -r * 0.3 + i * r * 0.25
+		draw_polyline(PackedVector2Array([Vector2(-r * 0.4, y), Vector2(-r * 1.3, y - r * 0.6 + wig), Vector2(-r * 1.6, y + r * 0.5)]), o, 2.0, true)
+		draw_polyline(PackedVector2Array([Vector2(r * 0.4, y), Vector2(r * 1.3, y - r * 0.6 - wig), Vector2(r * 1.6, y + r * 0.5)]), o, 2.0, true)
+	DrawUtil.disc(self, Vector2(0, r * 0.15), r * 0.85, Color("8a5fbf"), o, 2.5)
+	DrawUtil.disc(self, Vector2(0, -r * 0.55), r * 0.5, Color("8a5fbf"), o, 2.0)
+	draw_circle(Vector2(-r * 0.3, r * 0.3), r * 0.15, Color("ffd23f"), true, -1.0, true)
+	draw_circle(Vector2(r * 0.3, r * 0.4), r * 0.15, Color("ffd23f"), true, -1.0, true)
+	_eye_pair(Vector2(-r * 0.2, -r * 0.6), r * 0.2)
+	_eye_pair(Vector2(r * 0.25, -r * 0.6), r * 0.2)
+
+
+func _draw_crab() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var col := Color("ff6b4a")
+	var step := sin(_t * 14.0)
+	for i in 3:
+		var lx := -r * 0.6 + i * r * 0.6
+		draw_line(Vector2(lx, r * 0.3), Vector2(lx + step * 3.0 * (1 if i % 2 == 0 else -1), r * 1.0), o, 2.5, true)
+	var snap := absf(sin(_t * 6.0)) * 0.4
+	for s in [-1.0, 1.0]:
+		var c := Vector2(s * r * 1.15, -r * 0.55)
+		DrawUtil.oval(self, c, Vector2(r * 0.42, r * 0.35), col, o, 2.0)
+		draw_line(c + Vector2(s * r * 0.1, -r * 0.1), c + Vector2(s * r * 0.45, -r * (0.35 + snap)), o, 2.0, true)
+	DrawUtil.oval(self, Vector2.ZERO, Vector2(r, r * 0.65), col, o, 2.5)
+	for s in [-1.0, 1.0]:
+		draw_line(Vector2(s * r * 0.3, -r * 0.5), Vector2(s * r * 0.35, -r * 0.95), o, 2.0, true)
+		_eye_pair(Vector2(s * r * 0.35, -r * 1.05), r * 0.2)
+
+
+func _draw_jellyfish() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var pulse := 1.0 + squash * 0.25
+	for i in 4:
+		var x := -r * 0.6 + i * r * 0.4
+		var pts := PackedVector2Array()
+		for k in 6:
+			pts.append(Vector2(x + sin(_t * 4.0 + k + i) * 3.0, r * 0.2 + k * r * 0.25))
+		draw_polyline(pts, Color(1.0, 0.6, 0.8, 0.85), 2.5, true)
+	var dome := PackedVector2Array()
+	for k in 13:
+		var a := PI + PI * k / 12.0
+		dome.append(Vector2(cos(a) * r * pulse, sin(a) * r * 0.85 / pulse + r * 0.2))
+	DrawUtil.shape(self, dome, Color(1.0, 0.62, 0.85, 0.75), o, 2.0)
+	_eye_pair(Vector2(-r * 0.3, -r * 0.2), r * 0.18)
+	_eye_pair(Vector2(r * 0.3, -r * 0.2), r * 0.18)
+
+
+func _draw_puffer() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var big := r > 18.0
+	if big:
+		var spikes := PackedVector2Array()
+		for k in 24:
+			var a := TAU * k / 24.0
+			spikes.append(Vector2.from_angle(a) * (r * (1.18 if k % 2 == 0 else 0.98)))
+		DrawUtil.shape(self, spikes, Color("f2b84b"), o, 2.0)
+	DrawUtil.tri(self, Vector2(-r * 0.9, 0), Vector2(-r * 1.5, -r * 0.5), Vector2(-r * 1.5, r * 0.5), Color("ffcf5c"), o, 2.0)
+	DrawUtil.disc(self, Vector2.ZERO, r, Color("ffcf5c"), o, 2.5)
+	DrawUtil.oval(self, Vector2(r * 0.1, r * 0.35), Vector2(r * 0.6, r * 0.4), Color("fff1cf"), o, 0.0)
+	for k in 3:
+		draw_circle(Vector2(-r * 0.4 + k * r * 0.3, -r * 0.45), r * 0.09, Color("c98a2a"), true, -1.0, true)
+	_eye_pair(Vector2(r * 0.45, -r * 0.2), r * 0.24)
+	DrawUtil.oval(self, Vector2(r * 0.85, r * 0.15), Vector2(r * 0.12, r * 0.1), Color("7a2e3a"), o, 1.5)
+
+
 func _draw_status() -> void:
 	var top := Vector2(0, -radius * 2.2)
 	if aiming and not calmed:
@@ -205,7 +317,7 @@ func _draw_status() -> void:
 			var a := _t * 6.0 + PI * i
 			var p := top + Vector2(cos(a) * 10.0, sin(a) * 3.0)
 			DrawUtil.shape(self, DrawUtil.star_points(p, 5.0, 2.2), Palette.GOLD, Palette.OUTLINE, 1.5)
-	elif calmed and kind in ["ant", "beetle", "termite", "caterpillar"]:
+	elif calmed and kind in ["ant", "beetle", "termite", "caterpillar", "cricket", "crab"]:
 		var z := fmod(_t, 1.5) / 1.5
 		var font := ThemeDB.fallback_font
 		draw_string(font, top + Vector2(4, -z * 14.0), "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(Palette.OUTLINE, 1.0 - z))

@@ -21,6 +21,10 @@ var points := PackedVector2Array()
 var nodraw: Array[Rect2] = []
 var bounds := Rect2(8, 150, 704, 1122)
 var hint_strokes: Array = []
+## Tinta Firme (linhas fixas) muda a cor da prévia.
+var static_ink := false
+## Modo Livre: a prévia ganha cores de arco-íris.
+var infinite := false
 
 var _pending: Array[Vector2] = []
 var _end_requested := false
@@ -303,8 +307,10 @@ func _draw() -> void:
 			var pulse := 10.0 + 3.0 * sin(_t * 6.0)
 			draw_circle(pts[0], pulse, Color(Palette.GOLD, 0.8), true, -1.0, true)
 	if points.size() >= 1:
-		var low := ink_left / maxf(ink_total, 1.0) < 0.2
-		var col := Palette.INK_LOW if low else Palette.INK
+		var low := ink_left / maxf(ink_total, 1.0) < 0.2 and not infinite
+		var col := Palette.INK_LOW if low else (Palette.INK_STATIC if static_ink else Palette.INK)
+		if infinite:
+			col = Color.from_hsv(fmod(_t * 0.25, 1.0), 0.55, 1.0)
 		if points.size() >= 2:
 			draw_polyline(points, Palette.OUTLINE, DrawnLine.THICKNESS + Palette.OUTLINE_W * 2.0, true)
 		draw_circle(points[0], DrawnLine.THICKNESS * 0.5 + Palette.OUTLINE_W, Palette.OUTLINE, true, -1.0, true)

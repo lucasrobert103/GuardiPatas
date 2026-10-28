@@ -13,8 +13,10 @@ func _ready() -> void:
 	Game.load_save()
 	main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
-	await _wait(0.8)
-	_expect(main._current is TitleScreen, "abre na tela de título")
+	await _wait(0.5)
+	_expect(main._current is SplashScreen, "abre na abertura RetroNexa")
+	await _wait(SplashScreen.DURATION + 0.8)
+	_expect(main._current is TitleScreen, "abertura leva ao título")
 
 	await _press_text("Jogar")
 	_expect(main._current is LevelSelect, "Jogar → mapa")

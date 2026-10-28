@@ -12,6 +12,11 @@ var agility := 3.0
 var flying := true
 var calmed := false
 var art: InsectArt
+var shape: CircleShape2D
+## Não é levado pela água (caranguejo, água-viva, baiacu).
+var water_proof := false
+## Prefere o pote de mel enquanto houver mel (abelhas, vespas, brocas).
+var lured_by_honey := false
 
 var _t := 0.0
 var _phase := 0.0
@@ -41,9 +46,9 @@ func setup(p_level: Level, p_kind: String) -> void:
 	mat.bounce = 0.25 if flying else 0.0
 	physics_material_override = mat
 	var cs := CollisionShape2D.new()
-	var c := CircleShape2D.new()
-	c.radius = radius
-	cs.shape = c
+	shape = CircleShape2D.new()
+	shape.radius = radius
+	cs.shape = shape
 	add_child(cs)
 	art = InsectArt.new()
 	art.kind = kind
@@ -100,7 +105,7 @@ func _calm_behavior(_delta: float) -> void:
 
 ## Água leva o inseto embora (sem violência: ele sai boiando numa bolha).
 func wash_away() -> void:
-	if is_queued_for_deletion():
+	if is_queued_for_deletion() or water_proof:
 		return
 	Fx.splash(level.fx_layer, global_position)
 	Sfx.play("splash", -4.0, 1.2, 0.2, 0.08)
@@ -109,6 +114,12 @@ func wash_away() -> void:
 
 # ------------------------------------------------------------------ helpers de movimento
 func target_point() -> Vector2:
+	if lured_by_honey:
+		var h: HoneyPot = level.nearest_honey(global_position)
+		if h != null:
+			if global_position.distance_to(h.global_position) < 70.0:
+				h.eat(get_physics_process_delta_time())
+			return h.global_position
 	var a: Animal = level.nearest_animal(global_position)
 	return a.global_position if a != null else global_position
 

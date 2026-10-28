@@ -301,6 +301,22 @@ def sfx_all():
         mix_at(buf, tone * env_adsr(n, 0.03, 0.05, 0.8, 0.12), int(i * 0.34 * SR))
     write_wav("lose", buf, peak=0.7)
 
+    # Abertura RetroNexa: arpejo chiptune (onda quadrada) + acorde brilhante
+    def square(freq, dur, duty=0.5):
+        t = t_axis(dur)
+        ph = (freq * t) % 1.0
+        n = len(t)
+        return np.where(ph < duty, 1.0, -1.0) * env_adsr(n, 0.002, 0.03, 0.7, 0.04)
+    buf = np.zeros(int(2.2 * SR))
+    seq = ["C5", "E5", "G5", "C6", "E6", "G6"]
+    for i, nm in enumerate(seq):
+        mix_at(buf, square(note(nm), 0.12, 0.25) * 0.35, int(i * 0.09 * SR))
+    for nm in ["C5", "G5", "C6", "E6"]:
+        mix_at(buf, square(note(nm), 1.1, 0.5) * 0.16 * env_exp(int(1.1 * SR), 0.5), int(0.6 * SR))
+    mix_at(buf, bell(note("C7"), 1.2, 0.8) * 0.3, int(0.6 * SR))
+    mix_at(buf, soft_kick() * 0.7, int(0.6 * SR))
+    write_wav("retro_jingle", buf, peak=0.7)
+
     # Desbloqueio: fanfarrinha
     buf = np.zeros(int(1.4 * SR))
     for i, nm in enumerate(["G5", "C6", "E6", "G6"]):

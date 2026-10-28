@@ -35,6 +35,7 @@ func _ready() -> void:
 	var back := UiKit.button("Voltar", Palette.UI_GOOD, "back", 0, 80)
 	back.pressed.connect(func(): go.emit("title", null))
 	row.add_child(back)
+	box.add_child(UiKit.label("Desenvolvido por RetroNexa · retronexa.com.br", 22, Color("9b4fd6")))
 	box.add_child(UiKit.label("Versão %s" % ProjectSettings.get_setting("application/config/version", "dev"), 20, Color(Palette.UI_TEXT, 0.6)))
 	UiKit.pop_in(panel)
 

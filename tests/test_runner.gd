@@ -14,6 +14,7 @@ extends Node
 var failures := 0
 var passed := 0
 var only_level := ""
+var only_world := 0
 var trace := false
 var variants := false
 
@@ -22,6 +23,8 @@ func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--level="):
 			only_level = a.substr(8)
+		if a.begins_with("--world="):
+			only_world = int(a.substr(8))
 		if a == "--trace":
 			trace = true
 		if a == "--variants":
@@ -29,7 +32,7 @@ func _ready() -> void:
 	Game.persist = false
 	Game.load_save()
 	await get_tree().process_frame
-	if only_level == "":
+	if only_level == "" and only_world == 0:
 		_unit_line_math()
 		_unit_scoring()
 		_unit_progress()
@@ -154,14 +157,23 @@ func _test_levels() -> void:
 		var id := str(data["id"])
 		if only_level != "" and id != only_level:
 			continue
+		if only_world != 0 and int(data["world"]) != only_world:
+			continue
 		check(not data.get("solution", []).is_empty(), "%s tem solução registrada" % id)
 		var won := await _run_level(i, data, true)
 		check(won["state"] == Level.State.WON, "%s: solução vence (estado=%s motivo=%s t=%.1fs linhas=%d)" % [id, won["state_name"], won["reason"], won["time"], won["lines"]])
 		var lost := await _run_level(i, data, false)
 		check(lost["state"] == Level.State.LOST, "%s: sem linha, perde (estado=%s t=%.1fs)" % [id, lost["state_name"], lost["time"]])
+		var naive_txt := ""
+		if not data.get("naive", []).is_empty():
+			if trace:
+				print("    --- ingênuo ---")
+			var nv := await _run_level(i, data, true, Level._to_poly_list(data["naive"]))
+			check(nv["state"] == Level.State.LOST, "%s: o 'círculo ingênuo' NÃO pode vencer (estado=%s motivo=%s)" % [id, nv["state_name"], nv["reason"]])
+			naive_txt = "  ingênuo=%s(%s)" % [nv["state_name"], nv["reason"]]
 		if variants:
 			await _run_variants(i, data)
-		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"]])
+		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)%s" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"], naive_txt])
 
 
 ## Relatório (não obrigatório): traços "parecidos" com a solução ainda vencem?

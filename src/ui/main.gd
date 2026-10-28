@@ -15,7 +15,8 @@ func _ready() -> void:
 	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(_fade)
-	_open("title", null, false)
+	_open("title" if Game.splash_shown else "splash", null, false)
+	Game.splash_shown = true
 	var tw := create_tween()
 	tw.tween_property(_fade, "modulate:a", 0.0, 0.5)
 
@@ -47,6 +48,7 @@ func go(screen: String, arg: Variant) -> void:
 	tw.tween_property(_fade, "modulate:a", 1.0, 0.18)
 	await tw.finished
 	_open(screen, arg, true)
+	_fade.color = Palette.UI_BG
 	var tw2 := create_tween()
 	tw2.tween_property(_fade, "modulate:a", 0.0, 0.22)
 	await tw2.finished
@@ -70,6 +72,9 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 			_current = m
 		"collection":
 			_current = CollectionScreen.new()
+		"splash":
+			_fade.color = SplashScreen.NIGHT
+			_current = SplashScreen.new()
 		"settings":
 			_current = SettingsScreen.new()
 		_:
@@ -102,6 +107,8 @@ func _on_level_nav(action: String) -> void:
 			Game.record_retry()
 			_open("level", Game.current_index, false)
 		"next":
+			Game.free_mode = false
 			go("level", Game.current_index + 1)
 		"menu":
+			Game.free_mode = false
 			go("map", int(LevelDB.get_level(Game.current_index).get("world", 1)))

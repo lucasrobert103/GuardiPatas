@@ -34,6 +34,18 @@ var platforms: Array[MovingPlatform] = []
 var props: Array[Crate] = []
 var lines: Array[DrawnLine] = []
 var queens: Array[QueenBee] = []
+var honeys: Array[HoneyPot] = []
+var coconuts: Array[Coconut] = []
+var winds: Array[WindZone] = []
+var goal: GoalZone
+
+## "static": as linhas não caem (Tinta Firme). "normal": linhas com peso.
+var ink_mode := "normal"
+## Fundo do mar: todos os bichinhos estão na água e ninguém "molha".
+var underwater := false
+## Modo Livre: tinta infinita e vários traços; não vale estrelas nem moedas.
+var free_mode := false
+var _goal_t := 0.0
 
 var world: Node2D
 var fx_layer: Node2D
@@ -54,6 +66,11 @@ func setup(p_index: int, p_data: Dictionary, p_with_hud: bool = true) -> void:
 	survive = float(data.get("survive", 8.0))
 	time_left = survive
 	strokes_total = int(data.get("strokes", 1))
+	ink_mode = str(data.get("ink_mode", "normal"))
+	underwater = bool(data.get("underwater", false))
+	free_mode = Game.free_mode and Game.is_completed(str(data.get("id", "")))
+	if free_mode:
+		strokes_total = 20
 	strokes_left = strokes_total
 
 
@@ -125,7 +142,19 @@ func _build() -> void:
 	var nodraw: Array[Rect2] = []
 	for r in data.get("nodraw", []):
 		nodraw.append(Rect2(r[0], r[1], r[2], r[3]))
-	drawer.setup(float(data.get("ink", 800)), nodraw)
+	if data.has("goal"):
+		var gr: Array = data["goal"]["rect"]
+		goal = GoalZone.new()
+		goal.setup(Rect2(gr[0], gr[1], gr[2], gr[3]))
+		world.add_child(goal)
+	for wcfg in data.get("winds", []):
+		var wz := WindZone.new()
+		wz.setup(wcfg, underwater)
+		add_child(wz)
+		winds.append(wz)
+	drawer.static_ink = ink_mode == "static"
+	drawer.infinite = free_mode
+	drawer.setup(1000000.0 if free_mode else float(data.get("ink", 800)), nodraw)
 	drawer.stroke_finished.connect(_on_stroke_finished)
 	add_child(drawer)
 
@@ -149,6 +178,18 @@ func _build_prop(p: Dictionary) -> void:
 			var r: Array = p["rect"]
 			w.setup(Rect2(r[0], r[1], r[2], r[3]), self)
 			world.add_child(w)
+		"honey":
+			var h := HoneyPot.new()
+			h.position = _v(p["pos"])
+			h.setup(float(p.get("amount", 6.0)))
+			world.add_child(h)
+			honeys.append(h)
+		"coconut":
+			var cn := Coconut.new()
+			cn.position = _v(p["pos"])
+			cn.setup(self, float(p.get("drop", 3.0)))
+			world.add_child(cn)
+			coconuts.append(cn)
 		"platform":
 			var m := MovingPlatform.new()
 			var r: Array = p["rect"]
@@ -210,8 +251,9 @@ func _on_stroke_finished(points: PackedVector2Array) -> void:
 	if state != State.DRAWING:
 		return
 	var line := DrawnLine.new()
-	line.build(points)
-	line.freeze = strokes_left > 1
+	line.build(points, Palette.INK, ink_mode == "static")
+	if not line.static_ink:
+		line.freeze = strokes_left > 1
 	world.add_child(line)
 	lines.append(line)
 	Game.data["stats"]["lines"] = int(Game.data["stats"]["lines"]) + 1
@@ -259,7 +301,10 @@ func start_simulation() -> void:
 	for c in props:
 		c.freeze = false
 	for l in lines:
-		l.freeze = false
+		if not l.static_ink:
+			l.freeze = false
+	for w in winds:
+		w.begin()
 	for n in nests:
 		n.begin()
 	for p in platforms:
@@ -284,16 +329,59 @@ func _physics_process(delta: float) -> void:
 		time_left -= delta
 		for l in lamps:
 			l.tick(delta)
+		for c in coconuts:
+			if is_instance_valid(c):
+				c.tick(_sim_time)
+		_apply_wind(delta)
 		for a in animals:
 			if a.global_position.y > FALL_Y:
 				lose("fall")
+				return
+		if goal != null:
+			_check_goal(delta)
+			if state != State.RUNNING:
 				return
 		var whole := int(ceil(time_left))
 		if whole != _last_tick and whole <= 3 and whole > 0:
 			_last_tick = whole
 			Sfx.play("tick", -2.0, 1.0 + (3 - whole) * 0.1)
 		if time_left <= 0.0:
-			win()
+			if goal != null:
+				lose("time")
+			else:
+				win()
+
+
+func _apply_wind(delta: float) -> void:
+	if winds.is_empty():
+		return
+	for w in winds:
+		w.tick(delta)
+		if not w.active:
+			continue
+		for l in lines:
+			if not l.static_ink and not l.freeze:
+				w.push(l)
+		for c in props:
+			if is_instance_valid(c) and not c.freeze:
+				w.push(c)
+		for i in insects:
+			if is_instance_valid(i) and i.flying:
+				# insetos sentem o vento mais fraco: ele desvia, mas não decide a fase
+				w.push(i, 0.3)
+
+
+func _check_goal(delta: float) -> void:
+	var inside := true
+	for a in animals:
+		if not goal.rect.has_point(a.global_position):
+			inside = false
+			break
+	_goal_t = _goal_t + delta if inside else 0.0
+	if _goal_t >= 0.35:
+		goal.reached = true
+		Game.add_stat("goals", 1)
+		win()
 
 
 func _process(delta: float) -> void:
@@ -381,6 +469,19 @@ func nearest_crate(pos: Vector2, max_dist: float) -> Crate:
 	return best
 
 
+func nearest_honey(pos: Vector2) -> HoneyPot:
+	var best: HoneyPot = null
+	var best_d := INF
+	for h in honeys:
+		if not h.has_honey():
+			continue
+		var d := pos.distance_squared_to(h.global_position)
+		if d < best_d:
+			best_d = d
+			best = h
+	return best
+
+
 func nearest_lit_lamp(pos: Vector2) -> Lamp:
 	var best: Lamp = null
 	var best_d := INF
@@ -410,8 +511,19 @@ func _on_animal_stung(animal: Animal, _insect: Node) -> void:
 	lose("sting")
 
 
+func on_animal_bonked(animal: Animal) -> void:
+	if state != State.RUNNING:
+		return
+	Sfx.play("bonk", 2.0, 0.6)
+	Sfx.vibrate(100)
+	shake(8.0)
+	animal.art.mood = "ouch"
+	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Bonk!", Palette.WOOD_DARK)
+	lose("coconut")
+
+
 func on_animal_in_water(animal: Animal) -> void:
-	if animal.can_swim() or state != State.RUNNING:
+	if animal.can_swim() or underwater or state != State.RUNNING:
 		return
 	Fx.splash(fx_layer, animal.global_position)
 	Sfx.play("splash")
@@ -419,6 +531,8 @@ func on_animal_in_water(animal: Animal) -> void:
 
 
 func ink_used() -> float:
+	if free_mode:
+		return 0.0
 	return 1.0 - drawer.ink_left / maxf(drawer.ink_total, 1.0)
 
 
@@ -438,7 +552,13 @@ func win() -> void:
 	var met: Array = []
 	for a in animals:
 		met.append(a.species)
-	var info := Game.complete_level(str(data.get("id", "?")), stars, used, met)
+	var info: Dictionary
+	if free_mode:
+		# Modo Livre: só diversão — não mexe em estrelas nem moedas
+		info = {"free": true, "coins": 0, "new_friends": [], "achievements": Game.record_free_win()}
+		stars = 0
+	else:
+		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, queens.size() > 0)
 	info["stars"] = stars
 	info["ink_used"] = used
 	last_result = info

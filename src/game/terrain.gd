@@ -17,7 +17,11 @@ func setup(p_poly: PackedVector2Array, p_style: String, p_world: int) -> void:
 	collision_layer = Layers.TERRAIN
 	collision_mask = 0
 	var mat := PhysicsMaterial.new()
-	mat.friction = 0.95 if style != "glass" else 0.4
+	mat.friction = 0.95
+	if style == "glass":
+		mat.friction = 0.4
+	elif style == "ice":
+		mat.friction = 0.04
 	physics_material_override = mat
 	var cp := CollisionPolygon2D.new()
 	cp.polygon = poly
@@ -57,6 +61,12 @@ func _find_top_edges() -> void:
 func _draw() -> void:
 	var pal := Palette.world(world_id)
 	match style:
+		"ice":
+			DrawUtil.shape(self, poly, Palette.ICE)
+			var ri := _bounds()
+			for k in 3:
+				var x0 := ri.position.x + ri.size.x * (0.2 + 0.25 * k)
+				draw_line(Vector2(x0, ri.position.y + 10), Vector2(x0 + 24, ri.position.y + 4), Color(1, 1, 1, 0.9), 4.0, true)
 		"stone":
 			DrawUtil.shape(self, poly, Palette.STONE)
 			var rb := _bounds()
@@ -95,6 +105,12 @@ func _draw() -> void:
 
 func _draw_decor(p: Vector2, kind: int, s: float, pal: Dictionary) -> void:
 	var o := Palette.OUTLINE
+	if world_id in Palette.SNOW_WORLDS:
+		_draw_snow_decor(p, kind, s)
+		return
+	if world_id in Palette.SAND_WORLDS:
+		_draw_sand_decor(p, kind, s)
+		return
 	match kind:
 		0:
 			# tufo de grama
@@ -111,6 +127,54 @@ func _draw_decor(p: Vector2, kind: int, s: float, pal: Dictionary) -> void:
 			DrawUtil.disc(self, c, 3.5 * s, Palette.GOLD, o, 1.5)
 		3:
 			# pedrinha
+			DrawUtil.oval(self, p + Vector2(0, -10), Vector2(9, 6) * s, Palette.STONE, o, 2.5)
+
+
+func _draw_snow_decor(p: Vector2, kind: int, s: float) -> void:
+	var o := Palette.OUTLINE
+	match kind:
+		0, 1:
+			# montinho de neve
+			DrawUtil.oval(self, p + Vector2(0, -6), Vector2(16, 9) * s, Color.WHITE, Color("c9d6ea"), 2.5)
+		2:
+			# cristal de gelo
+			var c := p + Vector2(0, -16 * s)
+			for k in 3:
+				var d := Vector2.from_angle(PI * k / 3.0) * 9.0 * s
+				draw_line(c - d, c + d, Color("8fd3ff"), 3.0, true)
+		3:
+			DrawUtil.oval(self, p + Vector2(0, -10), Vector2(9, 6) * s, Palette.STONE, o, 2.5)
+
+
+func _draw_sand_decor(p: Vector2, kind: int, s: float) -> void:
+	var o := Palette.OUTLINE
+	match kind:
+		0:
+			if world_id == 8:
+				# alga balançando
+				var pts := PackedVector2Array()
+				for k in 5:
+					pts.append(p + Vector2(sin(k * 1.3) * 5.0, -8.0 - k * 9.0 * s))
+				draw_polyline(pts, Color("3fae78"), 6.0, true)
+			else:
+				for k in 3:
+					var dx := (k - 1) * 6.0 * s
+					draw_line(p + Vector2(dx, -8), p + Vector2(dx + (k - 1) * 4.0, -24 * s), Color("9ab35a"), 3.0, true)
+		1:
+			# concha
+			var c := p + Vector2(0, -12)
+			var pts := PackedVector2Array()
+			for k in 9:
+				var a := PI + PI * k / 8.0
+				pts.append(c + Vector2(cos(a) * 10.0, sin(a) * 9.0) * s)
+			pts.append(c + Vector2(0, 4) * s)
+			DrawUtil.shape(self, pts, Color("ffc4b8"), o, 2.0)
+			for k in 3:
+				draw_line(c + Vector2(0, 3) * s, c + Vector2(-6 + k * 6, -7) * s, Color("e89a8c"), 1.5, true)
+		2:
+			# estrela-do-mar
+			DrawUtil.shape(self, DrawUtil.star_points(p + Vector2(0, -12), 10.0 * s, 5.0 * s), Color("ff8a65"), o, 2.0)
+		3:
 			DrawUtil.oval(self, p + Vector2(0, -10), Vector2(9, 6) * s, Palette.STONE, o, 2.5)
 
 

@@ -167,8 +167,11 @@ func _build_wardrobe() -> void:
 
 
 func _build_trophies() -> void:
-	for k in Game.ACHIEVEMENTS.keys():
-		var cfg: Dictionary = Game.ACHIEVEMENTS[k]
+	var have: int = Game.data["achievements"].size()
+	_content.add_child(UiKit.label("%d de %d conquistas" % [have, Game.ACHIEVEMENT_LIST.size()], 28, Palette.WHITE, 10, Palette.OUTLINE))
+	for entry in Game.ACHIEVEMENT_LIST:
+		var k: String = entry[0]
+		var cfg := {"name": entry[1], "desc": entry[2]}
 		var got: bool = Game.data["achievements"].has(k)
 		var card := UiKit.panel(Palette.UI_PANEL if got else Color(1, 1, 1, 0.6))
 		var row := UiKit.hbox(12)

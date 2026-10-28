@@ -18,6 +18,7 @@ var _dash_dir := Vector2.ZERO
 
 
 func _configure() -> void:
+	lured_by_honey = true
 	radius = 13.0
 	max_speed = 200.0
 	agility = 3.0

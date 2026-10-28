@@ -25,6 +25,14 @@ const COLORS := {
 	"lulu": {"main": Color("ff9ec7"), "light": Color("ffd0e4"), "dark": Color("e0569b")},
 	"tuca": {"main": Color("7cc576"), "light": Color("6fbf7f"), "dark": Color("3f8f5a")},
 	"nino": {"main": Color("8f9bb3"), "light": Color("f3ead8"), "dark": Color("6b7690")},
+	"gelinho": {"main": Color("2f3a5c"), "light": Color("ffffff"), "dark": Color("ff9f43")},
+	"tata": {"main": Color("b0906a"), "light": Color("d9c2a0"), "dark": Color("7f6448")},
+	"pompom": {"main": Color("fff6ee"), "light": Color("ffc2d4"), "dark": Color("e8d8cc")},
+	"nuvem": {"main": Color("fbfbff"), "light": Color("e8e8f4"), "dark": Color("4a4458")},
+	"fofa": {"main": Color("9fb0c2"), "light": Color("d4dee8"), "dark": Color("6f8196")},
+	"tito": {"main": Color("c77dff"), "light": Color("e5bfff"), "dark": Color("9b4fd6")},
+	"patinha": {"main": Color("ffd84d"), "light": Color("fff0a8"), "dark": Color("ff9f43")},
+	"kiko": {"main": Color("9aa3ad"), "light": Color("e9ecef"), "dark": Color("5f6670")},
 }
 
 ## Pontos de ancoragem para acessórios (cabeça, olhos, pescoço).
@@ -35,6 +43,14 @@ const ANCHORS := {
 	"lulu": {"head": Vector2(20, -22), "eyes": Vector2(27, -6), "neck": Vector2(8, 10), "scale": 0.8},
 	"tuca": {"head": Vector2(40, -16), "eyes": Vector2(43, -6), "neck": Vector2(28, 4), "scale": 0.7},
 	"nino": {"head": Vector2(8, -26), "eyes": Vector2(9, -14), "neck": Vector2(6, 0), "scale": 0.7},
+	"gelinho": {"head": Vector2(4, -34), "eyes": Vector2(8, -18), "neck": Vector2(4, -2), "scale": 0.8},
+	"tata": {"head": Vector2(14, -16), "eyes": Vector2(22, -2), "neck": Vector2(16, 8), "scale": 0.6},
+	"pompom": {"head": Vector2(2, -30), "eyes": Vector2(4, -12), "neck": Vector2(2, 6), "scale": 0.75},
+	"nuvem": {"head": Vector2(20, -20), "eyes": Vector2(22, -2), "neck": Vector2(16, 14), "scale": 0.75},
+	"fofa": {"head": Vector2(32, -26), "eyes": Vector2(36, -10), "neck": Vector2(22, 8), "scale": 0.8},
+	"tito": {"head": Vector2(0, -28), "eyes": Vector2(0, -6), "neck": Vector2(0, 10), "scale": 0.9},
+	"patinha": {"head": Vector2(12, -24), "eyes": Vector2(15, -12), "neck": Vector2(6, 0), "scale": 0.65},
+	"kiko": {"head": Vector2(2, -34), "eyes": Vector2(3, -16), "neck": Vector2(2, 4), "scale": 0.8},
 }
 
 
@@ -91,6 +107,14 @@ func _draw() -> void:
 		"lulu": _draw_lulu()
 		"tuca": _draw_tuca()
 		"nino": _draw_nino()
+		"gelinho": _draw_gelinho()
+		"tata": _draw_tata()
+		"pompom": _draw_pompom()
+		"nuvem": _draw_nuvem()
+		"fofa": _draw_fofa()
+		"tito": _draw_tito()
+		"patinha": _draw_patinha()
+		"kiko": _draw_kiko()
 	_draw_accessory()
 	draw_set_transform(Vector2.ZERO)
 	if mood == "ouch":
@@ -106,6 +130,14 @@ func _base_y() -> float:
 		"tuca": return 24.0
 		"lulu": return 18.0
 		"nino": return 22.0
+		"gelinho": return 36.0
+		"tata": return 24.0
+		"pompom": return 42.0
+		"nuvem": return 32.0
+		"fofa": return 24.0
+		"tito": return 24.0
+		"patinha": return 22.0
+		"kiko": return 38.0
 	return 28.0
 
 
@@ -345,6 +377,183 @@ func _draw_nino() -> void:
 	DrawUtil.oval(self, ac + Vector2(0, -5), Vector2(7, 3.5), Color("8a5a39"), Palette.OUTLINE, 2.5)
 
 
+func _draw_gelinho() -> void:
+	var m := _c("main")
+	var orange := _c("dark")
+	var slide := sin(_t * 2.0) * 0.08
+	DrawUtil.oval(self, Vector2(-10, 34), Vector2(9, 4), orange)
+	DrawUtil.oval(self, Vector2(8, 34), Vector2(9, 4), orange)
+	DrawUtil.oval(self, Vector2(-20, 6), Vector2(7, 18), m, Palette.OUTLINE, Palette.OUTLINE_W, 0.35 + slide)
+	DrawUtil.oval(self, Vector2(0, 2), Vector2(22, 34), m)
+	DrawUtil.oval(self, Vector2(4, 8), Vector2(15, 25), _c("light"), Palette.OUTLINE, 0.0)
+	DrawUtil.oval(self, Vector2(18, 8), Vector2(6, 15), m, Palette.OUTLINE, Palette.OUTLINE_W, -0.35 - slide)
+	# cachecol azul (marca do Gelinho)
+	DrawUtil.oval(self, Vector2(2, 8), Vector2(21, 6), Color("4aa3ff"), Palette.OUTLINE, 3.0)
+	DrawUtil.oval(self, Vector2(-12, 18 + sin(_t * 3.0) * 2.0), Vector2(5, 9), Color("4aa3ff"), Palette.OUTLINE, 3.0, 0.3)
+	DrawUtil.tri(self, Vector2(14, -16), Vector2(28, -12), Vector2(14, -8), orange, Palette.OUTLINE, 2.5)
+	_blush(Vector2(-2, -10), 4.0)
+	_eye(Vector2(2, -20), 4.5)
+	_eye(Vector2(12, -21), 4.0)
+	_mouth(Vector2(16, -2), 5.0)
+
+
+func _draw_tata() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var curl := mood == "scared" or mood == "ouch"
+	if curl:
+		DrawUtil.disc(self, Vector2.ZERO, 24.0, m)
+		for k in 4:
+			draw_arc(Vector2.ZERO, 8.0 + k * 4.0, -PI * 0.9 + k * 0.2, PI * 0.2, 10, d, 3.0, true)
+		_eye(Vector2(10, 4), 4.0)
+		return
+	DrawUtil.oval(self, Vector2(-8, 20), Vector2(6, 4), _c("light"))
+	DrawUtil.oval(self, Vector2(10, 21), Vector2(6, 4), _c("light"))
+	var shell := PackedVector2Array()
+	for i in 15:
+		var a := PI + PI * float(i) / 14.0
+		shell.append(Vector2(-4, 14) + Vector2(cos(a) * 26.0, sin(a) * 34.0))
+	DrawUtil.shape(self, shell, m)
+	for k in 4:
+		var x := -22.0 + k * 12.0
+		draw_line(Vector2(x, 12), Vector2(x + 6, -16 + absf(k - 1.5) * 6.0), d, 3.0, true)
+	DrawUtil.oval(self, Vector2(22, 2), Vector2(12, 10), _c("light"))
+	DrawUtil.tri(self, Vector2(14, -6), Vector2(20, -8), Vector2(16, -20), _c("light"), Palette.OUTLINE, 2.5)
+	draw_circle(Vector2(34, 2), 3.0, Color("ff8fa3"), true, -1.0, true)
+	_eye(Vector2(24, -2), 3.8)
+	_mouth(Vector2(30, 8), 5.0)
+
+
+func _draw_pompom() -> void:
+	var m := _c("main")
+	var droop := 10.0 if mood in ["sad", "scared"] else 0.0
+	DrawUtil.oval(self, Vector2(-8, -40 + droop * 0.5), Vector2(7, 18), m, Palette.OUTLINE, Palette.OUTLINE_W, -0.2 - droop * 0.03)
+	DrawUtil.oval(self, Vector2(-8, -40 + droop * 0.5), Vector2(3, 12), _c("light"), Palette.OUTLINE, 0.0, -0.2 - droop * 0.03)
+	DrawUtil.oval(self, Vector2(10, -42 + droop * 0.5), Vector2(7, 18), m, Palette.OUTLINE, Palette.OUTLINE_W, 0.2 + droop * 0.03)
+	DrawUtil.oval(self, Vector2(10, -42 + droop * 0.5), Vector2(3, 12), _c("light"), Palette.OUTLINE, 0.0, 0.2 + droop * 0.03)
+	DrawUtil.disc(self, Vector2(-20, 24), 8.0, m)
+	DrawUtil.oval(self, Vector2(-6, 38), Vector2(9, 5), _c("dark"))
+	DrawUtil.oval(self, Vector2(10, 38), Vector2(9, 5), _c("dark"))
+	DrawUtil.oval(self, Vector2(0, 18), Vector2(20, 23), m)
+	DrawUtil.disc(self, Vector2(2, -12), 18.0, m)
+	_blush(Vector2(-6, -4), 4.5)
+	_eye(Vector2(-2, -15), 4.5)
+	_eye(Vector2(10, -16), 4.2)
+	draw_circle(Vector2(16, -8), 3.0, Color("ff8fa3"), true, -1.0, true)
+	_mouth(Vector2(15, -1), 6.0)
+	# cenourinha (marca do Pompom)
+	DrawUtil.tri(self, Vector2(12, 14), Vector2(24, 12), Vector2(22, 34), Color("ff9f43"), Palette.OUTLINE, 2.5)
+	DrawUtil.oval(self, Vector2(18, 10), Vector2(6, 3), Color("5cc46a"), Palette.OUTLINE, 2.0, -0.4)
+
+
+func _draw_nuvem() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	for x in [-16.0, -4.0, 10.0, 20.0]:
+		draw_line(Vector2(x, 20), Vector2(x, 32), d, 5.0, true)
+	var puff := 1.0 + 0.03 * sin(_t * 3.0)
+	for k in 9:
+		var a := TAU * k / 9.0
+		DrawUtil.disc(self, Vector2.from_angle(a) * 20.0 * puff + Vector2(-2, 0), 14.0, m, Palette.OUTLINE, 3.0)
+	DrawUtil.disc(self, Vector2(-2, 0), 24.0, m, Palette.OUTLINE, 0.0)
+	if shell_flash > 0.0:
+		draw_circle(Vector2(-2, 0), 32.0, Color(1, 1, 1, shell_flash * 0.7), true, -1.0, true)
+	DrawUtil.oval(self, Vector2(12, -12), Vector2(6, 3), d, Palette.OUTLINE, 2.0, -0.5)
+	DrawUtil.oval(self, Vector2(22, 2), Vector2(13, 15), d)
+	for k in 3:
+		DrawUtil.disc(self, Vector2(16 + k * 6, -12), 5.0, m, Palette.OUTLINE, 2.0)
+	_eye(Vector2(18, 0), 3.6, "dot")
+	_eye(Vector2(27, 0), 3.4, "dot")
+	draw_circle(Vector2(22, 8), 2.0, Color("ff8fa3"), true, -1.0, true)
+	_mouth(Vector2(24, 11), 6.0)
+
+
+func _draw_fofa() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	DrawUtil.tri(self, Vector2(-44, 4), Vector2(-60, -8), Vector2(-58, 16), d, Palette.OUTLINE, 3.0)
+	DrawUtil.oval(self, Vector2(-8, 6), Vector2(44, 20), m)
+	DrawUtil.oval(self, Vector2(-6, 14), Vector2(30, 9), _c("light"), Palette.OUTLINE, 0.0)
+	DrawUtil.oval(self, Vector2(6, 22), Vector2(12, 5), d, Palette.OUTLINE, Palette.OUTLINE_W, 0.4)
+	DrawUtil.disc(self, Vector2(32, -8), 20.0, m)
+	DrawUtil.oval(self, Vector2(44, -2), Vector2(9, 7), _c("light"))
+	draw_circle(Vector2(50, -6), 3.5, Palette.OUTLINE, true, -1.0, true)
+	for k in 3:
+		draw_line(Vector2(46, 0 + k * 3), Vector2(60, -4 + k * 5), Palette.OUTLINE, 1.5, true)
+	_blush(Vector2(28, 2), 4.0)
+	_eye(Vector2(30, -12), 5.0)
+	_eye(Vector2(42, -13), 4.6)
+	_mouth(Vector2(44, 6), 6.0)
+
+
+func _draw_tito() -> void:
+	var m := _c("main")
+	for k in 4:
+		var x0 := -18.0 + k * 12.0
+		var pts := PackedVector2Array()
+		for j in 7:
+			var t := float(j) / 6.0
+			pts.append(Vector2(x0 + sin(_t * 3.0 + k + t * 4.0) * 6.0 * t, 6.0 + t * 22.0))
+		draw_polyline(pts, Palette.OUTLINE, 11.0, true)
+		draw_polyline(pts, m, 7.0, true)
+		draw_circle(pts[pts.size() - 1], 3.5, m, true, -1.0, true)
+	DrawUtil.oval(self, Vector2(0, -6), Vector2(24, 22), m)
+	draw_circle(Vector2(-12, -14), 3.0, _c("light"), true, -1.0, true)
+	draw_circle(Vector2(12, -18), 2.5, _c("light"), true, -1.0, true)
+	_blush(Vector2(-12, 2), 4.0)
+	_blush(Vector2(12, 2), 4.0)
+	_eye(Vector2(-6, -6), 5.0)
+	_eye(Vector2(8, -6), 5.0)
+	_mouth(Vector2(1, 4), 7.0)
+	# chapeuzinho de marinheiro (marca do Tito)
+	if accessory == "":
+		DrawUtil.shape(self, PackedVector2Array([Vector2(-14, -26), Vector2(14, -26), Vector2(10, -36), Vector2(-10, -36)]), Color.WHITE, Palette.OUTLINE, 2.5)
+		draw_line(Vector2(-13, -28), Vector2(13, -28), Color("4aa3ff"), 3.0, true)
+
+
+func _draw_patinha() -> void:
+	var m := _c("main")
+	var bob := sin(_t * 3.0) * 1.5
+	DrawUtil.oval(self, Vector2(-6, 20), Vector2(7, 3), _c("dark"))
+	DrawUtil.oval(self, Vector2(8, 20), Vector2(7, 3), _c("dark"))
+	DrawUtil.tri(self, Vector2(-20, 0), Vector2(-30, -8), Vector2(-24, 6), m, Palette.OUTLINE, 2.5)
+	DrawUtil.oval(self, Vector2(-2, 6 + bob), Vector2(21, 15), m)
+	DrawUtil.oval(self, Vector2(-6, 6 + bob), Vector2(11, 7), _c("light"), Palette.OUTLINE, 2.5, 0.2)
+	DrawUtil.disc(self, Vector2(12, -10 + bob), 13.0, m)
+	draw_line(Vector2(10, -22 + bob), Vector2(6, -30 + bob), Palette.OUTLINE, 3.0, true)
+	draw_line(Vector2(12, -22 + bob), Vector2(14, -31 + bob), Palette.OUTLINE, 3.0, true)
+	DrawUtil.oval(self, Vector2(25, -7 + bob), Vector2(8, 4), _c("dark"))
+	_blush(Vector2(8, -4 + bob), 3.5)
+	_eye(Vector2(15, -13 + bob), 3.6, "dot")
+	_mouth(Vector2(22, -2 + bob), 4.0)
+
+
+func _draw_kiko() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	DrawUtil.oval(self, Vector2(-8, 36), Vector2(8, 4), d)
+	DrawUtil.oval(self, Vector2(10, 36), Vector2(8, 4), d)
+	DrawUtil.oval(self, Vector2(0, 14), Vector2(22, 24), m)
+	DrawUtil.oval(self, Vector2(2, 18), Vector2(12, 15), _c("light"), Palette.OUTLINE, 0.0)
+	# folha de eucalipto
+	DrawUtil.oval(self, Vector2(16, 14), Vector2(10, 5), Color("7fbf8a"), Palette.OUTLINE, 2.5, -0.6)
+	DrawUtil.disc(self, Vector2(-16, -26), 12.0, m)
+	DrawUtil.disc(self, Vector2(-16, -26), 6.0, _c("light"), Palette.OUTLINE, 0.0)
+	DrawUtil.disc(self, Vector2(20, -26), 12.0, m)
+	DrawUtil.disc(self, Vector2(20, -26), 6.0, _c("light"), Palette.OUTLINE, 0.0)
+	DrawUtil.disc(self, Vector2(2, -14), 20.0, m)
+	DrawUtil.oval(self, Vector2(4, -8), Vector2(6, 8), d)
+	_blush(Vector2(-8, -4), 4.0)
+	_eye(Vector2(-6, -16), 4.0)
+	_eye(Vector2(13, -16), 4.0)
+	# olhos sonolentos (Kiko vive cochilando)
+	if mood == "idle" and _blink <= 0.0:
+		for ex in [-6.0, 13.0]:
+			draw_colored_polygon(PackedVector2Array([Vector2(ex - 5, -22), Vector2(ex + 5, -22), Vector2(ex + 5, -17), Vector2(ex - 5, -17)]), m)
+			draw_line(Vector2(ex - 5, -17), Vector2(ex + 5, -17), Palette.OUTLINE, 2.5, true)
+	_mouth(Vector2(5, 2), 6.0)
+
+
 # ------------------------------------------------------------------ acessórios
 func _draw_accessory() -> void:
 	if accessory == "":
@@ -393,6 +602,25 @@ func _draw_accessory() -> void:
 				h + Vector2(7, -5) * s, h + Vector2(14, -12) * s, h + Vector2(14, 2) * s])
 			DrawUtil.shape(self, pts, Palette.GOLD, o, 3.0)
 			draw_circle(h + Vector2(0, -3) * s, 3.0 * s, Color("ff5a7a"), true, -1.0, true)
+		"palha":
+			DrawUtil.oval(self, h + Vector2(0, 2) * s, Vector2(26, 6) * s, Color("f2d27a"), o, 3.0)
+			var top := PackedVector2Array()
+			for i in 13:
+				var a := PI + PI * float(i) / 12.0
+				top.append(h + Vector2(cos(a) * 13.0, sin(a) * 12.0) * s)
+			DrawUtil.shape(self, top, Color("f2d27a"), o, 3.0)
+			draw_line(h + Vector2(-13, -2) * s, h + Vector2(13, -2) * s, Color("e04f5f"), 4.0 * s, true)
+		"estrela":
+			DrawUtil.shape(self, DrawUtil.star_points(h + Vector2(8, -2) * s, 11.0 * s, 5.0 * s), Color("ff8a65"), o, 2.5)
+			draw_circle(h + Vector2(8, -2) * s, 2.0 * s, Color("ffd23f"), true, -1.0, true)
+		"touca":
+			var cap := PackedVector2Array()
+			for i in 13:
+				var a := PI + PI * float(i) / 12.0
+				cap.append(h + Vector2(cos(a) * 17.0, sin(a) * 15.0) * s)
+			DrawUtil.shape(self, cap, Color("e04f5f"), o, 3.0)
+			DrawUtil.oval(self, h + Vector2(0, 0) * s, Vector2(18, 5) * s, Color.WHITE, o, 2.5)
+			DrawUtil.disc(self, h + Vector2(0, -17) * s, 6.0 * s, Color.WHITE, o, 2.5)
 
 
 # ------------------------------------------------------------------ efeitos

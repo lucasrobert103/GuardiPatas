@@ -45,7 +45,17 @@ const WORLDS := {
 	3: {"sky_top": Color("ffb27a"), "sky_bottom": Color("ffe9c7"), "far": Color("e0a679"), "near": Color("cf8f5e"), "accent": Color("ffd23f"), "ground": Color("d9b45a"), "dirt": Color("c08552")},
 	4: {"sky_top": Color("7aa7e0"), "sky_bottom": Color("d6ecff"), "far": Color("8bb8c9"), "near": Color("6fa3b0"), "accent": Color("b3f0ff"), "ground": Color("8ccf7a"), "dirt": Color("a08a74")},
 	5: {"sky_top": Color("3b3f7a"), "sky_bottom": Color("9a86c9"), "far": Color("4d4f8a"), "near": Color("3f4275"), "accent": Color("ffe08a"), "ground": Color("5f9a64"), "dirt": Color("7a6250")},
+	6: {"sky_top": Color("9ec9f0"), "sky_bottom": Color("eef6ff"), "far": Color("c9d6ea"), "near": Color("a9bad6"), "accent": Color("ff9ec7"), "ground": Color("f4f8ff"), "dirt": Color("8e98ad")},
+	7: {"sky_top": Color("5ec8f2"), "sky_bottom": Color("fff1cf"), "far": Color("3fa6d9"), "near": Color("2f8fc4"), "accent": Color("ff8a65"), "ground": Color("ffe3a3"), "dirt": Color("f0c97c")},
+	8: {"sky_top": Color("0f5c8f"), "sky_bottom": Color("39a9d6"), "far": Color("1f7aa8"), "near": Color("176a93"), "accent": Color("ff9ec7"), "ground": Color("f2d79a"), "dirt": Color("d9b878")},
 }
+
+## Mundos com chão sem grama (neve, areia, fundo do mar) e sem flores na decoração.
+const SNOW_WORLDS := [6]
+const SAND_WORLDS := [7, 8]
+const ICE := Color("bfe9ff")
+const INK_STATIC := Color("ffb347")      # "Tinta Firme": não cai
+const INK_STATIC_HI := Color("ffe2b0")
 
 
 static func world(world_id: int) -> Dictionary:
