@@ -47,6 +47,7 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 ## Rodar
 1. Instale o **Godot 4.7.2** e importe `project.godot`.
 2. **F5** — o mouse faz o papel do dedo.
+3. Depois de concluir o desenho, toque em **Velocidade: 1×** para acelerar a simulação em **2×**. Toque novamente para voltar. Pausar, vencer, perder ou sair restaura a velocidade normal; a física mantém o mesmo passo de simulação.
 
 Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` · Exportar para Android e publicar: [docs/14](docs/14-como-rodar-e-publicar.md).
 

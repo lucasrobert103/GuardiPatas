@@ -15,6 +15,7 @@ var hint_btn: Button
 var hint_badge: Label
 var play_btn: Button
 var free_btn: Button
+var speed_btn: Button
 var overlay: Control
 
 
@@ -32,6 +33,7 @@ func bind(p_level: Level) -> void:
 	_build_tip()
 	level.state_changed.connect(_on_state)
 	level.result_ready.connect(_on_result)
+	level.simulation_speed_changed.connect(func(_speed: int): refresh())
 	level.drawer.ink_changed.connect(func(_l, _t): ink_bar.queue_redraw())
 	level.drawer.stroke_started.connect(hide_tip)
 	Game.hints_changed.connect(_on_hints_changed)
@@ -95,6 +97,13 @@ func _build_bottom() -> void:
 	play_btn.visible = false
 	play_btn.pressed.connect(func(): action.emit("play"))
 	root.add_child(play_btn)
+	speed_btn = UiKit.button("Velocidade: 1×", Palette.UI_SECONDARY, "", 280, 80)
+	speed_btn.add_theme_font_size_override("font_size", UiKit.fs(26))
+	_anchor_box(speed_btn, Vector2(0.5, 1), Rect2(-150, -226, 300, 80))
+	speed_btn.visible = false
+	speed_btn.pressed.connect(func():
+		level.set_simulation_speed(2 if level.simulation_speed == 1 else 1))
+	root.add_child(speed_btn)
 	# Modo Livre: liberado depois de vencer a fase uma vez
 	free_btn = UiKit.button("Livre: sim" if level.free_mode else "Livre", Color("b18cff"), "ink", 0, 96)
 	free_btn.add_theme_font_size_override("font_size", 24)
@@ -148,9 +157,13 @@ func hide_tip() -> void:
 
 
 func refresh() -> void:
-	if level == null:
+	if level == null or not is_inside_tree():
 		return
 	var drawing := level.state == Level.State.DRAWING
+	speed_btn.visible = level.state == Level.State.RUNNING
+	speed_btn.disabled = get_tree().paused
+	speed_btn.text = tr("Velocidade: 2×") if level.simulation_speed == 2 else tr("Velocidade: 1×")
+	speed_btn.tooltip_text = tr("Acelerar a simulação") if level.simulation_speed == 1 else tr("Voltar à velocidade normal")
 	hint_btn.visible = drawing and not level.solution_strokes().is_empty()
 	hint_badge.text = "" if level.hint_shown else str(Game.hints())
 	play_btn.visible = drawing and level.strokes_total > 1 and not level.lines.is_empty()
@@ -224,6 +237,7 @@ func _show_buy_hint() -> void:
 func _open_pause() -> void:
 	if overlay != null or level.state == Level.State.WON or level.state == Level.State.LOST:
 		return
+	level.set_simulation_speed(1)
 	var box := _open_overlay()
 	# pausa DEPOIS de abrir o painel (_open_overlay fecha o anterior e despausa)
 	get_tree().paused = true

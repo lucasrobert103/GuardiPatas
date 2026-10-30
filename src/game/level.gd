@@ -6,6 +6,7 @@ extends Node2D
 signal navigate(action: String)
 signal state_changed(state: int)
 signal result_ready(won: bool, info: Dictionary)
+signal simulation_speed_changed(speed: int)
 
 enum State { DRAWING, RUNNING, WON, LOST }
 
@@ -17,6 +18,9 @@ var index := 0
 var data: Dictionary = {}
 var world_id := 1
 var state := State.DRAWING
+var simulation_speed := 1
+var _normal_physics_ticks := 60
+var _normal_time_scale := 1.0
 var survive := 8.0
 var time_left := 8.0
 var strokes_total := 1
@@ -97,6 +101,31 @@ func _ready() -> void:
 		hud.bind(self)
 		hud.action.connect(_on_hud_action)
 	state_changed.emit(state)
+
+
+## Acelera o relógio mantendo o mesmo passo de física (1/60 s no projeto).
+func set_simulation_speed(speed: int) -> bool:
+	if speed not in [1, 2]:
+		return false
+	if speed == 2 and (state != State.RUNNING or not is_inside_tree() or get_tree().paused or is_queued_for_deletion()):
+		return false
+	if speed == simulation_speed:
+		return true
+	if speed == 2:
+		_normal_physics_ticks = Engine.physics_ticks_per_second
+		_normal_time_scale = Engine.time_scale
+		Engine.physics_ticks_per_second = _normal_physics_ticks * speed
+		Engine.time_scale = _normal_time_scale * speed
+	else:
+		Engine.time_scale = _normal_time_scale
+		Engine.physics_ticks_per_second = _normal_physics_ticks
+	simulation_speed = speed
+	simulation_speed_changed.emit(speed)
+	return true
+
+
+func _exit_tree() -> void:
+	set_simulation_speed(1)
 
 
 # ------------------------------------------------------------------ construção
@@ -343,6 +372,7 @@ func _on_hud_action(action: String) -> void:
 			if state == State.DRAWING and not lines.is_empty():
 				start_simulation()
 		_:
+			set_simulation_speed(1)
 			navigate.emit(action)
 
 
@@ -646,6 +676,7 @@ func ink_used() -> float:
 func win() -> void:
 	if state != State.RUNNING:
 		return
+	set_simulation_speed(1)
 	state = State.WON
 	for n in nests:
 		n.running = false
@@ -688,6 +719,7 @@ func win() -> void:
 func lose(reason: String) -> void:
 	if state != State.RUNNING:
 		return
+	set_simulation_speed(1)
 	state = State.LOST
 	lose_reason = reason
 	for n in nests:

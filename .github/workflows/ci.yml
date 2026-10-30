@@ -79,6 +79,12 @@ jobs:
           timeout 120 ~/godot/godot --headless --path . res://tests/pet_care_test.tscn -- --test-io 2>&1 | tee care.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" care.log; then exit 1; fi
 
+      - name: Velocidade da simulação
+        run: |
+          set -o pipefail
+          timeout 180 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/speed_test.tscn 2>&1 | tee speed.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" speed.log; then exit 1; fi
+
       - name: Teste de fluxo da interface
         run: |
           set -o pipefail
