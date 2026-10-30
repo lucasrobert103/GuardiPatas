@@ -19,6 +19,9 @@ var _mood_t := 0.0
 var _last_mood := "idle"
 
 const COLORS := {
+	"amora": {"main": Color("be8ddd"), "light": Color("ffe4f2"), "dark": Color("8055a5")},
+	"bambu": {"main": Color("fff7e8"), "light": Color("ffffff"), "dark": Color("3b4055")},
+	"gotinha": {"main": Color("ad7959"), "light": Color("f5d9b7"), "dark": Color("74503d")},
 	"capi": {"main": Color("b07a4f"), "light": Color("d9a77a"), "dark": Color("8a5a39")},
 	"brasa": {"main": Color("ff8a3d"), "light": Color("fff1e0"), "dark": Color("d96a24")},
 	"pingo": {"main": Color("6d5a8c"), "light": Color("f6dcb8"), "dark": Color("4e3f66")},
@@ -37,6 +40,9 @@ const COLORS := {
 
 ## Pontos de ancoragem para acessórios (cabeça, olhos, pescoço).
 const ANCHORS := {
+	"amora": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.9},
+	"bambu": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 1.0},
+	"gotinha": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.85},
 	"capi": {"head": Vector2(30, -34), "eyes": Vector2(37, -14), "neck": Vector2(18, 8), "scale": 1.0},
 	"brasa": {"head": Vector2(2, -38), "eyes": Vector2(4, -20), "neck": Vector2(2, 4), "scale": 0.95},
 	"pingo": {"head": Vector2(4, -30), "eyes": Vector2(16, -5), "neck": Vector2(12, 16), "scale": 0.85},
@@ -135,6 +141,7 @@ func _draw() -> void:
 		"tito": _draw_tito()
 		"patinha": _draw_patinha()
 		"kiko": _draw_kiko()
+		"amora", "bambu", "gotinha": _draw_companion()
 	_draw_accessory()
 	if scared:
 		_draw_scare_front()
@@ -173,7 +180,7 @@ func _c(key: String) -> Color:
 func _eye(c: Vector2, r: float, style: String = "full") -> void:
 	var o := Palette.OUTLINE
 	var lk := look.limit_length(1.0)
-	if _blink > 0.0 and mood in ["idle", "scared"]:
+	if mood == "sleeping" or (_blink > 0.0 and mood in ["idle", "scared"]):
 		draw_line(c + Vector2(-r, 0), c + Vector2(r, 0), o, 3.0, true)
 		return
 	match mood:
@@ -700,6 +707,29 @@ func _draw_accessory() -> void:
 	var h: Vector2 = an["head"]
 	var o := Palette.OUTLINE
 	match accessory:
+		"tiara_lua":
+			draw_arc(h, 18 * s, PI, TAU, 24, Color("af8cff"), 5 * s, true)
+			DrawUtil.disc(self, h + Vector2(0, -22) * s, 9 * s, Palette.GOLD, o, 2)
+			DrawUtil.disc(self, h + Vector2(5, -25) * s, 7 * s, Color("af8cff"), Color.TRANSPARENT, 0)
+		"cartola":
+			draw_rect(Rect2(h + Vector2(-14, -26) * s, Vector2(28, 26) * s), Color("63458d"))
+			draw_line(h + Vector2(-14, -6) * s, h + Vector2(14, -6) * s, Palette.GOLD, 5 * s)
+			DrawUtil.oval(self, h, Vector2(24, 5) * s, Color("39264e"), o, 2)
+		"pirata":
+			DrawUtil.tri(self, h + Vector2(-24, 0) * s, h + Vector2(0, -24) * s, h + Vector2(24, 0) * s, Color("343344"), o, 3)
+			DrawUtil.shape(self, DrawUtil.star_points(h + Vector2(0, -9) * s, 6 * s, 3 * s), Palette.GOLD, o, 1)
+		"fones":
+			var e: Vector2 = an["eyes"]
+			draw_arc(e, 23 * s, PI, TAU, 24, Color("65bce7"), 6 * s, true)
+			for side in [-1, 1]:
+				DrawUtil.oval(self, e + Vector2(side * 23, 0) * s, Vector2(6, 11) * s, Color("fd9bc5"), o, 2)
+		"gravata":
+			var n: Vector2 = an["neck"]
+			for side in [-1, 1]:
+				DrawUtil.tri(self, n, n + Vector2(side * 17, -9) * s, n + Vector2(side * 17, 9) * s, Color("66c9bb"), o, 2)
+			DrawUtil.disc(self, n, 4 * s, Palette.GOLD, o, 2)
+		"halo":
+			DrawUtil.oval(self, h + Vector2(0, -18) * s, Vector2(22, 6) * s, Color("fff2a6"), Palette.GOLD, 4)
 		"bone":
 			var pts := PackedVector2Array()
 			for i in 13:
@@ -772,3 +802,34 @@ func _draw_ouch_stars() -> void:
 func _draw_sweat() -> void:
 	var p := Vector2(-18.0 * facing, -_base_y() - 4.0) + Vector2(0, fmod(_t * 18.0, 8.0))
 	DrawUtil.oval(self, p, Vector2(3.5, 5.0), Color("9fdcff"), Palette.OUTLINE, 2.0)
+
+
+## Companheiros cosméticos: arte própria, disponíveis na Casinha, sem alterar a física.
+func _draw_companion() -> void:
+	var o := Palette.OUTLINE
+	var dark := _c("dark")
+	if species == "amora":
+		DrawUtil.oval(self, Vector2(-29, 10), Vector2(9, 27), dark, o, 3, -0.5)
+	elif species == "gotinha":
+		DrawUtil.oval(self, Vector2(-29, 19), Vector2(29, 9), dark, o, 3, -0.35)
+	DrawUtil.oval(self, Vector2(0, 13), Vector2(28, 24), _c("main"), o, 3)
+	DrawUtil.oval(self, Vector2(0, 17), Vector2(17, 15), _c("light"), o, 0)
+	for side in [-1, 1]:
+		DrawUtil.oval(self, Vector2(side * 18, 31), Vector2(12, 6), dark, o, 2)
+		if species == "amora":
+			DrawUtil.tri(self, Vector2(side * 9, -24), Vector2(side * 24, -40), Vector2(side * 27, -14), _c("main"), o, 3)
+		else:
+			DrawUtil.disc(self, Vector2(side * 23, -26), 11, dark, o, 3)
+	DrawUtil.oval(self, Vector2(0, -9), Vector2(31, 25), _c("main"), o, 3)
+	for side in [-1, 1]:
+		if species == "bambu":
+			DrawUtil.oval(self, Vector2(side * 13, -11), Vector2(10, 12), dark, o, 0, side * 0.3)
+		_eye(Vector2(side * 12, -12), 5)
+		if species != "bambu":
+			for k in [-1, 1]:
+				draw_line(Vector2(side * 17, 0), Vector2(side * 39, k * 5), dark, 1.5, true)
+	DrawUtil.oval(self, Vector2(0, 2), Vector2(14, 9), _c("light"), o, 0)
+	DrawUtil.disc(self, Vector2(0, -1), 4, dark, o, 1)
+	_mouth(Vector2(0, 8), 7)
+	_blush(Vector2(-22, -1), 4)
+	_blush(Vector2(22, -1), 4)

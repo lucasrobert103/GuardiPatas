@@ -22,6 +22,12 @@ const ITEMS := {
 	"cachecol": {"name": "Cachecol Quentinho", "price": 120},
 	"touca": {"name": "Touca de Lã", "price": 140},
 	"coroa": {"name": "Coroa Dourada", "price": 250},
+	"tiara_lua": {"name": "Tiara da Lua", "price": 160},
+	"cartola": {"name": "Cartola Mágica", "price": 180},
+	"pirata": {"name": "Chapéu Pirata", "price": 200},
+	"fones": {"name": "Fones Coloridos", "price": 150},
+	"gravata": {"name": "Gravata Borboleta", "price": 130},
+	"halo": {"name": "Auréola Solar", "price": 220},
 }
 
 ## Conquistas: [id, nome, descrição]. As condições estão em _achievement_checks().
@@ -134,38 +140,96 @@ func _default_data() -> Dictionary:
 		"daily": {"last": "", "streak": 0, "best_streak": 0, "done": 0},
 		"custom": [],
 		"album": [],
+		"store": {"owned": [], "receipts": []},
+		"care": {},
 	}
+
+
+func save_path() -> String:
+	return "user://save-store-test.json" if Store.test_mode() else SAVE_PATH
 
 
 func load_save() -> void:
 	data = _default_data()
-	if not persist or not FileAccess.file_exists(SAVE_PATH):
+	if not persist or not FileAccess.file_exists(save_path()):
 		return
-	var f := FileAccess.open(SAVE_PATH, FileAccess.READ)
-	if f == null:
+	var f := FileAccess.open(save_path(), FileAccess.READ)
+	if f == null or f.get_length() > 4 * 1024 * 1024:
 		return
 	var parsed: Variant = JSON.parse_string(f.get_as_text())
-	if parsed is Dictionary:
-		# mescla com os padrões para tolerar saves antigos / campos novos
-		for k in parsed.keys():
-			if data.has(k) and typeof(data[k]) == TYPE_DICTIONARY and typeof(parsed[k]) == TYPE_DICTIONARY:
+	if not parsed is Dictionary:
+		return
+	for k in data:
+		if parsed.has(k) and (typeof(parsed[k]) == typeof(data[k]) or (data[k] is int and (parsed[k] is int or parsed[k] is float))):
+			if data[k] is Dictionary:
 				data[k].merge(parsed[k], true)
-			elif data.has(k):
+			else:
 				data[k] = parsed[k]
+	# Dados locais não são prova de pagamento. Tipos inválidos não devem derrubar o app.
+	for key in DEFAULT_SETTINGS:
+		if typeof(data["settings"][key]) != typeof(DEFAULT_SETTINGS[key]) and not ((DEFAULT_SETTINGS[key] is float or DEFAULT_SETTINGS[key] is int) and (data["settings"][key] is float or data["settings"][key] is int)):
+			data["settings"][key] = DEFAULT_SETTINGS[key]
+	data["settings"]["colorblind"] = clampi(int(data["settings"]["colorblind"]), 0, 3)
+	for key in ["music", "sfx"]:
+		data["settings"][key] = clampf(float(data["settings"][key]), 0.0, 1.0)
+	if not data["settings"]["lang"] in ["", "pt_BR", "en", "es"]:
+		data["settings"]["lang"] = ""
+	for key in data["stats"]:
+		if not (data["stats"][key] is float or data["stats"][key] is int):
+			data["stats"][key] = 0
+	for key in data["levels"].keys():
+		if not data["levels"][key] is Dictionary:
+			data["levels"].erase(key)
+	data["met"] = data["met"].filter(func(pet): return pet is String and Cast.ORDER.has(pet))
+	data["owned"] = data["owned"].filter(func(item): return item is String and ITEMS.has(item))
+	for pet in data["equipped"].keys():
+		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["owned"].has(data["equipped"][pet]):
+			data["equipped"].erase(pet)
+	data["custom"] = data["custom"].filter(func(level): return level is Dictionary).slice(0, CUSTOM_MAX)
+	data["coins"] = clampi(int(data["coins"]), 0, 10000000)
+	data["hints"] = clampi(int(data["hints"]), 0, 100000)
+	for key in ["owned", "receipts"]:
+		if not data["store"].get(key) is Array:
+			data["store"][key] = []
+	for pet in data["care"].keys():
+		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)):
+			data["care"].erase(pet)
+		else:
+			data["care"][pet] = PetCare.sanitize(data["care"][pet])
+	data["album"] = data["album"].filter(func(e): return e is Dictionary and safe_album_path(str(e.get("file", ""))))
 
 
-func save() -> void:
+func save() -> bool:
 	if not persist:
-		return
-	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+		return true
+	var temp := save_path() + ".tmp"
+	var f := FileAccess.open(temp, FileAccess.WRITE)
 	if f == null:
-		push_warning("Não foi possível salvar o progresso: %s" % FileAccess.get_open_error())
-		return
+		push_warning("Não foi possível salvar o progresso.")
+		return false
 	f.store_string(JSON.stringify(data, "\t"))
+	f.flush()
+	var ok := f.get_error() == OK
+	f.close()
+	if not ok:
+		return false
+	return DirAccess.rename_absolute(temp, save_path()) == OK
+
+
+func album_dir() -> String:
+	return "user://album-store-test" if Store.test_mode() else ALBUM_DIR
+
+
+func safe_album_path(path: String) -> bool:
+	return path.begins_with(album_dir() + "/") and path.get_base_dir() == album_dir() and path.get_file().ends_with(".png") and not path.contains("..")
 
 
 func reset_progress() -> void:
 	var keep_settings: Dictionary = data.get("settings", DEFAULT_SETTINGS).duplicate()
+	for entry in data.get("album", []):
+		var path := str(entry.get("file", ""))
+		if safe_album_path(path):
+			DirAccess.remove_absolute(path)
 	data = _default_data()
 	data["settings"] = keep_settings
 	save()
@@ -296,9 +360,9 @@ const ALBUM_MAX := 40
 func add_photo(img: Image, caption: String) -> Dictionary:
 	if img == null or img.is_empty():
 		return {}
-	DirAccess.make_dir_recursive_absolute(ALBUM_DIR)
+	DirAccess.make_dir_recursive_absolute(album_dir())
 	var stamp := Time.get_datetime_string_from_system().replace(":", "-")
-	var file := "%s/%s_%d.png" % [ALBUM_DIR, stamp, randi() % 1000]
+	var file := "%s/%s_%d.png" % [album_dir(), stamp, randi() % 1000]
 	var w := img.get_width()
 	if w > 540:
 		img.resize(540, int(img.get_height() * 540.0 / w), Image.INTERPOLATE_BILINEAR)
@@ -308,7 +372,8 @@ func add_photo(img: Image, caption: String) -> Dictionary:
 	album.append(entry)
 	while album.size() > ALBUM_MAX:
 		var old: Dictionary = album.pop_front()
-		DirAccess.remove_absolute(str(old.get("file", "")))
+		if safe_album_path(str(old.get("file", ""))):
+			DirAccess.remove_absolute(str(old["file"]))
 	add_stat("photos", 1, false)
 	var got := _check_achievements(0, 1.0)
 	save()
@@ -321,7 +386,8 @@ func remove_photo(i: int) -> void:
 		return
 	var old: Dictionary = album[i]
 	album.remove_at(i)
-	DirAccess.remove_absolute(str(old.get("file", "")))
+	if safe_album_path(str(old.get("file", ""))):
+		DirAccess.remove_absolute(str(old["file"]))
 	save()
 
 
@@ -509,9 +575,12 @@ func buy_item(item: String) -> bool:
 	var price: int = ITEMS[item]["price"]
 	if coins() < price:
 		return false
+	var before := data.duplicate(true)
 	data["coins"] = coins() - price
 	data["owned"].append(item)
-	save()
+	if not save():
+		data = before
+		return false
 	coins_changed.emit(coins())
 	return true
 
@@ -520,13 +589,17 @@ func equipped(animal: String) -> String:
 	return str(data["equipped"].get(animal, ""))
 
 
-func equip(animal: String, item: String) -> void:
+func equip(animal: String, item: String) -> bool:
+	var before := data.duplicate(true)
 	if item == "" or item == equipped(animal):
 		data["equipped"].erase(animal)
 	elif owns(item):
 		data["equipped"][animal] = item
 	_check_achievements(0, 1.0)
-	save()
+	if not save():
+		data = before
+		return false
+	return true
 
 
 func has_met(animal: String) -> bool:

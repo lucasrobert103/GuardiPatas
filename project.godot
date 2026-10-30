@@ -23,6 +23,7 @@ driver/mix_rate=44100
 
 Sfx="*res://src/autoload/sfx.gd"
 LevelDB="*res://src/autoload/level_db.gd"
+Store="*res://src/autoload/store.gd"
 Game="*res://src/autoload/game.gd"
 
 [display]

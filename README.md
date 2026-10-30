@@ -19,12 +19,22 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Cuidados na Casinha
+
+Alimente, dê banho com sabão e enxágue, coloque para dormir, jogue bola e experimente roupas. Cada bichinho tem barrinhas próprias de comida, higiene, energia e carinho. Os cuidados são gratuitos e ficam pausados fora da Casinha. Veja [como brincar e testar](docs/17-casinha-cuidados.md).
+
+## Loja em fase de teste
+
+A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 pacotes de moedas, kit de boas-vindas, 3 novos companheiros da Casinha (Amora, Bambu e Gotinha) e 6 novos acessórios. Abra **Lojinha · teste** no menu. A simulação é recusada em release e usa progresso separado. A campanha permanece gratuita.
+
+**Não publicar com compras reais ainda.** Consulte a [revisão de segurança e os requisitos de publicação](docs/16-publicacao-seguranca-e-compras.md) antes de integrar Google Play Billing ou preencher a Play Console. Não há API de pagamento real nesta entrega.
+
 ## O que já tem
 - **63 fases em 8 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, **Montanha Gelada, Praia do Sol, Fundo do Mar**) + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
 - **Estratégia de verdade:** buracos para tampar, Tinta Firme para rampas e tobogãs, tocas de destino, abelha que fura a linha, iscas de mel, cocos caindo, vento e correnteza — e o teste automático garante que o **círculo genérico perde** nessas fases.
 - **14 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca) e Tito (polvo) — **cada um com seu próprio jeito e som de susto**.
 - **14 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva e baiacu.
-- **Modo Livre** com tinta infinita nas fases já vencidas, **57 conquistas**, 9 acessórios e abertura com o logo da **RetroNexa**.
+- **Modo Livre** com tinta infinita nas fases já vencidas, **57 conquistas**, 15 acessórios e abertura com o logo da **RetroNexa**.
 - **Desafio do Dia**, **medalhas extras** (Pegada Dourada, De Primeira, Relâmpago), **Casinha da Turma**, **Álbum de fotos** das vitórias e **editor de fases**.
 - **Português, inglês e espanhol**, texto grande e correção de cores para daltonismo.
 - Trilha própria para cada mundo + música de chefão; ícone adaptativo; materiais da Play Store prontos ([docs/15](docs/15-loja-google-play.md)).
@@ -32,7 +42,7 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 - Menus, mapa, coleção com histórias, **guarda-roupa cosmético**, conquistas, dicas, ajustes de acessibilidade (alto contraste, reduzir movimento), salvamento local, botão voltar do Android.
 - **Dezenas de efeitos sonoros + músicas** sintetizados do zero (`tools/gen_audio.py`).
 - **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas fases de estratégia, a solução ingênua (círculo) tem que perder. **405 verificações** + teste de fluxo da interface, 0 falhas.
-- **Sem anúncios, sem compras, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
+- **Sem anúncios, sem cobranças reais, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
 
 ## Rodar
 1. Instale o **Godot 4.7.2** e importe `project.godot`.

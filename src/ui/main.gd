@@ -90,6 +90,8 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 				Game.current_custom = {}
 				_start_level(int(arg))
 			return
+		"store":
+			_current = StoreScreen.new()
 		"daily":
 			_current = DailyScreen.new()
 		"map":

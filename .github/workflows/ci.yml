@@ -29,6 +29,10 @@ jobs:
           mkdir -p ~/godot
           cd ~/godot
           curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -fsSL -o SHA512-SUMS.txt "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/SHA512-SUMS.txt"
+          mv godot.zip "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          grep " Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip$" SHA512-SUMS.txt | sha512sum -c -
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" godot.zip
           unzip -q godot.zip
           mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" godot
           chmod +x godot
@@ -57,6 +61,23 @@ jobs:
             echo "::error::Erros de script durante os testes"
             exit 1
           fi
+
+      - name: Loja simulada, persistência e bloqueio de produção
+        run: |
+          set -o pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/guardipatas-store-tests"
+          mkdir -p "$XDG_DATA_HOME"
+          timeout 120 ~/godot/godot --headless --path . res://tests/store_test.tscn -- --test-io 2>&1 | tee store.log
+          timeout 120 ~/godot/godot --headless --path . res://tests/store_test.tscn -- --store-production 2>&1 | tee store-production.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" store.log store-production.log; then exit 1; fi
+
+      - name: Cuidados na Casinha
+        run: |
+          set -o pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/guardipatas-care-tests"
+          mkdir -p "$XDG_DATA_HOME"
+          timeout 120 ~/godot/godot --headless --path . res://tests/pet_care_test.tscn -- --test-io 2>&1 | tee care.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" care.log; then exit 1; fi
 
       - name: Teste de fluxo da interface
         run: |

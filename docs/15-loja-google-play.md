@@ -1,6 +1,8 @@
 # 15 — Loja (Google Play): textos, imagens e formulários
 
-Tudo o que a Play Console pede para publicar, pronto para copiar. Imagens em `store/` (geradas pelo próprio jogo — ver o fim deste documento).
+**Rascunho anterior à lojinha de testes: não copiar os formulários sem revisão.** A loja simulada não cobra; a futura integração real exige atualizar compras no app, privacidade, Data safety e textos nos três idiomas. Consulte [a revisão de publicação](16-publicacao-seguranca-e-compras.md). As respostas abaixo descrevem a versão offline anterior e não certificam elegibilidade.
+
+Materiais de referência para preparar a Play Console. Imagens em `store/` (geradas pelo próprio jogo — ver o fim deste documento).
 
 ## Imagens
 | Item | Arquivo | Tamanho |

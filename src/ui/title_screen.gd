@@ -59,6 +59,9 @@ func _ready() -> void:
 	play.pressed.connect(func(): go.emit("map", -1))
 	bottom.add_child(play)
 	UiKit.pop_in(play, 0.3)
+	var shop := UiKit.button("Lojinha · teste" if Store.test_mode() else "Lojinha", Palette.GOLD, "coin", 420, 72)
+	shop.pressed.connect(func(): go.emit("store", null))
+	bottom.add_child(shop)
 	var row := UiKit.hbox(12)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	bottom.add_child(row)

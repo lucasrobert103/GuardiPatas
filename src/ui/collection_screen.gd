@@ -87,6 +87,17 @@ func _portrait(species: String, known: bool, accessory: String = "") -> Control:
 
 
 func _build_friends() -> void:
+	var shop := UiKit.button("Conhecer novos amigos na Lojinha", Palette.GOLD, "", 0, 72)
+	shop.pressed.connect(func(): go.emit("store", null))
+	_content.add_child(shop)
+	for pet in Store.companions():
+		var card := UiKit.panel()
+		var box := UiKit.vbox(8)
+		card.add_child(box)
+		box.add_child(_portrait(pet, true, Game.equipped(pet)))
+		box.add_child(UiKit.label(Store.PETS[pet]["name"] + " · " + Store.PETS[pet]["species"], 28))
+		box.add_child(UiKit.label(Store.PETS[pet]["bio"] + " Companheiro da Casinha.", 22, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		_content.add_child(card)
 	for sp in Cast.ORDER:
 		var known := Game.has_met(sp)
 		var card := UiKit.panel(Palette.UI_PANEL if known else Color(1, 1, 1, 0.6))
@@ -114,15 +125,21 @@ func _build_friends() -> void:
 
 
 func _build_wardrobe() -> void:
-	if Game.data["met"].is_empty():
+	if Game.data["met"].is_empty() and Store.companions().is_empty():
 		_content.add_child(UiKit.label("Salve um bichinho primeiro para vesti-lo!", 28, Palette.UI_TEXT, 0, Palette.WHITE, true))
 		return
+	if not Game.has_met(_selected) and not Store.has_pet(_selected):
+		_selected = str(Game.data["met"][0]) if not Game.data["met"].is_empty() else str(Store.companions()[0])
 	var who := UiKit.hbox(8)
-	_content.add_child(who)
-	for sp in Cast.ORDER:
-		if not Game.has_met(sp):
+	var selector := ScrollContainer.new()
+	selector.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	selector.add_child(who)
+	_content.add_child(selector)
+	for sp in Cast.ORDER + Store.companions():
+		if not Game.has_met(sp) and not Store.has_pet(sp):
 			continue
-		var b := UiKit.button(Animal.SPECIES[sp]["name"], Palette.UI_GOOD if sp == _selected else Palette.UI_MUTED, "", 0, 70)
+		var pet_name: String = Store.PETS[sp]["name"] if Store.PETS.has(sp) else Animal.SPECIES[sp]["name"]
+		var b := UiKit.button(pet_name, Palette.UI_GOOD if sp == _selected else Palette.UI_MUTED, "", 0, 70)
 		b.add_theme_font_size_override("font_size", 20)
 		var s: String = sp
 		b.pressed.connect(func():

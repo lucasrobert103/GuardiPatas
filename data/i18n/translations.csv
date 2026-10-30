@@ -525,3 +525,52 @@ Aranha,Aranha,Spider,Araña
 Caranguejo,Caranguejo,Crab,Cangrejo
 Água-viva,Água-viva,Jellyfish,Medusa
 Baiacu,Baiacu,Puffer,Pez globo
+Comida,Comida,Food,Comida
+Banho,Banho,Bath,Baño
+Soneca,Soneca,Nap,Siesta
+Brincar,Brincar,Play,Jugar
+Roupas,Roupas,Clothes,Ropa
+Barriguinha,Barriguinha,Tummy,Barriguita
+Higiene,Higiene,Hygiene,Higiene
+Energia,Energia,Energy,Energía
+Carinho,Carinho,Affection,Cariño
+Refeição,Refeição,Meal,Comida completa
+Frutinhas,Frutinhas,Fruit,Frutitas
+Sabão,Sabão,Soap,Jabón
+Enxaguar,Enxaguar,Rinse,Enjuagar
+Acordar,Acordar,Wake up,Despertar
+Apagar a luz e dormir,Apagar a luz e dormir,Lights off and sleep,Apagar la luz y dormir
+Bola,Bola,Ball,Pelota
+Jogar bola,Jogar bola,Play ball,Jugar a la pelota
+Fazer carinho,Fazer carinho,Pet your friend,Acariciar
+Sem acessório,Sem acessório,No accessory,Sin accesorio
+%d moedas,%d moedas,%d coins,%d monedas
+Escolha um cuidado e toque no bichinho. Os cuidados são gratuitos!,Escolha um cuidado e toque no bichinho. Os cuidados são gratuitos!,Choose a care action and tap your pet. Care is free!,Elige un cuidado y toca al animalito. ¡Los cuidados son gratis!
+Escolha a comida; depois toque no bichinho para dar na boca.,Escolha a comida; depois toque no bichinho para dar na boca.,"Choose food, then tap your pet to feed them.",Elige comida y toca al animalito para darle de comer.
+Passe o sabão com toques ou esfregue o bichinho. Depois enxágue!,Passe o sabão com toques ou esfregue o bichinho. Depois enxágue!,Tap or rub your pet with soap. Then rinse!,Toca o frota al animalito con jabón. ¡Después enjuaga!
+Esfregue ou toque no bichinho até fazer bastante espuma.,Esfregue ou toque no bichinho até fazer bastante espuma.,Rub or tap your pet until there is plenty of foam.,Frota o toca al animalito hasta hacer bastante espuma.
+"A energia volta durante a soneca na Casinha. Fora do jogo, as necessidades ficam pausadas.","A energia volta durante a soneca na Casinha. Fora do jogo, as necessidades ficam pausadas.",Energy returns while napping in the Cottage. Needs pause outside the game.,La energía vuelve al dormir en la Casita. Fuera del juego las necesidades se pausan.
+Toque na bola na sala para brincar. Cada toque é uma nova rodada!,Toque na bola na sala para brincar. Cada toque é uma nova rodada!,Tap the ball in the room to play. Each tap is a new round!,Toca la pelota en la sala para jugar. ¡Cada toque es una nueva ronda!
+Experimente antes de comprar. Os cuidados não custam moedas.,Experimente antes de comprar. Os cuidados não custam moedas.,Try on before buying. Care does not cost coins.,Prueba antes de comprar. Los cuidados no cuestan monedas.
+Dormindo tranquilamente,Dormindo tranquilamente,Sleeping peacefully,Durmiendo tranquilamente
+Toque para fazer carinho ou usar o cuidado escolhido.,Toque para fazer carinho ou usar o cuidado escolhido.,Tap to pet your friend or use the selected care action.,Toca para acariciar o usar el cuidado elegido.
+Toque no bichinho para oferecer a comida.,Toque no bichinho para oferecer a comida.,Tap your pet to offer the food.,Toca al animalito para ofrecerle comida.
+Não foi possível salvar o cuidado. Tente novamente.,Não foi possível salvar o cuidado. Tente novamente.,Could not save this care action. Try again.,No se pudo guardar el cuidado. Inténtalo de nuevo.
+Espuma: %d%% · depois toque em Enxaguar.,Espuma: %d%% · depois toque em Enxaguar.,Foam: %d%% · then tap Rinse.,Espuma: %d%% · después toca Enjuagar.
+Use o sabão primeiro e faça bastante espuma.,Use o sabão primeiro e faça bastante espuma.,Use soap first and make plenty of foam.,Primero usa jabón y haz bastante espuma.
+Limpinho e cheiroso! Banho concluído.,Limpinho e cheiroso! Banho concluído.,Fresh and clean! Bath complete.,¡Limpio y perfumado! Baño terminado.
+Bola apanhada! Rodadas: %d,Bola apanhada! Rodadas: %d,Ball caught! Rounds: %d,¡Pelota atrapada! Rondas: %d
+Prévia: %s · não foi cobrada nenhuma moeda.,Prévia: %s · não foi cobrada nenhuma moeda.,Preview: %s · no coins were charged.,Vista previa: %s · no se cobraron monedas.
+Visual atualizado!,Visual atualizado!,Look updated!,¡Aspecto actualizado!
+Não foi possível comprar a roupa. Confira suas moedas e tente novamente.,Não foi possível comprar a roupa. Confira suas moedas e tente novamente.,Could not buy this outfit. Check your coins and try again.,No se pudo comprar la ropa. Revisa tus monedas e inténtalo de nuevo.
+Escolha um bichinho disponível.,Escolha um bichinho disponível.,Choose an available pet.,Elige un animalito disponible.
+Boa soneca!,Boa soneca!,Have a lovely nap!,¡Dulces sueños!
+Bom dia! Vamos brincar?,Bom dia! Vamos brincar?,Good morning! Shall we play?,¡Buenos días! ¿Jugamos?
+Acorde o bichinho primeiro. Ele está descansando.,Acorde o bichinho primeiro. Ele está descansando.,Wake your pet first. They are resting.,Despierta primero al animalito. Está descansando.
+Escolha uma comida.,Escolha uma comida.,Choose a food.,Elige una comida.
+Barriguinha cheia! Que tal outro cuidado?,Barriguinha cheia! Que tal outro cuidado?,Full tummy! How about another care action?,¡Barriguita llena! ¿Qué tal otro cuidado?
+Uma soneca primeiro vai fazer bem!,Uma soneca primeiro vai fazer bem!,A nap first would feel nice!,¡Una siesta primero vendría bien!
+Cuidado indisponível.,Cuidado indisponível.,Care action unavailable.,Cuidado no disponible.
+Que delícia!,Que delícia!,Yummy!,¡Qué rico!
+Adorei esse cuidado!,Adorei esse cuidado!,I loved that care!,¡Me encantó ese cuidado!
+Saldo: %d moedas,Saldo: %d moedas,Balance: %d coins,Saldo: %d monedas
