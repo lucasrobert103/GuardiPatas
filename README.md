@@ -19,6 +19,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Campanha 0.4: mais estratégia
+
+As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, camadas contra brocas, rampas até as tocas e ancoragem contra vento. As duas primeiras ensinam o desenho; depois é preciso ler o cenário e administrar a tinta. Os objetivos iniciais não mostram mais a receita da solução. Veja [o que mudou e como testar](docs/18-estrategia-e-dificuldade.md).
+
 ## Cuidados na Casinha
 
 Alimente, dê banho com sabão e enxágue, coloque para dormir, jogue bola e experimente roupas. Cada bichinho tem barrinhas próprias de comida, higiene, energia e carinho. Os cuidados são gratuitos e ficam pausados fora da Casinha. Veja [como brincar e testar](docs/17-casinha-cuidados.md).
@@ -33,7 +37,7 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 - **63 fases em 8 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, **Montanha Gelada, Praia do Sol, Fundo do Mar**) + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
 - **Estratégia de verdade:** buracos para tampar, Tinta Firme para rampas e tobogãs, tocas de destino, abelha que fura a linha, iscas de mel, cocos caindo, vento e correnteza — e o teste automático garante que o **círculo genérico perde** nessas fases.
 - **14 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca) e Tito (polvo) — **cada um com seu próprio jeito e som de susto**.
-- **14 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva e baiacu.
+- **15 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva, baiacu e **Baiacu-broca**.
 - **Modo Livre** com tinta infinita nas fases já vencidas, **57 conquistas**, 15 acessórios e abertura com o logo da **RetroNexa**.
 - **Desafio do Dia**, **medalhas extras** (Pegada Dourada, De Primeira, Relâmpago), **Casinha da Turma**, **Álbum de fotos** das vitórias e **editor de fases**.
 - **Português, inglês e espanhol**, texto grande e correção de cores para daltonismo.
@@ -41,7 +45,7 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 - Linha com **peso real** (corpo rígido de cápsulas), validação do traço por física, tinta limitada com metas de estrela visíveis, caixas, lâmpadas, água, plataformas móveis, zonas proibidas.
 - Menus, mapa, coleção com histórias, **guarda-roupa cosmético**, conquistas, dicas, ajustes de acessibilidade (alto contraste, reduzir movimento), salvamento local, botão voltar do Android.
 - **Dezenas de efeitos sonoros + músicas** sintetizados do zero (`tools/gen_audio.py`).
-- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas fases de estratégia, a solução ingênua (círculo) tem que perder. **405 verificações** + teste de fluxo da interface, 0 falhas.
+- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas 54 fases estratégicas, três círculos/elipses e dois arcos genéricos precisam perder. **Mais de 400 verificações da campanha**, 270 verificações contra padrões genéricos, 202 combinações de desafios diários e teste de fluxo da interface, sem falhas.
 - **Sem anúncios, sem cobranças reais, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
 
 ## Rodar

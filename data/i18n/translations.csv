@@ -578,3 +578,64 @@ Velocidade: 1×,Velocidade: 1×,Speed: 1×,Velocidad: 1×
 Velocidade: 2×,Velocidade: 2×,Speed: 2×,Velocidad: 2×
 Acelerar a simulação,Acelerar a simulação,Speed up simulation,Acelerar la simulación
 Voltar à velocidade normal,Voltar à velocidade normal,Return to normal speed,Volver a la velocidad normal
+Abrigo no Paredão,Abrigo no Paredão,Cliffside Shelter,Refugio del Paredón
+Apoio da Fofa,Apoio da Fofa,Fofa's Support,Apoyo de Fofa
+Apoio de Coral,Apoio de Coral,Coral Support,Apoyo de Coral
+Apoio na Rocha,Apoio na Rocha,Rock Support,Apoyo en la Roca
+Apoios Separados,Apoios Separados,Separate Supports,Apoyos Separados
+Brocas no Acampamento,Brocas no Acampamento,Drillers at Camp,Taladros en el Campamento
+Camadas de Proteção,Camadas de Proteção,Layers of Protection,Capas de Protección
+Duas Barreiras,Duas Barreiras,Two Barriers,Dos Barreras
+Entrada da Caverna,Entrada da Caverna,Cave Entrance,Entrada de la Cueva
+Escolha à Luz,Escolha à Luz,Choice in the Light,Elección a la Luz
+Esconderijo do Pompom,Esconderijo do Pompom,Pompom's Hideout,Escondite de Pompom
+Gargalo das Formigas,Gargalo das Formigas,Ant Bottleneck,Paso de las Hormigas
+Meia-água no Recife,Meia-água no Recife,Reef Lean-to,Refugio del Arrecife
+Parede Amiga,Parede Amiga,Friendly Wall,Pared Amiga
+Parede do Lago,Parede do Lago,Lake Wall,Pared del Lago
+Ponte de Folhas,Ponte de Folhas,Leaf Bridge,Puente de Hojas
+Ponte sobre a Entrada,Ponte sobre a Entrada,Bridge over the Entrance,Puente sobre la Entrada
+Porta Submarina,Porta Submarina,Underwater Door,Puerta Submarina
+Porta da Floresta,Porta da Floresta,Forest Door,Puerta del Bosque
+Porta da Montanha,Porta da Montanha,Mountain Door,Puerta de la Montaña
+Rampa do Pingo,Rampa do Pingo,Pingo's Ramp,Rampa de Pingo
+Recanto Submarino,Recanto Submarino,Underwater Nook,Rincón Submarino
+Recanto da Brasa,Recanto da Brasa,Brasa's Nook,Rincón de Brasa
+Telhado Baixinho,Telhado Baixinho,Low Roof,Techo Bajito
+Telhado Inclinado,Telhado Inclinado,Sloping Roof,Techo Inclinado
+Telhado da Praia,Telhado da Praia,Beach Roof,Techo de la Playa
+Telhado da Tuca,Telhado da Tuca,Tuca's Roof,Techo de Tuca
+Telhado do Tito,Telhado do Tito,Tito's Roof,Techo de Tito
+Telhado para Brasa,Telhado para Brasa,A Roof for Brasa,Un Techo para Brasa
+Teto Compartilhado,Teto Compartilhado,Shared Roof,Techo Compartido
+Tobogã de Boas-vindas,Tobogã de Boas-vindas,Welcome Slide,Tobogán de Bienvenida
+Travessia do Pingo,Travessia do Pingo,Pingo's Crossing,Travesía de Pingo
+"A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.","A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.",A driller pierces a line! Split your ink into two layers with space between them. One circle will not hold.,¡El taladro atraviesa una línea! Reparte la tinta en dos capas separadas. Un solo círculo no basta.
+A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.,A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.,The cave has a side entrance and a roof opening. Split your two strokes and cover the nest on the support too.,La cueva tiene una entrada lateral y otra en el techo. Divide los dos trazos y tapa también el nido del apoyo.
+A água impede os andarilhos. Observe as ilhas: as pontas dos abrigos precisam cobrir os ninhos nas bordas.,A água impede os andarilhos. Observe as ilhas: as pontas dos abrigos precisam cobrir os ninhos nas bordas.,Water stops the walkers. Watch the islands: your shelters must cover the nests at their edges.,El agua detiene a los caminantes. Observa las islas: los refugios deben tapar los nidos de los bordes.
+As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.,As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.,Drillers emerge from the marked burrows. Adjust your shelter width to plug the exits before they spawn.,Los taladros salen de las madrigueras marcadas. Ajusta el ancho del refugio para tapar las salidas antes de que aparezcan.
+"Dois amigos, uma linha curta. Bloqueie o caminho das formigas antes que elas se dividam!","Dois amigos, uma linha curta. Bloqueie o caminho das formigas antes que elas se dividam!","Two friends, one short line. Block the ants before their paths split!",Dos amigos y una línea corta. ¡Bloquea a las hormigas antes de que se separen!
+Há ninhos entre os amigos. Separe os abrigos e use as pontas das linhas para tampar essas saídas.,Há ninhos entre os amigos. Separe os abrigos e use as pontas das linhas para tampar essas saídas.,There are nests between the friends. Separate your shelters and use their ends to plug those exits.,Hay nidos entre los amigos. Separa los refugios y tapa las salidas con las puntas de las líneas.
+O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.,O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.,The cliff has a driller nest. Start the roof over its exit and use the rock as a wall.,El paredón tiene un nido de taladros. Empieza el techo sobre su salida y usa la roca como pared.
+O vento levanta a linha! Passe as pontas por baixo das pedras para prender o telhado; um abrigo solto sai voando.,O vento levanta a linha! Passe as pontas por baixo das pedras para prender o telhado; um abrigo solto sai voando.,The wind lifts your line! Extend its ends under the rocks to anchor your roof; a loose shelter flies away.,¡El viento levanta la línea! Extiende las puntas bajo las piedras para sujetar el techo; un refugio suelto sale volando.
+Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.,Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.,The support nests release drillers! Cover their exits and the roof opening with the same line.,¡Los nidos de los apoyos sueltan taladros! Tapa sus salidas y la abertura de arriba con la misma línea.
+Tinta Firme: a caverna já tem teto e paredes. Feche apenas a passagem lateral; a tinta não dá para outro abrigo.,Tinta Firme: a caverna já tem teto e paredes. Feche apenas a passagem lateral; a tinta não dá para outro abrigo.,Firm Ink: the cave already has a roof and walls. Close only its side entrance; there is not enough ink for another shelter.,Tinta Firme: la cueva ya tiene techo y paredes. Cierra solo la entrada lateral; no hay tinta para otro refugio.
+A plataforma se move. Seu abrigo precisa acompanhar o bichinho.,A plataforma se move. Seu abrigo precisa acompanhar o bichinho.,The platform moves. Your shelter must travel with your friend.,La plataforma se mueve. El refugio debe acompañar al animalito.
+Buracos de insetos próximos! Proteja todos os amigos.,Buracos de insetos próximos! Proteja todos os amigos.,Bug burrows nearby! Protect every friend.,¡Hay madrigueras de insectos cerca! Protege a todos los amigos.
+Impeça a entrada dos insetos na caverna. A linha fica fixa.,Impeça a entrada dos insetos na caverna. A linha fica fixa.,Keep the bugs out of the cave. Your line stays fixed.,Impide que los insectos entren en la cueva. La línea queda fija.
+Leve o bichinho até a toca antes do tempo acabar. A linha fica fixa.,Leve o bichinho até a toca antes do tempo acabar. A linha fica fixa.,Guide your friend to the burrow before time runs out. Your line stays fixed.,Lleva al animalito hasta la madriguera antes de que se acabe el tiempo. La línea queda fija.
+Observe as luzes e decida quem precisa de proteção.,Observe as luzes e decida quem precisa de proteção.,Watch the lights and decide who needs protection.,Observa las luces y decide quién necesita protección.
+Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme.,Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme.,Protect both cave entrances. You have two Firm Ink strokes.,Protege las dos entradas de la cueva. Tienes dos trazos de Tinta Firme.
+Proteja o bichinho das rajadas que levantam a linha.,Proteja o bichinho das rajadas que levantam a linha.,Protect your friend from gusts that lift the line.,Protege al animalito de las ráfagas que levantan la línea.
+Proteja o bichinho. Não há tinta para uma volta completa.,Proteja o bichinho. Não há tinta para uma volta completa.,Protect your friend. There is not enough ink for a full loop.,Protege al animalito. No hay tinta para una vuelta completa.
+Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima.,Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima.,Protect your friends. There are driller nests on the supports and an opening above.,Protege a los amigos. Hay nidos de taladros en los apoyos y una abertura arriba.
+Proteja os dois amigos usando apenas um traço curto.,Proteja os dois amigos usando apenas um traço curto.,Protect both friends with just one short stroke.,Protege a los dos amigos con un solo trazo corto.
+"Seis amigos, três traços e ninhos entre eles. Planeje os grupos.","Seis amigos, três traços e ninhos entre eles. Planeje os grupos.","Six friends, three strokes and nests between them. Plan your groups.","Seis amigos, tres trazos y nidos entre ellos. Planea los grupos."
+Sobreviva às brocas: elas conseguem atravessar uma linha.,Sobreviva às brocas: elas conseguem atravessar uma linha.,Survive the drillers: they can pierce a line.,Sobrevive a los taladros: pueden atravesar una línea.
+Use as ilhas e a água a seu favor. Cuidado com os ninhos nas bordas.,Use as ilhas e a água a seu favor. Cuidado com os ninhos nas bordas.,Use the islands and water to your advantage. Watch the nests at the edges.,Usa las islas y el agua a tu favor. Cuidado con los nidos de los bordes.
+Baiacu-broca,Baiacu-broca,Drill Puffer,Pez Globo Taladro
+Fura linhas como a abelha-broca. Tampe a toca no coral antes que ele saia.,Fura linhas como a abelha-broca. Tampe a toca no coral antes que ele saia.,Pierces lines like a carpenter bee. Plug its coral burrow before it emerges.,Perfora líneas como la abeja taladro. Tapa su madriguera del coral antes de que salga.
+Proteja o bichinho: há forças que levantam a linha.,Proteja o bichinho: há forças que levantam a linha.,Protect your friend: forces are lifting the line.,Protege al animalito: hay fuerzas que levantan la línea.
+Resista à correnteza. O abrigo precisa de apoio.,Resista à correnteza. O abrigo precisa de apoio.,Resist the current. Your shelter needs support.,Resiste la corriente. El refugio necesita apoyo.
+O mel muda o caminho dos insetos. Descubra quem ficará em perigo.,O mel muda o caminho dos insetos. Descubra quem ficará em perigo.,Honey changes the bugs' path. Work out who will be in danger.,La miel cambia el camino de los insectos. Descubre quién estará en peligro.
+Proteja o bichinho e bloqueie o ninho no apoio.,Proteja o bichinho e bloqueie o ninho no apoio.,Protect your friend and block the nest on the support.,Protege al animalito y bloquea el nido del apoyo.

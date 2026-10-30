@@ -77,6 +77,7 @@ const INFO := {
 }
 
 const INSECTS := {
+	"drillfish": {"name": "Baiacu-broca", "desc": "Fura linhas como a abelha-broca. Tampe a toca no coral antes que ele saia."},
 	"bee": {"name": "Abelha Zumbi", "desc": "Persegue o bichinho e contorna as barreiras procurando frestas."},
 	"ant": {"name": "Formiga Tilim", "desc": "Anda em fila pelo chão, sobe degraus baixos, mas não paredes."},
 	"beetle": {"name": "Besouro Bolota", "desc": "Lento e forte: empurra linhas leves. Use barreiras pesadas."},

@@ -12,7 +12,7 @@ jobs:
   test:
     name: Testes headless (Godot 4.7.2)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -61,6 +61,18 @@ jobs:
             echo "::error::Erros de script durante os testes"
             exit 1
           fi
+
+      - name: Círculos e arcos genéricos nas fases estratégicas
+        run: |
+          set -o pipefail
+          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/strategy_test.tscn 2>&1 | tee strategy.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" strategy.log; then exit 1; fi
+
+      - name: Todas as combinações de desafios diários
+        run: |
+          set -o pipefail
+          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --daily-all 2>&1 | tee daily.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" daily.log; then exit 1; fi
 
       - name: Loja simulada, persistência e bloqueio de produção
         run: |

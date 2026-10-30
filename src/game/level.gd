@@ -281,7 +281,7 @@ func paw_point() -> Vector2:
 	if data.has("paw"):
 		return _v(data["paw"])
 	var strokes := solution_strokes()
-	if strokes.is_empty() or (strokes[0] as PackedVector2Array).size() < 3:
+	if strokes.is_empty() or (strokes[0] as PackedVector2Array).size() < 2:
 		return Vector2.INF
 	var s: PackedVector2Array = strokes[0]
 	var total := 0.0

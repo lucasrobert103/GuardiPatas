@@ -16,7 +16,9 @@ trivial). Convenções: tela de projeto 720x1280 (retrato), y cresce para baixo.
 import json
 import math
 import os
+import copy
 
+# Os layouts 0.4 são aplicados por redesign_strategy(); os construtores base também servem como templates.
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "levels.json")
 
 GROUND = 1000
@@ -177,6 +179,269 @@ def L(id_, world, name, tip, animals, nests, solution, ink=None, survive=8, star
         "animals": animals, "nests": nests, "bosses": bosses or [], "solution": solution,
         **extra,
     }
+
+
+def redesign_strategy(levels):
+    """Campanha 0.4: recursos do cenário são necessários, não apenas decorativos.
+
+    Duas fases ensinam o desenho livre. Depois alternamos abrigo com apoios,
+    portas, rampas, pressão de brocas, caminhos e alocação de vários traços.
+    Não detectamos nem proibimos formatos: qualquer solução física válida vale.
+    """
+    original = {level["id"]: copy.deepcopy(level) for level in levels}
+    by_id = {level["id"]: level for level in levels}
+
+    def replace_scene(id_, source, mirror=False):
+        level = by_id[id_]
+        name, world = level["name"], level["world"]
+        level.clear()
+        level.update(copy.deepcopy(original[source]))
+        level.update(id=id_, name=name, world=world)
+        if mirror:
+            mirror_scene(level)
+        level["strategy_required"] = True
+
+    def reset(level):
+        level["terrain"] = [ground()]
+        for key in ("goal", "winds", "naive"):
+            level.pop(key, None)
+        level.update(props=[], rocks=[], nodraw=[], ink_mode="normal", strokes=1)
+        # Não guardar as coordenadas antigas de plataformas/lagos.
+        for friend in level["animals"]:
+            friend["pos"][1] = GROUND - HALF_H[friend["type"]] - 1
+        level["strategy_required"] = True
+
+    def flyers(level):
+        kind = "jellyfish" if level.get("underwater") else "mosquito"
+        return [hive(90, 380, insect=kind, count=5, interval=0.6), hive(630, 380, insect=kind, count=4, interval=0.6, delay=1.2)]
+
+    def roof(level, split=False):
+        reset(level)
+        groups = [[friend] for friend in level["animals"]] if split else [level["animals"]]
+        solution = []
+        for group in groups:
+            left = min(a["pos"][0] - HALF_W[a["type"]] for a in group) - 28
+            right = max(a["pos"][0] + HALF_W[a["type"]] for a in group) + 28
+            top = min(a["pos"][1] - HALF_H[a["type"]] for a in group) - 54
+            level["terrain"] += [block(left - 40, top + 14, left, GROUND, "stone"), block(right, top + 14, right + 40, GROUND, "stone")]
+            solution.append([[left - 16, top], [(left + right) / 2, top], [right + 16, top]])
+        level.update(solution=solution, strokes=len(solution), nests=flyers(level))
+        for group in groups:
+            left = min(a["pos"][0] - HALF_W[a["type"]] for a in group) - 28
+            right = max(a["pos"][0] + HALF_W[a["type"]] for a in group) + 28
+            top = min(a["pos"][1] - HALF_H[a["type"]] for a in group) - 54
+            kind = "drillfish" if level.get("underwater") else "broca"
+            level["nests"] += [hole(left - 20, insect=kind, count=3, floor=top + 14, delay=0.6), hole(right + 20, insect=kind, count=3, floor=top + 14, delay=0.6)]
+        level["tip"] = "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha."
+        level["teaches"] = "Apoiar pontes nas pedras; aproveitar paredes existentes."
+        level["strategy"] = "roof_bridge"
+
+    def door(level, mirror=False):
+        reset(level)
+        a = level["animals"][0]
+        # Mantém os bichinhos no centro para caber uma entrada com largura visível.
+        for friend in level["animals"]:
+            friend["pos"][0] = 450
+        left, right = 270, 560
+        top = min(a["pos"][1] - HALF_H[a["type"]] - 30, 870)
+        level["terrain"] += [block(left, top - 40, right + 40, top, "stone"), block(right, top - 40, right + 40, GROUND, "stone")]
+        level.update(solution=[[[left - 14, top - 20], [left - 14, 930], [left - 14, 988]]], ink_mode="static", nests=[hive(90, 760, insect="jellyfish" if level.get("underwater") else "mosquito", count=7, interval=0.35)])
+        level["tip"] = "Tinta Firme: a caverna já tem teto e paredes. Feche apenas a passagem lateral; a tinta não dá para outro abrigo."
+        level["teaches"] = "Ler o cenário e fechar a única passagem."
+        level["strategy"] = "cave_door"
+        if level["world"] >= 6:
+            level["terrain"] = [ground(), block(left, top - 40, 400, top, "stone"), block(480, top - 40, right + 40, top, "stone"), block(right, top - 40, right + 40, GROUND, "stone")]
+            level["solution"].append([[386, top - 54], [440, top - 54], [494, top - 54]])
+            level["strokes"] = 2
+            kind = "drillfish" if level.get("underwater") else "broca"
+            level["nests"].append(hole(390, insect=kind, count=3, floor=top - 40, delay=0.5))
+            level["tip"] = "A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio."
+            level["strategy"] = "two_entrances"
+        if mirror:
+            mirror_scene(level)
+
+    def lean(level, mirror=False):
+        reset(level)
+        level["animals"] = [level["animals"][0]]
+        a = level["animals"][0]
+        a["pos"][0] = 340
+        arc = dome_over(a["type"], 340, pad=30, apex_gap=42)
+        edge = arc[-2]
+        level["terrain"].append(block(edge[0] - 8, edge[1] + 14, edge[0] + 140, GROUND, "stone"))
+        level.update(solution=[[[edge[0] + 115, edge[1]]] + list(reversed(arc[:-1]))], nests=[hive(100, 350, insect="jellyfish" if level.get("underwater") else "mosquito", count=7, interval=0.4)])
+        level["tip"] = "Aproveite o paredão como um lado do abrigo. Apoie o telhado nele: não há tinta para cercar o bichinho inteiro."
+        level["teaches"] = "Abrigo assimétrico, apoio e orçamento de tinta."
+        level["strategy"] = "lean_to"
+        kind = "drillfish" if level.get("underwater") else "broca"
+        level["nests"].append(hole(edge[0] + 100, insect=kind, count=3, floor=edge[1] + 14, delay=0.5))
+        level["tip"] = "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede."
+        if mirror:
+            mirror_scene(level)
+
+    def drill(level):
+        reset(level)
+        level["animals"] = [animal("capi", 360)]
+        level.update(solution=[dome_over("capi", 360, pad=20, apex_gap=26), dome_over("capi", 360, pad=70, apex_gap=80)], strokes=2, survive=5.0, nests=[hive(600, 740, insect="broca", count=3, interval=0.8)])
+        level["tip"] = "A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura."
+        level["teaches"] = "Camadas independentes contra a perfuração."
+        level["strategy"] = "double_layer"
+        level["naive"] = [wide_dome(level["animals"])]
+
+    # A estratégia aparece já no Jardim, sem esperar chegar ao sexto mundo.
+    for id_ in ("1-3", "1-6", "2-3", "3-2", "4-2", "7-2", "8-1"):
+        roof(by_id[id_])
+    for id_ in ("2-5", "4-6"):
+        roof(by_id[id_], split=True)
+    by_id["4-6"]["animals"][-1]["pos"][0] = 600
+    roof(by_id["4-6"], split=True)
+    for i, id_ in enumerate(("2-1", "3-4", "4-1", "6-3", "6-5", "7-1", "8-2")):
+        door(by_id[id_], mirror=i % 2 == 1)
+    for i, id_ in enumerate(("2-4", "2-6", "3-1", "4-3", "4-4", "5-3", "6-7", "7-5", "7-6", "8-4", "8-6", "8-7")):
+        lean(by_id[id_], mirror=i % 2 == 1)
+    for id_ in ("3-5", "4-5", "5-2", "6-6"):
+        drill(by_id[id_])
+    replace_scene("1-5", "7-8")
+    replace_scene("3-3", "7-8", mirror=True)
+    replace_scene("6-1", "6-8", mirror=True)
+    by_id["2-6"]["nodraw"] = [[230, 640, 260, 210]]
+    # Prioridade: depois que a última luz apaga, só um amigo fica perto do enxame.
+    replace_scene("2-2", "5-1")
+    by_id["2-2"]["strategy"] = "threat_priority"
+    by_id["2-2"]["strategy_required"] = False
+    by_id["2-2"]["naive"] = [dome_over("capi", 170)]
+    # Uma parede no gargalo protege dois amigos com menos tinta que duas gaiolas.
+    wall = by_id["1-4"]
+    wall["animals"].append(animal("pingo", 650))
+    wall.update(strategy_required=True, strategy="shared_wall")
+    wall["nests"].append(hole(wall["solution"][0][0][0], insect="broca", count=3, delay=0.5))
+    wall["tip"] = "Dois amigos, uma linha curta. Bloqueie o caminho das formigas antes que elas se dividam!"
+    # Chefões exigem travar a linha por baixo das pedras contra a rajada ascendente.
+    for id_ in ("5-6", "6-11"):
+        level = by_id[id_]
+        kind = level["animals"][0]["type"]
+        x = level["animals"][0]["pos"][0]
+        line = hooked_dome(kind, x, foot=100, pad=30, apex_gap=40)
+        level.update(solution=[line], rocks=[{"pos": [line[0][0] + 26, 941], "r": 30}, {"pos": [line[-1][0] - 26, 941], "r": 30}], winds=[{"rect": [-100, 150, 920, 900], "dir": [0, -1], "force": 1400, "on": 2.0, "off": 0.5, "delay": 0.3, "insects": 0.02}], strategy_required=True, strategy="anchoring")
+        level["tip"] = "O vento levanta a linha! Passe as pontas por baixo das pedras para prender o telhado; um abrigo solto sai voando."
+
+    # Ninhos em apoios: um arco que ignora o cenário deixa nascer a broca.
+    for id_, position in (("5-4", [420, 860]), ("6-9", [420, 880]), ("8-5", [250, 880])):
+        level = by_id[id_]
+        level["nests"].append(hole(position[0], floor=position[1], insect="drillfish" if level.get("underwater") else "broca", count=3, delay=0.5))
+        level["strategy_required"] = True
+    # Repartir os seis amigos em três grupos também precisa impedir nascimentos internos.
+    by_id["5-5"]["nests"] += [hole(252, insect="broca", count=3, delay=0.5), hole(452, insect="broca", count=3, delay=0.5)]
+    by_id["5-5"].update(strategy_required=True, strategy="separate_groups")
+    by_id["5-5"]["tip"] = "Há ninhos entre os amigos. Separe os abrigos e use as pontas das linhas para tampar essas saídas."
+    # Preservar água e plataformas móveis: a dificuldade não se resume a cavernas.
+    for id_ in ("3-4", "5-3", "4-1", "4-6"):
+        replace_scene(id_, id_)
+        by_id[id_]["strategy_required"] = False
+        by_id[id_]["strategy"] = "moving_platform" if id_ in ("3-4", "5-3") else "water_islands"
+    for id_ in ("4-1", "4-6"):
+        level = by_id[id_]
+        for ai, friend in enumerate(level["animals"]):
+            floor_y = friend["pos"][1] + HALF_H[friend["type"]] + 1
+            line = level["solution"][ai]
+            level["nests"] += [hole(line[0][0], insect="broca", count=2, delay=0.7, floor=floor_y), hole(line[-1][0], insect="broca", count=2, delay=0.7, floor=floor_y)]
+        level["strategy_required"] = id_ == "4-6"
+        level["tip"] = "A água impede os andarilhos. Observe as ilhas: as pontas dos abrigos precisam cobrir os ninhos nas bordas."
+    # Variar o afastamento das tocas exige ler cada fase, em vez de repetir um raio fixo.
+    for level in levels:
+        if level.get("strategy_required") or level.get("goal") or level["id"] in ("2-2", "4-1", "4-6"):
+            continue
+        burrows = [n for n in level["nests"] if n.get("hole")]
+        for ai, friend in enumerate(level["animals"]):
+            own = [n for n in burrows if min(level["animals"], key=lambda a: abs(a["pos"][0] - n["pos"][0])) is friend]
+            if not own:
+                continue
+            gap = 100 + 10 * ((level["world"] + int(level["id"].split("-")[1])) % 3)
+            for n in own:
+                sign = -1 if n["pos"][0] < friend["pos"][0] else 1
+                n["pos"][0] = friend["pos"][0] + sign * (HALF_W[friend["type"]] + gap)
+                n["insect"] = "drillfish" if level.get("underwater") else "broca"
+            level["solution"][ai] = dome_over(friend["type"], friend["pos"][0], pad=gap, apex_gap=44)
+            level.update(strategy_required=True, strategy="plug_holes")
+            level["tip"] = "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam."
+    # A ancoragem final precisa alcançar pedras mais afastadas, além de resistir à sucção.
+    final = by_id["8-11"]
+    final["solution"] = [hooked_dome("tito", 360, foot=100, pad=30, apex_gap=40)]
+    final["rocks"] = [{"pos": [final["solution"][0][0][0] + 26, 941], "r": 30}, {"pos": [final["solution"][0][-1][0] - 26, 941], "r": 30}]
+    names = {
+        "1-3": "Telhado para Brasa", "1-4": "Gargalo das Formigas", "1-5": "Rampa do Pingo", "1-6": "Ponte de Folhas",
+        "2-1": "Porta da Floresta", "2-2": "Escolha à Luz", "2-3": "Teto Compartilhado", "2-4": "Parede Amiga", "2-5": "Apoios Separados", "2-6": "Telhado Baixinho",
+        "3-1": "Apoio na Rocha", "3-2": "Ponte sobre a Entrada", "3-3": "Travessia do Pingo", "3-5": "Duas Barreiras",
+        "4-2": "Telhado da Tuca", "4-3": "Recanto da Brasa", "4-4": "Parede do Lago", "4-5": "Camadas de Proteção",
+        "5-2": "Brocas no Acampamento", "6-1": "Tobogã de Boas-vindas", "6-3": "Porta da Montanha", "6-5": "Entrada da Caverna", "6-7": "Abrigo no Paredão",
+        "7-1": "Esconderijo do Pompom", "7-2": "Telhado da Praia", "7-5": "Apoio da Fofa", "7-6": "Telhado Inclinado",
+        "8-1": "Telhado do Tito", "8-2": "Porta Submarina", "8-4": "Apoio de Coral", "8-6": "Recanto Submarino", "8-7": "Meia-água no Recife",
+    }
+    for level in levels:
+        level["name"] = names.get(level["id"], level["name"])
+        special = {"1-1": "tutorial", "1-2": "tutorial", "5-1": "threat_priority", "7-4": "honey_priority", "5-4": "lean_to", "6-9": "lean_to", "6-6": "double_layer", "8-5": "roof_bridge", "8-9": "current_anchors", "8-11": "anchoring"}
+        level["strategy"] = special.get(level["id"], level.get("strategy", "plug_holes"))
+        # Valores anteriores deixavam quase o dobro da tinta da solução disponível.
+        ratio = 0.68 if level["id"] in ("1-1", "1-2") else (0.80 if level["world"] <= 2 else 0.86)
+        length = sum(stroke_len(stroke) for stroke in level["solution"])
+        level["ink"] = math.ceil(length / ratio / 5) * 5
+        level["stars"] = [min(0.96, ratio + 0.04), 0.99]
+        if level.get("goal"):
+            level.update(strategy_required=True, strategy="rescue_route")
+        if level["id"] in ("5-4", "6-9", "7-7", "8-5", "6-6", "8-11"):
+            level["strategy_required"] = True
+        # Arcos muito largos já são uma regressão existente em fases de tocas.
+        if level.get("naive"):
+            level["strategy"] = level.get("strategy", "plug_holes")
+        objectives = {
+            "roof_bridge": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima.",
+            "two_entrances": "Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme.",
+            "separate_groups": "Seis amigos, três traços e ninhos entre eles. Planeje os grupos.",
+            "cave_door": "Impeça a entrada dos insetos na caverna. A linha fica fixa.",
+            "lean_to": "Proteja o bichinho e bloqueie o ninho no apoio.",
+            "double_layer": "Sobreviva às brocas: elas conseguem atravessar uma linha.",
+            "shared_wall": "Proteja os dois amigos usando apenas um traço curto.",
+            "rescue_route": "Leve o bichinho até a toca antes do tempo acabar. A linha fica fixa.",
+            "anchoring": "Proteja o bichinho: há forças que levantam a linha.",
+            "current_anchors": "Resista à correnteza. O abrigo precisa de apoio.",
+            "threat_priority": "Observe as luzes e decida quem precisa de proteção.",
+            "honey_priority": "O mel muda o caminho dos insetos. Descubra quem ficará em perigo.",
+            "plug_holes": "Buracos de insetos próximos! Proteja todos os amigos.",
+            "moving_platform": "A plataforma se move. Seu abrigo precisa acompanhar o bichinho.",
+            "water_islands": "Use as ilhas e a água a seu favor. Cuidado com os ninhos nas bordas.",
+        }
+        if level.get("strategy") in objectives:
+            level["objective"] = objectives[level["strategy"]]
+
+
+def mirror_scene(level):
+    """Espelha dados geométricos sem mudar o sentido da gravidade."""
+    for friend in level["animals"]:
+        friend["pos"][0] = 720 - friend["pos"][0]
+        friend["flip"] = not friend.get("flip", False)
+    for key in ("nests", "rocks", "bosses"):
+        for obj in level.get(key, []):
+            obj["pos"][0] = 720 - obj["pos"][0]
+    for terrain in level["terrain"]:
+        terrain["poly"] = [[720 - x, y] for x, y in reversed(terrain["poly"])]
+    for stroke in level["solution"]:
+        for point in stroke:
+            point[0] = 720 - point[0]
+    for stroke in level.get("naive", []):
+        for point in stroke:
+            point[0] = 720 - point[0]
+    for key in ("nodraw",):
+        for rect in level.get(key, []):
+            rect[0] = 720 - rect[0] - rect[2]
+    if level.get("goal"):
+        rect = level["goal"]["rect"]
+        rect[0] = 720 - rect[0] - rect[2]
+    for prop in level.get("props", []):
+        if "rect" in prop:
+            prop["rect"][0] = 720 - prop["rect"][0] - prop["rect"][2]
+        if "pos" in prop:
+            prop["pos"][0] = 720 - prop["pos"][0]
+        if "travel" in prop:
+            prop["travel"][0] *= -1
 
 
 def campaign():
@@ -387,6 +652,7 @@ def campaign():
             # "Pouca Tinta": quase não sobra — só a meia-água apoiada no bloco cabe
             lvl["ink"] = int(round(stroke_len(lvl["solution"][0]) / 0.82 / 10.0) * 10)
             lvl["stars"] = [0.9, 0.97]
+    redesign_strategy(lv)
     return lv
 
 

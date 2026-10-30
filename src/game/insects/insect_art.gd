@@ -51,6 +51,11 @@ func _draw() -> void:
 		"crab": _draw_crab()
 		"jellyfish": _draw_jellyfish()
 		"puffer": _draw_puffer()
+		"drillfish":
+			_draw_puffer()
+			DrawUtil.tri(self, Vector2(radius * 0.8, -4), Vector2(radius * 1.8, 0), Vector2(radius * 0.8, 4), Color("b9dfe5"), Palette.OUTLINE, 2)
+			if excited:
+				draw_line(Vector2(radius, -6), Vector2(radius * 1.6, 6), Color.WHITE, 2, true)
 	draw_set_transform(Vector2.ZERO)
 	_draw_status()
 

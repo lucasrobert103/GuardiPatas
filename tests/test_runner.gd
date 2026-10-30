@@ -142,7 +142,9 @@ func _unit_audio() -> void:
 
 func _test_draw_validation() -> void:
 	print("[Validação do desenho]")
-	var data := LevelDB.get_level(LevelDB.index_of("2-6"))
+	var data := LevelDB.get_level(0).duplicate(true)
+	# A validação da ferramenta não deve depender da composição de uma fase específica.
+	data["nodraw"] = [[230, 640, 260, 210]]
 	var lv := Level.new()
 	lv.setup(0, data, false)
 	add_child(lv)
@@ -307,6 +309,9 @@ func _run_variants(index: int, data: Dictionary) -> void:
 
 func _trace(lv: Level, with_solution: bool) -> void:
 	var parts: Array = []
+	for nest in lv.nests:
+		if nest.hole:
+			parts.append("toca(%s %.0f,%.0f tampada=%s restante=%d)" % [nest.insect, nest.position.x, nest.position.y, nest._is_plugged(), nest.remaining])
 	for i in lv.insects:
 		if is_instance_valid(i):
 			parts.append("%s(%.0f,%.0f v%.0f,%.0f)" % [i.kind, i.global_position.x, i.global_position.y, i.linear_velocity.x, i.linear_velocity.y])

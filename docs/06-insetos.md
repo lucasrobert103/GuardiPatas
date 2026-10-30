@@ -41,3 +41,9 @@ Todos avisam 1 s antes de agir (ícone "!" piscando + marcação na tela) e ning
 
 ### Progressão da dificuldade
 Mundo 1: abelha → formiga → abelha+formiga. Mundo 2: mosquito, mariposa+luz, vários bichinhos, dois traços. Mundo 3: besouro, abismos, plataformas móveis, cupim. Mundo 4: água, Lulu e Tuca, vespa, lagarta. Mundo 5: noite, lâmpadas como isca, combinações e chefão. Mundo 6 (Montanha): buracos, grilos, aranha, abelha broca, vento, Tinta Firme. Mundo 7 (Praia): caranguejos nas tocas, coco caindo, isca de mel, vespas. Mundo 8 (Mar): águas-vivas, baiacus, correnteza, caranguejos do fundo.
+
+## Baiacu-broca (campanha 0.4)
+
+Aparece em tocas no coral e nos apoios submarinos. Tem corpo de baiacu com uma ponta de broca, resiste à água e perfura cada corpo de linha após 2,2 segundos de contato acumulado, como a abelha-broca. Pedras continuam bloqueando-o. A resposta estratégica é tampar a saída no apoio ou usar camadas independentes e espaçadas. A toca mostra o símbolo de broca antes do início da simulação.
+
+Abelhas-broca e baiacus-broca contornam o canto superior das pedras quando a rota direta está bloqueada. O movimento continua físico, com velocidade limitada: não teleportam nem atravessam terreno.

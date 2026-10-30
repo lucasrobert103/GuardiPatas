@@ -1,110 +1,119 @@
-# 08 — Campanha: 63 fases em 8 mundos
+# 08 — Campanha de estratégia (versão 0.4.0)
 
-**Todas as 63 fases estão implementadas** em `data/levels.json`, cada uma com solução registrada verificada pelo teste automático (ver status dos testes no doc 12).
-**Estrelas:** o orçamento de tinta é calibrado para a solução registrada usar ~55 %; 3★ exige ≤ 60 %, 2★ ≤ 80 %.
-Regra de ouro: **toda solução pode ser deduzida olhando a cena** — ninhos visíveis com contagem, zonas proibidas hachuradas, lâmpada com contador, plataforma com trajeto pontilhado.
+A campanha mantém 63 fases em oito mundos. A fonte editável é `tools/make_levels.py`; `python3 tools/make_levels.py` gera `data/levels.json`. A versão 0.4 mantém o progresso anterior e redesenha os desafios sem apagar moedas, animais ou acessórios.
 
-## Mundo 1 — Jardim dos Bichinhos (ensina o básico)
-| Fase | Cenário | Objetivo / perigos | Mecânica ensinada | Solução válida |
-|---|---|---|---|---|
-| ✅ 1-1 Oi, Capitu! | Gramado plano, colmeia à direita | Proteger Capitu de 5 abelhas por 6 s | Desenhar, soltar, a linha cai com peso | Arco ("abrigo") sobre a Capitu, pernas quase no chão |
-| ✅ 1-2 Zumbido em Dobro | Duas colmeias, uma de cada lado | 8 abelhas de duas direções, 8 s | Abrigo fechado protege de todos os lados | Mesmo arco, bem fechado |
-| ✅ 1-3 Brasa, a Curiosa | Colmeia à esquerda | 6 abelhas, 8 s; Brasa é alta | Bichinhos têm tamanhos diferentes | Arco alto e estreito |
-| ✅ 1-4 Fila de Formigas | Formigueiro à esquerda, Capitu à direita | 6 formigas pelo chão, 10 s | Inseto andarilho; parede em vez de teto | Tenda "Λ" íngreme entre o formigueiro e a Capitu (gasta pouca tinta → 3★) |
-| ✅ 1-5 Bolinha de Espinhos | Colmeia + formigueiro | 4 abelhas + 4 formigas, 9 s | Dois tipos de inseto juntos | Arco sobre o Pingo (resolve os dois) |
-| ✅ 1-6 Lá no Alto | Galho de madeira no alto | 6 abelhas, 8 s; galho estreito | Precisão: a linha tem que pousar na plataforma | Arco pequeno cujas pernas pousam no galho |
+As duas primeiras fases ensinam a desenhar. A partir da terceira, o jogador encontra problemas de apoios, bloqueio de nascimentos, rotas, camadas e distribuição de traços. Não há detecção nem proibição de círculos: uma solução diferente continua válida quando satisfaz a física e o objetivo.
 
-## Mundo 2 — Floresta Encantada (frestas, luz, vários bichinhos)
-| Fase | Cenário | Objetivo / perigos | Mecânica | Solução |
-|---|---|---|---|---|
-| ✅ 2-1 Zizi, o Mosquito | Clareira | 7 mosquitos, 8 s | Inseto que acha qualquer fresta | Arco totalmente fechado no chão |
-| ✅ 2-2 Luz da Lanterna | Lanterna (4 s) à esquerda | 5 mariposas, 10 s | Isca de luz e tempo visível | Arco sobre a Brasa antes de a luz apagar |
-| ✅ 2-3 Dois Amigos | Capitu e Nino lado a lado | 7 abelhas, 8 s | Vários bichinhos | Um arco largo sobre os dois |
-| ✅ 2-4 Caixa Amiga | Caixa de madeira ao lado | 6 abelhas, 8 s | Objetos físicos economizam tinta | Arco sobre a Capitu; ou meia-água apoiada na caixa (3★) |
-| ✅ 2-5 Duas Linhas | Pedra separa Capitu e Pingo | 8 abelhas, 9 s; **2 traços** | Mais de um traço; botão "Pronto!" | Um arco para cada |
-| ✅ 2-6 Zona Proibida | Faixa listrada acima da Brasa | 8 abelhas de dois lados, 9 s | Espaço limitado para desenhar | Arco baixinho abaixo da zona |
+A mensagem inicial usa `objective`, sem mostrar a receita do traço. O código de dados mantém `tip` e `solution` para dicas e validação automatizada.
 
-## Mundo 3 — Vale das Formigas (abismos, empurrões, objetos móveis)
-| Fase | Cenário | Objetivo / perigos | Mecânica | Solução |
-|---|---|---|---|---|
-| ✅ 3-1 Bolota Teimosa | Chão plano | 2 besouros pela esquerda | Inseto que empurra | Arco largo (mais tinta = mais peso) |
-| ✅ 3-2 Ponte Sobre o Nada | Abismo entre formigueiro e Capitu | 8 formigas + 4 abelhas | Abismos param andarilhos | Não desenhar ponte! Só um arco contra as abelhas |
-| ✅ 3-3 Ladeira do Pingo | Rampa de 15° terminando num laguinho | Pingo rola quando a simulação começa; 5 abelhas | Física do bichinho | Arco apoiado na própria rampa: segura o Pingo e o protege |
-| ✅ 3-4 Elevador de Folha | Plataforma que desce e sobe | 6 abelhas; Nino sobre a plataforma | Objetos móveis | Arco apoiado na própria plataforma (move junto) |
-| ✅ 3-5 Roque-Roque | Duas caixas empilhadas formam parede | 3 cupins roem a madeira + 4 formigas | Barreiras frágeis | Arco de tinta sobre a Capitu (a madeira vai cair) |
-| ✅ 3-6 Formigueiro Gigante | Dois formigueiros colados na Capitu + besouro | 8 formigas + 1 besouro, 12 s | Tampar formigueiros com a própria linha | Arco com as **pontas em cima dos dois buracos** (o círculo largo deixa os buracos dentro e perde — testado) |
+## Mundo 1 — Jardim dos Bichinhos
 
-## Mundo 4 — Lagoa Misteriosa (água, novos amigos, vespas)
-| Fase | Cenário | Objetivo / perigos | Mecânica | Solução |
-|---|---|---|---|---|
-| ✅ 4-1 Bolhas da Lulu | Lulu numa ilhota de pedra no meio da lagoa | 10 formigas (a água as leva) + 5 abelhas | Água leva insetos embora | Arco pequeno sobre a Lulu, na ilhota |
-| ✅ 4-2 Vovó Tuca | Tuca no gramado | 6 abelhas; tinta curta | Casco aguenta 1 picada | Arco baixo e largo (o casco perdoa uma brecha) |
-| ✅ 4-3 Faísca! | Vespeiro no alto à esquerda | 2 vespas | Investida telegrafada ("!") | Arco firme e mais largo (mais pesado) |
-| ✅ 4-4 Fosso Protetor | Fosso com água entre o formigueiro e a Capitu | 10 formigas + 5 abelhas | Usar o cenário a favor | Arco contra as abelhas; o fosso leva as formigas |
-| ✅ 4-5 Lagarta Gulosa | Gramado | 2 lagartas + 5 formigas | Inseto que escala paredes | A tenda que barrava formigas não basta: arco fechado |
-| ✅ 4-6 Ilhas Amigas | Brasa na margem esquerda, Lulu na ilhota, Tuca na direita | 6 mosquitos + 1 vespa, 3 traços | Vários bichinhos e traços | Um arco para cada |
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 1-1 | Oi, Capitu! | Aprender o desenho e a física | 1 | 380 | 6 s |
+| 1-2 | Zumbido em Dobro | Aprender o desenho e a física | 1 | 380 | 8 s |
+| 1-3 | Telhado para Brasa | Tampar ninhos e apoiar um teto | 1 | 175 | 8 s |
+| 1-4 | Gargalo das Formigas | Proteger dois amigos no gargalo | 1 | 310 | 10 s |
+| 1-5 | Rampa do Pingo | Construir uma rota até a toca | 1 | 445 | 10 s |
+| 1-6 | Ponte de Folhas | Tampar ninhos e apoiar um teto | 1 | 165 | 8 s |
 
-## Mundo 5 — Acampamento no Quintal (noite, luz e combinações)
-| Fase | Cenário | Objetivo / perigos | Mecânica | Solução |
-|---|---|---|---|---|
-| ✅ 5-1 Noite de Lanternas | Lanternas de 3 s (esq.) e 7 s (dir.) | 6 mariposas, 11 s | Iscas e tempo | Só o Nino precisa de abrigo: as mariposas ficam na lanterna que dura mais e depois vão ao bichinho mais perto dela (3★ com pouca tinta) |
-| ✅ 5-2 Fogueira de Brinquedo | Duas caixas soltas | 5 abelhas + 1 besouro empurrando | Objetos + empurrão | Arco largo sobre a Capitu |
-| ✅ 5-3 Carrossel de Tábua | Plataforma que vai e volta na horizontal | 9 abelhas de dois lados | Plataforma horizontal | Arco sobre a Brasa, apoiado na plataforma |
-| ✅ 5-4 Pouca Tinta | Bloco de pedra alto ao lado da Capitu; tinta curtíssima | 6 mosquitos | Economia extrema | Meia-água do topo do bloco até o chão (o arco completo não cabe) |
-| ✅ 5-5 Todos Juntos | Os seis bichinhos | 8 abelhas + 5 mosquitos, 3 traços, 12 s | Revisão geral | Três arcos agrupando os amigos de dois em dois |
-| ✅ 5-6 Rainha Zumbina | Duas colmeias + a Rainha pairando | Rajadas de vento a cada 3,2 s + 12 abelhas, 14 s | Batalha especial sem violência | Arco sobre a Capitu entre as duas pedras, que o travam contra as rajadas |
+## Mundo 2 — Floresta Encantada
 
-## Mundo 6 — Montanha Gelada (neve, gelo, buracos, vento)
-| Fase | Bichinhos | Perigos | Mecânica | Dica no jogo | Círculo genérico perde? |
-|---|---|---|---|---|---|
-| ✅ 6-1 Olá, Gelinho! | Gelinho | 5 abelhas, 7 s | Novo bichinho; cenário de neve. | O Gelinho chegou escorregando da montanha. Proteja ele das abelhas! | — |
-| ✅ 6-2 Buracos na Neve | Nuvem | 6 formigas, 4 abelhas, 9 s | Tampar buracos com a própria linha (um círculo folgado deixa os buracos dentro!). | Formigas vão sair dos BURACOS! Desenhe com as pontas da linha EM CIMA deles para tampar. | sim (testado) |
-| ✅ 6-3 Grilos Pulões | Kiko | 4 grilos, 11 s | Inseto que pula: parede não basta. | Grilos pulam por cima de paredes! Só um abrigo com teto segura. | sim (testado) |
-| ✅ 6-4 Rumo à Toca do Tatá | Tatá | levar até a toca, 10 s | Tinta Firme e objetivo de levar o bichinho até a toca. | TINTA FIRME: a linha não cai! Faça uma rampa para o Tatá rolar até a toca. | sim (testado) |
-| ✅ 6-5 Teia na Caverna | Gelinho | 2 aranhas, 4 formigas, 10 s | Aranha que desce do teto. | A aranha anda pelo teto e DESCE reto. Formigas vêm pelo chão. Abrigo com teto! | sim (testado) |
-| ✅ 6-6 Abelha Broca | Capitu | 3 abelhas broca, 6 s | Parede dupla contra quem fura. | A Abelha Broca FURA a linha depois de um tempinho. Dois traços = parede dupla! | sim (testado) |
-| ✅ 6-7 Ventania | Nuvem | 6 abelhas, 10 s | Vento empurra linhas e insetos. | Rajadas de vento empurram a linha! Encoste o abrigo no paredão de pedra para ele não voar. | — |
-| ✅ 6-8 Tobogã do Gelinho | Gelinho | 3 abelhas, 9 s | Bichinho que escorrega + objetivo. | O Gelinho escorrega no gelo! Faça um tobogã de Tinta Firme até o iglu. | sim (testado) |
-| ✅ 6-9 Abrigo na Rocha | Kiko | 6 mosquitos, 9 s | Usar o cenário e economizar tinta. | Pouquíssima tinta! Use o paredão de pedra como parede e faça só um telhadinho. | — |
-| ✅ 6-10 Pico Nevado | Nuvem, Gelinho | 12 formigas, 6 abelhas, 10 s | Revisão: buracos + dois traços. | Dois amigos, dois traços e buracos dos dois lados. Tampe tudo! | sim (testado) |
-| ✅ 6-11 **Coruja Nevasca** (chefão) | Nuvem | 6 abelhas + bolas de neve, 13 s | A Coruja marca X no chão e derruba neve ali a cada 3 s | Abrigo firme em arco sobre a Nuvem | — |
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 2-1 | Porta da Floresta | Usar a caverna e fechar a passagem | 1 | 175 | 8 s |
+| 2-2 | Escolha à Luz | Ler as luzes e priorizar o alvo | 1 | 220 | 11 s |
+| 2-3 | Teto Compartilhado | Tampar ninhos e apoiar um teto | 1 | 370 | 8 s |
+| 2-4 | Parede Amiga | Fechar o ninho e aproveitar o paredão | 1 | 475 | 8 s |
+| 2-5 | Apoios Separados | Tampar ninhos e apoiar um teto | 2 | 430 | 9 s |
+| 2-6 | Telhado Baixinho | Fechar o ninho e aproveitar o paredão | 1 | 450 | 9 s |
 
-## Mundo 7 — Praia do Sol (tocas, coco, mel, vespas)
-| Fase | Bichinhos | Perigos | Mecânica | Dica no jogo | Círculo genérico perde? |
-|---|---|---|---|---|---|
-| ✅ 7-1 Pompom na Praia | Pompom | 6 abelhas, 8 s | Novo bichinho; cenário de praia. | Pompom tem orelhas compridas: capriche na altura do abrigo! | — |
-| ✅ 7-2 Coqueiro Traiçoeiro | Pompom | 4 abelhas, 8 s | Objetos que caem. | Um coco vai cair (veja a linha pontilhada)! Um abrigo firme aguenta o bonk. | — |
-| ✅ 7-3 Caranguejos da Toca | Patinha | 4 caranguejos, 4 abelhas, 9 s | Tampar tocas (de novo, agora com caranguejos). | Caranguejos moram nos buracos da areia. Tampe os buracos com as pontas da linha! | sim (testado) |
-| ✅ 7-4 Piquenique | Patinha, Pompom | 6 abelhas, 10 s | Isca de mel: quem está em perigo de verdade? | As abelhas vão PRIMEIRO no mel. Quando acabar, atacam quem estiver mais perto do pote! | sim (testado) |
-| ✅ 7-5 Siri Teimoso | Fofa | 3 caranguejos, 4 abelhas, 11 s | Inseto que empurra na praia. | Caranguejos empurram com força e não têm medo de água. Abrigo largo e pesado! | — |
-| ✅ 7-6 Vespas no Quiosque | Pompom | 2 vespas, 9 s | Combinação: investida + queda. | Vespas avisam com "!" antes da investida, e ainda tem coco caindo! | — |
-| ✅ 7-7 Toca no Rochedo | Patinha | 7 mosquitos, 9 s | Tinta Firme como portinha. | Tinta Firme e quase nada de tinta: feche só a entrada da toca da Patinha! | sim (testado) |
-| ✅ 7-8 Rumo ao Guarda-Sol | Pingo | levar até a toca, 10 s | Rampa sobre a água. | O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca. | sim (testado) |
-| ✅ 7-9 Coco e Caranguejo | Patinha | 4 caranguejos, 9 s | Combinar regras. | Coco caindo E caranguejos nos buracos. Abrigo firme com as pontas nos buracos! | sim (testado) |
-| ✅ 7-10 Festa na Praia | Pompom, Fofa | 4 caranguejos, 6 abelhas, 10 s | Revisão da praia. | Dois traços para dois amigos. Cuidado com as tocas e com o coco da Fofa! | sim (testado) |
-| ✅ 7-11 **Caranguejo Rei** (chefão) | Pompom | 4 caranguejos nas tocas + conchas em arco, 12 s | O rei mostra o arco pontilhado e arremessa conchas | Arco com as pontas nas tocas | sim (testado) |
+## Mundo 3 — Vale das Formigas
 
-## Mundo 8 — Fundo do Mar (águas-vivas, baiacus, correnteza)
-| Fase | Bichinhos | Perigos | Mecânica | Dica no jogo | Círculo genérico perde? |
-|---|---|---|---|---|---|
-| ✅ 8-1 Olá, Tito! | Tito | 4 águas-vivas, 10 s | Novo mundo: fundo do mar. | No fundo do mar, as águas-vivas nadam devagarinho até o Tito. | — |
-| ✅ 8-2 Baiacu Bolha | Tito | 3 baiacus, 10 s | Criatura que cresce. | O baiacu INCHA quando chega perto e empurra tudo. Deixe o abrigo bem espaçoso! | — |
-| ✅ 8-3 Caranguejos do Fundo | Fofa | 4 caranguejos, 3 águas-vivas, 10 s | Tocas no fundo do mar. | Até no fundo do mar tem toca de caranguejo! Tampe com as pontas da linha. | sim (testado) |
-| ✅ 8-4 Correnteza | Lulu | 5 águas-vivas, 11 s | Correnteza (vento submarino). | A correnteza empurra as águas-vivas e a sua linha! Apoie o abrigo na pedra. | — |
-| ✅ 8-5 Toca do Polvo | Tito | 5 águas-vivas, 10 s | Usar o cenário: uma tampinha basta. | O Tito se escondeu entre as pedras. Só falta uma tampa na entrada de cima! | sim (testado) |
-| ✅ 8-6 Cardume Gelatinoso | Tito, Lulu | 10 águas-vivas, 11 s | Muitas criaturas. | Muitas águas-vivas dos dois lados! Um abrigo grande para os dois amigos. | — |
-| ✅ 8-7 Recife de Coral | Fofa | 2 baiacus, 4 águas-vivas, 11 s | Combinação no recife. | Baiacus E águas-vivas. Espaço para inchar e nada de frestas! | — |
-| ✅ 8-8 Polvo e Caranguejo | Tito | 4 caranguejos, 2 baiacus, 10 s | Tampar + espaço. | Tocas de caranguejo e baiacu. Pontas nos buracos e abrigo espaçoso! | sim (testado) |
-| ✅ 8-9 Correnteza Forte | Tito | 6 águas-vivas, 11 s | Travar o abrigo. | Correnteza fortíssima! Trave o abrigo entre as duas pedras. | — |
-| ✅ 8-10 Rei dos Mares | Tito, Fofa | 4 caranguejos, 2 baiacus, 4 águas-vivas, 11 s | Revisão final. | O grande final do fundo do mar: dois traços, tocas, baiacus e águas-vivas! | sim (testado) |
-| ✅ 8-11 **Polvo Gigante** (chefão) | Tito | 10 águas-vivas + sucção, 12 s | O polvo incha e suga linhas e caixas; depois solta tinta (só visual) | Arco com "pezinhos" passando por baixo das duas pedras | sim (testado: o arco comum é sugado) |
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 3-1 | Apoio na Rocha | Fechar o ninho e aproveitar o paredão | 1 | 445 | 11 s |
+| 3-2 | Ponte sobre a Entrada | Tampar ninhos e apoiar um teto | 1 | 235 | 10 s |
+| 3-3 | Travessia do Pingo | Construir uma rota até a toca | 1 | 415 | 10 s |
+| 3-4 | Elevador de Folha | Acompanhar uma plataforma móvel | 1 | 205 | 9 s |
+| 3-5 | Duas Barreiras | Separar duas barreiras contra as brocas | 2 | 770 | 5 s |
+| 3-6 | Formigueiro Gigante | Ajustar o abrigo às posições das tocas | 1 | 485 | 12 s |
 
-<img src="img/chefe-coruja.png" width="200"> <img src="img/chefe-caranguejo.png" width="200"> <img src="img/chefe-polvo.png" width="200">
+## Mundo 4 — Lagoa Misteriosa
 
-<img src="img/fase-buracos.png" width="200"> <img src="img/fase-toca.png" width="200"> <img src="img/fase-praia.png" width="200"> <img src="img/fase-mar.png" width="200">
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 4-1 | Bolhas da Lulu | Usar água, ilhas e fechar nascimentos | 1 | 220 | 10 s |
+| 4-2 | Telhado da Tuca | Tampar ninhos e apoiar um teto | 1 | 210 | 9 s |
+| 4-3 | Recanto da Brasa | Fechar o ninho e aproveitar o paredão | 1 | 420 | 9 s |
+| 4-4 | Parede do Lago | Fechar o ninho e aproveitar o paredão | 1 | 445 | 10 s |
+| 4-5 | Camadas de Proteção | Separar duas barreiras contra as brocas | 2 | 770 | 5 s |
+| 4-6 | Ilhas Amigas | Usar água, ilhas e fechar nascimentos | 3 | 795 | 10 s |
 
-## Como criar uma fase nova
-1. Adicione uma chamada `L(...)` em `tools/make_levels.py` (funções `ground`, `block`, `animal`, `hive`, `mound`, `hole`, `holes_beside`, `coral`, `dome_over`, `wide_dome`, `slide`, `tent`; extras `winds`, `goal`, `ink_mode`, `underwater`, `naive`).
-2. Rode `python3 tools/make_levels.py` → atualiza `data/levels.json`.
-3. Rode os testes (`--level=ID` para só ela, `--world=N` para um mundo). O teste exige: **a solução vence**, **sem linha perde** e, se houver `naive`, **o círculo genérico perde**.
-4. Ajuste `stars` para que a solução "esperta" dê 3★ e a "bruta" dê 1–2★.
+## Mundo 5 — Acampamento no Quintal
+
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 5-1 | Noite de Lanternas | Ler as luzes e priorizar o alvo | 1 | 205 | 11 s |
+| 5-2 | Brocas no Acampamento | Separar duas barreiras contra as brocas | 2 | 770 | 5 s |
+| 5-3 | Carrossel de Tábua | Acompanhar uma plataforma móvel | 1 | 325 | 10 s |
+| 5-4 | Pouca Tinta | Fechar o ninho e aproveitar o paredão | 1 | 335 | 9 s |
+| 5-5 | Todos Juntos | Agrupar os amigos e bloquear ninhos internos | 3 | 1080 | 12 s |
+| 5-6 | Rainha Zumbina | Ancorar sob pedras contra forças que levantam a linha | 1 | 565 | 14 s |
+
+## Mundo 6 — Montanha Gelada
+
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 6-1 | Tobogã de Boas-vindas | Construir uma rota até a toca | 1 | 500 | 9 s |
+| 6-2 | Buracos na Neve | Ajustar o abrigo às posições das tocas | 1 | 480 | 9 s |
+| 6-3 | Porta da Montanha | Dividir traços entre teto e entrada lateral | 2 | 290 | 11 s |
+| 6-4 | Rumo à Toca do Tatá | Construir uma rota até a toca | 1 | 475 | 10 s |
+| 6-5 | Entrada da Caverna | Dividir traços entre teto e entrada lateral | 2 | 290 | 10 s |
+| 6-6 | Abelha Broca | Separar duas barreiras contra as brocas | 2 | 770 | 5 s |
+| 6-7 | Abrigo no Paredão | Fechar o ninho e aproveitar o paredão | 1 | 400 | 10 s |
+| 6-8 | Tobogã do Gelinho | Construir uma rota até a toca | 1 | 500 | 9 s |
+| 6-9 | Abrigo na Rocha | Fechar o ninho e aproveitar o paredão | 1 | 265 | 9 s |
+| 6-10 | Pico Nevado | Ajustar o abrigo às posições das tocas | 2 | 910 | 10 s |
+| 6-11 | Coruja Nevasca | Ancorar sob pedras contra forças que levantam a linha | 1 | 535 | 13 s |
+
+## Mundo 7 — Praia do Sol
+
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 7-1 | Esconderijo do Pompom | Dividir traços entre teto e entrada lateral | 2 | 290 | 8 s |
+| 7-2 | Telhado da Praia | Tampar ninhos e apoiar um teto | 1 | 155 | 8 s |
+| 7-3 | Caranguejos da Toca | Ajustar o abrigo às posições das tocas | 1 | 405 | 9 s |
+| 7-4 | Piquenique | Ler a isca de mel e priorizar o alvo | 1 | 205 | 10 s |
+| 7-5 | Apoio da Fofa | Fechar o ninho e aproveitar o paredão | 1 | 415 | 11 s |
+| 7-6 | Telhado Inclinado | Fechar o ninho e aproveitar o paredão | 1 | 400 | 9 s |
+| 7-7 | Toca no Rochedo | Ajustar o abrigo às posições das tocas | 1 | 90 | 9 s |
+| 7-8 | Rumo ao Guarda-Sol | Construir uma rota até a toca | 1 | 415 | 10 s |
+| 7-9 | Coco e Caranguejo | Ajustar o abrigo às posições das tocas | 1 | 405 | 9 s |
+| 7-10 | Festa na Praia | Ajustar o abrigo às posições das tocas | 2 | 775 | 10 s |
+| 7-11 | Caranguejo Rei | Ajustar o abrigo às posições das tocas | 1 | 455 | 12 s |
+
+## Mundo 8 — Fundo do Mar
+
+| Fase | Nome | Problema principal | Traços | Tinta | Tempo simulado |
+|---|---|---|---:|---:|---:|
+| 8-1 | Telhado do Tito | Tampar ninhos e apoiar um teto | 1 | 160 | 10 s |
+| 8-2 | Porta Submarina | Dividir traços entre teto e entrada lateral | 2 | 290 | 10 s |
+| 8-3 | Caranguejos do Fundo | Ajustar o abrigo às posições das tocas | 1 | 495 | 10 s |
+| 8-4 | Apoio de Coral | Fechar o ninho e aproveitar o paredão | 1 | 370 | 11 s |
+| 8-5 | Toca do Polvo | Tampar ninhos e apoiar um teto | 1 | 200 | 10 s |
+| 8-6 | Recanto Submarino | Fechar o ninho e aproveitar o paredão | 1 | 365 | 11 s |
+| 8-7 | Meia-água no Recife | Fechar o ninho e aproveitar o paredão | 1 | 415 | 11 s |
+| 8-8 | Polvo e Caranguejo | Ajustar o abrigo às posições das tocas | 1 | 420 | 10 s |
+| 8-9 | Correnteza Forte | Apoiar a linha contra a correnteza | 1 | 230 | 11 s |
+| 8-10 | Rei dos Mares | Ajustar o abrigo às posições das tocas | 2 | 715 | 11 s |
+| 8-11 | Polvo Gigante | Ancorar sob pedras contra forças que levantam a linha | 1 | 485 | 12 s |
+
+## Critérios de validação
+
+- Toda fase precisa vencer com a solução registrada e perder sem desenho.
+- A solução precisa continuar coletando a Pegada Dourada; traços retos de dois pontos também são suportados.
+- `strategy_test.tscn` tenta três círculos/elipses de tamanhos diferentes e dois arcos genéricos em todas as fases. Nas 54 fases marcadas com `strategy_required`, esses cinco padrões devem perder.
+- O teste também registra tentativas de cercas individuais; elas são soluções adaptadas a cada animal e não são proibidas automaticamente.
+- Tutorial, priorização, água e plataformas podem aceitar outros abrigos válidos. O critério não é copiar a solução registrada, e sim impedir que uma receita única resolva a campanha inteira.
+- Desafios diários só sorteiam redução de tinta quando a solução base cabe com margem. Hora Extra não é sorteada para a prova de duas camadas com brocas livres. As combinações disponíveis são testadas com `--daily-all`.

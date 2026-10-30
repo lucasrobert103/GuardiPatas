@@ -48,6 +48,15 @@ static func mods_for(index: int) -> Array:
 	var id := str(lv.get("id", ""))
 	var out: Array = []
 	for m in MODS:
+		# Não sortear redução de tinta quando ela corta a solução válida da fase.
+		if m["id"] == "curta":
+			var required := 0.0
+			for stroke in Level._to_poly_list(lv.get("solution", [])):
+				required += LineMath.length(stroke)
+			if required > float(lv["ink"]) * 0.8 * 0.97:
+				continue
+		if m["id"] == "hora_extra" and str(lv.get("strategy", "")) == "double_layer":
+			continue
 		if m["id"] == "firme" and str(lv.get("ink_mode", "normal")) == "static":
 			continue
 		# a Tinta Firme não acompanha plataformas móveis
@@ -86,6 +95,7 @@ static func build(key: String, index: int, mod_id: String) -> Dictionary:
 	d["daily_mod"] = mod_id
 	var m := mod_info(mod_id)
 	d["name"] = UiKit.tr_text("Desafio: %s") % UiKit.tr_text(m["name"])
+	d["objective"] = "%s  %s" % [UiKit.tr_text(m["desc"]), UiKit.tr_text(str(d.get("objective", d.get("tip", ""))))]
 	d["tip"] = "%s  %s" % [UiKit.tr_text(m["desc"]), UiKit.tr_text(str(d.get("tip", "")))]
 	match mod_id:
 		"curta":

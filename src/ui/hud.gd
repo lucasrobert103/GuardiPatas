@@ -127,7 +127,7 @@ static func _anchor_box(c: Control, anchor: Vector2, r: Rect2) -> void:
 
 
 func _build_tip() -> void:
-	var tip := str(level.data.get("tip", ""))
+	var tip := str(level.data.get("objective", level.data.get("tip", "")))
 	if tip == "":
 		return
 	# o balão fica na faixa de terra embaixo (nunca cobre ninhos nem bichinhos)

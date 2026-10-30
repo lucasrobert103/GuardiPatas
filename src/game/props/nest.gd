@@ -6,9 +6,9 @@ extends StaticBody2D
 ## Buraco: fica rente ao chão, não bloqueia o desenho e pode ser TAMPADO — se uma linha
 ## ou caixa estiver em cima dele quando um inseto for sair, ele não sai.
 
-const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar", "cricket", "broca", "spider", "crab", "jellyfish", "puffer"]
+const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar", "cricket", "broca", "spider", "crab", "jellyfish", "puffer", "drillfish"]
 const FLYERS := ["bee", "mosquito", "wasp", "moth", "broca"]
-const SEA := ["jellyfish", "puffer"]
+const SEA := ["jellyfish", "puffer", "drillfish"]
 const PLUG_RADIUS := 10.0
 
 var insect := "bee"
@@ -132,7 +132,7 @@ static func make_insect(kind: String) -> Insect:
 		"termite": return Termite.new()
 		"caterpillar": return Caterpillar.new()
 		"cricket": return Cricket.new()
-		"broca": return CarpenterBee.new()
+		"broca", "drillfish": return CarpenterBee.new()
 		"spider": return Spider.new()
 		"crab": return Crab.new()
 		"jellyfish": return Jellyfish.new()
@@ -202,6 +202,10 @@ func _draw_hole(o: Color, s: float) -> void:
 	if plugged:
 		draw_line(Vector2(-14, -12), Vector2(14, -12), Palette.UI_GOOD, 4.0, true)
 		return
+	if insect in ["broca", "drillfish"]:
+		var marker := Vector2(0, -24)
+		DrawUtil.oval(self, marker, Vector2(10, 5), Color("94dbe4") if insect == "drillfish" else Palette.GOLD, o, 2)
+		DrawUtil.tri(self, marker + Vector2(8, -5), marker + Vector2(20, 0), marker + Vector2(8, 5), Color("d1e3e8"), o, 2)
 	if not running:
 		var pulse := 0.5 + 0.5 * sin(_t * 4.0)
 		draw_arc(Vector2(0, -2), 30.0 + pulse * 4.0, PI, TAU, 16, Color(Palette.DANGER, 0.6), 3.0, true)
