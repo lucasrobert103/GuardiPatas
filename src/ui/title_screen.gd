@@ -13,6 +13,7 @@ var _parade: Array[AnimalArt] = []
 var _bee: InsectArt
 var _t := 0.0
 var _happy_until: Dictionary = {}
+var _bounce_time: Dictionary = {}
 
 
 func _ready() -> void:
@@ -20,7 +21,9 @@ func _ready() -> void:
 	add_child(MenuBg.new())
 	var shield := TitleShield.new()
 	add_child(shield)
-	for sp in _parade_species():
+	var species_list := _parade_species()
+	for i in species_list.size():
+		var sp: String = species_list[i]
 		var a := AnimalArt.new()
 		a.species = sp
 		a.preview = true
@@ -33,74 +36,66 @@ func _ready() -> void:
 	_bee.radius = 16.0
 	add_child(_bee)
 
-	var col := UiKit.vbox(16)
+	var col := UiKit.vbox(14)
 	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	col.alignment = BoxContainer.ALIGNMENT_BEGIN
 	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(col)
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 150)
-	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(spacer)
-	var t := UiKit.title("GuardiPatas", 92)
+
+	var spacer_top := Control.new()
+	spacer_top.custom_minimum_size = Vector2(0, 80)
+	spacer_top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(spacer_top)
+
+	var t := UiKit.title("GuardiPatas", 80)
 	col.add_child(t)
 	UiKit.pop_in(t, 0.1)
-	var sub := UiKit.label("Proteja os Bichinhos!", 34, Palette.WHITE, 10, Palette.OUTLINE)
-	col.add_child(sub)
 
-	var bottom := UiKit.vbox(18)
+	var bottom := UiKit.vbox(14)
 	bottom.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	bottom.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	bottom.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	bottom.position.y -= 70
+	bottom.position.y -= 80
 	add_child(bottom)
-	var play := UiKit.button("Jogar", Palette.UI_GOOD, "play", 420, 120)
-	play.add_theme_font_size_override("font_size", 44)
+
+	var play := UiKit.button("Jogar", Palette.UI_GOOD, "play", 400, 110)
+	play.add_theme_font_size_override("font_size", 42)
 	play.pressed.connect(func(): go.emit("map", -1))
 	bottom.add_child(play)
-	UiKit.pop_in(play, 0.3)
-	var shop := UiKit.button("Lojinha · teste" if Store.test_mode() else "Lojinha", Palette.GOLD, "coin", 420, 72)
-	shop.pressed.connect(func(): go.emit("store", null))
-	bottom.add_child(shop)
-	var row := UiKit.hbox(12)
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	bottom.add_child(row)
+	UiKit.pop_in(play, 0.25)
+
+	var quick_row := UiKit.hbox(10)
+	quick_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	bottom.add_child(quick_row)
+
 	var tiles := [
 		["Desafio", "calendar", Color("ffb340"), "daily"],
-		["Bichinhos", "paw", Palette.UI_PRIMARY, "collection"],
 		["Casinha", "house", Color("8fd3a0"), "home"],
+		["Loja", "coin", Palette.GOLD, "store"],
 		["Criar", "pencil", Color("b18cff"), "editor"],
-		["Ajustes", "gear", Palette.UI_PANEL, "settings"],
+		["Mais", "gear", Palette.UI_PANEL, "settings"],
 	]
 	for i in tiles.size():
 		var spec: Array = tiles[i]
-		var b := UiKit.tile(spec[0], spec[1], spec[2])
+		var b := UiKit.tile(spec[0], spec[1], spec[2], 90, 90)
 		var dest: String = spec[3]
 		b.pressed.connect(func(): go.emit(dest, null))
-		row.add_child(b)
-		UiKit.pop_in(b, 0.4 + i * 0.06)
+		quick_row.add_child(b)
+		UiKit.pop_in(b, 0.35 + i * 0.08)
 		if dest == "daily" and not Game.daily_done_today(Daily.today_key()):
 			UiKit.badge(b)
 
 	var coins := UiKit.hbox(6)
 	coins.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	coins.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	coins.position += Vector2(-24, 28)
+	coins.position += Vector2(-20, 24)
 	var ci := UiIcon.new()
 	ci.icon = "coin"
-	ci.custom_minimum_size = Vector2(44, 44)
+	ci.custom_minimum_size = Vector2(40, 40)
 	coins.add_child(ci)
-	coins.add_child(UiKit.label(str(Game.coins()), 30, Palette.WHITE, 10, Palette.OUTLINE))
+	coins.add_child(UiKit.label(str(Game.coins()), 28, Palette.WHITE, 10, Palette.OUTLINE))
 	add_child(coins)
-	var credit := UiKit.label("RetroNexa · retronexa.com.br", 18, Palette.WHITE, 6, Palette.OUTLINE)
-	credit.anchor_left = 0.0
-	credit.anchor_right = 1.0
-	credit.anchor_top = 1.0
-	credit.anchor_bottom = 1.0
-	credit.offset_top = -46
-	credit.offset_bottom = -14
-	credit.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(credit)
+
 	Sfx.music("music_menu")
 
 
@@ -135,7 +130,21 @@ func _process(delta: float) -> void:
 	for i in _parade.size():
 		var a := _parade[i]
 		var half := Animal.half_height(a.species) * a.scale.y
-		a.position = Vector2(x + widths[i] * TitleScreen.ART_LEFT.get(a.species, 0.5), ground_top - half)
+		var base_y := ground_top - half
+
+		# animação de pulo
+		var bounce := 0.0
+		if i in _bounce_time:
+			_bounce_time[i] -= delta
+			if _bounce_time[i] > 0:
+				var t := 1.0 - (_bounce_time[i] / 0.4)
+				bounce = -sin(t * PI) * 80.0
+			else:
+				_bounce_time.erase(i)
+
+		# ondulação suave contínua
+		var wave := sin(_t * 2.0 + i * 0.5) * 4.0
+		a.position = Vector2(x + widths[i] * TitleScreen.ART_LEFT.get(a.species, 0.5), base_y + bounce + wave)
 		x += widths[i] + gap
 		var now := Time.get_ticks_msec() / 1000.0
 		a.mood = "happy" if float(_happy_until.get(i, 0.0)) > now else ("scared" if _bee.position.distance_to(a.position) < 300.0 else "idle")
@@ -152,8 +161,10 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	for i in _parade.size():
 		if _parade[i].position.distance_to(mb.position) < 60.0:
+			_bounce_time[i] = 0.4
 			_happy_until[i] = Time.get_ticks_msec() / 1000.0 + 1.2
-			Sfx.play("pop", -2.0, 1.0 + i * 0.08)
+			Sfx.play("pop", -2.0, 0.9 + i * 0.08)
+			get_tree().root.set_input_as_handled()
 
 
 class TitleShield:
