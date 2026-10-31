@@ -43,7 +43,7 @@ A integração anterior trouxe versões antigas de `insect.gd`, `nest.gd` e `ins
 
 - **Mundo 9 — Bosque dos Vagalumes** (noite, árvores e vagalumes) e **Mundo 10 — Vulcão Fumegante** (lava e fumaça), 10 fases cada, incluindo as chefonas Rainha da Noite e Coração do Vulcão.
 - Ondas pesadas, tinta justa (a solução usa ~90%), buracos de saída ao lado dos bichinhos, grutas e crateras estreitas, abrigos travados em pedras e até 3 camadas.
-- **10 fases sem nenhum atalho genérico** (círculos, arcos e arcos duplos perdem): 9-4, 9-6, 9-7, 9-8, 9-9, 10-2, 10-3, 10-5, 10-7 e 10-10 — marcadas `strategy_required` e verificadas pelo CI.
+- **9 fases sem nenhum atalho genérico** (círculos, arcos e arcos duplos perdem): 9-4, 9-6, 9-7, 9-8, 9-9, 10-2, 10-3, 10-5 e 10-7 — marcadas `strategy_required` e verificadas pelo CI.
 - Os mundos 9–10 ficam **fora do sorteio do Desafio do Dia** (`no_daily`): as regras extras do desafio foram calibradas para as 63 fases da campanha principal.
 
 ## Loja cheia

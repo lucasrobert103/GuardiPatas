@@ -19956,9 +19956,6 @@
      ]
     ]
    ],
-   "strategy_required": true,
-   "reject_individual_circles": true,
-   "reject_double_arches": true,
    "no_daily": true
   }
  ]

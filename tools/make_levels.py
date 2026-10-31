@@ -1023,7 +1023,7 @@ def forest_volcano_worlds():
     cover_exit_width(lv)
     # sem atalho genérico (auditado com tests/strategy_test.tscn -- --audit --extended):
     # círculos, arcos e arcos duplos precisam perder nestas fases
-    strategic = {"9-4", "9-6", "9-7", "9-8", "9-9", "10-2", "10-3", "10-5", "10-7", "10-10"}
+    strategic = {"9-4", "9-6", "9-7", "9-8", "9-9", "10-2", "10-3", "10-5", "10-7"}
     for level in lv:
         level["stars"] = [0.94, 0.99]
         if level["id"] in strategic:
