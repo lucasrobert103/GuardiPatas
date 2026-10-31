@@ -29,6 +29,7 @@ var lose_reason := ""
 var with_hud := true
 var hint_shown := false
 var last_result: Dictionary = {}
+var replay: AttemptReplay
 
 var animals: Array[Animal] = []
 var insects: Array[Insect] = []
@@ -100,6 +101,7 @@ func _ready() -> void:
 		hud = Hud.new()
 		add_child(hud)
 		hud.bind(self)
+		replay = AttemptReplay.new()
 		hud.action.connect(_on_hud_action)
 	state_changed.emit(state)
 
@@ -425,6 +427,7 @@ func start_simulation() -> void:
 		q.begin()
 	for b in bosses:
 		b.begin()
+	if replay != null: replay.begin(self)
 	state_changed.emit(state)
 
 
@@ -457,6 +460,7 @@ func _physics_process(delta: float) -> void:
 		_draw_clock += delta
 	if state == State.RUNNING:
 		_sim_time += delta
+		if replay != null: replay.record(self, delta)
 		time_left -= delta
 		for l in lamps:
 			l.tick(delta)
@@ -466,7 +470,7 @@ func _physics_process(delta: float) -> void:
 		_apply_wind(delta)
 		for a in animals:
 			if a.global_position.y > FALL_Y:
-				lose("fall")
+				lose("fall", a.global_position, "", a.get_instance_id())
 				return
 		if goal != null:
 			_check_goal(delta)
@@ -645,7 +649,7 @@ func _on_animal_stung(animal: Animal, _insect: Node) -> void:
 	Sfx.vibrate(120)
 	shake(10.0)
 	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Ai!", Palette.DANGER)
-	lose("sting")
+	lose("sting", animal.global_position, _insect.kind if _insect is Insect else "", animal.get_instance_id())
 
 
 func on_animal_bonked(animal: Animal, reason: String = "coconut") -> void:
@@ -656,7 +660,7 @@ func on_animal_bonked(animal: Animal, reason: String = "coconut") -> void:
 	shake(8.0)
 	animal.art.mood = "ouch"
 	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Bonk!", Palette.WOOD_DARK)
-	lose(reason)
+	lose(reason, animal.global_position, "", animal.get_instance_id())
 
 
 func on_animal_hugged(animal: Animal) -> void:
@@ -666,7 +670,7 @@ func on_animal_hugged(animal: Animal) -> void:
 	Sfx.vibrate(80)
 	animal.art.mood = "ouch"
 	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Abraço!", Color("a678e8"))
-	lose("hug")
+	lose("hug", animal.global_position, "", animal.get_instance_id())
 
 
 func on_animal_in_water(animal: Animal) -> void:
@@ -674,7 +678,7 @@ func on_animal_in_water(animal: Animal) -> void:
 		return
 	Fx.splash(fx_layer, animal.global_position)
 	Sfx.play("splash")
-	lose("water")
+	lose("water", animal.global_position, "", animal.get_instance_id())
 
 
 func ink_used() -> float:
@@ -687,6 +691,7 @@ func win() -> void:
 	if state != State.RUNNING:
 		return
 	set_simulation_speed(1)
+	if replay != null: replay.clear()
 	state = State.WON
 	for n in nests:
 		n.running = false
@@ -726,10 +731,11 @@ func win() -> void:
 	_emit_result_later(true, info)
 
 
-func lose(reason: String) -> void:
+func lose(reason: String, point: Vector2 = Vector2.INF, attacker: String = "", subject: int = 0) -> void:
 	if state != State.RUNNING:
 		return
 	set_simulation_speed(1)
+	if replay != null: replay.finish(self)
 	state = State.LOST
 	lose_reason = reason
 	for n in nests:
@@ -737,7 +743,18 @@ func lose(reason: String) -> void:
 	for a in animals:
 		a.be_sad()
 	Game.record_loss(str(data.get("id", "")) if mode == "campaign" and not free_mode else "")
-	last_result = {"reason": reason}
+	if not point.is_finite():
+		point = goal.rect.get_center() if reason == "time" and goal != null else (animals[0].global_position if not animals.is_empty() else Vector2(360, 640))
+	var analysis := "O inseto alcançou o bichinho. Observe o caminho até o contato."
+	match reason:
+		"fall": analysis = "O bichinho caiu. Observe o apoio e o movimento da linha."
+		"water": analysis = "O bichinho entrou na água. Observe o caminho até a margem."
+		"time": analysis = "O tempo acabou antes da chegada. Observe o caminho até a toca."
+		"coconut", "snow", "shell": analysis = "Um objeto atingiu o bichinho. Observe a direção do impacto."
+		"hug": analysis = "O bichinho chegou ao polvo. Observe o efeito da sucção."
+	if reason == "sting" and attacker in ["broca", "drillfish"]:
+		analysis = "Uma broca alcançou o bichinho. Confira as saídas e as camadas."
+	last_result = {"reason": reason, "failure_point": point, "failure_id": subject, "analysis": analysis}
 	state_changed.emit(state)
 	if reason == "fall":
 		Sfx.play("gasp", 0.0, 0.8)

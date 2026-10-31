@@ -16,6 +16,8 @@ var hint_badge: Label
 var play_btn: Button
 var free_btn: Button
 var speed_btn: Button
+var review: AttemptReview
+var review_btn: Button
 var overlay: Control
 
 
@@ -270,6 +272,9 @@ func _open_pause() -> void:
 
 
 func on_back_pressed() -> void:
+	if is_instance_valid(review):
+		review.close()
+		return
 	if overlay != null:
 		if level.state == Level.State.DRAWING or level.state == Level.State.RUNNING:
 			_close_overlay()
@@ -296,6 +301,10 @@ func _open_overlay() -> VBoxContainer:
 
 
 func _close_overlay() -> void:
+	if is_instance_valid(review):
+		review._restore()
+		review.queue_free()
+		review = null
 	if overlay != null:
 		overlay.queue_free()
 		overlay = null
@@ -513,7 +522,11 @@ func _build_lose(box: VBoxContainer, info: Dictionary) -> void:
 	var reason := str(info.get("reason", "sting"))
 	var txt: Array = LOSE_TEXT.get(reason, LOSE_TEXT["sting"])
 	box.add_child(UiKit.title(txt[0], 52))
-	box.add_child(UiKit.label(txt[1], 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
+	box.add_child(UiKit.label(str(info.get("analysis", txt[1])), 26, Palette.UI_TEXT, 0, Palette.WHITE, true))
+	if level.replay != null and level.replay.duration() > 0.01:
+		review_btn = UiKit.button("Ver onde falhou", Palette.UI_SECONDARY, "", 0, 76)
+		review_btn.pressed.connect(_open_review)
+		box.add_child(review_btn)
 	var row := UiKit.hbox(16)
 	box.add_child(row)
 	var home := UiKit.icon_button("home", Palette.UI_PANEL, 96)
@@ -528,6 +541,25 @@ func _build_lose(box: VBoxContainer, info: Dictionary) -> void:
 	var again := UiKit.button("De novo!", Palette.UI_GOOD, "restart", 260, 96)
 	again.pressed.connect(func(): action.emit("restart"))
 	row.add_child(again)
+
+
+func _open_review() -> void:
+	if is_instance_valid(review) or level.replay == null or level.state != Level.State.LOST or level.replay.duration() <= 0.01: return
+	review = AttemptReview.new()
+	review.model = level.replay
+	review.info = level.last_result
+	review.z_index = 30
+	if overlay != null: overlay.visible = false
+	review.closed.connect(func():
+		review.queue_free()
+		review = null
+		if overlay != null: overlay.visible = true
+		if is_instance_valid(review_btn): review_btn.grab_focus())
+	review.retry.connect(func():
+		review.queue_free()
+		review = null
+		action.emit("restart"))
+	root.add_child(review)
 
 
 class InkBar:
