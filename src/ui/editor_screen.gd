@@ -29,6 +29,7 @@ var _tool_btns: Dictionary = {}
 var _name_label: Label
 var _status: Label
 var _species: Array = []
+var _root: Control
 
 
 func _ready() -> void:
@@ -69,70 +70,85 @@ static func playable(d: Dictionary, index: int) -> Dictionary:
 
 
 func _build_ui() -> void:
+	# a interface fica numa camada própria: a câmera da fase de fundo não pode arrastá-la
+	var layer := CanvasLayer.new()
+	layer.layer = 5
+	add_child(layer)
+	_root = Control.new()
+	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_root.theme = UiKit.make_theme()
+	_root.gui_input.connect(_on_canvas_input)
+	layer.add_child(_root)
+	var col := UiKit.vbox(10)
+	col.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	col.offset_left = 14
+	col.offset_right = -14
+	col.offset_top = 18
+	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(col)
 	var top := UiKit.hbox(10)
-	top.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	top.offset_left = 16
-	top.offset_right = -16
-	top.offset_top = 20
-	add_child(top)
-	var back := UiKit.icon_button("back")
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(top)
+	var back := UiKit.icon_button("back", Palette.UI_PANEL, 80)
 	back.pressed.connect(_save_and_exit)
 	top.add_child(back)
-	var prev := UiKit.icon_button("back", Palette.UI_SECONDARY, 72)
-	prev.pressed.connect(func(): _world(-1))
-	top.add_child(prev)
-	_name_label = UiKit.label("", 26, Palette.WHITE, 10, Palette.OUTLINE)
-	_name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	top.add_child(_name_label)
-	var nxt := UiKit.icon_button("next", Palette.UI_SECONDARY, 72)
-	nxt.pressed.connect(func(): _world(1))
-	top.add_child(nxt)
-	var test := UiKit.button("Testar", Palette.UI_GOOD, "play", 170, 84)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	top.add_child(spacer)
+	var test := UiKit.button("Testar", Palette.UI_GOOD, "play", 190, 80)
 	test.pressed.connect(_test)
 	top.add_child(test)
-
-	var opts := UiKit.hbox(10)
-	opts.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	opts.offset_left = 16
-	opts.offset_right = -16
-	opts.offset_top = 116
-	opts.alignment = BoxContainer.ALIGNMENT_CENTER
-	add_child(opts)
+	# cenário: setas + nome (linha própria, o nome pode ser comprido)
+	var wrow := UiKit.hbox(10)
+	wrow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(wrow)
+	var prev := UiKit.icon_button("back", Palette.UI_SECONDARY, 64)
+	prev.pressed.connect(func(): _world(-1))
+	wrow.add_child(prev)
+	_name_label = UiKit.label("", 24, Palette.WHITE, 10, Palette.OUTLINE)
+	_name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name_label.clip_text = true
+	_name_label.custom_minimum_size.x = 80
+	wrow.add_child(_name_label)
+	var nxt := UiKit.icon_button("next", Palette.UI_SECONDARY, 64)
+	nxt.pressed.connect(func(): _world(1))
+	wrow.add_child(nxt)
+	var opts := HFlowContainer.new()
+	opts.alignment = FlowContainer.ALIGNMENT_CENTER
+	opts.add_theme_constant_override("h_separation", 8)
+	opts.add_theme_constant_override("v_separation", 8)
+	opts.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(opts)
 	for spec in [["time", "timer"], ["ink", "ink"], ["strokes", "pencil"]]:
-		var b := UiKit.button("-", Palette.UI_PANEL, spec[1], 0, 70)
-		b.add_theme_font_size_override("font_size", 22)
-		b.custom_minimum_size.x = 200
+		var b := UiKit.button("-", Palette.UI_PANEL, spec[1], 0, 60)
+		b.add_theme_font_size_override("font_size", UiKit.fs(20))
+		b.custom_minimum_size.x = 190
 		var key: String = spec[0]
 		b.pressed.connect(func():
 			_cycle(key)
 			_option_text(b, key))
 		_option_text(b, key)
 		opts.add_child(b)
-
-	_status = UiKit.label("", 22, Palette.WHITE, 8, Palette.OUTLINE, true)
-	_status.anchor_right = 1.0
-	_status.offset_left = 20
-	_status.offset_right = -20
-	_status.offset_top = 196
-	_status.offset_bottom = 256
+	_status = UiKit.label("", 20, Palette.WHITE, 8, Palette.OUTLINE, true)
 	_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_status)
+	col.add_child(_status)
 
 	var scroll := ScrollContainer.new()
 	scroll.anchor_left = 0.0
 	scroll.anchor_right = 1.0
 	scroll.anchor_top = 1.0
 	scroll.anchor_bottom = 1.0
-	scroll.offset_top = -170
-	scroll.offset_bottom = -30
-	scroll.offset_left = 10
-	scroll.offset_right = -10
+	scroll.offset_top = -136
+	scroll.offset_bottom = -12
+	scroll.offset_left = 8
+	scroll.offset_right = -8
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	add_child(scroll)
-	var row := UiKit.hbox(10)
+	_root.add_child(scroll)
+	var row := UiKit.hbox(8)
 	scroll.add_child(row)
 	for t in TOOLS:
-		var b := UiKit.tile(t[1], t[2], Palette.UI_PANEL, 118, 124)
+		var b := UiKit.tile(t[1], t[2], Palette.UI_PANEL, 104, 112)
 		var id: String = t[0]
 		if id in ["bee", "mosquito", "ant", "beetle"]:
 			# o próprio inseto no lugar do ícone
@@ -141,8 +157,8 @@ func _build_ui() -> void:
 					c.queue_free()
 			var ia := InsectArt.new()
 			ia.kind = id
-			ia.radius = 16.0
-			ia.position = Vector2(59, 44)
+			ia.radius = 15.0
+			ia.position = Vector2(52, 40)
 			b.add_child(ia)
 		b.pressed.connect(func(): _select(id))
 		row.add_child(b)
@@ -247,12 +263,15 @@ func _count(kind: String) -> int:
 	return 0
 
 
-func _gui_input(event: InputEvent) -> void:
+func _on_canvas_input(event: InputEvent) -> void:
 	var mb := event as InputEventMouseButton
 	if mb == null or not mb.pressed or mb.button_index != MOUSE_BUTTON_LEFT:
 		return
+	# fora da faixa dos botões (em cima) e da barra de ferramentas (embaixo)
+	if mb.position.y < 300.0 or mb.position.y > _root.size.y - 140.0:
+		return
 	var p := _to_world(mb.position)
-	if p.y < 250.0 or p.y > GROUND + 40.0 or p.x < 30.0 or p.x > 690.0:
+	if p.y < 150.0 or p.y > GROUND + 40.0 or p.x < 30.0 or p.x > 690.0:
 		return
 	_place(p)
 

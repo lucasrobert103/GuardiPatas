@@ -45,6 +45,17 @@ var projectiles: Array[Projectile] = []
 var honeys: Array[HoneyPot] = []
 var coconuts: Array[Coconut] = []
 var winds: Array[WindZone] = []
+var burrows: Array[SafeBurrow] = []
+## Mapa de navegação dos voadores (grade de células livres, refeito a cada NAV_EVERY s):
+## insetos presos procuram um CAMINHO de verdade até o bichinho (contornando tetos e paredes).
+const NAV_CELL := 24.0
+const NAV_ORIGIN := Vector2(-96.0, 0.0)
+const NAV_W := 38
+const NAV_H := 46
+const NAV_EVERY := 0.4
+var _nav_free := PackedByteArray()
+var _nav_t := -1.0
+var _nav_shape := CircleShape2D.new()
 var goal: GoalZone
 
 ## "static": as linhas não caem (Tinta Firme). "normal": linhas com peso.
@@ -192,7 +203,7 @@ func _build() -> void:
 	for a in data.get("animals", []):
 		var animal := Animal.new()
 		animal.position = _v(a["pos"])
-		animal.setup(str(a.get("type", "capi")), self, bool(a.get("flip", false)))
+		animal.setup(str(a.get("type", "capi")), self, bool(a.get("flip", false)), a.get("flee", null))
 		animal.stung.connect(_on_animal_stung)
 		world.add_child(animal)
 		animals.append(animal)
@@ -251,6 +262,12 @@ func _build_prop(p: Dictionary) -> void:
 			h.setup(float(p.get("amount", 6.0)))
 			world.add_child(h)
 			honeys.append(h)
+		"burrow":
+			var r: Array = p["rect"]
+			var sb := SafeBurrow.new()
+			sb.setup(Rect2(r[0], r[1], r[2], r[3]))
+			world.add_child(sb)
+			burrows.append(sb)
 		"coconut":
 			var cn := Coconut.new()
 			cn.position = _v(p["pos"])
@@ -472,6 +489,14 @@ func _physics_process(delta: float) -> void:
 			if a.global_position.y > FALL_Y:
 				lose("fall", a.global_position, "", a.get_instance_id())
 				return
+			if a.global_position.x < -90.0 or a.global_position.x > 810.0:
+				Fx.popup_text(fx_layer, Vector2(clampf(a.global_position.x, 60.0, 660.0), a.global_position.y - 60.0), "Fugiu!", Palette.DANGER)
+				lose("fled")
+				return
+		if not burrows.is_empty():
+			_check_burrows()
+			if state != State.RUNNING:
+				return
 		if goal != null:
 			_check_goal(delta)
 			if state != State.RUNNING:
@@ -540,6 +565,12 @@ func _prune() -> void:
 			if is_instance_valid(c) and not c.is_queued_for_deletion():
 				kept.append(c)
 		props = kept
+	if lines.any(func(l): return not is_instance_valid(l) or l.is_queued_for_deletion()):
+		var keep: Array[DrawnLine] = []
+		for l in lines:
+			if is_instance_valid(l) and not l.is_queued_for_deletion():
+				keep.append(l)
+		lines = keep
 	if not projectiles.is_empty():
 		var live: Array[Projectile] = []
 		for pr in projectiles:
@@ -573,10 +604,128 @@ func _update_buzz() -> void:
 		Sfx.stop_loop("moth")
 
 
+## Toca segura: bichinho que entra se esconde; todos escondidos = vitória na hora.
+func _check_burrows() -> void:
+	var all_safe := true
+	for a in animals:
+		if not a.in_burrow:
+			for b in burrows:
+				if b.rect.has_point(a.global_position):
+					a.hide_in_burrow()
+					b.add_guest()
+					break
+		all_safe = all_safe and a.in_burrow
+	if all_safe:
+		win()
+
+
+func _nav_refresh() -> void:
+	var now := _sim_time
+	if _nav_t >= 0.0 and now - _nav_t < NAV_EVERY and not _nav_free.is_empty():
+		return
+	_nav_t = now
+	_nav_shape.radius = 9.0
+	var q := PhysicsShapeQueryParameters2D.new()
+	q.shape = _nav_shape
+	q.collision_mask = Layers.TERRAIN | Layers.LINE | Layers.PROP
+	var space := get_world_2d().direct_space_state
+	_nav_free.resize(NAV_W * NAV_H)
+	for cy in NAV_H:
+		for cx in NAV_W:
+			q.transform = Transform2D(0.0, NAV_ORIGIN + Vector2((cx + 0.5) * NAV_CELL, (cy + 0.5) * NAV_CELL))
+			_nav_free[cy * NAV_W + cx] = 1 if space.intersect_shape(q, 1).is_empty() else 0
+
+
+func _nav_cell(p: Vector2) -> Vector2i:
+	var c := ((p - NAV_ORIGIN) / NAV_CELL).floor()
+	return Vector2i(clampi(int(c.x), 0, NAV_W - 1), clampi(int(c.y), 0, NAV_H - 1))
+
+
+func _nav_ok(c: Vector2i) -> bool:
+	return c.x >= 0 and c.y >= 0 and c.x < NAV_W and c.y < NAV_H and _nav_free[c.y * NAV_W + c.x] == 1
+
+
+## Próximo ponto do caminho livre de `from` até perto de `to` (INF se não há caminho:
+## o bichinho está bem fechado).
+func nav_waypoint(from: Vector2, to: Vector2) -> Vector2:
+	_nav_refresh()
+	var start := _nav_cell(from)
+	var goal := _nav_cell(to)
+	# o próprio alvo pode estar "colado" na linha: vale chegar a 1 célula dele
+	var goals := {}
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var g := goal + Vector2i(dx, dy)
+			if _nav_ok(g):
+				goals[g] = true
+	if goals.is_empty():
+		return Vector2.INF
+	if not _nav_ok(start):
+		for d in [Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(1, -1), Vector2i(-1, -1)]:
+			if _nav_ok(start + d):
+				start = start + d
+				break
+	var prev := {start: start}
+	var queue: Array[Vector2i] = [start]
+	var head := 0
+	var found := Vector2i(-1, -1)
+	var dirs := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	while head < queue.size():
+		var c: Vector2i = queue[head]
+		head += 1
+		if goals.has(c):
+			found = c
+			break
+		for d in dirs:
+			var n: Vector2i = c + d
+			if _nav_ok(n) and not prev.has(n):
+				prev[n] = c
+				queue.append(n)
+	if found.x < 0:
+		return Vector2.INF
+	var path: Array[Vector2i] = [found]
+	while path[-1] != start:
+		path.append(prev[path[-1]])
+	path.reverse()
+	var step := mini(3, path.size() - 1)
+	return NAV_ORIGIN + (Vector2(path[step]) + Vector2(0.5, 0.5)) * NAV_CELL
+
+
+## Inseto mais perto que o bichinho consegue VER: a tinta é transparente, só o terreno esconde.
+func visible_insect(pos: Vector2, max_dist: float) -> Insect:
+	var space := get_world_2d().direct_space_state
+	var best: Insect = null
+	var best_d := max_dist * max_dist
+	for i in insects:
+		if not is_instance_valid(i) or i.calmed:
+			continue
+		var d := pos.distance_squared_to(i.global_position)
+		if d >= best_d:
+			continue
+		var q := PhysicsRayQueryParameters2D.create(pos, i.global_position, Layers.TERRAIN)
+		if space.intersect_ray(q).is_empty():
+			best_d = d
+			best = i
+	return best
+
+
+func on_animal_thorn(animal: Animal) -> void:
+	if state != State.RUNNING:
+		return
+	Sfx.play("sting", 0.0, 0.8)
+	Sfx.vibrate(100)
+	shake(8.0)
+	animal.art.mood = "ouch"
+	Fx.popup_text(fx_layer, animal.global_position + Vector2(0, -70), "Ai, espinhos!", Palette.DANGER)
+	lose("thorn")
+
+
 func nearest_animal(pos: Vector2) -> Animal:
 	var best: Animal = null
 	var best_d := INF
 	for a in animals:
+		if a.in_burrow:
+			continue
 		var d := pos.distance_squared_to(a.global_position)
 		if d < best_d:
 			best_d = d

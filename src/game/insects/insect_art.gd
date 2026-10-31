@@ -12,10 +12,6 @@ var aiming := false
 var excited := false
 var squash := 0.0
 var thread := 0.0
-var aim_vector := Vector2.ZERO
-var aim_progress := 0.0
-var work_progress := 0.0
-var jump_velocity := Vector2.ZERO
 
 var _t := 0.0
 var _hc := false
@@ -55,11 +51,8 @@ func _draw() -> void:
 		"crab": _draw_crab()
 		"jellyfish": _draw_jellyfish()
 		"puffer": _draw_puffer()
-		"drillfish":
-			_draw_puffer()
-			DrawUtil.tri(self, Vector2(radius * 0.8, -4), Vector2(radius * 1.8, 0), Vector2(radius * 0.8, 4), Color("b9dfe5"), Palette.OUTLINE, 2)
-			if excited:
-				draw_line(Vector2(radius, -6), Vector2(radius * 1.6, 6), Color.WHITE, 2, true)
+		"traca": _draw_traca()
+		"rino": _draw_rino()
 	draw_set_transform(Vector2.ZERO)
 	_draw_status()
 
@@ -171,6 +164,53 @@ func _draw_beetle() -> void:
 	draw_line(Vector2(-r * 0.15, -r * 0.55), Vector2(-r * 0.15, r * 0.45), o, 2.0, true)
 	DrawUtil.oval(self, Vector2(-r * 0.5, -r * 0.2), Vector2(r * 0.18, r * 0.3), Color(1, 1, 1, 0.55), o, 0.0, -0.4)
 	_eye_pair(Vector2(r * 0.88, -r * 0.05), r * 0.2)
+
+
+## Traça Come-Tinta: larvinha lilás com dentões e manchas de tinta azul no corpo.
+func _draw_traca() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var body := Color("c9b6e8")
+	for i in 4:
+		var x := -r * 1.6 + i * r * 0.62
+		var bob := sin(_t * 10.0 + i) * r * 0.08
+		DrawUtil.disc(self, Vector2(x, bob), r * (0.48 + i * 0.05), body, o, 2.0)
+		if i % 2 == 0:
+			draw_circle(Vector2(x - r * 0.1, bob - r * 0.12), r * 0.15, Palette.INK, true, -1.0, true)
+	DrawUtil.disc(self, Vector2(r * 0.75, -r * 0.08), r * 0.66, Color("b39ddb"), o, 2.5)
+	# dentões que mastigam mais rápido quando estão roendo
+	var chew := absf(sin(_t * (34.0 if excited else 5.0)))
+	draw_rect(Rect2(r * 1.05, r * 0.15, r * 0.2, r * (0.25 + 0.15 * chew)), Palette.WHITE, true)
+	draw_rect(Rect2(r * 1.05, r * 0.15, r * 0.2, r * (0.25 + 0.15 * chew)), o, false, 1.5)
+	draw_rect(Rect2(r * 0.8, r * 0.15, r * 0.2, r * (0.25 + 0.15 * chew)), Palette.WHITE, true)
+	draw_rect(Rect2(r * 0.8, r * 0.15, r * 0.2, r * (0.25 + 0.15 * chew)), o, false, 1.5)
+	_eye_pair(Vector2(r * 0.85, -r * 0.35), r * 0.22)
+	draw_line(Vector2(r * 0.7, -r * 0.7), Vector2(r * 0.5, -r * 1.2), o, 2.0, true)
+	draw_line(Vector2(r * 1.0, -r * 0.7), Vector2(r * 1.2, -r * 1.2), o, 2.0, true)
+
+
+## Besouro-Rinoceronte: casco marrom brilhante e um chifre grande para levantar coisas.
+func _draw_rino() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var step := sin(_t * 8.0)
+	for i in 3:
+		var lx := -r * 0.5 + r * 0.5 * i
+		var ph := step * (1.0 if i % 2 == 0 else -1.0)
+		draw_line(Vector2(lx, r * 0.3), Vector2(lx + ph * 4.0, r * 0.95), o, 3.5, true)
+	DrawUtil.disc(self, Vector2(r * 0.8, r * 0.1), r * 0.45, Color("5a3a2a"), o, 2.5)
+	# chifre curvado
+	var horn := PackedVector2Array([Vector2(r * 1.05, r * 0.2), Vector2(r * 1.0, -r * 0.1), Vector2(r * 1.45, -r * 0.6),
+		Vector2(r * 1.6, -r * 1.05), Vector2(r * 1.6, -r * 0.55), Vector2(r * 1.3, -r * 0.05)])
+	DrawUtil.shape(self, horn, Color("8a5a39"), o, 2.0)
+	var shell := PackedVector2Array()
+	for i in 15:
+		var a := PI + PI * float(i) / 14.0
+		shell.append(Vector2(-r * 0.15, r * 0.45) + Vector2(cos(a) * r * 1.0, sin(a) * r * 1.1))
+	DrawUtil.shape(self, shell, Color("7a4a2a"), o, 2.5)
+	draw_line(Vector2(-r * 0.15, -r * 0.6), Vector2(-r * 0.15, r * 0.45), o, 2.0, true)
+	DrawUtil.oval(self, Vector2(-r * 0.5, -r * 0.2), Vector2(r * 0.18, r * 0.32), Color(1, 1, 1, 0.5), o, 0.0, -0.4)
+	_eye_pair(Vector2(r * 0.9, -r * 0.05), r * 0.18)
 
 
 func _draw_termite() -> void:
@@ -314,23 +354,9 @@ func _draw_puffer() -> void:
 
 
 func _draw_status() -> void:
-	if not calmed and not dazed:
-		if work_progress > 0:
-			draw_arc(Vector2.ZERO, radius + 9, -PI / 2, -PI / 2 + TAU * work_progress, 24, Palette.GOLD, 3, true)
-		if aiming:
-			draw_arc(Vector2.ZERO, radius + 8, -PI / 2, -PI / 2 + TAU * maxf(0.02, aim_progress), 24, Palette.DANGER, 2.5, true)
-			if aim_vector.length() > 1:
-				var dir := aim_vector.normalized()
-				for distance in range(int(radius + 14), int(aim_vector.length()), 18):
-					draw_line(dir * distance, dir * (distance + 7), Color(Palette.DANGER, 0.65), 2, true)
-			if jump_velocity.length() > 1:
-				for k in range(1, 10):
-					var time := k * 0.09
-					var point := jump_velocity * time + Vector2(0, 490 * time * time)
-					draw_circle(point, 2.5, Color(Palette.DANGER, 0.6), true, -1, true)
 	var top := Vector2(0, -radius * 2.2)
 	if aiming and not calmed:
-		var blink := bool(Game.setting("reduce_motion")) or absf(sin(_t * 16.0)) > 0.3
+		var blink := absf(sin(_t * 16.0)) > 0.3
 		if blink:
 			DrawUtil.disc(self, top + Vector2(0, -4), 10.0, Palette.GOLD, Palette.OUTLINE, 2.5)
 			draw_line(top + Vector2(0, -10), top + Vector2(0, -2), Palette.OUTLINE, 3.0, true)

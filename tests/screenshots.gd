@@ -27,6 +27,8 @@ func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--lang="):
 			Game.data["settings"]["lang"] = a.substr(7)
+		if a.begins_with("--levels="):
+			LevelDB.reload(a.substr(9))
 		if a == "--big-text":
 			Game.data["settings"]["big_text"] = true
 	Game.apply_settings()
@@ -67,6 +69,7 @@ func _ready() -> void:
 		Game.data["custom"][1]["rocks"] = [{"pos": [450, 980], "r": 30}]
 		Game.data["custom"][1]["blocks"] = [[120, 930, 220, 1000]]
 		await _screen(ed, "09_editor", 1.0)
+		await _screen(HomeScreen.new(), "06_casinha", 1.0)
 		get_tree().quit()
 		return
 	if not shots.is_empty():

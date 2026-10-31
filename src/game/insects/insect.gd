@@ -2,7 +2,7 @@ class_name Insect
 extends RigidBody2D
 ## Base dos insetos. Cada espécie sobrescreve `_behave()`.
 ## Regras de justiça (docs/06-insetos.md): todo inseto tem alvo visível, velocidade
-## de referência fixa e uma forma clara de ser bloqueado. Nada de aleatoriedade que decida a fase.
+## máxima fixa e uma forma clara de ser bloqueado. Nada de aleatoriedade que decida a fase.
 
 var level: Level
 var kind := "bee"
@@ -18,14 +18,6 @@ var water_proof := false
 ## Prefere o pote de mel enquanto houver mel (abelhas, vespas, brocas).
 var lured_by_honey := false
 
-## Identidade estável dentro da tentativa: distribui rotas sem depender do RNG global.
-var tactic_id := 0
-var navigator := InsectNavigator.new()
-var _target: Animal
-var _target_timer := 0.0
-var _lure_memory := false
-var _lure_origin := Vector2.ZERO
-
 var _t := 0.0
 var _phase := 0.0
 var _daze := 0.0
@@ -33,22 +25,27 @@ var _stuck := 0.0
 var _slide := 1.0
 var _slide_timer := 0.0
 var _bonk_cd := 0.0
-const RAM_RECOVERY := 1.55
-var _ram_charge := 0.0
-var _ram_cooldown := 0.0
-var _ram_direction := 0.0
+## Rota inteligente: quando a barreira segura o inseto, ele procura a brecha mais perto.
+var _waypoint := Vector2.INF
+var _route_t := 0.0
+var _waypoint_age := 0.0
+const GAP_RAYS := 36
+## Distância livre que conta como "saída": abrigos ficam a menos disso do bichinho.
+const ESCAPE := 165.0
 
 
 func setup(p_level: Level, p_kind: String) -> void:
 	level = p_level
 	kind = p_kind
 	_configure()
+	_phase = randf() * TAU
+	_slide = 1.0 if randf() < 0.5 else -1.0
 	collision_layer = Layers.FLYER if flying else Layers.WALKER
 	collision_mask = Layers.FLYER_MASK if flying else Layers.WALKER_MASK
 	gravity_scale = 0.0 if flying else 1.0
 	lock_rotation = true
 	contact_monitor = true
-	max_contacts_reported = 6
+	max_contacts_reported = 3
 	can_sleep = false
 	var mat := PhysicsMaterial.new()
 	# andarilhos: atrito zero; o controle de velocidade em _walk_toward faz o papel do "pé"
@@ -75,7 +72,6 @@ func _configure() -> void:
 func _physics_process(delta: float) -> void:
 	_t += delta
 	_bonk_cd = maxf(_bonk_cd - delta, 0.0)
-	_target_timer -= delta
 	if level == null:
 		return
 	if calmed:
@@ -83,9 +79,6 @@ func _physics_process(delta: float) -> void:
 	elif _daze > 0.0:
 		_daze -= delta
 		art.dazed = true
-		art.aiming = false
-		art.aim_vector = Vector2.ZERO
-		art.work_progress = 0
 	else:
 		art.dazed = false
 		_behave(delta)
@@ -107,9 +100,6 @@ func daze(seconds: float) -> void:
 func calm_down() -> void:
 	calmed = true
 	art.calmed = true
-	art.aiming = false
-	art.work_progress = 0
-	art.aim_vector = Vector2.ZERO
 
 
 func _calm_behavior(_delta: float) -> void:
@@ -130,59 +120,15 @@ func wash_away() -> void:
 
 
 # ------------------------------------------------------------------ helpers de movimento
-func set_tactic_id(value: int) -> void:
-	tactic_id = value
-	_phase = fmod(value * 2.399963, TAU)
-	_slide = 1.0 if value % 2 == 0 else -1.0
-
-
 func target_point() -> Vector2:
 	if lured_by_honey:
 		var h: HoneyPot = level.nearest_honey(global_position)
 		if h != null:
-			remember_lure(h.global_position)
 			if global_position.distance_to(h.global_position) < 70.0:
 				h.eat(get_physics_process_delta_time())
 			return h.global_position
-	# A isca é uma decisão estratégica: ao acabar, o inseto mantém o cheiro
-	# do amigo mais próximo dali, em vez de adivinhar um alvo do outro lado da fase.
-	if _lure_memory:
-		if not is_instance_valid(_target): _target = level.nearest_animal(_lure_origin)
-		return _target.global_position if is_instance_valid(_target) else global_position
-	if not is_instance_valid(_target) or _target_timer <= 0:
-		_target_timer = 0.65 + (tactic_id % 3) * 0.08
-		var best := _target if is_instance_valid(_target) else null
-		var score := _target_score(best) * 0.78 if best != null else INF
-		for animal in level.animals:
-			if not is_instance_valid(animal): continue
-			var candidate := _target_score(animal)
-			if candidate < score:
-				best = animal
-				score = candidate
-		_target = best
-	return _target.global_position if is_instance_valid(_target) else global_position
-
-
-func remember_lure(point: Vector2) -> void:
-	_target = null
-	_lure_memory = true
-	_lure_origin = point
-
-
-func _target_score(animal: Animal) -> float:
-	var score := global_position.distance_to(animal.global_position)
-	if flying:
-		if not InsectNavigator.obstacle(self, global_position, animal.global_position).is_empty(): score += 180
-	elif animal.global_position.y < global_position.y - 100:
-		score += 220 # andarilhos não confundem um alvo alto com um caminho acessível
-	return score
-
-
-func predicted_target(seconds: float) -> Vector2:
-	var point := target_point()
-	if is_instance_valid(_target):
-		point += (_target.linear_velocity * seconds).limit_length(70)
-	return point
+	var a: Animal = level.nearest_animal(global_position)
+	return a.global_position if a != null else global_position
 
 
 func _steer_velocity(desired: Vector2, gain: float) -> void:
@@ -193,21 +139,30 @@ func _steer_velocity(desired: Vector2, gain: float) -> void:
 ## o inseto desliza pela superfície procurando uma brecha — por isso abrigos sem
 ## frestas funcionam e abrigos com frestas falham, de forma previsível.
 func _fly_toward(point: Vector2, wobble: float, slide_strength: float) -> void:
-	# Brocas e baiacus pressionam a tinta com sua habilidade própria; os outros
-	# voadores procuram a ponta aberta. Todos continuam colidindo com a linha.
-	var route := navigator.next_point(self, point, get_physics_process_delta_time(), kind != "broca" and kind != "drillfish" and kind != "puffer")
-	var to := route - global_position
+	var dt := get_physics_process_delta_time()
+	_route_t -= dt
+	if _waypoint != Vector2.INF:
+		_waypoint_age += dt
+		if global_position.distance_to(_waypoint) < 20.0 or _waypoint_age > 1.2:
+			_waypoint = Vector2.INF
+			_route_t = 0.0
+	if _stuck > 0.35 and _route_t <= 0.0 and _waypoint == Vector2.INF:
+		_route_t = 0.5
+		# caminho de verdade pela grade de navegação; se não houver, procura brecha com raios
+		_waypoint = level.nav_waypoint(global_position, point)
+		if _waypoint == Vector2.INF:
+			_waypoint = _find_gap(point)
+		_waypoint_age = 0.0
+	if _waypoint != Vector2.INF:
+		point = _waypoint
+	var to := point - global_position
 	var dist := to.length()
 	if dist < 1.0:
 		return
 	var dir := to / dist
-	var navigating := navigator.waypoint.is_finite()
-	var speed := minf(max_speed, dist * 4) if navigating else max_speed
-	var desired := dir * speed
-	desired += dir.orthogonal() * sin(_t * 7.0 + _phase) * wobble * (minf(1, dist / 100) * 0.25 if navigating else 1.0)
-	if navigating:
-		_stuck = 0
-	elif linear_velocity.length() < max_speed * 0.3:
+	var desired := dir * max_speed
+	desired += dir.orthogonal() * sin(_t * 7.0 + _phase) * wobble
+	if linear_velocity.length() < max_speed * 0.3:
 		_stuck += get_physics_process_delta_time()
 	else:
 		_stuck = maxf(_stuck - get_physics_process_delta_time() * 2.0, 0.0)
@@ -217,7 +172,45 @@ func _fly_toward(point: Vector2, wobble: float, slide_strength: float) -> void:
 		_slide = -_slide
 	if _stuck > 0.4:
 		desired += dir.orthogonal() * _slide * max_speed * slide_strength
-	_steer_velocity(desired.limit_length(max_speed), agility)
+	_steer_velocity(desired, agility)
+
+
+## Olha em volta do alvo (raios saindo dele) e devolve um ponto do lado de fora da brecha
+## mais próxima da direção em que o inseto está — ou INF se o alvo está bem fechado.
+func _find_gap(target: Vector2) -> Vector2:
+	var space := get_world_2d().direct_space_state
+	var mask := Layers.TERRAIN | Layers.LINE | Layers.PROP
+	var mine := (global_position - target).angle()
+	var best := Vector2.INF
+	var best_key := Vector2(INF, INF)
+	# olha de três alturas: brechas rente ao chão ficam abaixo do meio do bichinho
+	for origin in [target, target + Vector2(0, 18), target + Vector2(0, -18)]:
+		for i in GAP_RAYS:
+			var a := TAU * float(i) / float(GAP_RAYS)
+			var dir := Vector2.from_angle(a)
+			var from: Vector2 = origin + dir * 14.0
+			var rq := PhysicsRayQueryParameters2D.create(from, origin + dir * 420.0, mask)
+			rq.hit_from_inside = true  # raio que começa dentro do chão não é saída
+			var hit := space.intersect_ray(rq)
+			var free := 420.0 if hit.is_empty() else from.distance_to(hit["position"])
+			if free < ESCAPE:
+				continue
+			# a brecha precisa caber o inseto: confere dois raios paralelos
+			var side := dir.orthogonal() * (radius * 0.7)
+			var end: Vector2 = origin + dir * ESCAPE
+			if not space.intersect_ray(PhysicsRayQueryParameters2D.create(from + side, end + side, mask)).is_empty():
+				continue
+			if not space.intersect_ray(PhysicsRayQueryParameters2D.create(from - side, end - side, mask)).is_empty():
+				continue
+			var p: Vector2 = origin + dir * maxf(150.0, free * 0.85)
+			# prefere uma saída que o inseto enxerga de onde está (consegue voar até lá);
+			# senão, a mais aberta (provavelmente a boca da caverna)
+			var sees := space.intersect_ray(PhysicsRayQueryParameters2D.create(global_position, p, mask, [get_rid()])).is_empty()
+			var key := Vector2(0.0, absf(angle_difference(a, mine))) if sees else Vector2(1.0, -free)
+			if key.x < best_key.x or (key.x == best_key.x and key.y < best_key.y):
+				best_key = key
+				best = p
+	return best
 
 
 ## Caminhada: força horizontal + escalada de degraus baixos.
@@ -240,37 +233,6 @@ func _walk_toward(point: Vector2, climb_height: float, push_force: float) -> voi
 	var q2 := PhysicsRayQueryParameters2D.create(top, top + ahead, Layers.TERRAIN | Layers.LINE | Layers.PROP, [get_rid()])
 	if space.intersect_ray(q2).is_empty():
 		linear_velocity.y = -sqrt(2.0 * 980.0 * climb_height) * 0.9
-
-
-## Besouros e caranguejos recuam a força durante o aviso e golpeiam o obstáculo
-## realmente em contato. Pedra e Tinta Firme não recebem impulso.
-func _ram_barrier(delta: float, impulse: float) -> bool:
-	_ram_cooldown = maxf(0, _ram_cooldown - delta)
-	var barrier: RigidBody2D
-	for body in get_colliding_bodies():
-		if (body is DrawnLine or body is Crate) and not body.freeze:
-			barrier = body
-			break
-	if barrier == null or _ram_cooldown > 0:
-		_ram_charge = 0
-		art.aiming = false
-		art.aim_progress = 0
-		return false
-	if _ram_charge == 0:
-		_ram_direction = signf(target_point().x - global_position.x)
-	_ram_charge += delta
-	art.aiming = true
-	art.aim_progress = minf(1, _ram_charge / 0.65)
-	_steer_velocity(Vector2(0, linear_velocity.y), 8)
-	if _ram_charge >= 0.65:
-		barrier.apply_impulse(Vector2(_ram_direction * impulse, 0), global_position - barrier.global_position)
-		apply_central_impulse(Vector2(-_ram_direction * impulse * 0.08, 0))
-		_ram_charge = 0
-		_ram_cooldown = RAM_RECOVERY
-		art.aiming = false
-		art.squash = 1
-		Sfx.play("bonk", -7, 0.7, 0.1)
-	return true
 
 
 func _on_ground() -> bool:

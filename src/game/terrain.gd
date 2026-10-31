@@ -1,7 +1,8 @@
 class_name Terrain
 extends StaticBody2D
 ## Terreno estático a partir de um polígono do levels.json.
-## Estilos: "ground" (terra com grama), "stone", "wood", "glass" (aquário da Lulu).
+## Estilos: "ground" (terra com grama), "stone", "wood", "glass" (aquário da Lulu), "ice",
+## "thorns" (espinhos: bichinho que encosta perde).
 
 var poly := PackedVector2Array()
 var style := "ground"
@@ -78,6 +79,27 @@ func _draw() -> void:
 			while y < r.end.y - 6.0:
 				draw_line(Vector2(r.position.x + 6, y), Vector2(r.end.x - 6, y), Palette.WOOD_DARK, 2.0, true)
 				y += 14.0
+		"thorns":
+			# moita de espinhos: verde-escuro com espinhos para fora e frutinhas
+			DrawUtil.shape(self, poly, Color("3f6b4a"))
+			var rt := _bounds()
+			var rng := RandomNumberGenerator.new()
+			rng.seed = 13 + hash(poly)
+			for i in poly.size():
+				var a := poly[i]
+				var b := poly[(i + 1) % poly.size()]
+				var e := b - a
+				var n := e.orthogonal().normalized()
+				if Geometry2D.is_point_in_polygon((a + b) * 0.5 + n * 3.0, poly):
+					n = -n
+				var count := int(e.length() / 16.0)
+				for k in count:
+					var p := a.lerp(b, (k + 0.5) / maxf(count, 1))
+					DrawUtil.tri(self, p - e.normalized() * 6.0, p + e.normalized() * 6.0, p + n * 14.0, Color("e8e2c8"), Palette.OUTLINE, 2.0)
+			for k in int(rt.size.x * rt.size.y / 2500.0) + 2:
+				var p := Vector2(rng.randf_range(rt.position.x, rt.end.x), rng.randf_range(rt.position.y, rt.end.y))
+				if Geometry2D.is_point_in_polygon(p, poly):
+					DrawUtil.disc(self, p, 5.0, Color("d6455a"), Palette.OUTLINE, 1.5)
 		"glass":
 			draw_colored_polygon(poly, Color(0.85, 0.95, 1.0, 0.35))
 			draw_polyline(DrawUtil.closed(poly), Color("6fb4d8"), 5.0, true)

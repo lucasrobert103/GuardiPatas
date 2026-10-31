@@ -19,6 +19,9 @@ var trace := false
 var trace_step := 1.0
 var variants := false
 var daily_all := false
+var circle_report := false
+## Fases de tutorial: aqui um abrigo simples (o "círculo") PODE vencer.
+const TUTORIAL := ["1-1", "1-2"]
 
 
 func _ready() -> void:
@@ -35,10 +38,21 @@ func _ready() -> void:
 			variants = true
 		if a == "--daily-all":
 			daily_all = true
+		if a == "--circle-report":
+			circle_report = true
+		if a.begins_with("--levels="):
+			# outro arquivo de fases (ex.: laboratório de mecânicas)
+			LevelDB.reload(a.substr(9))
 	Game.persist = false
 	Game.load_save()
 	Game.set_setting("lang", "pt_BR")
 	await get_tree().process_frame
+	if circle_report:
+		await _circle_report()
+		print("")
+		print("==== RESULTADO: %d ok, %d falhas ====" % [passed, failures])
+		get_tree().quit(1 if failures > 0 else 0)
+		return
 	if daily_all:
 		await _test_daily_all()
 		print("")
@@ -202,6 +216,95 @@ func _test_levels() -> void:
 		print("  %s %-22s solução=%s (%.1fs, tinta %.0f%%, %d★)  sem-linha=%s (%.1fs, %s)%s" % [id, data["name"], won["state_name"], won["time"], won["ink"] * 100.0, won["stars"], lost["state_name"], lost["time"], lost["reason"], naive_txt])
 
 
+# ------------------------------------------------------------------ "círculos" automáticos
+## Arco simples sobre um bichinho (o mesmo formato de tools/make_levels.py → dome).
+static func dome_pts(cx: float, half_w: float, top: float, floor_y: float, pad: float, apex_gap: float) -> PackedVector2Array:
+	var hw := half_w + pad
+	var y_leg := floor_y - 12.0
+	var y_top := top - apex_gap
+	var ry := maxf(minf(hw, (y_leg - y_top) * 0.75), 20.0)
+	var y_c := y_top + ry
+	var pts := PackedVector2Array([Vector2(cx - hw, y_leg)])
+	if y_c < y_leg - 4.0:
+		pts.append(Vector2(cx - hw, y_c))
+	for i in range(1, 14):
+		var a := PI + PI * i / 14.0
+		pts.append(Vector2(cx + cos(a) * hw, y_c + sin(a) * ry))
+	if y_c < y_leg - 4.0:
+		pts.append(Vector2(cx + hw, y_c))
+	pts.append(Vector2(cx + hw, y_leg))
+	return pts
+
+
+static func animal_box(a: Dictionary) -> Rect2:
+	var cfg: Dictionary = Animal.SPECIES[str(a["type"])]
+	var hh := Animal.half_height(str(a["type"]))
+	var hw: float = float(cfg["h"]) * 0.5 if cfg["shape"] == "hcapsule" else float(cfg["r"])
+	var p := Vector2(float(a["pos"][0]), float(a["pos"][1]))
+	return Rect2(p - Vector2(hw, hh), Vector2(hw * 2.0, hh * 2.0))
+
+
+## O que um jogador "sem pensar" desenharia: um arco por bichinho (ou um arco por grupo,
+## se houver menos traços que bichinhos), justo ou folgado.
+static func circle_strokes(data: Dictionary, pad: float, apex: float) -> Array:
+	var boxes: Array = []
+	for a in data.get("animals", []):
+		boxes.append(animal_box(a))
+	boxes.sort_custom(func(x, y): return x.position.x < y.position.x)
+	var strokes := maxi(int(data.get("strokes", 1)), 1)
+	var groups: Array = []
+	var per := int(ceil(float(boxes.size()) / float(strokes)))
+	for i in range(0, boxes.size(), maxi(per, 1)):
+		var r: Rect2 = boxes[i]
+		for j in range(i + 1, mini(i + per, boxes.size())):
+			r = r.merge(boxes[j])
+		groups.append(r)
+	var out: Array = []
+	for r in groups:
+		out.append(dome_pts(r.get_center().x, r.size.x * 0.5, r.position.y, r.end.y + 1.0, pad, apex))
+	return out
+
+
+func _circle_candidates(data: Dictionary) -> Array:
+	# o jogador pode começar o arco pela esquerda ou pela direita (importa quando a tinta acaba)
+	var justo := circle_strokes(data, 22.0, 30.0)
+	var invertido: Array = []
+	for st in justo:
+		var r: PackedVector2Array = st.duplicate()
+		r.reverse()
+		invertido.append(r)
+	return [["justo", justo], ["invertido", invertido], ["folgado", circle_strokes(data, 50.0, 45.0)]]
+
+
+## Relatório: em quais fases o círculo (justo ou folgado) ainda vence?
+func _circle_report() -> void:
+	print("[Círculo automático — relatório]")
+	var wins := 0
+	for i in LevelDB.count():
+		var data := LevelDB.get_level(i)
+		var id := str(data["id"])
+		if only_level != "" and id != only_level:
+			continue
+		if only_world != 0 and int(data["world"]) != only_world:
+			continue
+		if data.has("goal"):
+			print("  %-5s (toca: círculo não se aplica)" % id)
+			continue
+		var line := "  %-5s %-22s" % [id, data["name"]]
+		var any := false
+		for c in _circle_candidates(data):
+			if trace:
+				print("    --- círculo ", c[0], " ---")
+			var r := await _run_level(i, data, true, c[1])
+			var won: bool = r["state"] == Level.State.WON
+			any = any or won
+			line += "  %s=%s" % [c[0], "VENCE" if won else "perde(%s)" % r["reason"]]
+		if any:
+			wins += 1
+		print(line + ("   <-- FÁCIL" if any else ""))
+	print("  círculo vence em %d fases" % wins)
+
+
 ## Desafio do Dia: 14 dias seguidos a partir de uma data fixa — a solução da fase base tem
 ## que continuar vencendo com a regra do dia.
 func _test_daily() -> void:
@@ -314,7 +417,8 @@ func _trace(lv: Level, with_solution: bool) -> void:
 			parts.append("toca(%s %.0f,%.0f tampada=%s restante=%d)" % [nest.insect, nest.position.x, nest.position.y, nest._is_plugged(), nest.remaining])
 	for i in lv.insects:
 		if is_instance_valid(i):
-			parts.append("%s(%.0f,%.0f v%.0f,%.0f)" % [i.kind, i.global_position.x, i.global_position.y, i.linear_velocity.x, i.linear_velocity.y])
+			var wp := "" if i._waypoint == Vector2.INF else " ->%.0f,%.0f" % [i._waypoint.x, i._waypoint.y]
+			parts.append("%s(%.0f,%.0f v%.0f,%.0f%s)" % [i.kind, i.global_position.x, i.global_position.y, i.linear_velocity.x, i.linear_velocity.y, wp])
 	for c in lv.props:
 		if is_instance_valid(c):
 			parts.append("caixa(%.0f,%.0f hp%.1f)" % [c.global_position.x, c.global_position.y, c.hp])

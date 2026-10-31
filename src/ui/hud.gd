@@ -319,6 +319,8 @@ const LOSE_TEXT := {
 	"snow": ["Bonk de neve!", "A Coruja avisa com X no chão onde a neve vai cair. Telhado inclinado faz a neve escorregar!"],
 	"shell": ["Bonk de concha!", "O Caranguejo Rei mostra o arco pontilhado antes de jogar. Faça uma parede do lado dele!"],
 	"hug": ["Abraço apertado!", "O Polvo Gigante suga tudo! Prenda o abrigo embaixo das pedras para ele não subir."],
+	"fled": ["Fugiu de medo!", "Medrosos correm quando VEEM um inseto (a tinta é transparente!). Feche o caminho da fuga ou guie até a toca."],
+	"thorn": ["Ai, espinhos!", "Quem foge sem olhar cai nos espinhos. Bloqueie esse lado antes!"],
 	"sting": ["Ai! Uma picadinha!", "Procure frestas: os insetos deslizam pela linha até achar uma brecha."],
 	"fall": ["Ops! Caiu!", "Cuidado com o peso da linha: ela cai e pode empurrar o bichinho."],
 	"water": ["Molhou!", "Esse bichinho não nada. Segure-o longe da água!"],

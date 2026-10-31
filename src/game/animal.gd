@@ -38,6 +38,17 @@ var shell_hits := 0
 var alive := true
 var level: Level = null
 var _scared_announced := false
+## Medroso: corre para longe quando VÊ um inseto (a tinta é transparente; terreno esconde).
+var skittish := false
+## Escondido numa toca segura: insetos não o encontram mais.
+var in_burrow := false
+var _panic := 0.0
+var _run_dir := 1.0
+var _jump_cd := 0.0
+const FLEE_SIGHT := 290.0
+const RUN_SPEED := 250.0
+## Espécies medrosas por natureza (a fase pode mudar com "flee").
+const SKITTISH := ["pompom", "nino", "patinha"]
 
 
 static func half_height(sp: String) -> float:
@@ -47,9 +58,10 @@ static func half_height(sp: String) -> float:
 	return float(cfg["r"])
 
 
-func setup(p_species: String, p_level: Level, flip: bool) -> void:
+func setup(p_species: String, p_level: Level, flip: bool, flee: Variant = null) -> void:
 	species = p_species if SPECIES.has(p_species) else "capi"
 	level = p_level
+	skittish = bool(flee) if flee != null else SKITTISH.has(species)
 	var cfg: Dictionary = SPECIES[species]
 	mass = cfg["mass"]
 	lock_rotation = not cfg["rolls"]
@@ -98,9 +110,11 @@ func can_swim() -> bool:
 	return SPECIES[species]["swims"]
 
 
-func _physics_process(_delta: float) -> void:
-	if not alive or level == null:
+func _physics_process(delta: float) -> void:
+	if not alive or level == null or in_burrow:
 		return
+	if skittish and level.is_running():
+		_flee(delta)
 	if art.mood in ["happy", "sad", "ouch"]:
 		return
 	var nearest: Insect = level.nearest_insect(global_position)
@@ -117,13 +131,68 @@ func _physics_process(_delta: float) -> void:
 	art.mood = "idle"
 
 
+## Fuga: vê um inseto (sem terreno no meio) → corre para o lado oposto e pula o que
+## estiver na frente. Dentro de um abrigo solto ele empurra e pula até sair.
+func _flee(delta: float) -> void:
+	_jump_cd = maxf(_jump_cd - delta, 0.0)
+	var seen := level.visible_insect(global_position, FLEE_SIGHT)
+	if seen != null:
+		if _panic <= 0.0 or absf(seen.global_position.x - global_position.x) > 24.0:
+			var dx := global_position.x - seen.global_position.x
+			if absf(dx) > 8.0:
+				_run_dir = signf(dx)
+		_panic = 1.5
+	if _panic <= 0.0:
+		return
+	_panic -= delta
+	art.facing = _run_dir
+	var dv := _run_dir * RUN_SPEED - linear_velocity.x
+	apply_central_force(Vector2(clampf(dv * mass * 14.0, -mass * 3200.0, mass * 3200.0), 0.0))
+	if _jump_cd > 0.0:
+		return
+	var space := get_world_2d().direct_space_state
+	var hh := half_height(species)
+	var reach := (float(SPECIES[species]["h"]) * 0.5 if SPECIES[species]["shape"] == "hcapsule" else float(SPECIES[species]["r"])) + 12.0
+	var q := PhysicsRayQueryParameters2D.create(global_position, global_position + Vector2(_run_dir * reach, 0), Layers.TERRAIN | Layers.LINE | Layers.PROP, [get_rid()])
+	var down := PhysicsRayQueryParameters2D.create(global_position, global_position + Vector2(0, hh + 6.0), Layers.TERRAIN | Layers.LINE | Layers.PROP, [get_rid()])
+	var grounded := not space.intersect_ray(down).is_empty()
+	if not grounded:
+		return
+	if not space.intersect_ray(q).is_empty():
+		_jump_cd = 0.8
+		apply_central_impulse(Vector2(_run_dir * 0.35, -1.0).normalized() * mass * 560.0)
+		return
+	# degrau baixo no pé (ex.: uma linha deitada no chão): sobe com um pulinho
+	var foot := global_position + Vector2(0, hh - 6.0)
+	var qf := PhysicsRayQueryParameters2D.create(foot, foot + Vector2(_run_dir * reach, 0), Layers.TERRAIN | Layers.LINE | Layers.PROP, [get_rid()])
+	if not space.intersect_ray(qf).is_empty():
+		_jump_cd = 0.35
+		linear_velocity.y = -sqrt(2.0 * 980.0 * 34.0)
+
+
+func hide_in_burrow() -> void:
+	if in_burrow:
+		return
+	in_burrow = true
+	_panic = 0.0
+	linear_velocity = Vector2.ZERO
+	collision_layer = 0
+	collision_mask = Layers.TERRAIN
+	art.mood = "happy"
+	art.modulate = Color(1, 1, 1, 0.55)
+	Sfx.play("pop", -2.0, 1.3)
+	Fx.popup_text(level.fx_layer, global_position + Vector2(0, -60), "A salvo!", Palette.UI_GOOD)
+
+
 func _on_body_entered(body: Node) -> void:
 	if body is Insect:
 		on_insect_touch(body)
+	elif body is Terrain and (body as Terrain).style == "thorns" and level != null:
+		level.on_animal_thorn(self)
 
 
 func on_insect_touch(insect: Insect) -> void:
-	if not alive or insect.calmed or not level.is_running():
+	if not alive or in_burrow or insect.calmed or not level.is_running():
 		return
 	if shell_hits > 0:
 		# o casco da Tuca aguenta uma picadinha

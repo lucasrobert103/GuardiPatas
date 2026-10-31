@@ -92,4 +92,6 @@ const INSECTS := {
 	"crab": {"name": "Caranguejo Belisco", "desc": "Empurra forte e não tem medo de água."},
 	"jellyfish": {"name": "Água-viva Gelatina", "desc": "Nada em pulsos lentos no fundo do mar."},
 	"puffer": {"name": "Baiacu Bolha", "desc": "Incha quando chega perto e empurra tudo."},
+	"traca": {"name": "Traça Come-Tinta", "desc": "Rói a linha mais perto. Dê outra linha para ela roer!"},
+	"rino": {"name": "Besouro-Rinoceronte", "desc": "Levanta linhas soltas com o chifre. Trave o abrigo!"},
 }

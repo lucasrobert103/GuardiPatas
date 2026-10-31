@@ -18,6 +18,12 @@ var _shine: Line2D
 var static_ink := false
 var holes: Array[Vector2] = []
 var _holes_node: Node2D
+## Uma forma de colisão por segmento; segmentos roídos (Traça) ficam desligados.
+var _seg_shapes: Array[CollisionShape2D] = []
+var _seg_cut: Array[bool] = []
+var _visual_nodes: Array[Node] = []
+var _color := Palette.INK
+var bites := 0
 
 
 func build(world_points: PackedVector2Array, color: Color = Palette.INK, p_static: bool = false) -> void:
@@ -63,32 +69,104 @@ func build(world_points: PackedVector2Array, color: Color = Palette.INK, p_stati
 		cs.position = (a + b) * 0.5
 		cs.rotation = seg.angle() - PI / 2.0
 		add_child(cs)
+		_seg_shapes.append(cs)
+		_seg_cut.append(false)
+	_color = color
 	_add_visuals(color)
 	body_entered.connect(_on_body_entered)
 
 
 func _add_visuals(color: Color) -> void:
-	var outline := Line2D.new()
-	outline.points = points_local
-	outline.width = THICKNESS + Palette.OUTLINE_W * 2.0
-	outline.default_color = Palette.OUTLINE
-	_round(outline)
-	add_child(outline)
-	_fill = Line2D.new()
-	_fill.points = points_local
-	_fill.width = THICKNESS
-	_fill.default_color = color
-	_round(_fill)
-	add_child(_fill)
-	_shine = Line2D.new()
-	var shine_pts := PackedVector2Array()
-	for p in points_local:
-		shine_pts.append(p + Vector2(-1.5, -2.5))
-	_shine.points = shine_pts
-	_shine.width = 3.0
-	_shine.default_color = Color(Palette.INK_STATIC_HI if static_ink else Palette.INK_HI, 0.8)
-	_round(_shine)
-	add_child(_shine)
+	for n in _visual_nodes:
+		n.queue_free()
+	_visual_nodes.clear()
+	# pedaços contínuos (a Traça pode ter roído partes da linha)
+	var pieces: Array[PackedVector2Array] = []
+	var cur := PackedVector2Array()
+	if points_local.size() == 1:
+		cur.append(points_local[0])
+	for i in range(1, points_local.size()):
+		if _seg_cut.size() >= i and _seg_cut[i - 1]:
+			if cur.size() >= 2:
+				pieces.append(cur)
+			cur = PackedVector2Array()
+			continue
+		if cur.is_empty():
+			cur.append(points_local[i - 1])
+		cur.append(points_local[i])
+	if cur.size() >= 1:
+		pieces.append(cur)
+	for piece in pieces:
+		var outline := Line2D.new()
+		outline.points = piece
+		outline.width = THICKNESS + Palette.OUTLINE_W * 2.0
+		outline.default_color = Palette.OUTLINE
+		_round(outline)
+		add_child(outline)
+		_visual_nodes.append(outline)
+		_fill = Line2D.new()
+		_fill.points = piece
+		_fill.width = THICKNESS
+		_fill.default_color = color
+		_round(_fill)
+		add_child(_fill)
+		_visual_nodes.append(_fill)
+		_shine = Line2D.new()
+		var shine_pts := PackedVector2Array()
+		for p in piece:
+			shine_pts.append(p + Vector2(-1.5, -2.5))
+		_shine.points = shine_pts
+		_shine.width = 3.0
+		_shine.default_color = Color(Palette.INK_STATIC_HI if static_ink else Palette.INK_HI, 0.8)
+		_round(_shine)
+		add_child(_shine)
+		_visual_nodes.append(_shine)
+	if _holes_node != null:
+		move_child(_holes_node, get_child_count() - 1)
+
+
+## A Traça come um pedaço da linha: os segmentos perto do ponto somem de verdade
+## (colisão e desenho), abrindo uma passagem para qualquer inseto. Retorna se cortou algo.
+func bite(world_pos: Vector2, radius: float = 20.0) -> bool:
+	var local := to_local(world_pos)
+	var any := false
+	for i in _seg_shapes.size():
+		if _seg_cut[i]:
+			continue
+		var c := Geometry2D.get_closest_point_to_segment(local, points_local[i], points_local[i + 1])
+		if c.distance_to(local) <= radius:
+			_seg_cut[i] = true
+			_seg_shapes[i].set_deferred("disabled", true)
+			any = true
+	if any:
+		bites += 1
+		_add_visuals(_color)
+		if is_cut_everywhere():
+			# roída inteira: some (senão o corpo sem colisão cairia pelo chão)
+			queue_free()
+	return any
+
+
+func is_cut_everywhere() -> bool:
+	return not _seg_cut.has(false)
+
+
+## Ponto mais perto de `world_pos` nos pedaços que ainda existem (INF se tudo foi roído).
+func closest_intact_point(world_pos: Vector2) -> Vector2:
+	var local := to_local(world_pos)
+	var best := Vector2.INF
+	var bd := INF
+	for i in _seg_shapes.size():
+		if _seg_cut[i]:
+			continue
+		var c := Geometry2D.get_closest_point_to_segment(local, points_local[i], points_local[i + 1])
+		var d := c.distance_squared_to(local)
+		if d < bd:
+			bd = d
+			best = c
+	if points_local.size() == 1:
+		best = points_local[0]
+	return to_global(best) if best != Vector2.INF else Vector2.INF
 
 
 ## Marca visual de um furo (feito pela abelha-broca). Guardado em coordenadas locais.

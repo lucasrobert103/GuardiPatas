@@ -37,8 +37,12 @@ def block(x0, y0, x1, y1, style="ground"):
     return {"poly": [[x0, y0], [x1, y0], [x1, y1], [x0, y1]], "style": style}
 
 
-def animal(kind, x, floor=GROUND, flip=False):
-    return {"type": kind, "pos": [x, floor - HALF_H[kind] - 1], "flip": flip}
+def animal(kind, x, floor=GROUND, flip=False, flee=None):
+    """flee: força o bichinho a ser (ou não) medroso; None = o jeito da espécie."""
+    a = {"type": kind, "pos": [x, floor - HALF_H[kind] - 1], "flip": flip}
+    if flee is not None:
+        a["flee"] = flee
+    return a
 
 
 def hive(x, y, insect="bee", count=6, interval=0.35, delay=0.3):
