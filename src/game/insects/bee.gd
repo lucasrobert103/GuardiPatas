@@ -7,11 +7,11 @@ extends Insect
 func _configure() -> void:
 	lured_by_honey = true
 	radius = 11.0
-	max_speed = 230.0
-	agility = 2.6
-	mass = 0.15
+	max_speed = 245.0
+	agility = 3.0
+	mass = 0.18
 	linear_damp = 0.4
 
 
 func _behave(_delta: float) -> void:
-	_fly_toward(target_point(), 70.0, 0.9)
+	_fly_toward(target_point(), 42.0, 0.9)

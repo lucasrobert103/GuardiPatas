@@ -98,6 +98,7 @@ func _is_plugged() -> bool:
 
 func _spawn() -> void:
 	remaining -= 1
+	var ordinal := count - remaining - 1
 	_pulse = 1.0
 	var bug := make_insect(insect)
 	bug.setup(level, insect)
@@ -106,19 +107,19 @@ func _spawn() -> void:
 		out = Vector2(0, -bug.radius - 6.0)
 	elif is_hanging():
 		out = Vector2(0, 44)
-	bug.position = position + out + Vector2(randf_range(-6, 6) if not hole else 0.0, 0)
+	bug.position = position + out + Vector2(((ordinal * 5) % 9 - 4) * 1.4 if not hole else 0.0, 0)
 	level.add_insect(bug)
 	if hole:
-		bug.linear_velocity = Vector2(randf_range(-20, 20), -180)
+		bug.linear_velocity = Vector2(((ordinal * 13) % 41) - 20, -180)
 		Fx.dust(level.fx_layer, global_position)
 	elif is_flyer_nest() or SEA.has(insect):
 		var to := Vector2.DOWN
 		var target := level.nearest_animal(bug.position)
 		if target != null:
 			to = (target.global_position - bug.position).normalized()
-		# leque de saída: cada inseto sai num ângulo um pouco diferente (só estético)
-		var spread := randf_range(-0.7, 0.7)
-		bug.linear_velocity = (Vector2.DOWN * 0.5 + to * 0.5).normalized().rotated(spread) * bug.max_speed * randf_range(0.5, 0.8)
+		# Leque fixo por ordem de nascimento: repetir a tentativa repete a saída.
+		var spread := sin(ordinal * 2.399963 + position.x * 0.01) * 0.6
+		bug.linear_velocity = (Vector2.DOWN * 0.5 + to * 0.5).normalized().rotated(spread) * bug.max_speed * (0.6 + (ordinal % 3) * 0.07)
 	queue_redraw()
 
 

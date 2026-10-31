@@ -19,6 +19,7 @@ func _behave(delta: float) -> void:
 	_pulse -= delta
 	if _pulse <= 0.0:
 		_pulse = 0.9
-		var dir := (target_point() - global_position).normalized()
-		apply_central_impulse(dir.rotated(randf_range(-0.3, 0.3)) * 150.0 * mass)
+		var route := navigator.next_point(self, predicted_target(0.25), 0.9)
+		var dir := (route - global_position).normalized()
+		apply_central_impulse(dir * 150.0 * mass)
 		art.squash = 1.0

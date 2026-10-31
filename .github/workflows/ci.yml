@@ -68,6 +68,12 @@ jobs:
           timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/strategy_test.tscn 2>&1 | tee strategy.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" strategy.log; then exit 1; fi
 
+      - name: Táticas dos insetos e colisões
+        run: |
+          set -o pipefail
+          timeout 180 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/insect_tactics_test.tscn 2>&1 | tee tactics.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" tactics.log; then exit 1; fi
+
       - name: Todas as combinações de desafios diários
         run: |
           set -o pipefail

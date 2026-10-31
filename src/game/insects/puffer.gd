@@ -8,6 +8,7 @@ const BIG_R := 27.0
 const NEAR := 170.0
 
 var inflate := 0.0
+var _pressure_time := 0.0
 
 
 func _configure() -> void:
@@ -20,7 +21,11 @@ func _configure() -> void:
 
 func _behave(delta: float) -> void:
 	var t := target_point()
+	_pressure_time = maxf(0, _pressure_time - delta)
 	var near := global_position.distance_to(t) < NEAR
+	for body in get_colliding_bodies():
+		if body is DrawnLine or body is Crate: _pressure_time = 1.4
+	near = near or _pressure_time > 0
 	var was := inflate
 	inflate = clampf(inflate + (1.6 if near else -0.5) * delta, 0.0, 1.0)
 	if was < 0.5 and inflate >= 0.5:

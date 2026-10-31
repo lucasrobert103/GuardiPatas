@@ -6,11 +6,11 @@ extends Insect
 
 func _configure() -> void:
 	radius = 7.0
-	max_speed = 300.0
-	agility = 4.0
+	max_speed = 325.0
+	agility = 4.8
 	mass = 0.05
 	linear_damp = 0.5
 
 
 func _behave(_delta: float) -> void:
-	_fly_toward(target_point(), 150.0, 1.4)
+	_fly_toward(target_point(), 75.0, 1.4)

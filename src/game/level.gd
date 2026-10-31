@@ -32,6 +32,7 @@ var last_result: Dictionary = {}
 
 var animals: Array[Animal] = []
 var insects: Array[Insect] = []
+var _insect_serial := 0
 var nests: Array[Nest] = []
 var lamps: Array[Lamp] = []
 var platforms: Array[MovingPlatform] = []
@@ -436,6 +437,8 @@ func add_insect(bug: Insect) -> void:
 	if insects.size() >= MAX_INSECTS:
 		bug.queue_free()
 		return
+	bug.set_tactic_id(_insect_serial)
+	_insect_serial += 1
 	bug.max_speed *= insect_speed
 	world.add_child(bug)
 	insects.append(bug)

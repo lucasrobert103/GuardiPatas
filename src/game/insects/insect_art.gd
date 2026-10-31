@@ -12,6 +12,10 @@ var aiming := false
 var excited := false
 var squash := 0.0
 var thread := 0.0
+var aim_vector := Vector2.ZERO
+var aim_progress := 0.0
+var work_progress := 0.0
+var jump_velocity := Vector2.ZERO
 
 var _t := 0.0
 var _hc := false
@@ -310,9 +314,23 @@ func _draw_puffer() -> void:
 
 
 func _draw_status() -> void:
+	if not calmed and not dazed:
+		if work_progress > 0:
+			draw_arc(Vector2.ZERO, radius + 9, -PI / 2, -PI / 2 + TAU * work_progress, 24, Palette.GOLD, 3, true)
+		if aiming:
+			draw_arc(Vector2.ZERO, radius + 8, -PI / 2, -PI / 2 + TAU * maxf(0.02, aim_progress), 24, Palette.DANGER, 2.5, true)
+			if aim_vector.length() > 1:
+				var dir := aim_vector.normalized()
+				for distance in range(int(radius + 14), int(aim_vector.length()), 18):
+					draw_line(dir * distance, dir * (distance + 7), Color(Palette.DANGER, 0.65), 2, true)
+			if jump_velocity.length() > 1:
+				for k in range(1, 10):
+					var time := k * 0.09
+					var point := jump_velocity * time + Vector2(0, 490 * time * time)
+					draw_circle(point, 2.5, Color(Palette.DANGER, 0.6), true, -1, true)
 	var top := Vector2(0, -radius * 2.2)
 	if aiming and not calmed:
-		var blink := absf(sin(_t * 16.0)) > 0.3
+		var blink := bool(Game.setting("reduce_motion")) or absf(sin(_t * 16.0)) > 0.3
 		if blink:
 			DrawUtil.disc(self, top + Vector2(0, -4), 10.0, Palette.GOLD, Palette.OUTLINE, 2.5)
 			draw_line(top + Vector2(0, -10), top + Vector2(0, -2), Palette.OUTLINE, 3.0, true)

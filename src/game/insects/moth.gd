@@ -7,8 +7,8 @@ extends Insect
 
 func _configure() -> void:
 	radius = 12.0
-	max_speed = 150.0
-	agility = 2.0
+	max_speed = 165.0
+	agility = 2.3
 	mass = 0.12
 	linear_damp = 0.6
 
@@ -20,6 +20,11 @@ func _behave(_delta: float) -> void:
 		_fly_toward(target_point(), 60.0, 0.8)
 		return
 	art.excited = true
+	_target = null
+	_lure_memory = true
+	if global_position.distance_to(lamp.global_position) > 180:
+		_fly_toward(lamp.global_position, 20, 0.8)
+		return
 	var to := lamp.global_position - global_position
 	var d := to.length()
 	var orbit := 55.0 + 15.0 * sin(_t * 1.3 + _phase)

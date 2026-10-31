@@ -1,6 +1,6 @@
-# 08 — Campanha de estratégia (versão 0.4.0)
+# 08 — Campanha de estratégia (versão 0.5.0)
 
-A campanha mantém 63 fases em oito mundos. A fonte editável é `tools/make_levels.py`; `python3 tools/make_levels.py` gera `data/levels.json`. A versão 0.4 mantém o progresso anterior e redesenha os desafios sem apagar moedas, animais ou acessórios.
+A campanha mantém 63 fases em oito mundos. A fonte editável é `tools/make_levels.py`; `python3 tools/make_levels.py` gera `data/levels.json`. A versão 0.5 mantém o progresso anterior e acrescenta táticas aos desafios sem apagar moedas, animais ou acessórios.
 
 As duas primeiras fases ensinam a desenhar. A partir da terceira, o jogador encontra problemas de apoios, bloqueio de nascimentos, rotas, camadas e distribuição de traços. Não há detecção nem proibição de círculos: uma solução diferente continua válida quando satisfaz a física e o objetivo.
 
@@ -83,7 +83,7 @@ A mensagem inicial usa `objective`, sem mostrar a receita do traço. O código d
 |---|---|---|---:|---:|---:|
 | 7-1 | Esconderijo do Pompom | Dividir traços entre teto e entrada lateral | 2 | 290 | 8 s |
 | 7-2 | Telhado da Praia | Tampar ninhos e apoiar um teto | 1 | 155 | 8 s |
-| 7-3 | Caranguejos da Toca | Ajustar o abrigo às posições das tocas | 1 | 405 | 9 s |
+| 7-3 | Vespas na Praia | Ajustar o abrigo às posições das tocas | 1 | 405 | 9 s |
 | 7-4 | Piquenique | Ler a isca de mel e priorizar o alvo | 1 | 205 | 10 s |
 | 7-5 | Apoio da Fofa | Fechar o ninho e aproveitar o paredão | 1 | 415 | 11 s |
 | 7-6 | Telhado Inclinado | Fechar o ninho e aproveitar o paredão | 1 | 400 | 9 s |
@@ -117,3 +117,17 @@ A mensagem inicial usa `objective`, sem mostrar a receita do traço. O código d
 - O teste também registra tentativas de cercas individuais; elas são soluções adaptadas a cada animal e não são proibidas automaticamente.
 - Tutorial, priorização, água e plataformas podem aceitar outros abrigos válidos. O critério não é copiar a solução registrada, e sim impedir que uma receita única resolva a campanha inteira.
 - Desafios diários só sorteiam redução de tinta quando a solução base cabe com margem. Hora Extra não é sorteada para a prova de duas camadas com brocas livres. As combinações disponíveis são testadas com `--daily-all`.
+
+## Ondas táticas da versão 0.5
+
+A geometria, tinta, tempo e soluções desta tabela são mantidos. As ameaças agora procuram passagens e alternam entre alvos expostos, respeitando as iscas. Cinco fases recebem combinações adicionais:
+
+| Fase | Combinação |
+|---|---|
+| 4-2 | Mosquitos e brocas nos apoios, mais lagartas escaladoras |
+| 6-2 | Brocas nas tocas e grilos com salto preparado |
+| 6-7 | Mosquitos, broca no apoio e aranhas que tentam outra descida |
+| 7-3 | Brocas nas tocas e vespas com investida anunciada |
+| 7-6 | Mosquitos, broca no apoio e caranguejos com golpe de pressão |
+
+Veja [as táticas e sua validação](19-insetos-taticas.md).

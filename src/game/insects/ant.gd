@@ -7,9 +7,9 @@ extends Insect
 
 func _configure() -> void:
 	radius = 8.0
-	max_speed = 95.0
+	max_speed = 108.0
 	agility = 6.0
-	mass = 0.2
+	mass = 0.24
 	flying = false
 
 

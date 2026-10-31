@@ -24,11 +24,13 @@ func _configure() -> void:
 func _behave(delta: float) -> void:
 	_fly_toward(_route_around_stone(delta), 30.0, 0.35)
 	art.excited = false
+	art.work_progress = 0
 	for b in get_colliding_bodies():
 		if b is DrawnLine:
 			var id := b.get_instance_id()
 			_drill[id] = float(_drill.get(id, 0.0)) + delta
 			art.excited = true
+			art.work_progress = maxf(art.work_progress, minf(1, _drill[id] / DRILL_TIME))
 			if _drill[id] >= DRILL_TIME:
 				_drill.erase(id)
 				add_collision_exception_with(b)

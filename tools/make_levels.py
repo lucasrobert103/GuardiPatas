@@ -413,6 +413,25 @@ def redesign_strategy(levels):
             level["objective"] = objectives[level["strategy"]]
 
 
+def add_tactical_waves(levels):
+    """Ondas 0.5: combinam habilidades sem retirar os contra-ataques do cenário.
+
+    O limite de insetos e as saídas continuam visíveis. Não altera as duas
+    lições iniciais, o orçamento, o tempo nem a solução registrada.
+    """
+    by_id = {level["id"]: level for level in levels}
+    by_id["4-2"]["nests"].append(mound(90, insect="caterpillar", count=2, interval=1.5, delay=0.8))
+    cricket_wave = by_id["6-2"]["nests"][-1]
+    cricket_wave.update(insect="cricket", pos=[80, 980], count=2, interval=1.6, delay=0.8)
+    by_id["6-7"]["nests"][0]["count"] = 5
+    by_id["6-7"]["nests"].append(hive(340, 320, insect="spider", count=2, interval=1.8, delay=0.7))
+    by_id["7-3"]["name"] = "Vespas na Praia"
+    by_id["7-3"]["teaches"] = "Tampar tocas e resistir a investidas anunciadas."
+    wasp_wave = by_id["7-3"]["nests"][-1]
+    wasp_wave.update(insect="wasp", pos=[600, 450], count=3, interval=1.2, delay=0.7)
+    by_id["7-6"]["nests"].append(mound(640, insect="crab", count=2, interval=1.6, delay=0.8))
+
+
 def mirror_scene(level):
     """Espelha dados geométricos sem mudar o sentido da gravidade."""
     for friend in level["animals"]:
@@ -653,6 +672,7 @@ def campaign():
             lvl["ink"] = int(round(stroke_len(lvl["solution"][0]) / 0.82 / 10.0) * 10)
             lvl["stars"] = [0.9, 0.97]
     redesign_strategy(lv)
+    add_tactical_waves(lv)
     return lv
 
 

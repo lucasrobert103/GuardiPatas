@@ -8,7 +8,7 @@ enum State { APPROACH, AIM, DASH, RECOVER }
 
 const AIM_TIME := 0.7
 const DASH_TIME := 0.35
-const DASH_SPEED := 820.0
+const DASH_SPEED := 850.0
 const RECOVER_TIME := 0.9
 const ATTACK_RANGE := 260.0
 
@@ -20,30 +20,36 @@ var _dash_dir := Vector2.ZERO
 func _configure() -> void:
 	lured_by_honey = true
 	radius = 13.0
-	max_speed = 200.0
+	max_speed = 215.0
 	agility = 3.0
-	mass = 0.3
+	mass = 0.36
 	linear_damp = 0.3
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 
 
 func _behave(delta: float) -> void:
 	_timer -= delta
-	var target := target_point()
+	var target := predicted_target(0.18)
 	match state:
 		State.APPROACH:
 			art.aiming = false
+			art.aim_vector = Vector2.ZERO
 			var to := target - global_position
 			if to.length() < ATTACK_RANGE:
 				state = State.AIM
 				_timer = AIM_TIME
+				_dash_dir = (target - global_position).normalized()
 				Sfx.play("wasp_charge", -6.0, 1.0, 0.1)
 			else:
 				_fly_toward(target, 40.0, 0.8)
 		State.AIM:
 			art.aiming = true
 			_steer_velocity(Vector2.ZERO, 6.0)
-			_dash_dir = (target - global_position).normalized()
+			# Nos últimos 0,25 s a direção fica travada e o aviso não muda.
+			if _timer > 0.25:
+				_dash_dir = (target - global_position).normalized()
+			art.aim_progress = clampf(1 - _timer / AIM_TIME, 0, 1)
+			art.aim_vector = _dash_dir * DASH_SPEED * DASH_TIME
 			if _timer <= 0.0:
 				state = State.DASH
 				_timer = DASH_TIME
@@ -56,11 +62,15 @@ func _behave(delta: float) -> void:
 				state = State.RECOVER
 				_timer = RECOVER_TIME
 		State.RECOVER:
+			art.aiming = false
+			art.aim_vector = Vector2.ZERO
 			art.dazed = true
 			_steer_velocity(Vector2.ZERO, 2.0)
 			if _timer <= 0.0:
 				art.dazed = false
 				state = State.APPROACH
+				# Obriga um novo desvio após o impacto, sem insistir na rota velha.
+				navigator.waypoint = Vector2.INF
 
 
 func _on_body_entered(body: Node) -> void:

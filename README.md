@@ -23,6 +23,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, camadas contra brocas, rampas até as tocas e ancoragem contra vento. As duas primeiras ensinam o desenho; depois é preciso ler o cenário e administrar a tinta. Os objetivos iniciais não mostram mais a receita da solução. Veja [o que mudou e como testar](docs/18-estrategia-e-dificuldade.md).
 
+## Insetos 0.5: novas táticas
+
+Abelhas e mosquitos procuram passagens e alvos expostos. Besouros e caranguejos preparam golpes contra tinta solta; vespas mostram a direção da investida; grilos escolhem quando saltar; aranhas recolhem o fio para tentar outra descida. Brocas exibem o progresso da perfuração e baiacus inflam ao pressionar barreiras. Cinco fases receberam combinações dessas ameaças. Veja [como funcionam e como testar](docs/19-insetos-taticas.md).
+
 ## Cuidados na Casinha
 
 Cinco ambientes ilustrados: sala, cozinha, banheiro, quarto e guarda-roupa. Arraste alimentos e sabão até o bichinho, toque na cama para dormir e lance uma bola com gravidade e quique. Retratos e acessórios ficam em carrosséis; pequenos indicadores mostram as necessidades de cada amigo. Os cuidados são gratuitos e ficam pausados fora da Casinha. Veja [como brincar e testar](docs/17-casinha-cuidados.md).

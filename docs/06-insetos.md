@@ -2,29 +2,29 @@
 
 **Regras de justiça (valem para todos):**
 1. O ninho de onde o inseto sai **é visível** e mostra **quantos** ainda vão sair (`x5`).
-2. Velocidade máxima fixa e comportamento determinado pelas regras abaixo — **nenhum sorteio decide a fase**. O único ruído é um zigue-zague estético.
+2. Velocidade de referência fixa e comportamento determinado pelas regras abaixo — **nenhum sorteio decide a fase**. O único ruído é um zigue-zague estético.
 3. Todo inseto tem **uma forma clara de ser bloqueado**, deduzível pela aparência.
 4. Ninguém morre: no fim da fase eles **desistem** (voam embora / cochilam); a água os **leva boiando**.
 
 Implementação: `src/game/insects/*.gd` (base `Insect`, comportamento em `_behave()`).
 
-| # | Nome | Velocidade | Movimento | Ponto forte | Limitação | Como bloquear | Estado |
+| # | Nome | Velocidade de referência | Movimento | Ponto forte | Limitação | Como bloquear | Estado |
 |---|---|---|---|---|---|---|---|
-| 1 | **Abelha Zumbi** | 230 px/s | Voa direto ao bichinho mais próximo, com zigue-zague; ao ser segurada, **desliza pela barreira** procurando brecha | Insistente; contorna | Empurra pouco (massa 0,15) | Abrigo fechado e apoiado | ✅ |
-| 2 | **Formiga Tilim** | 95 px/s | Anda em **fila** pelo chão; sobe **degraus ≤ 18 px** e rampas suaves; não colide com as colegas | Vem em grupo, contorna obstáculos baixos | Não voa, não sobe paredes íngremes, não nada | Parede "Λ" íngreme, vala, água | ✅ |
-| 3 | **Besouro Bolota** | 60 px/s | Anda pelo chão e **empurra** (força até 1100) | Desloca linhas leves e caixas | Lento, não escala, não voa | Barreira **pesada** (mais tinta) ou travada no terreno | ✅ |
-| 4 | **Mosquito Zizi** | 300 px/s | Voo rápido e errático; desliza forte procurando fresta | Passa por qualquer brecha > 14 px | Quase não empurra (massa 0,05) | Abrigo **sem frestas** | ✅ |
-| 5 | **Vespa Faísca** | 200 px/s + investida 820 px/s | Aproxima-se até 260 px, **mira 0,7 s com "!" piscando** e investe em linha reta; depois fica tonta 0,9 s | Impacto forte, empurra a linha | Telegrafa o ataque; após a investida fica vulnerável | Barreira apoiada no chão / pesada; prever o ângulo pelo "!" | ✅ |
-| 6 | **Mariposa Lumi** | 150 px/s | **Orbita a lâmpada acesa** mais próxima; quando apaga (contador visível), vai devagar ao bichinho | Muda de alvo | Lenta, fraca | Proteger para o momento em que a luz apagar; usar a luz como isca | ✅ |
+| 1 | **Abelha Zumbi** | 245 px/s | Procura desvios em cantos/pontas; prefere alvos expostos e mantém o alvo sem oscilar | Insistente; contorna | Empurra pouco (massa 0,18); respeita mel | Abrigo fechado e apoiado | ✅ |
+| 2 | **Formiga Tilim** | 108 px/s | Anda em fila; sobe degraus ≤ 18 px e rampas suaves; não colide com as colegas | Grupo mais rápido | Não voa, não sobe paredes íngremes, não nada | Parede íngreme, vala, água | ✅ |
+| 3 | **Besouro Bolota** | 68 px/s | Empurra e prepara um golpe de 0,65 s contra barreiras soltas | Massa 3,5; impulso no ponto de contato | Lento, não escala; intervalo entre golpes | Barreira travada no terreno ou Tinta Firme | ✅ |
+| 4 | **Mosquito Zizi** | 325 px/s | Voo mais preciso, busca frestas e desvios com folga para o corpo de 14 px | Explora entradas pequenas | Quase não empurra (massa 0,05) | Abrigo sem frestas | ✅ |
+| 5 | **Vespa Faísca** | 215 px/s + investida 850 px/s | Mira por 0,7 s com direção pontilhada; trava nos últimos 0,25 s; recupera por 0,9 s | Impacto forte e antecipação do movimento | Anuncia a direção e não corrige durante a investida | Barreira apoiada e previsão do ângulo | ✅ |
+| 6 | **Mariposa Lumi** | 165 px/s | Contorna obstáculos até a lâmpada e orbita; ao apagar persegue o amigo próximo dali | Muda de prioridade com a luz | Respeita a isca, é leve | Proteger para o fim da luz | ✅ |
 | 7 | **Cupim Roque-Roque** | 55 px/s | Vai até a **caixa/tábua de madeira** mais próxima (até 420 px) e a rói: rachaduras aparecem e ela quebra após 1,6 s de roída acumulada | Destrói barreiras de madeira | Não afeta a linha de tinta nem pedra | Não confiar só em madeira; abrigo de tinta | ✅ |
-| 8 | **Lagarta Gulosa** | 42 px/s | Anda pelo chão e **sobe qualquer parede** (terreno, caixa ou a sua linha), descendo do outro lado | Paredes e tendas não a seguram | Muito lenta; não voa; água a leva | **Abrigo fechado** (arco) ou água | ✅ |
+| 8 | **Lagarta Gulosa** | 50 px/s | Anda e sobe paredes, caixas e linhas | Escala mais rápido | Lenta, não voa; água a leva | Abrigo fechado ou água | ✅ |
 
-| 9 | **Grilo Saltitante** | anda + **pulo** | Anda e, perto de uma parede, **pula por cima** | Parede/tenda não bastam | Não fura nem empurra | Abrigo **com teto** | ✅ |
-| 10 | **Abelha Broca** | 220 px/s | Voa até a linha e, encostada nela por **2,2 s acumulados**, **fura um buraco** (marca visível) | Atravessa uma parede simples | Precisa ficar parada furando | **Parede dupla** (dois traços) | ✅ |
-| 11 | **Aranha Fiandeira** | anda no teto | Anda pelo alto até ficar acima do bichinho e **desce reto pelo fio** | Vem de cima, onde ninguém olha | Só desce na vertical | **Teto** firme | ✅ |
-| 12 | **Caranguejo Belisco** | anda | Sai das **tocas na areia**, anda de lado e **empurra forte** (650); **não tem medo de água** | Mora em buracos, empurra | Lento | **Tampar a toca** com a ponta da linha, ou abrigo pesado | ✅ |
-| 13 | **Água-viva Gelatina** | pulsos | Nada em **pulsos lentos** (0,9 s) até o bichinho | Muitas de uma vez | Lenta, fraca | Abrigo sem frestas; a correnteza a desvia | ✅ |
-| 14 | **Baiacu Bolha** | nada | Perto do alvo **incha** (raio 13 → 27) e empurra tudo | Cresce dentro de frestas | Murcha de novo | Abrigo **espaçoso** | ✅ |
+| 9 | **Grilo Saltitante** | 80 px/s + pulo | Prepara salto por 0,3 s perto de parede, beirada ou alvo elevado; mostra trajetória | Supera paredes baixas | Não fura; precisa de chão para saltar | Abrigo com teto ou vão largo | ✅ |
+| 10 | **Abelha Broca** | 220 px/s | Perfura um corpo de traço após 2,2 s de contato acumulado; anel mostra progresso | Atravessa uma camada | Cada traço exige nova perfuração; não fura pedra | Duas camadas separadas ou tampar ninho | ✅ |
+| 11 | **Aranha Fiandeira** | 130 px/s | Anuncia a descida; se bloqueada, recolhe o fio e tenta outra lateral | Procura outra entrada | Move-se fisicamente; teto e laterais impedem passagem | Teto com laterais protegidas | ✅ |
+| 12 | **Caranguejo Belisco** | 92 px/s | Anda de lado e prepara golpe anunciado de 0,65 s | Pressiona tinta solta; resiste à água | Lento, não voa; intervalo entre golpes | Tampar tocas e travar barreiras | ✅ |
+| 13 | **Água-viva Gelatina** | pulsos a cada 0,9 s | Segue desvio e antecipa um pouco o movimento do alvo | Pulsos direcionados, sem ângulo sorteado | Leve, lenta, desviada pela correnteza | Abrigo sem frestas | ✅ |
+| 14 | **Baiacu Bolha** | 120 px/s | Infla perto do alvo ou ao pressionar tinta/madeira (raio 13 → 27) | Empurra e mantém a pressão | Crescimento não atravessa tinta; pode murchar | Abrigo espaçoso e apoiado | ✅ |
 
 <img src="img/criaturas.png" width="420">
 
@@ -47,3 +47,7 @@ Mundo 1: abelha → formiga → abelha+formiga. Mundo 2: mosquito, mariposa+luz,
 Aparece em tocas no coral e nos apoios submarinos. Tem corpo de baiacu com uma ponta de broca, resiste à água e perfura cada corpo de linha após 2,2 segundos de contato acumulado, como a abelha-broca. Pedras continuam bloqueando-o. A resposta estratégica é tampar a saída no apoio ou usar camadas independentes e espaçadas. A toca mostra o símbolo de broca antes do início da simulação.
 
 Abelhas-broca e baiacus-broca contornam o canto superior das pedras quando a rota direta está bloqueada. O movimento continua físico, com velocidade limitada: não teleportam nem atravessam terreno.
+
+## Revisão 0.5
+
+As velocidades acima são referências de controle; impulsos e forças externas continuam fazendo parte da física. As cinco ondas adicionadas à campanha, detalhes dos avisos, memória das iscas e testes físicos estão em [Insetos com novas táticas](19-insetos-taticas.md).

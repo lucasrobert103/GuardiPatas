@@ -3797,6 +3797,16 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "caterpillar",
+     "pos": [
+      90,
+      980
+     ],
+     "count": 2,
+     "interval": 1.5,
+     "delay": 0.8
     }
    ],
    "bosses": [],
@@ -6491,14 +6501,14 @@
      "hole": true
     },
     {
-     "insect": "bee",
+     "insect": "cricket",
      "pos": [
-      610,
-      330
+      80,
+      980
      ],
-     "count": 4,
-     "interval": 0.35,
-     "delay": 1.0
+     "count": 2,
+     "interval": 1.6,
+     "delay": 0.8
     }
    ],
    "bosses": [],
@@ -7612,7 +7622,7 @@
       100,
       350
      ],
-     "count": 7,
+     "count": 5,
      "interval": 0.4,
      "delay": 0.3
     },
@@ -7626,6 +7636,16 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "spider",
+     "pos": [
+      340,
+      320
+     ],
+     "count": 2,
+     "interval": 1.8,
+     "delay": 0.7
     }
    ],
    "bosses": [],
@@ -9033,9 +9053,9 @@
   {
    "id": "7-3",
    "world": 7,
-   "name": "Caranguejos da Toca",
+   "name": "Vespas na Praia",
    "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
-   "teaches": "Tampar tocas (de novo, agora com caranguejos).",
+   "teaches": "Tampar tocas e resistir a investidas anunciadas.",
    "ink": 405,
    "survive": 9,
    "stars": [
@@ -9103,14 +9123,14 @@
      "hole": true
     },
     {
-     "insect": "bee",
+     "insect": "wasp",
      "pos": [
       600,
-      330
+      450
      ],
-     "count": 4,
-     "interval": 0.35,
-     "delay": 1.0
+     "count": 3,
+     "interval": 1.2,
+     "delay": 0.7
     }
    ],
    "bosses": [],
@@ -9750,6 +9770,16 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "crab",
+     "pos": [
+      640,
+      980
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 0.8
     }
    ],
    "bosses": [],
