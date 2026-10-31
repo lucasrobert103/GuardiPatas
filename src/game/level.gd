@@ -163,6 +163,13 @@ func _build() -> void:
 		var nest := Nest.new()
 		nest.position = _v(n["pos"])
 		nest.setup(self, n)
+		if n.has("platform") and int(n["platform"]) >= 0 and int(n["platform"]) < data.get("props", []).size() and str(data["props"][int(n["platform"])].get("type", "")) == "platform":
+			var platform_index := 0
+			for prop_index in int(n["platform"]):
+				if str(data["props"][prop_index].get("type", "")) == "platform": platform_index += 1
+			if platform_index < platforms.size():
+				nest.mount = platforms[platform_index]
+				nest.mount_offset = _v(n.get("platform_offset", [0, 0]))
 		world.add_child(nest)
 		nests.append(nest)
 	for b in data.get("bosses", []):
@@ -502,7 +509,7 @@ func _check_goal(delta: float) -> void:
 			inside = false
 			break
 	_goal_t = _goal_t + delta if inside else 0.0
-	if _goal_t >= 0.35:
+	if _goal_t >= float(data.get("goal", {}).get("hold", 0.35)):
 		goal.reached = true
 		Game.add_stat("goals", 1)
 		win()

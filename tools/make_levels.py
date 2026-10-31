@@ -432,6 +432,83 @@ def add_tactical_waves(levels):
     by_id["7-6"]["nests"].append(mound(640, insect="crab", count=2, interval=1.6, delay=0.8))
 
 
+def expert_campaign(levels):
+    """Cada defesa precisa considerar também uma saída interna, além da ameaça externa."""
+    by_id = {level['id']: level for level in levels}
+    for target, source in [('1-1', '3-2'), ('1-2', '2-5')]:
+        old = by_id[target]
+        identity = {key: old[key] for key in ('id', 'name', 'world')}
+        old.clear()
+        old.update(copy.deepcopy(by_id[source]))
+        old.update(identity)
+    anchored = by_id['8-9']
+    hooked = hooked_dome('tito', 360, foot=100, pad=30, apex_gap=40)
+    anchored['solution'] = [hooked]
+    anchored['winds'].append({'rect':[-100,150,920,900], 'dir':[0,-1], 'force':1400, 'on':2.0,'off':0.5,'delay':0.3,'insects':0.02})
+    anchored['rocks'] = [{'pos':[hooked[0][0]+26,941],'r':30}, {'pos':[hooked[-1][0]-26,941],'r':30}]
+    by_id['4-1']['terrain'][1]['poly'] = [[240,980],[480,980],[480,1080],[240,1080]]
+    def inside(p, poly):
+        x, y = p
+        result = False
+        for i, a in enumerate(poly):
+            b = poly[(i+1) % len(poly)]
+            if (a[1] > y) != (b[1] > y) and x < (b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]:
+                result = not result
+        return result
+    def distance(p, a, b):
+        dx, dy = b[0]-a[0], b[1]-a[1]
+        t = max(0, min(1, ((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy or 1)))
+        return math.dist(p, (a[0]+t*dx, a[1]+t*dy))
+    for level in levels:
+        level['ink'] = math.ceil(sum(stroke_len(s) for s in level['solution']) / 0.90 / 5)*5
+        level['stars'] = [0.94, 0.99]
+        level['strategy_required'] = True
+        if level.get('goal'):
+            # As rotas já exigem deslocamento: planejamento mais econômico e destino sustentado.
+            level['goal']['hold'] = max(0.65, level['goal'].get('hold', 0.0))
+            continue
+        if level['id'] in ('3-4', '5-3'):
+            for prop in level['props']:
+                if prop.get('type') == 'platform':
+                    prop['rect'][0] -= 80
+                    prop['rect'][2] += 160
+        candidates = []
+        for friend in level['animals']:
+            x, y = friend['pos']
+            floor = y + HALF_H[friend['type']] + 1
+            for side in (-1, 1):
+                for gap in (40, 52, 64, 80, 96, 112, 128):
+                    if level['id'] == '7-7' and gap != 80: continue
+                    cx = x + side*(HALF_W[friend['type']]+gap)
+                    if not 45 < cx < 675: continue
+                    cap = [[cx-18, floor-12], [cx, floor-12], [cx+18, floor-12]]
+                    samples = [[cx+offset, floor-12] for offset in range(-18, 19, 6)]
+                    if not any(inside([cx, floor+3], t['poly']) for t in level['terrain']) and not any(p.get('type') == 'platform' for p in level['props']): continue
+                    if any(math.dist(p, rock['pos']) < rock['r']+9 for p in samples for rock in level['rocks']): continue
+                    if any(abs(p[0]-a['pos'][0]) < HALF_W[a['type']]+12 and abs(p[1]-a['pos'][1]) < HALF_H[a['type']]+12 for p in samples for a in level['animals']): continue
+                    if any(inside(p, terrain['poly']) or min(distance(p, terrain['poly'][i-1], terrain['poly'][i]) for i in range(len(terrain['poly']))) < 9 for p in samples for terrain in level['terrain']): continue
+                    if any(distance(p, s[i-1], s[i]) < 24 for p in samples for s in level['solution'] for i in range(1,len(s))): continue
+                    if any(math.dist([cx,floor], n['pos']) < 48 for n in level['nests']): continue
+                    platforms = [p for p in level['props'] if p.get('type') == 'platform' and abs(p['rect'][1]-floor)<3 and p['rect'][0]+20 < cx < p['rect'][0]+p['rect'][2]-20]
+                    if floor < 999 and not platforms and level['id'] != '4-1': continue
+                    candidates.append((gap, cx, floor, cap, platforms))
+        if level['id'] == '4-6': candidates = []
+        if candidates:
+            _, cx, floor, cap, platforms = min(candidates, key=lambda c: -c[0] if c[4] else c[0])
+            nest = hole(cx, insect='drillfish' if level.get('underwater') else 'broca', count=4, interval=0.45, delay=0.25, floor=floor)
+            if platforms:
+                pi = next(i for i,p in enumerate(level['props']) if p is platforms[0])
+                nest['platform'] = pi
+                nest['platform_offset'] = [cx-platforms[0]['rect'][0]-platforms[0]['rect'][2]/2, -platforms[0]['rect'][3]/2]
+            level['nests'].append(nest)
+            level['solution'].insert(0, cap)
+            level['strokes'] = len(level['solution'])
+            level['ink'] = math.ceil(sum(stroke_len(s) for s in level['solution']) / 0.90 / 5)*5
+            level['planning_gate'] = True
+        level['objective'] = 'Planeje os traços: há saídas de insetos e ameaças em direções diferentes.'
+        level['tip'] = 'Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.'
+
+
 def mirror_scene(level):
     """Espelha dados geométricos sem mudar o sentido da gravidade."""
     for friend in level["animals"]:
@@ -673,6 +750,7 @@ def campaign():
             lvl["stars"] = [0.9, 0.97]
     redesign_strategy(lv)
     add_tactical_waves(lv)
+    expert_campaign(lv)
     return lv
 
 

@@ -18,6 +18,8 @@ var delay := 0.3
 var remaining := 0
 var hole := false
 var plugged := false
+var mount: MovingPlatform
+var mount_offset := Vector2.ZERO
 var level: Level
 var running := false
 var _timer := 0.0
@@ -66,6 +68,7 @@ func begin() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_instance_valid(mount): position = mount.position + mount_offset
 	_pulse = maxf(_pulse - delta * 3.0, 0.0)
 	if not running or remaining <= 0:
 		return

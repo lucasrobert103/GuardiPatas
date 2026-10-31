@@ -103,6 +103,12 @@ jobs:
           timeout 120 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/home_visual_test.tscn 2>&1 | tee home-visual.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" home-visual.log; then exit 1; fi
 
+      - name: Configurações responsivas
+        run: |
+          set -o pipefail
+          timeout 120 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/settings_visual_test.tscn 2>&1 | tee settings.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" settings.log; then exit 1; fi
+
       - name: Velocidade da simulação
         run: |
           set -o pipefail

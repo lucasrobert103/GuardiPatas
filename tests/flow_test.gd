@@ -92,7 +92,7 @@ func _ready() -> void:
 	main.go("settings", null)
 	await _wait(0.6)
 	_expect(main._current is SettingsScreen, "abre os ajustes")
-	await _press_text("Reduzir movimento", true)
+	(main._current as SettingsScreen)._controls["reduce_motion"].button_pressed = true
 	_expect(Game.setting("reduce_motion") == true, "liga reduzir movimento")
 	await _press_text("Apagar progresso")
 	await _press_text("Cancelar")
@@ -136,7 +136,9 @@ func _ready() -> void:
 	await _wait(0.6)
 	_expect(main._current is EditorScreen, "nova fase no editor")
 	var ed: EditorScreen = main._current
-	var base := LevelDB.get_level(0)
+	var base: Dictionary = {"animals": [{"type": "capi", "pos": [360, 969], "flip": false}], "nests": [{"insect": "bee", "pos": [600, 360], "count": 5, "interval": 0.35, "delay": 0.3}], "solution": [[[282, 988], [282, 968], [284, 955], [290, 943], [299, 931], [311, 922], [326, 915], [343, 910], [360, 909], [377, 910], [394, 915], [409, 922], [421, 931], [430, 943], [436, 955], [438, 968], [438, 988]]], "strokes": 1, "ink": 380}
+	for key in ["terrain", "props", "strokes", "ink", "ink_mode"]:
+		if base.has(key): ed.draft[key] = base[key].duplicate(true) if base[key] is Array or base[key] is Dictionary else base[key]
 	ed.draft["animals"] = base["animals"].duplicate(true)
 	ed.draft["nests"] = base["nests"].duplicate(true)
 	ed._select("rock")

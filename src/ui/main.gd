@@ -47,6 +47,8 @@ func _notification(what: int) -> void:
 			var lv := _current as Level
 			if lv.hud != null:
 				lv.hud.on_back_pressed()
+		elif _current is SettingsScreen:
+			_current.on_back_pressed()
 		elif _current is TitleScreen:
 			get_tree().quit()
 		else:

@@ -23,6 +23,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, camadas contra brocas, rampas até as tocas e ancoragem contra vento. As duas primeiras ensinam o desenho; depois é preciso ler o cenário e administrar a tinta. Os objetivos iniciais não mostram mais a receita da solução. Veja [o que mudou e como testar](docs/18-estrategia-e-dificuldade.md).
 
+## Planejamento 0.6 e novos ajustes
+
+As 63 fases agora exigem planejamento desde o começo, com orçamento mais apertado e 46 saídas adicionais para proteger separadamente. Plataformas móveis carregam suas saídas; resgates exigem sustentar a chegada. Os ajustes ganharam cartões, interruptores e listas de opções com layout responsivo. Veja [mudanças e validação](docs/20-planejamento-e-ajustes.md).
+
 ## Insetos 0.5: novas táticas
 
 Abelhas e mosquitos procuram passagens e alvos expostos. Besouros e caranguejos preparam golpes contra tinta solta; vespas mostram a direção da investida; grilos escolhem quando saltar; aranhas recolhem o fio para tentar outra descida. Brocas exibem o progresso da perfuração e baiacus inflam ao pressionar barreiras. Cinco fases receberam combinações dessas ameaças. Veja [como funcionam e como testar](docs/19-insetos-taticas.md).

@@ -39,15 +39,15 @@
    "id": "1-1",
    "world": 1,
    "name": "Oi, Capitu!",
-   "tip": "Desenhe um abrigo sobre a Capitu. Os insetos saem quando você solta o dedo!",
-   "teaches": "Desenhar, soltar e a linha cair com peso.",
-   "ink": 380,
-   "survive": 6,
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
+   "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
+   "ink": 265,
+   "survive": 10,
    "stars": [
-    0.7200000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -69,6 +69,48 @@
       ]
      ],
      "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       446,
+       899
+      ],
+      [
+       486,
+       899
+      ],
+      [
+       486,
+       1000
+      ],
+      [
+       446,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       654,
+       899
+      ],
+      [
+       694,
+       899
+      ],
+      [
+       694,
+       1000
+      ],
+      [
+       654,
+       1000
+      ]
+     ],
+     "style": "stone"
     }
    ],
    "rocks": [],
@@ -78,7 +120,7 @@
     {
      "type": "capi",
      "pos": [
-      360,
+      570,
       969
      ],
      "flip": false
@@ -86,104 +128,109 @@
    ],
    "nests": [
     {
-     "insect": "bee",
+     "insect": "mosquito",
      "pos": [
-      600,
-      360
+      90,
+      380
      ],
      "count": 5,
-     "interval": 0.35,
+     "interval": 0.6,
      "delay": 0.3
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      630,
+      380
+     ],
+     "count": 4,
+     "interval": 0.6,
+     "delay": 1.2
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      466,
+      899
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      674,
+      899
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      418,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
     [
      [
-      282,
+      400,
       988
      ],
      [
-      282,
-      968
-     ],
-     [
-      284,
-      955
-     ],
-     [
-      290,
-      943
-     ],
-     [
-      299,
-      931
-     ],
-     [
-      311,
-      922
-     ],
-     [
-      326,
-      915
-     ],
-     [
-      343,
-      910
-     ],
-     [
-      360,
-      909
-     ],
-     [
-      377,
-      910
-     ],
-     [
-      394,
-      915
-     ],
-     [
-      409,
-      922
-     ],
-     [
-      421,
-      931
-     ],
-     [
-      430,
-      943
+      418,
+      988
      ],
      [
       436,
-      955
-     ],
-     [
-      438,
-      968
-     ],
-     [
-      438,
       988
+     ]
+    ],
+    [
+     [
+      470,
+      885
+     ],
+     [
+      570.0,
+      885
+     ],
+     [
+      670,
+      885
      ]
     ]
    ],
-   "strategy": "tutorial"
+   "ink_mode": "normal",
+   "strategy_required": true,
+   "strategy": "roof_bridge",
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "1-2",
    "world": 1,
    "name": "Zumbido em Dobro",
-   "tip": "Abelhas dos dois lados! Um abrigo fechado protege de todas as direções.",
-   "teaches": "Ameaças de várias direções.",
-   "ink": 380,
-   "survive": 8,
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
+   "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
+   "ink": 425,
+   "survive": 9,
    "stars": [
-    0.7200000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -205,6 +252,90 @@
       ]
      ],
      "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       56,
+       899
+      ],
+      [
+       96,
+       899
+      ],
+      [
+       96,
+       1000
+      ],
+      [
+       56,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       264,
+       899
+      ],
+      [
+       304,
+       899
+      ],
+      [
+       304,
+       1000
+      ],
+      [
+       264,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       464,
+       903
+      ],
+      [
+       504,
+       903
+      ],
+      [
+       504,
+       1000
+      ],
+      [
+       464,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       616,
+       903
+      ],
+      [
+       656,
+       903
+      ],
+      [
+       656,
+       1000
+      ],
+      [
+       616,
+       1000
+      ]
+     ],
+     "style": "stone"
     }
    ],
    "rocks": [],
@@ -214,122 +345,161 @@
     {
      "type": "capi",
      "pos": [
-      360,
+      180,
       969
+     ],
+     "flip": false
+    },
+    {
+     "type": "pingo",
+     "pos": [
+      560,
+      971
      ],
      "flip": false
     }
    ],
    "nests": [
     {
-     "insect": "bee",
+     "insect": "mosquito",
      "pos": [
-      120,
+      90,
       380
      ],
-     "count": 4,
-     "interval": 0.35,
+     "count": 5,
+     "interval": 0.6,
      "delay": 0.3
     },
     {
-     "insect": "bee",
+     "insect": "mosquito",
      "pos": [
-      600,
+      630,
       380
      ],
      "count": 4,
-     "interval": 0.35,
-     "delay": 0.8
+     "interval": 0.6,
+     "delay": 1.2
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      76,
+      899
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      284,
+      899
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      484,
+      903
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      636,
+      903
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      332,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
     [
      [
-      282,
+      314,
       988
      ],
      [
-      282,
-      968
-     ],
-     [
-      284,
-      955
-     ],
-     [
-      290,
-      943
-     ],
-     [
-      299,
-      931
-     ],
-     [
-      311,
-      922
-     ],
-     [
-      326,
-      915
-     ],
-     [
-      343,
-      910
-     ],
-     [
-      360,
-      909
-     ],
-     [
-      377,
-      910
-     ],
-     [
-      394,
-      915
-     ],
-     [
-      409,
-      922
-     ],
-     [
-      421,
-      931
-     ],
-     [
-      430,
-      943
-     ],
-     [
-      436,
-      955
-     ],
-     [
-      438,
-      968
-     ],
-     [
-      438,
+      332,
       988
+     ],
+     [
+      350,
+      988
+     ]
+    ],
+    [
+     [
+      80,
+      885
+     ],
+     [
+      180.0,
+      885
+     ],
+     [
+      280,
+      885
+     ]
+    ],
+    [
+     [
+      488,
+      889
+     ],
+     [
+      560.0,
+      889
+     ],
+     [
+      632,
+      889
      ]
     ]
    ],
-   "strategy": "tutorial"
+   "ink_mode": "normal",
+   "strategy_required": true,
+   "strategy": "roof_bridge",
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "1-3",
    "world": 1,
    "name": "Telhado para Brasa",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 175,
+   "ink": 200,
    "survive": 8,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -450,10 +620,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      258,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      240,
+      988
+     ],
+     [
+      258,
+      988
+     ],
+     [
+      276,
+      988
+     ]
+    ],
     [
      [
       310,
@@ -472,21 +667,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "1-4",
    "world": 1,
    "name": "Gargalo das Formigas",
-   "tip": "Dois amigos, uma linha curta. Bloqueie o caminho das formigas antes que elas se dividam!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Inseto andarilho; parede em vez de teto.",
-   "ink": 310,
+   "ink": 315,
    "survive": 10,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -552,10 +748,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      424,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      406,
+      988
+     ],
+     [
+      424,
+      988
+     ],
+     [
+      442,
+      988
+     ]
+    ],
     [
      [
       265,
@@ -581,7 +802,8 @@
    ],
    "strategy_required": true,
    "strategy": "shared_wall",
-   "objective": "Proteja os dois amigos usando apenas um traço curto."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "1-5",
@@ -589,10 +811,10 @@
    "name": "Rampa do Pingo",
    "tip": "O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca.",
    "teaches": "Rampa sobre a água.",
-   "ink": 445,
+   "ink": 395,
    "survive": 10,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -798,7 +1020,8 @@
      900,
      130,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -880,15 +1103,15 @@
    "id": "1-6",
    "world": 1,
    "name": "Ponte de Folhas",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 165,
+   "ink": 190,
    "survive": 8,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -1009,10 +1232,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      242,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      224,
+      988
+     ],
+     [
+      242,
+      988
+     ],
+     [
+      260,
+      988
+     ]
+    ],
     [
      [
       294,
@@ -1031,21 +1279,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-1",
    "world": 2,
    "name": "Porta da Floresta",
-   "tip": "Tinta Firme: a caverna já tem teto e paredes. Feche apenas a passagem lateral; a tinta não dá para outro abrigo.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Ler o cenário e fechar a única passagem.",
-   "ink": 175,
+   "ink": 195,
    "survive": 8,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -1134,10 +1383,35 @@
      "count": 7,
      "interval": 0.35,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      354,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      336,
+      988
+     ],
+     [
+      354,
+      988
+     ],
+     [
+      372,
+      988
+     ]
+    ],
     [
      [
       256,
@@ -1156,21 +1430,22 @@
    "ink_mode": "static",
    "strategy_required": true,
    "strategy": "cave_door",
-   "objective": "Impeça a entrada dos insetos na caverna. A linha fica fixa."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-2",
    "world": 2,
    "name": "Escolha à Luz",
-   "tip": "As mariposas vão para a lanterna que ficar acesa por último. Quem está em perigo?",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Iscas de luz e tempo.",
-   "ink": 220,
+   "ink": 240,
    "survive": 11,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -1242,10 +1517,35 @@
      "count": 6,
      "interval": 0.4,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      74,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      56,
+      988
+     ],
+     [
+      74,
+      988
+     ],
+     [
+      92,
+      988
+     ]
+    ],
     [
      [
       516,
@@ -1317,7 +1617,7 @@
      ]
     ]
    ],
-   "strategy_required": false,
+   "strategy_required": true,
    "strategy": "threat_priority",
    "naive": [
     [
@@ -1391,21 +1691,22 @@
      ]
     ]
    ],
-   "objective": "Observe as luzes e decida quem precisa de proteção."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-3",
    "world": 2,
    "name": "Teto Compartilhado",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
    "ink": 370,
    "survive": 8,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -1534,10 +1835,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      148,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      130,
+      988
+     ],
+     [
+      148,
+      988
+     ],
+     [
+      166,
+      988
+     ]
+    ],
     [
      [
       200,
@@ -1556,21 +1882,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-4",
    "world": 2,
    "name": "Parede Amiga",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 475,
+   "ink": 465,
    "survive": 8,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -1649,10 +1976,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      204,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      186,
+      988
+     ],
+     [
+      204,
+      988
+     ],
+     [
+      222,
+      988
+     ]
+    ],
     [
      [
       541,
@@ -1727,21 +2079,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-5",
    "world": 2,
    "name": "Apoios Separados",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 430,
+   "ink": 425,
    "survive": 9,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -1934,10 +2287,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      332,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      314,
+      988
+     ],
+     [
+      332,
+      988
+     ],
+     [
+      350,
+      988
+     ]
+    ],
     [
      [
       80,
@@ -1970,21 +2348,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "2-6",
    "world": 2,
    "name": "Telhado Baixinho",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 450,
+   "ink": 440,
    "survive": 9,
    "stars": [
-    0.8400000000000001,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -2070,10 +2449,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      486,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      468,
+      988
+     ],
+     [
+      486,
+      988
+     ],
+     [
+      504,
+      988
+     ]
+    ],
     [
      [
       209,
@@ -2148,21 +2552,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "3-1",
    "world": 3,
    "name": "Apoio na Rocha",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 445,
+   "ink": 465,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -2241,10 +2646,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      204,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      186,
+      988
+     ],
+     [
+      204,
+      988
+     ],
+     [
+      222,
+      988
+     ]
+    ],
     [
      [
       541,
@@ -2319,21 +2749,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "3-2",
    "world": 3,
    "name": "Ponte sobre a Entrada",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 235,
+   "ink": 265,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -2454,10 +2885,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      418,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      400,
+      988
+     ],
+     [
+      418,
+      988
+     ],
+     [
+      436,
+      988
+     ]
+    ],
     [
      [
       470,
@@ -2476,7 +2932,8 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "3-3",
@@ -2484,10 +2941,10 @@
    "name": "Travessia do Pingo",
    "tip": "O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca.",
    "teaches": "Rampa sobre a água.",
-   "ink": 415,
+   "ink": 395,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -2693,7 +3150,8 @@
      900,
      130,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -2775,15 +3233,15 @@
    "id": "3-4",
    "world": 3,
    "name": "Elevador de Folha",
-   "tip": "A plataforma vai descer e subir. Faça o abrigo EM CIMA dela!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Objetos móveis.",
-   "ink": 205,
+   "ink": 240,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -2812,9 +3270,9 @@
     {
      "type": "platform",
      "rect": [
-      260,
+      180,
       760,
-      200,
+      360,
       24
      ],
      "travel": [
@@ -2845,10 +3303,40 @@
      "count": 6,
      "interval": 0.35,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      210,
+      760
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true,
+     "platform": 0,
+     "platform_offset": [
+      -150.0,
+      -12.0
+     ]
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      192,
+      748
+     ],
+     [
+      210,
+      748
+     ],
+     [
+      228,
+      748
+     ]
+    ],
     [
      [
       316,
@@ -2920,23 +3408,24 @@
      ]
     ]
    ],
-   "strategy_required": false,
+   "strategy_required": true,
    "strategy": "moving_platform",
-   "objective": "A plataforma se move. Seu abrigo precisa acompanhar o bichinho."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "3-5",
    "world": 3,
    "name": "Duas Barreiras",
-   "tip": "A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Camadas independentes contra a perfuração.",
-   "ink": 770,
+   "ink": 780,
    "survive": 5.0,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -2983,10 +3472,35 @@
      "count": 3,
      "interval": 0.8,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      192,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      174,
+      988
+     ],
+     [
+      192,
+      988
+     ],
+     [
+      210,
+      988
+     ]
+    ],
     [
      [
       284,
@@ -3203,21 +3717,22 @@
      ]
     ]
    ],
-   "objective": "Sobreviva às brocas: elas conseguem atravessar uma linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "3-6",
    "world": 3,
    "name": "Formigueiro Gigante",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tampar formigueiros com a própria linha.",
-   "ink": 485,
+   "ink": 500,
    "survive": 12,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -3286,10 +3801,35 @@
      "count": 1,
      "interval": 0.6,
      "delay": 1.0
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      264,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      246,
+      988
+     ],
+     [
+      264,
+      988
+     ],
+     [
+      282,
+      988
+     ]
+    ],
     [
      [
       204,
@@ -3435,21 +3975,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-1",
    "world": 4,
    "name": "Bolhas da Lulu",
-   "tip": "A água impede os andarilhos. Observe as ilhas: as pontas dos abrigos precisam cobrir os ninhos nas bordas.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Água leva os insetos embora.",
-   "ink": 220,
+   "ink": 250,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -3491,19 +4032,19 @@
     {
      "poly": [
       [
-       290,
+       240,
        980
       ],
       [
-       430,
+       480,
        980
       ],
       [
-       430,
+       480,
        1080
       ],
       [
-       290,
+       240,
        1080
       ]
      ],
@@ -3585,10 +4126,35 @@
      "interval": 0.7,
      "delay": 0.7,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      243,
+      980
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      225,
+      968
+     ],
+     [
+      243,
+      968
+     ],
+     [
+      261,
+      968
+     ]
+    ],
     [
      [
       301,
@@ -3660,23 +4226,24 @@
      ]
     ]
    ],
-   "strategy_required": false,
+   "strategy_required": true,
    "strategy": "water_islands",
-   "objective": "Use as ilhas e a água a seu favor. Cuidado com os ninhos nas bordas."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-2",
    "world": 4,
    "name": "Telhado da Tuca",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 210,
+   "ink": 240,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -3807,10 +4374,35 @@
      "count": 2,
      "interval": 1.5,
      "delay": 0.8
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      238,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      220,
+      988
+     ],
+     [
+      238,
+      988
+     ],
+     [
+      256,
+      988
+     ]
+    ],
     [
      [
       290,
@@ -3829,21 +4421,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-3",
    "world": 4,
    "name": "Recanto da Brasa",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 420,
+   "ink": 440,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -3922,10 +4515,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      486,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      468,
+      988
+     ],
+     [
+      486,
+      988
+     ],
+     [
+      504,
+      988
+     ]
+    ],
     [
      [
       209,
@@ -4000,21 +4618,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-4",
    "world": 4,
    "name": "Parede do Lago",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 445,
+   "ink": 465,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -4093,10 +4712,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      204,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      186,
+      988
+     ],
+     [
+      204,
+      988
+     ],
+     [
+      222,
+      988
+     ]
+    ],
     [
      [
       541,
@@ -4171,21 +4815,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-5",
    "world": 4,
    "name": "Camadas de Proteção",
-   "tip": "A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Camadas independentes contra a perfuração.",
-   "ink": 770,
+   "ink": 780,
    "survive": 5.0,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -4232,10 +4877,35 @@
      "count": 3,
      "interval": 0.8,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      192,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      174,
+      988
+     ],
+     [
+      192,
+      988
+     ],
+     [
+      210,
+      988
+     ]
+    ],
     [
      [
       284,
@@ -4452,18 +5122,19 @@
      ]
     ]
    ],
-   "objective": "Sobreviva às brocas: elas conseguem atravessar uma linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "4-6",
    "world": 4,
    "name": "Ilhas Amigas",
-   "tip": "A água impede os andarilhos. Observe as ilhas: as pontas dos abrigos precisam cobrir os ninhos nas bordas.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Vários bichinhos e traços.",
-   "ink": 795,
+   "ink": 760,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 3,
@@ -4869,21 +5540,21 @@
    ],
    "strategy_required": true,
    "strategy": "water_islands",
-   "objective": "Use as ilhas e a água a seu favor. Cuidado com os ninhos nas bordas."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   },
   {
    "id": "5-1",
    "world": 5,
    "name": "Noite de Lanternas",
-   "tip": "As mariposas vão para a lanterna que ficar acesa por último. Quem está em perigo?",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Iscas de luz e tempo.",
-   "ink": 205,
+   "ink": 240,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -4955,10 +5626,35 @@
      "count": 6,
      "interval": 0.4,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      74,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      56,
+      988
+     ],
+     [
+      74,
+      988
+     ],
+     [
+      92,
+      988
+     ]
+    ],
     [
      [
       516,
@@ -5031,21 +5727,23 @@
     ]
    ],
    "strategy": "threat_priority",
-   "objective": "Observe as luzes e decida quem precisa de proteção."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "strategy_required": true,
+   "planning_gate": true
   },
   {
    "id": "5-2",
    "world": 5,
    "name": "Brocas no Acampamento",
-   "tip": "A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Camadas independentes contra a perfuração.",
-   "ink": 770,
+   "ink": 780,
    "survive": 5.0,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -5092,10 +5790,35 @@
      "count": 3,
      "interval": 0.8,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      192,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      174,
+      988
+     ],
+     [
+      192,
+      988
+     ],
+     [
+      210,
+      988
+     ]
+    ],
     [
      [
       284,
@@ -5312,21 +6035,22 @@
      ]
     ]
    ],
-   "objective": "Sobreviva às brocas: elas conseguem atravessar uma linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "5-3",
    "world": 5,
    "name": "Carrossel de Tábua",
-   "tip": "A tábua vai passear para os lados. O abrigo precisa ir junto!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Plataforma horizontal.",
-   "ink": 325,
+   "ink": 350,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -5355,9 +6079,9 @@
     {
      "type": "platform",
      "rect": [
-      180,
+      100,
       800,
-      220,
+      380,
       24
      ],
      "travel": [
@@ -5398,10 +6122,40 @@
      "count": 3,
      "interval": 0.35,
      "delay": 1.2
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      136,
+      800
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true,
+     "platform": 0,
+     "platform_offset": [
+      -154.0,
+      -12.0
+     ]
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      118,
+      788
+     ],
+     [
+      136,
+      788
+     ],
+     [
+      154,
+      788
+     ]
+    ],
     [
      [
       242,
@@ -5473,23 +6227,24 @@
      ]
     ]
    ],
-   "strategy_required": false,
+   "strategy_required": true,
    "strategy": "moving_platform",
-   "objective": "A plataforma se move. Seu abrigo precisa acompanhar o bichinho."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "5-4",
    "world": 5,
    "name": "Pouca Tinta",
-   "tip": "Quase nada de tinta! Aproveite o bloco de pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Economia extrema; meia-água.",
-   "ink": 335,
+   "ink": 360,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -5568,10 +6323,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      164,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      146,
+      988
+     ],
+     [
+      164,
+      988
+     ],
+     [
+      182,
+      988
+     ]
+    ],
     [
      [
       422,
@@ -5605,18 +6385,19 @@
    ],
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "5-5",
    "world": 5,
    "name": "Todos Juntos",
-   "tip": "Há ninhos entre os amigos. Separe os abrigos e use as pontas das linhas para tampar essas saídas.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Revisão geral.",
-   "ink": 1080,
+   "ink": 1035,
    "survive": 12,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 3,
@@ -5955,18 +6736,18 @@
    ],
    "strategy_required": true,
    "strategy": "separate_groups",
-   "objective": "Seis amigos, três traços e ninhos entre eles. Planeje os grupos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   },
   {
    "id": "5-6",
    "world": 5,
    "name": "Rainha Zumbina",
-   "tip": "O vento levanta a linha! Passe as pontas por baixo das pedras para prender o telhado; um abrigo solto sai voando.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Chefão sem violência.",
-   "ink": 565,
+   "ink": 540,
    "survive": 14,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -6153,7 +6934,7 @@
    ],
    "strategy_required": true,
    "strategy": "anchoring",
-   "objective": "Proteja o bichinho: há forças que levantam a linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   },
   {
    "id": "6-1",
@@ -6161,10 +6942,10 @@
    "name": "Tobogã de Boas-vindas",
    "tip": "O Gelinho escorrega no gelo! Faça um tobogã de Tinta Firme até o iglu.",
    "teaches": "Bichinho que escorrega + objetivo.",
-   "ink": 500,
+   "ink": 480,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -6350,7 +7131,8 @@
      900,
      110,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -6432,15 +7214,15 @@
    "id": "6-2",
    "world": 6,
    "name": "Buracos na Neve",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tampar buracos com a própria linha (um círculo folgado deixa os buracos dentro!).",
-   "ink": 480,
+   "ink": 500,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -6509,10 +7291,35 @@
      "count": 2,
      "interval": 1.6,
      "delay": 0.8
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      288,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      270,
+      988
+     ],
+     [
+      288,
+      988
+     ],
+     [
+      306,
+      988
+     ]
+    ],
     [
      [
       208,
@@ -6658,21 +7465,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-3",
    "world": 6,
    "name": "Porta da Montanha",
-   "tip": "A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Ler o cenário e fechar a única passagem.",
-   "ink": 290,
+   "ink": 315,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -6793,10 +7601,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      206,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      188,
+      988
+     ],
+     [
+      206,
+      988
+     ],
+     [
+      224,
+      988
+     ]
+    ],
     [
      [
       464,
@@ -6829,7 +7662,8 @@
    "ink_mode": "static",
    "strategy_required": true,
    "strategy": "two_entrances",
-   "objective": "Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-4",
@@ -6837,10 +7671,10 @@
    "name": "Rumo à Toca do Tatá",
    "tip": "TINTA FIRME: a linha não cai! Faça uma rampa para o Tatá rolar até a toca.",
    "teaches": "Tinta Firme e objetivo de levar o bichinho até a toca.",
-   "ink": 475,
+   "ink": 455,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -7015,7 +7849,8 @@
      900,
      100,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -7097,15 +7932,15 @@
    "id": "6-5",
    "world": 6,
    "name": "Entrada da Caverna",
-   "tip": "A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Ler o cenário e fechar a única passagem.",
-   "ink": 290,
+   "ink": 315,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -7226,10 +8061,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      388,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      370,
+      988
+     ],
+     [
+      388,
+      988
+     ],
+     [
+      406,
+      988
+     ]
+    ],
     [
      [
       256,
@@ -7262,21 +8122,22 @@
    "ink_mode": "static",
    "strategy_required": true,
    "strategy": "two_entrances",
-   "objective": "Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-6",
    "world": 6,
    "name": "Abelha Broca",
-   "tip": "A broca atravessa uma linha! Reparta a tinta em duas camadas, deixando espaço entre elas. Um único círculo não segura.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Camadas independentes contra a perfuração.",
-   "ink": 770,
+   "ink": 780,
    "survive": 5.0,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -7323,10 +8184,35 @@
      "count": 3,
      "interval": 0.8,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      192,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      174,
+      988
+     ],
+     [
+      192,
+      988
+     ],
+     [
+      210,
+      988
+     ]
+    ],
     [
      [
       284,
@@ -7543,21 +8429,22 @@
      ]
     ]
    ],
-   "objective": "Sobreviva às brocas: elas conseguem atravessar uma linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-7",
    "world": 6,
    "name": "Abrigo no Paredão",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 400,
+   "ink": 425,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -7646,10 +8533,35 @@
      "count": 2,
      "interval": 1.8,
      "delay": 0.7
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      228,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      210,
+      988
+     ],
+     [
+      228,
+      988
+     ],
+     [
+      246,
+      988
+     ]
+    ],
     [
      [
       517,
@@ -7724,7 +8636,8 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-8",
@@ -7732,10 +8645,10 @@
    "name": "Tobogã do Gelinho",
    "tip": "O Gelinho escorrega no gelo! Faça um tobogã de Tinta Firme até o iglu.",
    "teaches": "Bichinho que escorrega + objetivo.",
-   "ink": 500,
+   "ink": 480,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -7921,7 +8834,8 @@
      900,
      110,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -8003,15 +8917,15 @@
    "id": "6-9",
    "world": 6,
    "name": "Abrigo na Rocha",
-   "tip": "Pouquíssima tinta! Use o paredão de pedra como parede e faça só um telhadinho.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Usar o cenário e economizar tinta.",
-   "ink": 265,
+   "ink": 295,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -8090,10 +9004,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      210,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      192,
+      988
+     ],
+     [
+      210,
+      988
+     ],
+     [
+      228,
+      988
+     ]
+    ],
     [
      [
       422,
@@ -8127,21 +9066,22 @@
    ],
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-10",
    "world": 6,
    "name": "Pico Nevado",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Revisão: buracos + dois traços.",
    "ink": 910,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -8240,10 +9180,35 @@
      "count": 6,
      "interval": 0.35,
      "delay": 1.2
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      128,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      110,
+      988
+     ],
+     [
+      128,
+      988
+     ],
+     [
+      146,
+      988
+     ]
+    ],
     [
      [
       58,
@@ -8529,18 +9494,19 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "6-11",
    "world": 6,
    "name": "Coruja Nevasca",
-   "tip": "O vento levanta a linha! Passe as pontas por baixo das pedras para prender o telhado; um abrigo solto sai voando.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Chefão: neve caindo do céu.",
-   "ink": 535,
+   "ink": 510,
    "survive": 13,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -8720,21 +9686,21 @@
    ],
    "strategy_required": true,
    "strategy": "anchoring",
-   "objective": "Proteja o bichinho: há forças que levantam a linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   },
   {
    "id": "7-1",
    "world": 7,
    "name": "Esconderijo do Pompom",
-   "tip": "A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Ler o cenário e fechar a única passagem.",
-   "ink": 290,
+   "ink": 315,
    "survive": 8,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -8855,10 +9821,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      208,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      190,
+      988
+     ],
+     [
+      208,
+      988
+     ],
+     [
+      226,
+      988
+     ]
+    ],
     [
      [
       464,
@@ -8891,21 +9882,22 @@
    "ink_mode": "static",
    "strategy_required": true,
    "strategy": "two_entrances",
-   "objective": "Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-2",
    "world": 7,
    "name": "Telhado da Praia",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 155,
+   "ink": 190,
    "survive": 8,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9026,10 +10018,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      242,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      224,
+      988
+     ],
+     [
+      242,
+      988
+     ],
+     [
+      260,
+      988
+     ]
+    ],
     [
      [
       294,
@@ -9048,21 +10065,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-3",
    "world": 7,
    "name": "Vespas na Praia",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tampar tocas e resistir a investidas anunciadas.",
-   "ink": 405,
+   "ink": 430,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9131,10 +10149,35 @@
      "count": 3,
      "interval": 1.2,
      "delay": 0.7
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      298,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      280,
+      988
+     ],
+     [
+      298,
+      988
+     ],
+     [
+      316,
+      988
+     ]
+    ],
     [
      [
       228,
@@ -9280,21 +10323,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-4",
    "world": 7,
    "name": "Piquenique",
-   "tip": "As abelhas vão PRIMEIRO no mel. Quando acabar, atacam quem estiver mais perto do pote!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Isca de mel: quem está em perigo de verdade?",
-   "ink": 205,
+   "ink": 240,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9358,10 +10402,35 @@
      "count": 6,
      "interval": 0.3,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      538,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      520,
+      988
+     ],
+     [
+      538,
+      988
+     ],
+     [
+      556,
+      988
+     ]
+    ],
     [
      [
       86,
@@ -9506,21 +10575,23 @@
     ]
    ],
    "strategy": "honey_priority",
-   "objective": "O mel muda o caminho dos insetos. Descubra quem ficará em perigo."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "strategy_required": true,
+   "planning_gate": true
   },
   {
    "id": "7-5",
    "world": 7,
    "name": "Apoio da Fofa",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 415,
+   "ink": 435,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9599,10 +10670,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      510,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      492,
+      988
+     ],
+     [
+      510,
+      988
+     ],
+     [
+      528,
+      988
+     ]
+    ],
     [
      [
       185,
@@ -9677,21 +10773,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-6",
    "world": 7,
    "name": "Telhado Inclinado",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 400,
+   "ink": 420,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9780,10 +10877,35 @@
      "count": 2,
      "interval": 1.6,
      "delay": 0.8
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      238,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      220,
+      988
+     ],
+     [
+      238,
+      988
+     ],
+     [
+      256,
+      988
+     ]
+    ],
     [
      [
       507,
@@ -9858,21 +10980,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-7",
    "world": 7,
    "name": "Toca no Rochedo",
-   "tip": "Tinta Firme e quase nada de tinta: feche só a entrada da toca da Patinha!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tinta Firme como portinha.",
-   "ink": 90,
+   "ink": 125,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -9948,10 +11071,35 @@
      "count": 7,
      "interval": 0.3,
      "delay": 0.3
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      368,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      350,
+      988
+     ],
+     [
+      368,
+      988
+     ],
+     [
+      386,
+      988
+     ]
+    ],
     [
      [
       288,
@@ -10042,7 +11190,8 @@
    ],
    "strategy": "plug_holes",
    "strategy_required": true,
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-8",
@@ -10050,10 +11199,10 @@
    "name": "Rumo ao Guarda-Sol",
    "tip": "O Pingo vai rolar da duna! Faça uma rampa de Tinta Firme por cima da água até a toca.",
    "teaches": "Rampa sobre a água.",
-   "ink": 415,
+   "ink": 395,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -10259,7 +11408,8 @@
      900,
      130,
      100
-    ]
+    ],
+    "hold": 0.65
    },
    "naive": [
     [
@@ -10341,15 +11491,15 @@
    "id": "7-9",
    "world": 7,
    "name": "Coco e Caranguejo",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Combinar regras.",
-   "ink": 405,
+   "ink": 430,
    "survive": 9,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -10417,10 +11567,35 @@
      "interval": 1.2,
      "delay": 0.4,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      298,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      280,
+      988
+     ],
+     [
+      298,
+      988
+     ],
+     [
+      316,
+      988
+     ]
+    ],
     [
      [
       228,
@@ -10566,21 +11741,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-10",
    "world": 7,
    "name": "Festa na Praia",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Revisão da praia.",
-   "ink": 775,
+   "ink": 780,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -10666,10 +11842,35 @@
      "count": 6,
      "interval": 0.35,
      "delay": 1.0
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      128,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      110,
+      988
+     ],
+     [
+      128,
+      988
+     ],
+     [
+      146,
+      988
+     ]
+    ],
     [
      [
       48,
@@ -10955,21 +12156,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "7-11",
    "world": 7,
    "name": "Caranguejo Rei",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Chefão: arremessos em arco.",
-   "ink": 455,
+   "ink": 475,
    "survive": 12,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -11028,6 +12230,17 @@
      "interval": 1.4,
      "delay": 0.4,
      "hole": true
+    },
+    {
+     "insect": "broca",
+     "pos": [
+      168,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [
@@ -11043,6 +12256,20 @@
     }
    ],
    "solution": [
+    [
+     [
+      150,
+      988
+     ],
+     [
+      168,
+      988
+     ],
+     [
+      186,
+      988
+     ]
+    ],
     [
      [
       108,
@@ -11188,21 +12415,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-1",
    "world": 8,
    "name": "Telhado do Tito",
-   "tip": "Os ninhos nos apoios soltam brocas! Cubra as saídas dos ninhos e a abertura de cima com a mesma linha.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Apoiar pontes nas pedras; aproveitar paredes existentes.",
-   "ink": 160,
+   "ink": 195,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -11323,10 +12551,35 @@
      "interval": 0.7,
      "delay": 0.6,
      "hole": true
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      240,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      222,
+      988
+     ],
+     [
+      240,
+      988
+     ],
+     [
+      258,
+      988
+     ]
+    ],
     [
      [
       292,
@@ -11346,21 +12599,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-2",
    "world": 8,
    "name": "Porta Submarina",
-   "tip": "A caverna tem uma entrada lateral e uma no teto. Divida os dois traços e tampe também o ninho no apoio.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Ler o cenário e fechar a única passagem.",
-   "ink": 290,
+   "ink": 315,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -11481,10 +12735,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      386,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      368,
+      988
+     ],
+     [
+      386,
+      988
+     ],
+     [
+      404,
+      988
+     ]
+    ],
     [
      [
       256,
@@ -11518,21 +12797,22 @@
    "ink_mode": "static",
    "strategy_required": true,
    "strategy": "two_entrances",
-   "objective": "Proteja as duas entradas da caverna. Você tem dois traços de Tinta Firme."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-3",
    "world": 8,
    "name": "Caranguejos do Fundo",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tocas no fundo do mar.",
-   "ink": 495,
+   "ink": 515,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -11601,10 +12881,35 @@
      "count": 3,
      "interval": 0.8,
      "delay": 1.5
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      270,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      252,
+      988
+     ],
+     [
+      270,
+      988
+     ],
+     [
+      288,
+      988
+     ]
+    ],
     [
      [
       190,
@@ -11751,21 +13056,22 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-4",
    "world": 8,
    "name": "Apoio de Coral",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 370,
+   "ink": 395,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -11844,10 +13150,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      497,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      479,
+      988
+     ],
+     [
+      497,
+      988
+     ],
+     [
+      515,
+      988
+     ]
+    ],
     [
      [
       198,
@@ -11923,18 +13254,19 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-5",
    "world": 8,
    "name": "Toca do Polvo",
-   "tip": "O Tito se escondeu entre as pedras. Só falta uma tampa na entrada de cima!",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Usar o cenário: uma tampinha basta.",
-   "ink": 200,
+   "ink": 190,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -12135,21 +13467,21 @@
    "underwater": true,
    "strategy_required": true,
    "strategy": "roof_bridge",
-   "objective": "Proteja os amigos. Há ninhos de brocas nos apoios e uma abertura por cima."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   },
   {
    "id": "8-6",
    "world": 8,
    "name": "Recanto Submarino",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 365,
+   "ink": 385,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -12228,10 +13560,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      236,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      218,
+      988
+     ],
+     [
+      236,
+      988
+     ],
+     [
+      254,
+      988
+     ]
+    ],
     [
      [
       509,
@@ -12307,21 +13664,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-7",
    "world": 8,
    "name": "Meia-água no Recife",
-   "tip": "O paredão tem um ninho de brocas. Comece o telhado sobre a saída do ninho e use a pedra como parede.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Abrigo assimétrico, apoio e orçamento de tinta.",
-   "ink": 415,
+   "ink": 435,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -12400,10 +13758,35 @@
      "interval": 0.7,
      "delay": 0.5,
      "hole": true
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      510,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      492,
+      988
+     ],
+     [
+      510,
+      988
+     ],
+     [
+      528,
+      988
+     ]
+    ],
     [
      [
       185,
@@ -12479,21 +13862,22 @@
    "ink_mode": "normal",
    "strategy_required": true,
    "strategy": "lean_to",
-   "objective": "Proteja o bichinho e bloqueie o ninho no apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-8",
    "world": 8,
    "name": "Polvo e Caranguejo",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Tampar + espaço.",
-   "ink": 420,
+   "ink": 440,
    "survive": 10,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 1,
+   "strokes": 2,
    "terrain": [
     {
      "poly": [
@@ -12562,10 +13946,35 @@
      "count": 2,
      "interval": 1.5,
      "delay": 1.5
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      296,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      278,
+      988
+     ],
+     [
+      296,
+      988
+     ],
+     [
+      314,
+      988
+     ]
+    ],
     [
      [
       226,
@@ -12712,18 +14121,19 @@
    ],
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-9",
    "world": 8,
    "name": "Correnteza Forte",
-   "tip": "Correnteza fortíssima! Trave o abrigo entre as duas pedras.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Travar o abrigo.",
-   "ink": 230,
+   "ink": 465,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -12753,17 +14163,17 @@
    "rocks": [
     {
      "pos": [
-      270,
-      1000
+      232,
+      941
      ],
-     "r": 26
+     "r": 30
     },
     {
      "pos": [
-      450,
-      1000
+      488,
+      941
      ],
-     "r": 26
+     "r": 30
     }
    ],
    "props": [],
@@ -12794,71 +14204,79 @@
    "solution": [
     [
      [
+      206,
+      988
+     ],
+     [
       306,
       988
      ],
      [
       306,
-      971
+      965
      ],
      [
       307,
-      960
+      953
      ],
      [
       311,
-      949
+      942
      ],
      [
       318,
-      940
+      931
      ],
      [
       326,
-      932
+      923
      ],
      [
       337,
-      926
+      916
      ],
      [
       348,
-      922
+      912
      ],
      [
       360,
-      921
+      911
      ],
      [
       372,
-      922
+      912
      ],
      [
       383,
-      926
+      916
      ],
      [
       394,
-      932
+      923
      ],
      [
       402,
-      940
+      931
      ],
      [
       409,
-      949
+      942
      ],
      [
       413,
-      960
+      953
      ],
      [
       414,
-      971
+      965
      ],
      [
       414,
+      988
+     ],
+     [
+      514,
       988
      ]
     ]
@@ -12880,25 +14298,43 @@
      "off": 1.0,
      "delay": 0.5,
      "insects": 0.05
+    },
+    {
+     "rect": [
+      -100,
+      150,
+      920,
+      900
+     ],
+     "dir": [
+      0,
+      -1
+     ],
+     "force": 1400,
+     "on": 2.0,
+     "off": 0.5,
+     "delay": 0.3,
+     "insects": 0.02
     }
    ],
    "underwater": true,
    "strategy": "current_anchors",
-   "objective": "Resista à correnteza. O abrigo precisa de apoio."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "strategy_required": true
   },
   {
    "id": "8-10",
    "world": 8,
    "name": "Rei dos Mares",
-   "tip": "As brocas saem das tocas marcadas. Ajuste a largura do abrigo para tampar as saídas antes que elas nasçam.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Revisão final.",
-   "ink": 715,
+   "ink": 720,
    "survive": 11,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
-   "strokes": 2,
+   "strokes": 3,
    "terrain": [
     {
      "poly": [
@@ -12985,10 +14421,35 @@
      "count": 4,
      "interval": 0.8,
      "delay": 0.4
+    },
+    {
+     "insect": "drillfish",
+     "pos": [
+      126,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.45,
+     "delay": 0.25,
+     "hole": true
     }
    ],
    "bosses": [],
    "solution": [
+    [
+     [
+      108,
+      988
+     ],
+     [
+      126,
+      988
+     ],
+     [
+      144,
+      988
+     ]
+    ],
     [
      [
       66,
@@ -13275,18 +14736,19 @@
    "underwater": true,
    "strategy_required": true,
    "strategy": "plug_holes",
-   "objective": "Buracos de insetos próximos! Proteja todos os amigos."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
+   "planning_gate": true
   },
   {
    "id": "8-11",
    "world": 8,
    "name": "Polvo Gigante",
-   "tip": "O Polvo Gigante SUGA tudo! Passe as pontas do abrigo por baixo das pedras para ele não subir.",
+   "tip": "Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.",
    "teaches": "Chefão: sucção (travar o abrigo).",
-   "ink": 485,
+   "ink": 465,
    "survive": 12,
    "stars": [
-    0.9,
+    0.94,
     0.99
    ],
    "strokes": 1,
@@ -13530,7 +14992,7 @@
    "underwater": true,
    "strategy": "anchoring",
    "strategy_required": true,
-   "objective": "Proteja o bichinho: há forças que levantam a linha."
+   "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes."
   }
  ]
 }
