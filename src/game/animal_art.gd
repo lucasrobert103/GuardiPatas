@@ -11,6 +11,9 @@ var accessory := ""
 var facing := 1.0
 var shell_flash := 0.0
 var preview := false        # usado nas telas de menu (sem física)
+## Efeito especial (partículas só visuais). Vazio + auto_effect = usa o do jogador.
+var effect := ""
+var auto_effect := true
 
 var _t := 0.0
 var _blink := 0.0
@@ -22,6 +25,10 @@ const COLORS := {
 	"amora": {"main": Color("be8ddd"), "light": Color("ffe4f2"), "dark": Color("8055a5")},
 	"bambu": {"main": Color("fff7e8"), "light": Color("ffffff"), "dark": Color("3b4055")},
 	"gotinha": {"main": Color("ad7959"), "light": Color("f5d9b7"), "dark": Color("74503d")},
+	"faisca": {"main": Color("ff7a45"), "light": Color("ffe08a"), "dark": Color("c84b2f")},
+	"lumi": {"main": Color("fffaff"), "light": Color("ffd6f2"), "dark": Color("b9a6e8")},
+	"cometa": {"main": Color("3b3f7a"), "light": Color("c7c9ff"), "dark": Color("23264d")},
+	"pipoca": {"main": Color("f5c04a"), "light": Color("fff1c7"), "dark": Color("c98f2a")},
 	"capi": {"main": Color("b07a4f"), "light": Color("d9a77a"), "dark": Color("8a5a39")},
 	"brasa": {"main": Color("ff8a3d"), "light": Color("fff1e0"), "dark": Color("d96a24")},
 	"pingo": {"main": Color("6d5a8c"), "light": Color("f6dcb8"), "dark": Color("4e3f66")},
@@ -36,6 +43,9 @@ const COLORS := {
 	"tito": {"main": Color("c77dff"), "light": Color("e5bfff"), "dark": Color("9b4fd6")},
 	"patinha": {"main": Color("ffd84d"), "light": Color("fff0a8"), "dark": Color("ff9f43")},
 	"kiko": {"main": Color("9aa3ad"), "light": Color("e9ecef"), "dark": Color("5f6670")},
+	"zeca": {"main": Color("6fcf6a"), "light": Color("e8f7b8"), "dark": Color("3f9a4a")},
+	"mel": {"main": Color("b9773f"), "light": Color("f2d2a6"), "dark": Color("7f4e27")},
+	"fiapo": {"main": Color("a8957c"), "light": Color("efe2c8"), "dark": Color("6b5a47")},
 }
 
 ## Pontos de ancoragem para acessórios (cabeça, olhos, pescoço).
@@ -43,6 +53,10 @@ const ANCHORS := {
 	"amora": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.9},
 	"bambu": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 1.0},
 	"gotinha": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.85},
+	"faisca": {"head": Vector2(0, -34), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.9},
+	"lumi": {"head": Vector2(-6, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.9},
+	"cometa": {"head": Vector2(0, -32), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.9},
+	"pipoca": {"head": Vector2(0, -30), "eyes": Vector2(0, -12), "neck": Vector2(0, 9), "scale": 0.85},
 	"capi": {"head": Vector2(30, -34), "eyes": Vector2(37, -14), "neck": Vector2(18, 8), "scale": 1.0},
 	"brasa": {"head": Vector2(2, -38), "eyes": Vector2(4, -20), "neck": Vector2(2, 4), "scale": 0.95},
 	"pingo": {"head": Vector2(4, -30), "eyes": Vector2(16, -5), "neck": Vector2(12, 16), "scale": 0.85},
@@ -57,7 +71,15 @@ const ANCHORS := {
 	"tito": {"head": Vector2(0, -28), "eyes": Vector2(0, -6), "neck": Vector2(0, 10), "scale": 0.9},
 	"patinha": {"head": Vector2(12, -24), "eyes": Vector2(15, -12), "neck": Vector2(6, 0), "scale": 0.65},
 	"kiko": {"head": Vector2(2, -34), "eyes": Vector2(3, -16), "neck": Vector2(2, 4), "scale": 0.8},
+	"zeca": {"head": Vector2(2, -28), "eyes": Vector2(2, -14), "neck": Vector2(2, 8), "scale": 0.75},
+	"mel": {"head": Vector2(2, -42), "eyes": Vector2(4, -22), "neck": Vector2(2, 2), "scale": 1.0},
+	"fiapo": {"head": Vector2(30, -22), "eyes": Vector2(32, -8), "neck": Vector2(18, 8), "scale": 0.75},
 }
+
+
+func _ready() -> void:
+	if auto_effect and effect == "":
+		effect = Game.effect_of(species)
 
 
 func _process(delta: float) -> void:
@@ -124,6 +146,10 @@ func _draw() -> void:
 	off.y += base_y * (1.0 - sc.y)
 	draw_set_transform(off, rot, Vector2(sc.x * facing, sc.y))
 	var scared := mood == "scared"
+	if effect != "":
+		draw_set_transform(off * 0.5)
+		_draw_effect(false)
+		draw_set_transform(off, rot, Vector2(sc.x * facing, sc.y))
 	if scared:
 		_draw_scare_back()
 	match species:
@@ -141,11 +167,17 @@ func _draw() -> void:
 		"tito": _draw_tito()
 		"patinha": _draw_patinha()
 		"kiko": _draw_kiko()
+		"zeca": _draw_zeca()
+		"mel": _draw_mel()
+		"fiapo": _draw_fiapo()
 		"amora", "bambu", "gotinha": _draw_companion()
+		"faisca", "lumi", "cometa", "pipoca": _draw_magic()
 	_draw_accessory()
 	if scared:
 		_draw_scare_front()
 	draw_set_transform(Vector2.ZERO)
+	if effect != "":
+		_draw_effect(true)
 	if mood == "ouch":
 		_draw_ouch_stars()
 	elif scared:
@@ -169,6 +201,9 @@ func _base_y() -> float:
 		"tito": return 24.0
 		"patinha": return 22.0
 		"kiko": return 38.0
+		"zeca": return 24.0
+		"mel": return 46.0
+		"fiapo": return 21.0
 	return 28.0
 
 
@@ -585,6 +620,87 @@ func _draw_kiko() -> void:
 	_mouth(Vector2(5, 2), 6.0)
 
 
+func _draw_zeca() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var o := Palette.OUTLINE
+	# pernas dobradas de sapo
+	DrawUtil.oval(self, Vector2(-18, 16), Vector2(12, 8), d)
+	DrawUtil.oval(self, Vector2(18, 16), Vector2(12, 8), d)
+	DrawUtil.oval(self, Vector2(-24, 22), Vector2(9, 3), d)
+	DrawUtil.oval(self, Vector2(24, 22), Vector2(9, 3), d)
+	DrawUtil.oval(self, Vector2(0, 4), Vector2(27, 19), m)
+	DrawUtil.oval(self, Vector2(2, 10), Vector2(17, 11), _c("light"), o, 0.0)
+	for k in 3:
+		draw_circle(Vector2(-16 + k * 9, -6 + (k % 2) * 3), 2.2, d, true, -1.0, true)
+	# olhões saltados no alto da cabeça
+	DrawUtil.disc(self, Vector2(-9, -15), 10.0, m)
+	DrawUtil.disc(self, Vector2(12, -15), 10.0, m)
+	_eye(Vector2(-9, -16), 6.0)
+	_eye(Vector2(12, -16), 6.0)
+	_blush(Vector2(-14, 4), 4.0)
+	_blush(Vector2(20, 4), 4.0)
+	# sorrisão de sapo
+	if mood in ["scared", "ouch", "sad"]:
+		_mouth(Vector2(3, 4), 8.0)
+	else:
+		draw_arc(Vector2(3, -2), 14.0, 0.35, PI - 0.35, 14, o, 2.5, true)
+
+
+func _draw_mel() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var o := Palette.OUTLINE
+	DrawUtil.oval(self, Vector2(-13, 41), Vector2(11, 6), d)
+	DrawUtil.oval(self, Vector2(15, 41), Vector2(11, 6), d)
+	DrawUtil.oval(self, Vector2(0, 16), Vector2(27, 28), m)
+	DrawUtil.oval(self, Vector2(2, 20), Vector2(16, 18), _c("light"), o, 0.0)
+	# potinho de mel abraçado
+	DrawUtil.oval(self, Vector2(10, 22), Vector2(11, 10), Color("ffc23d"), o, 2.5)
+	draw_rect(Rect2(Vector2(2, 9), Vector2(16, 5)), Color("e05a3d"), true)
+	draw_line(Vector2(2, 9), Vector2(18, 9), o, 2.0, true)
+	DrawUtil.oval(self, Vector2(-14, 18), Vector2(8, 12), m, o, 3.0, 0.4)
+	DrawUtil.oval(self, Vector2(20, 18), Vector2(8, 11), m, o, 3.0, -0.4)
+	DrawUtil.disc(self, Vector2(-15, -40), 9.0, m)
+	DrawUtil.disc(self, Vector2(-15, -40), 4.5, _c("light"), o, 0.0)
+	DrawUtil.disc(self, Vector2(19, -40), 9.0, m)
+	DrawUtil.disc(self, Vector2(19, -40), 4.5, _c("light"), o, 0.0)
+	DrawUtil.disc(self, Vector2(2, -22), 23.0, m)
+	DrawUtil.oval(self, Vector2(8, -12), Vector2(11, 8), _c("light"), o, 2.0)
+	DrawUtil.oval(self, Vector2(10, -16), Vector2(4.5, 3.5), o, o, 0.0)
+	_blush(Vector2(-10, -12), 4.0)
+	_eye(Vector2(-5, -26), 4.5)
+	_eye(Vector2(13, -26), 4.5)
+	_mouth(Vector2(10, -7), 5.0)
+
+
+func _draw_fiapo() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var o := Palette.OUTLINE
+	# braços compridos com garrinhas, abraçando o próprio corpo
+	DrawUtil.oval(self, Vector2(-28, 14), Vector2(14, 7), d)
+	DrawUtil.oval(self, Vector2(8, 15), Vector2(14, 7), d)
+	DrawUtil.oval(self, Vector2(-8, 2), Vector2(42, 20), m)
+	for k in 4:
+		draw_arc(Vector2(-30 + k * 13, -4), 7.0, PI * 1.1, PI * 1.6, 6, d, 2.0, true)
+	DrawUtil.oval(self, Vector2(-4, 14), Vector2(26, 8), m, o, 3.0)
+	for k in 3:
+		draw_line(Vector2(16 + k * 4, 15), Vector2(19 + k * 4, 21), o, 2.0, true)
+	DrawUtil.disc(self, Vector2(30, -6), 18.0, m)
+	DrawUtil.oval(self, Vector2(33, -4), Vector2(13, 11), _c("light"), o, 0.0)
+	# máscara escura em volta dos olhos (marca do bicho-preguiça)
+	DrawUtil.oval(self, Vector2(27, -8), Vector2(6, 4), d, o, 0.0, -0.4)
+	DrawUtil.oval(self, Vector2(39, -8), Vector2(6, 4), d, o, 0.0, 0.4)
+	_eye(Vector2(27, -8), 3.6)
+	_eye(Vector2(39, -8), 3.6)
+	if mood == "idle" and _blink <= 0.0:
+		for ex in [27.0, 39.0]:
+			draw_line(Vector2(ex - 4, -8), Vector2(ex + 4, -8), o, 2.5, true)
+	DrawUtil.oval(self, Vector2(33, -1), Vector2(3, 2), o, o, 0.0)
+	_mouth(Vector2(33, 4), 5.0)
+
+
 # ------------------------------------------------------------------ sustos individuais
 ## Atrás do corpo (coordenadas do bichinho virado para a direita).
 func _draw_scare_back() -> void:
@@ -830,6 +946,170 @@ func _draw_companion() -> void:
 				draw_line(Vector2(side * 17, 0), Vector2(side * 39, k * 5), dark, 1.5, true)
 	DrawUtil.oval(self, Vector2(0, 2), Vector2(14, 9), _c("light"), o, 0)
 	DrawUtil.disc(self, Vector2(0, -1), 4, dark, o, 1)
+	_mouth(Vector2(0, 8), 7)
+	_blush(Vector2(-22, -1), 4)
+	_blush(Vector2(22, -1), 4)
+
+
+# ------------------------------------------------------------------ efeitos especiais
+## Partículas determinísticas pelo tempo (sem estado): atrás do corpo (front = false) e na frente.
+func _draw_effect(front: bool) -> void:
+	var h := _base_y()
+	var top := -h - 10.0
+	var w := 46.0
+	var o := Palette.OUTLINE
+	match effect:
+		"brilho":
+			if not front:
+				for k in 3:
+					draw_circle(Vector2(0, -h * 0.2), (h + 26.0 + k * 10.0) * (1.0 + 0.04 * sin(_t * 3.0)), Color(1.0, 0.85, 0.3, 0.12 - k * 0.03), true, -1.0, true)
+			else:
+				for i in 5:
+					var ph := fmod(_t * 0.8 + i * 0.37, 1.0)
+					var p := Vector2(sin(i * 2.3) * w, lerpf(h * 0.6, top, fmod(i * 0.29, 1.0)))
+					var s := sin(ph * PI) * 6.0
+					if s > 0.5:
+						DrawUtil.shape(self, DrawUtil.star_points(p, s, s * 0.35), Color("fff2a8"), Palette.GOLD, 1.0)
+		"estrelas":
+			if front:
+				for i in 6:
+					var a := _t * (1.2 + i * 0.08) + TAU * i / 6.0
+					var p := Vector2(cos(a) * (w + 6.0), -h * 0.3 + sin(a) * 18.0 - 10.0)
+					if sin(a) > -0.2:
+						DrawUtil.shape(self, DrawUtil.star_points(p, 6.0, 2.6), Color("fff6cf") if i % 2 == 0 else Color("c7c9ff"), o, 1.2)
+			else:
+				for i in 6:
+					var a := _t * (1.2 + i * 0.08) + TAU * i / 6.0
+					if sin(a) <= -0.2:
+						var p := Vector2(cos(a) * (w + 6.0), -h * 0.3 + sin(a) * 18.0 - 10.0)
+						DrawUtil.shape(self, DrawUtil.star_points(p, 4.5, 2.0), Color(1, 1, 1, 0.7), Color(o, 0.5), 1.0)
+		"coracoes":
+			if front:
+				for i in 4:
+					var ph := fmod(_t * 0.5 + i * 0.25, 1.0)
+					var p := Vector2(sin(i * 1.9 + _t * 1.5) * w * 0.8, lerpf(0.0, top - 30.0, ph))
+					_heart(p, 6.0 + 2.0 * sin(ph * PI), Color("ff7eb6", 1.0 - ph))
+		"bolhas":
+			if front:
+				for i in 6:
+					var ph := fmod(_t * 0.35 + i * 0.17, 1.0)
+					var p := Vector2(sin(i * 2.7) * w + sin(_t * 2.0 + i) * 6.0, lerpf(h * 0.5, top - 40.0, ph))
+					var r := 4.0 + (i % 3) * 2.5
+					draw_arc(p, r, 0.0, TAU, 14, Color(0.6, 0.85, 1.0, 0.9 * (1.0 - ph)), 2.0, true)
+					draw_circle(p + Vector2(-r * 0.35, -r * 0.35), r * 0.25, Color(1, 1, 1, 0.8 * (1.0 - ph)), true, -1.0, true)
+		"neve":
+			if front:
+				for i in 7:
+					var ph := fmod(_t * 0.3 + i * 0.143, 1.0)
+					var p := Vector2(sin(i * 3.1) * w * 1.1 + sin(_t + i) * 8.0, lerpf(top - 30.0, h, ph))
+					for k in 3:
+						var d := Vector2.from_angle(PI * k / 3.0 + _t) * 4.0
+						draw_line(p - d, p + d, Color(1, 1, 1, 0.9), 1.6, true)
+		"folhas":
+			if front:
+				for i in 4:
+					var ph := fmod(_t * 0.28 + i * 0.25, 1.0)
+					var p := Vector2(lerpf(-w * 1.3, w * 1.3, ph), top + 10.0 + sin(ph * TAU + i) * 16.0 + i * 12.0)
+					DrawUtil.oval(self, p, Vector2(6, 3), Color("8fd16a") if i % 2 == 0 else Color("ffb347"), o, 1.2, ph * TAU)
+		"fogo":
+			if not front:
+				for i in 7:
+					var x := -w * 0.9 + w * 1.8 * float(i) / 6.0
+					var fl := 0.7 + 0.3 * sin(_t * 9.0 + i * 1.7)
+					var base := Vector2(x, h + 2.0)
+					var tip := base + Vector2(sin(_t * 5.0 + i) * 4.0, -(22.0 + (i % 3) * 8.0) * fl)
+					draw_colored_polygon(PackedVector2Array([base + Vector2(-8, 0), tip, base + Vector2(8, 0)]), Color(0.45, 0.6, 1.0, 0.55))
+					draw_colored_polygon(PackedVector2Array([base + Vector2(-4, 0), base.lerp(tip, 0.7), base + Vector2(4, 0)]), Color(0.85, 0.95, 1.0, 0.8))
+			else:
+				for i in 4:
+					var ph := fmod(_t * 0.7 + i * 0.25, 1.0)
+					var p := Vector2(sin(i * 2.1) * w * 0.8, lerpf(h, top, ph))
+					draw_circle(p, 2.5 * (1.0 - ph) + 0.5, Color(0.6, 0.8, 1.0, 1.0 - ph), true, -1.0, true)
+		"arco_iris":
+			if not front:
+				var cols := [Color("ff6b6b"), Color("ffb347"), Color("ffe066"), Color("7fd46a"), Color("5ec8f2"), Color("b18cff")]
+				for k in cols.size():
+					draw_arc(Vector2(0, h * 0.4), w + 26.0 - k * 5.0, PI * 1.08, PI * 1.92, 28, Color(cols[k], 0.7), 5.0, true)
+			else:
+				for i in 5:
+					var ph := fmod(_t * 0.6 + i * 0.2, 1.0)
+					var p := Vector2(lerpf(-w, w, fmod(i * 0.37 + 0.1, 1.0)), top + sin(ph * TAU) * 10.0)
+					DrawUtil.disc(self, p, 2.5 + sin(ph * PI) * 2.0, Color.from_hsv(fmod(_t * 0.3 + i * 0.2, 1.0), 0.6, 1.0), Color(0, 0, 0, 0), 0.0)
+
+
+func _heart(p: Vector2, s: float, col: Color) -> void:
+	DrawUtil.disc(self, p + Vector2(-s * 0.45, -s * 0.2), s * 0.55, col, Color(0, 0, 0, 0), 0.0)
+	DrawUtil.disc(self, p + Vector2(s * 0.45, -s * 0.2), s * 0.55, col, Color(0, 0, 0, 0), 0.0)
+	draw_colored_polygon(PackedVector2Array([p + Vector2(-s * 0.95, 0), p + Vector2(s * 0.95, 0), p + Vector2(0, s * 1.0)]), col)
+
+
+## Bichinhos mágicos da Loja: corpinho chibi (como os companheiros) com detalhes próprios.
+func _draw_magic() -> void:
+	var o := Palette.OUTLINE
+	var m := _c("main")
+	var l := _c("light")
+	var d := _c("dark")
+	match species:
+		"faisca":
+			# asinhas e rabo com pontinha
+			for side in [-1, 1]:
+				DrawUtil.shape(self, PackedVector2Array([Vector2(side * 18, 0), Vector2(side * 46, -22 + sin(_t * 6.0) * 4.0), Vector2(side * 40, 4), Vector2(side * 30, 12)]), d, o, 3)
+			DrawUtil.oval(self, Vector2(-30, 24), Vector2(16, 7), m, o, 3, -0.3)
+			DrawUtil.tri(self, Vector2(-44, 18), Vector2(-56, 22), Vector2(-46, 28), Color("ffe08a"), o, 2)
+		"cometa":
+			DrawUtil.oval(self, Vector2(-30, 12), Vector2(8, 24), m, o, 3, -0.5)
+			DrawUtil.shape(self, DrawUtil.star_points(Vector2(-38, -10), 7.0, 3.0), Color("fff6cf"), o, 1.5)
+		"pipoca":
+			pass
+		"lumi":
+			DrawUtil.oval(self, Vector2(-30, 14), Vector2(10, 22), Color("ff9ec7"), o, 3, -0.6)
+	DrawUtil.oval(self, Vector2(0, 13), Vector2(28, 24), m, o, 3)
+	DrawUtil.oval(self, Vector2(0, 17), Vector2(17, 15), l, o, 0)
+	for side in [-1, 1]:
+		DrawUtil.oval(self, Vector2(side * 18, 31), Vector2(12, 6), d, o, 2)
+	# orelhas / chifres / crina
+	match species:
+		"faisca":
+			for side in [-1, 1]:
+				DrawUtil.tri(self, Vector2(side * 10, -28), Vector2(side * 18, -50), Vector2(side * 22, -26), Color("ffe08a"), o, 3)
+		"lumi":
+			for side in [-1, 1]:
+				DrawUtil.tri(self, Vector2(side * 10, -26), Vector2(side * 20, -42), Vector2(side * 24, -20), m, o, 3)
+		"cometa":
+			for side in [-1, 1]:
+				DrawUtil.tri(self, Vector2(side * 9, -24), Vector2(side * 24, -42), Vector2(side * 27, -14), m, o, 3)
+		"pipoca":
+			for side in [-1, 1]:
+				DrawUtil.disc(self, Vector2(side * 22, -28), 10, m, o, 3)
+				DrawUtil.disc(self, Vector2(side * 22, -28), 5, l, o, 0)
+	DrawUtil.oval(self, Vector2(0, -9), Vector2(31 if species != "pipoca" else 34, 25), m, o, 3)
+	match species:
+		"lumi":
+			# crina de arco-íris e chifre dourado
+			var cols := [Color("ff6b6b"), Color("ffb347"), Color("ffe066"), Color("7fd46a"), Color("5ec8f2")]
+			for k in cols.size():
+				DrawUtil.disc(self, Vector2(-26 + k * 3, -26 + k * 9), 8, cols[k], o, 2)
+			DrawUtil.tri(self, Vector2(-6, -32), Vector2(6, -32), Vector2(2, -58), Palette.GOLD, o, 2.5)
+			draw_line(Vector2(-2, -38), Vector2(5, -42), o, 1.5, true)
+			draw_line(Vector2(0, -46), Vector2(4, -49), o, 1.5, true)
+		"cometa":
+			for p in [Vector2(-14, -22), Vector2(16, -24), Vector2(-20, 6), Vector2(14, 20)]:
+				DrawUtil.shape(self, DrawUtil.star_points(p, 4.0, 1.8), Color("fff6cf"), Color(0, 0, 0, 0), 0)
+			DrawUtil.shape(self, DrawUtil.star_points(Vector2(0, -26), 7.0, 3.0), Palette.GOLD, o, 1.5)
+		"pipoca":
+			for side in [-1, 1]:
+				DrawUtil.disc(self, Vector2(side * 20, 2), 11, l, o, 0)
+		"faisca":
+			DrawUtil.oval(self, Vector2(0, 2), Vector2(16, 10), l, o, 0)
+			for k in 3:
+				DrawUtil.tri(self, Vector2(-6 + k * 6, -33), Vector2(-3 + k * 6, -40), Vector2(k * 6, -33), d, o, 1.5)
+	for side in [-1, 1]:
+		_eye(Vector2(side * 12, -12), 5)
+	if species == "cometa":
+		for side in [-1, 1]:
+			for k in [-1, 1]:
+				draw_line(Vector2(side * 17, 0), Vector2(side * 39, k * 5), l, 1.5, true)
+	DrawUtil.disc(self, Vector2(0, -1), 4, d if species != "faisca" else Color("c84b2f"), o, 1)
 	_mouth(Vector2(0, 8), 7)
 	_blush(Vector2(-22, -1), 4)
 	_blush(Vector2(22, -1), 4)

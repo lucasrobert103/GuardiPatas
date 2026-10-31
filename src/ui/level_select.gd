@@ -131,20 +131,26 @@ func _build_info(kinds: Array) -> void:
 	var box := UiKit.vbox(8)
 	_info.add_child(box)
 	box.add_child(UiKit.label("Insetos deste mundo", 28))
-	var row := UiKit.hbox(6)
+	# quebra em linhas: mundos com muitos tipos de inseto não podem alargar a tela
+	var row := HFlowContainer.new()
+	row.alignment = FlowContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("h_separation", 6)
+	row.add_theme_constant_override("v_separation", 4)
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	box.add_child(row)
 	for k in kinds:
 		var cell := UiKit.vbox(0)
 		var holder := Control.new()
-		holder.custom_minimum_size = Vector2(96, 64)
+		holder.custom_minimum_size = Vector2(84, 48)
 		var art := InsectArt.new()
 		art.kind = k
-		art.radius = 16.0
-		art.position = Vector2(48, 36)
+		art.radius = 14.0
+		art.position = Vector2(42, 28)
 		holder.add_child(art)
 		cell.add_child(holder)
-		var nm: String = Cast.INSECTS[k]["name"].split(" ")[0]
-		cell.add_child(UiKit.label(nm, 18))
+		var nl := UiKit.label(tr(str(Cast.INSECTS[k]["name"])), 14, Palette.UI_TEXT, 0, Palette.WHITE, true)
+		nl.custom_minimum_size = Vector2(84, 0)
+		cell.add_child(nl)
 		row.add_child(cell)
 
 

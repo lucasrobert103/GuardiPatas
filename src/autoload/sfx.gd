@@ -16,6 +16,7 @@ const SOUNDS := [
 const WORLD_MUSIC := {
 	1: "music_level", 2: "music_forest", 3: "music_valley", 4: "music_pond",
 	5: "music_camp", 6: "music_mountain", 7: "music_beach", 8: "music_sea",
+	9: "music_forest", 10: "music_valley",
 }
 
 var _streams: Dictionary = {}

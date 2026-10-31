@@ -180,7 +180,32 @@ func _build_wardrobe() -> void:
 					_refresh())
 			row.add_child(b)
 		_content.add_child(card)
-	_content.add_child(UiKit.label("Ganhe moedas salvando bichinhos e conquistando estrelas.\nAcessórios são só enfeites: não mudam o jogo.", 20, Color(Palette.UI_TEXT, 0.8), 0, Palette.WHITE, true))
+	_content.add_child(UiKit.label("Efeitos especiais", 30, Palette.WHITE, 10, Palette.OUTLINE))
+	for fx in Game.EFFECTS:
+		var cfg2: Dictionary = Game.EFFECTS[fx]
+		var card2 := UiKit.panel()
+		var row2 := UiKit.hbox(12)
+		card2.add_child(row2)
+		var nl := UiKit.label(cfg2["name"], 26)
+		nl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		nl.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		row2.add_child(nl)
+		var f: String = fx
+		if Game.owns_effect(f):
+			var on2: bool = str(Game.data["fx_equipped"].get(_selected, "")) == f
+			var b2 := UiKit.button("Tirar" if on2 else "Usar", Palette.UI_SECONDARY if on2 else Palette.UI_GOOD, "", 160, 72)
+			b2.pressed.connect(func():
+				Game.equip_effect(_selected, f)
+				Sfx.play("pop")
+				_refresh())
+			row2.add_child(b2)
+		else:
+			var b2 := UiKit.button("Na Lojinha", Palette.GOLD, "coin", 200, 72)
+			b2.add_theme_font_size_override("font_size", UiKit.fs(20))
+			b2.pressed.connect(func(): go.emit("store", null))
+			row2.add_child(b2)
+		_content.add_child(card2)
+	_content.add_child(UiKit.label("Ganhe moedas salvando bichinhos e conquistando estrelas.\nAcessórios e efeitos são só enfeites: não mudam o jogo.", 20, Color(Palette.UI_TEXT, 0.8), 0, Palette.WHITE, true))
 
 
 func _build_trophies() -> void:

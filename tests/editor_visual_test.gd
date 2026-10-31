@@ -127,7 +127,7 @@ func _ready() -> void:
 	ed2._ask_clear()
 	await settle()
 	for b in buttons(ed2._modal, []):
-		if (b as Button).text.strip_edges() == "Limpar":
+		if (b as Button).text.strip_edges() == tr("Limpar"):
 			b.pressed.emit()
 	await settle()
 	check(ed2.draft["animals"].is_empty() and ed2.draft["nests"].is_empty(), "limpar tira tudo")

@@ -48,6 +48,8 @@ const WORLDS := {
 	6: {"sky_top": Color("9ec9f0"), "sky_bottom": Color("eef6ff"), "far": Color("c9d6ea"), "near": Color("a9bad6"), "accent": Color("ff9ec7"), "ground": Color("f4f8ff"), "dirt": Color("8e98ad")},
 	7: {"sky_top": Color("5ec8f2"), "sky_bottom": Color("fff1cf"), "far": Color("3fa6d9"), "near": Color("2f8fc4"), "accent": Color("ff8a65"), "ground": Color("ffe3a3"), "dirt": Color("f0c97c")},
 	8: {"sky_top": Color("0f5c8f"), "sky_bottom": Color("39a9d6"), "far": Color("1f7aa8"), "near": Color("176a93"), "accent": Color("ff9ec7"), "ground": Color("f2d79a"), "dirt": Color("d9b878")},
+	9: {"sky_top": Color("1c2550"), "sky_bottom": Color("5d4f93"), "far": Color("2f5468"), "near": Color("27485a"), "accent": Color("d6f27a"), "ground": Color("5aa063"), "dirt": Color("5f4a3a")},
+	10: {"sky_top": Color("ff8a5c"), "sky_bottom": Color("ffe0a8"), "far": Color("9b6150"), "near": Color("7c4a3c"), "accent": Color("ff5a3d"), "ground": Color("b08a6e"), "dirt": Color("6e4637")},
 }
 
 ## Mundos com chão sem grama (neve, areia, fundo do mar) e sem flores na decoração.

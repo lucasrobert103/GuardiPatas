@@ -1,7 +1,7 @@
 class_name Cast
 ## Textos do elenco exibidos na Coleção (ficha completa em docs/05-personagens.md).
 
-const ORDER := ["capi", "brasa", "pingo", "nino", "tuca", "lulu", "gelinho", "nuvem", "kiko", "tata", "pompom", "patinha", "fofa", "tito"]
+const ORDER := ["capi", "brasa", "pingo", "nino", "tuca", "lulu", "gelinho", "nuvem", "kiko", "tata", "pompom", "patinha", "fofa", "tito", "zeca", "mel", "fiapo"]
 
 const INFO := {
 	"capi": {
@@ -74,6 +74,21 @@ const INFO := {
 		"bio": "Tito é o marinheiro do fundo do mar: tem oito braços e usa todos para abraçar os amigos.",
 		"trait": "Mora no fundo do mar: proteja-o das águas-vivas e dos baiacus.",
 	},
+	"zeca": {
+		"species": "Sapo",
+		"bio": "Zeca é um sapinho cantor que mora na vitória-régia da Lagoa. Faz \"croac\" quando está feliz e quando está com medo (ou seja, o tempo todo).",
+		"trait": "Nada muito bem: água não é problema para ele.",
+	},
+	"mel": {
+		"species": "Ursinha",
+		"bio": "Mel é uma ursinha enorme e carinhosa que nunca larga o seu potinho de mel. Os insetos adoram o cheiro... e ela não gosta nada disso.",
+		"trait": "Grandona e alta: precisa de um abrigo largo e alto, mas quase não é empurrada.",
+	},
+	"fiapo": {
+		"species": "Bicho-preguiça",
+		"bio": "Fiapo dorme vinte horas por dia, de preferência abraçado num galho. Quando acorda, sorri devagarinho e volta a dormir.",
+		"trait": "Pelo grosso: aguenta UMA picadinha, mas é comprido — o abrigo precisa ser largo.",
+	},
 }
 
 const INSECTS := {
@@ -92,4 +107,10 @@ const INSECTS := {
 	"crab": {"name": "Caranguejo Belisco", "desc": "Empurra forte e não tem medo de água."},
 	"jellyfish": {"name": "Água-viva Gelatina", "desc": "Nada em pulsos lentos no fundo do mar."},
 	"puffer": {"name": "Baiacu Bolha", "desc": "Incha quando chega perto e empurra tudo."},
+	"firefly": {"name": "Vagalume Pisca", "desc": "Brilha e deixa os insetos por perto MAIS RÁPIDOS."},
+	"fly": {"name": "Mosca Gêmea", "desc": "Ao bater na tinta, vira DUAS mosquinhas que passam em frestas."},
+	"cicada": {"name": "Cigarra Cantora", "desc": "Carrega o canto e solta uma onda que EMPURRA linhas soltas."},
+	"bombardier": {"name": "Besouro Pum-Pum", "desc": "Mira de longe e lança fumaça em arco. Só telhado segura!"},
+	"mantis": {"name": "Louva-a-deus Garra", "desc": "Agarra a linha e a LEVANTA para passar por baixo."},
+	"leafcutter": {"name": "Formiga Tesoura", "desc": "Corta a tinta encostada nela. Pedra ela não corta."},
 }

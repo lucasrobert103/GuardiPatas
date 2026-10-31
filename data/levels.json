@@ -32,6 +32,14 @@
   {
    "id": 8,
    "name": "Fundo do Mar"
+  },
+  {
+   "id": 9,
+   "name": "Bosque dos Vagalumes"
+  },
+  {
+   "id": 10,
+   "name": "Vulcão Fumegante"
   }
  ],
  "levels": [
@@ -15543,6 +15551,4415 @@
    "objective": "Planeje os traços: há saídas de insetos e ameaças em direções diferentes.",
    "reject_individual_circles": true,
    "reject_double_arches": true
+  },
+  {
+   "id": "9-1",
+   "world": 9,
+   "name": "Luzinhas na Mata",
+   "tip": "O Vagalume brilha e deixa as abelhas perto dele MAIS RÁPIDAS. Abrigo sem frestas!",
+   "teaches": "Vagalume: acelera o enxame.",
+   "ink": 215,
+   "survive": 9,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "zeca",
+     "pos": [
+      360,
+      975
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "firefly",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 2,
+     "interval": 1.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      140,
+      340
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      312,
+      988
+     ],
+     [
+      312,
+      969
+     ],
+     [
+      313,
+      958
+     ],
+     [
+      317,
+      948
+     ],
+     [
+      322,
+      939
+     ],
+     [
+      330,
+      931
+     ],
+     [
+      339,
+      926
+     ],
+     [
+      349,
+      922
+     ],
+     [
+      360,
+      921
+     ],
+     [
+      371,
+      922
+     ],
+     [
+      381,
+      926
+     ],
+     [
+      390,
+      931
+     ],
+     [
+      398,
+      939
+     ],
+     [
+      403,
+      948
+     ],
+     [
+      407,
+      958
+     ],
+     [
+      408,
+      969
+     ],
+     [
+      408,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "9-2",
+   "world": 9,
+   "name": "Mosca Gêmea",
+   "tip": "A Mosca Gêmea se DIVIDE quando bate na tinta. As mosquinhas passam em qualquer fresta!",
+   "teaches": "Mosca que se divide: frestas pequenas viram problema.",
+   "ink": 310,
+   "survive": 9,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "mel",
+     "pos": [
+      360,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "fly",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 5,
+     "interval": 0.6,
+     "delay": 0.3
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      120,
+      330
+     ],
+     "count": 4,
+     "interval": 0.6,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      312,
+      988
+     ],
+     [
+      312,
+      925
+     ],
+     [
+      313,
+      914
+     ],
+     [
+      317,
+      904
+     ],
+     [
+      322,
+      895
+     ],
+     [
+      330,
+      887
+     ],
+     [
+      339,
+      882
+     ],
+     [
+      349,
+      878
+     ],
+     [
+      360,
+      877
+     ],
+     [
+      371,
+      878
+     ],
+     [
+      381,
+      882
+     ],
+     [
+      390,
+      887
+     ],
+     [
+      398,
+      895
+     ],
+     [
+      403,
+      904
+     ],
+     [
+      407,
+      914
+     ],
+     [
+      408,
+      925
+     ],
+     [
+      408,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "9-3",
+   "world": 9,
+   "name": "Garras na Clareira",
+   "tip": "O Louva-a-deus LEVANTA a linha! Passe os pezinhos do abrigo por baixo das pedras.",
+   "teaches": "Louva-a-deus: travar o abrigo com pedras.",
+   "ink": 445,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      232,
+      941
+     ],
+     "r": 30
+    },
+    {
+     "pos": [
+      488,
+      941
+     ],
+     "r": 30
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "fiapo",
+     "pos": [
+      360,
+      978
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "mantis",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 2,
+     "interval": 2.2,
+     "delay": 0.4
+    },
+    {
+     "insect": "mantis",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 2,
+     "interval": 2.2,
+     "delay": 1.2
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 2.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      206,
+      988
+     ],
+     [
+      286,
+      988
+     ],
+     [
+      286,
+      970
+     ],
+     [
+      288,
+      958
+     ],
+     [
+      293,
+      947
+     ],
+     [
+      302,
+      937
+     ],
+     [
+      314,
+      929
+     ],
+     [
+      328,
+      922
+     ],
+     [
+      344,
+      918
+     ],
+     [
+      360,
+      917
+     ],
+     [
+      376,
+      918
+     ],
+     [
+      392,
+      922
+     ],
+     [
+      406,
+      929
+     ],
+     [
+      418,
+      937
+     ],
+     [
+      427,
+      947
+     ],
+     [
+      432,
+      958
+     ],
+     [
+      434,
+      970
+     ],
+     [
+      434,
+      988
+     ],
+     [
+      514,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      286,
+      988
+     ],
+     [
+      286,
+      970
+     ],
+     [
+      288,
+      958
+     ],
+     [
+      293,
+      947
+     ],
+     [
+      302,
+      937
+     ],
+     [
+      314,
+      929
+     ],
+     [
+      328,
+      922
+     ],
+     [
+      344,
+      918
+     ],
+     [
+      360,
+      917
+     ],
+     [
+      376,
+      918
+     ],
+     [
+      392,
+      922
+     ],
+     [
+      406,
+      929
+     ],
+     [
+      418,
+      937
+     ],
+     [
+      427,
+      947
+     ],
+     [
+      432,
+      958
+     ],
+     [
+      434,
+      970
+     ],
+     [
+      434,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "9-4",
+   "world": 9,
+   "name": "Tesouras no Chão",
+   "tip": "Formigas Tesoura CORTAM a tinta! Tampe os buracos com as pontas da linha antes que elas saiam.",
+   "teaches": "Formiga Tesoura: tampar a saída é melhor que resistir ao corte.",
+   "ink": 340,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "kiko",
+     "pos": [
+      360,
+      961
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      306,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      414,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 3,
+     "interval": 0.7,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      288,
+      988
+     ],
+     [
+      314,
+      988
+     ],
+     [
+      306,
+      947
+     ],
+     [
+      307,
+      935
+     ],
+     [
+      311,
+      924
+     ],
+     [
+      318,
+      913
+     ],
+     [
+      326,
+      905
+     ],
+     [
+      337,
+      898
+     ],
+     [
+      348,
+      894
+     ],
+     [
+      360,
+      893
+     ],
+     [
+      372,
+      894
+     ],
+     [
+      383,
+      898
+     ],
+     [
+      394,
+      905
+     ],
+     [
+      402,
+      913
+     ],
+     [
+      409,
+      924
+     ],
+     [
+      413,
+      935
+     ],
+     [
+      414,
+      947
+     ],
+     [
+      406,
+      988
+     ],
+     [
+      432,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      286.0,
+      988
+     ],
+     [
+      286.0,
+      957
+     ],
+     [
+      288,
+      941
+     ],
+     [
+      293,
+      925
+     ],
+     [
+      302,
+      911
+     ],
+     [
+      314,
+      899
+     ],
+     [
+      328,
+      890
+     ],
+     [
+      344,
+      885
+     ],
+     [
+      360,
+      883
+     ],
+     [
+      376,
+      885
+     ],
+     [
+      392,
+      890
+     ],
+     [
+      406,
+      899
+     ],
+     [
+      418,
+      911
+     ],
+     [
+      427,
+      925
+     ],
+     [
+      432,
+      941
+     ],
+     [
+      434.0,
+      957
+     ],
+     [
+      434.0,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "9-5",
+   "world": 9,
+   "name": "Corredor de Pedra",
+   "tip": "Pedra ninguém corta nem levanta! Só falta uma tampa em cima do Pompom.",
+   "teaches": "Usar o cenário contra quem corta e levanta.",
+   "ink": 100,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       240,
+       880
+      ],
+      [
+       300,
+       880
+      ],
+      [
+       300,
+       1000
+      ],
+      [
+       240,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       362,
+       880
+      ],
+      [
+       422,
+       880
+      ],
+      [
+       422,
+       1000
+      ],
+      [
+       362,
+       1000
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "pompom",
+     "pos": [
+      330,
+      957
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      70,
+      980
+     ],
+     "count": 5,
+     "interval": 0.6,
+     "delay": 0.2
+    },
+    {
+     "insect": "mantis",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 0.2
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 0.6
+    },
+    {
+     "insect": "firefly",
+     "pos": [
+      120,
+      300
+     ],
+     "count": 2,
+     "interval": 1.2,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      286,
+      866
+     ],
+     [
+      331,
+      866
+     ],
+     [
+      376,
+      866
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "9-6",
+   "world": 9,
+   "name": "Enxame Iluminado",
+   "tip": "Dois amigos, dois traços, buracos dos dois lados e um enxame acelerado pelos vagalumes!",
+   "teaches": "Dois abrigos contra um enxame rápido.",
+   "ink": 665,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 2,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "zeca",
+     "pos": [
+      200,
+      975
+     ],
+     "flip": false
+    },
+    {
+     "type": "mel",
+     "pos": [
+      520,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      144,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      256,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      462,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      578,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "firefly",
+     "pos": [
+      360,
+      290
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      640,
+      330
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.9
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      126,
+      988
+     ],
+     [
+      152,
+      988
+     ],
+     [
+      144,
+      971
+     ],
+     [
+      145,
+      960
+     ],
+     [
+      150,
+      949
+     ],
+     [
+      156,
+      940
+     ],
+     [
+      165,
+      932
+     ],
+     [
+      176,
+      926
+     ],
+     [
+      188,
+      922
+     ],
+     [
+      200,
+      921
+     ],
+     [
+      212,
+      922
+     ],
+     [
+      224,
+      926
+     ],
+     [
+      235,
+      932
+     ],
+     [
+      244,
+      940
+     ],
+     [
+      250,
+      949
+     ],
+     [
+      255,
+      960
+     ],
+     [
+      256,
+      971
+     ],
+     [
+      248,
+      988
+     ],
+     [
+      274,
+      988
+     ]
+    ],
+    [
+     [
+      444,
+      988
+     ],
+     [
+      470,
+      988
+     ],
+     [
+      462,
+      935
+     ],
+     [
+      463,
+      922
+     ],
+     [
+      468,
+      910
+     ],
+     [
+      475,
+      899
+     ],
+     [
+      484,
+      890
+     ],
+     [
+      495,
+      883
+     ],
+     [
+      507,
+      878
+     ],
+     [
+      520,
+      877
+     ],
+     [
+      533,
+      878
+     ],
+     [
+      545,
+      883
+     ],
+     [
+      556,
+      890
+     ],
+     [
+      565,
+      899
+     ],
+     [
+      572,
+      910
+     ],
+     [
+      577,
+      922
+     ],
+     [
+      578,
+      935
+     ],
+     [
+      570,
+      988
+     ],
+     [
+      596,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      124.0,
+      988
+     ],
+     [
+      124.0,
+      969
+     ],
+     [
+      126,
+      956
+     ],
+     [
+      132,
+      944
+     ],
+     [
+      141,
+      933
+     ],
+     [
+      153,
+      924
+     ],
+     [
+      167,
+      917
+     ],
+     [
+      183,
+      912
+     ],
+     [
+      200,
+      911
+     ],
+     [
+      217,
+      912
+     ],
+     [
+      233,
+      917
+     ],
+     [
+      247,
+      924
+     ],
+     [
+      259,
+      933
+     ],
+     [
+      268,
+      944
+     ],
+     [
+      274,
+      956
+     ],
+     [
+      276.0,
+      969
+     ],
+     [
+      276.0,
+      988
+     ]
+    ],
+    [
+     [
+      442.0,
+      988
+     ],
+     [
+      442.0,
+      945
+     ],
+     [
+      444,
+      928
+     ],
+     [
+      450,
+      911
+     ],
+     [
+      459,
+      896
+     ],
+     [
+      471,
+      884
+     ],
+     [
+      486,
+      875
+     ],
+     [
+      503,
+      869
+     ],
+     [
+      520,
+      867
+     ],
+     [
+      537,
+      869
+     ],
+     [
+      554,
+      875
+     ],
+     [
+      569,
+      884
+     ],
+     [
+      581,
+      896
+     ],
+     [
+      590,
+      911
+     ],
+     [
+      596,
+      928
+     ],
+     [
+      598.0,
+      945
+     ],
+     [
+      598.0,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "9-7",
+   "world": 9,
+   "name": "Garra e Tesoura",
+   "tip": "TINTA FIRME: a linha não cai nem é levantada. Tesouras nos buracos: pontas em cima deles!",
+   "teaches": "Combinar tampar e Tinta Firme.",
+   "ink": 380,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      274,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      446,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "mantis",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 3,
+     "interval": 1.8,
+     "delay": 0.6
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      620,
+      320
+     ],
+     "count": 4,
+     "interval": 0.6,
+     "delay": 1.4
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      256,
+      988
+     ],
+     [
+      282,
+      988
+     ],
+     [
+      274,
+      966
+     ],
+     [
+      276,
+      951
+     ],
+     [
+      283,
+      937
+     ],
+     [
+      293,
+      924
+     ],
+     [
+      306,
+      914
+     ],
+     [
+      323,
+      906
+     ],
+     [
+      341,
+      901
+     ],
+     [
+      360,
+      899
+     ],
+     [
+      379,
+      901
+     ],
+     [
+      397,
+      906
+     ],
+     [
+      414,
+      914
+     ],
+     [
+      427,
+      924
+     ],
+     [
+      437,
+      937
+     ],
+     [
+      444,
+      951
+     ],
+     [
+      446,
+      966
+     ],
+     [
+      438,
+      988
+     ],
+     [
+      464,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "naive": [
+    [
+     [
+      254.0,
+      988
+     ],
+     [
+      254.0,
+      966
+     ],
+     [
+      257,
+      951
+     ],
+     [
+      264,
+      937
+     ],
+     [
+      277,
+      924
+     ],
+     [
+      294,
+      914
+     ],
+     [
+      314,
+      906
+     ],
+     [
+      336,
+      901
+     ],
+     [
+      360,
+      899
+     ],
+     [
+      384,
+      901
+     ],
+     [
+      406,
+      906
+     ],
+     [
+      426,
+      914
+     ],
+     [
+      443,
+      924
+     ],
+     [
+      456,
+      937
+     ],
+     [
+      463,
+      951
+     ],
+     [
+      466.0,
+      966
+     ],
+     [
+      466.0,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "9-8",
+   "world": 9,
+   "name": "Mil Moscas",
+   "tip": "Moscas que se dividem, um vagalume no meio e Tesouras nos buracos. Pontas em cima dos buracos!",
+   "teaches": "Muitas mosquinhas: nada de frestas.",
+   "ink": 305,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "pingo",
+     "pos": [
+      360,
+      971
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      302,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      418,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      110,
+      330
+     ],
+     "count": 6,
+     "interval": 0.45,
+     "delay": 0.3
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      610,
+      330
+     ],
+     "count": 6,
+     "interval": 0.45,
+     "delay": 0.7
+    },
+    {
+     "insect": "firefly",
+     "pos": [
+      360,
+      270
+     ],
+     "count": 2,
+     "interval": 1.5,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      284,
+      988
+     ],
+     [
+      310,
+      988
+     ],
+     [
+      302,
+      969
+     ],
+     [
+      303,
+      957
+     ],
+     [
+      308,
+      945
+     ],
+     [
+      315,
+      934
+     ],
+     [
+      324,
+      925
+     ],
+     [
+      335,
+      919
+     ],
+     [
+      347,
+      914
+     ],
+     [
+      360,
+      913
+     ],
+     [
+      373,
+      914
+     ],
+     [
+      385,
+      919
+     ],
+     [
+      396,
+      925
+     ],
+     [
+      405,
+      934
+     ],
+     [
+      412,
+      945
+     ],
+     [
+      417,
+      957
+     ],
+     [
+      418,
+      969
+     ],
+     [
+      410,
+      988
+     ],
+     [
+      436,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "9-9",
+   "world": 9,
+   "name": "Parede Dupla",
+   "tip": "Um bando de Tesouras dos dois lados! Cada traço é uma camada a mais para cortar: use os três.",
+   "teaches": "Camadas contra quem corta.",
+   "ink": 1040,
+   "survive": 7.5,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 3,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "fiapo",
+     "pos": [
+      360,
+      978
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 6,
+     "interval": 0.45,
+     "delay": 0.2
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 6,
+     "interval": 0.45,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      296,
+      988
+     ],
+     [
+      296,
+      974
+     ],
+     [
+      298,
+      964
+     ],
+     [
+      302,
+      955
+     ],
+     [
+      310,
+      947
+     ],
+     [
+      320,
+      940
+     ],
+     [
+      332,
+      935
+     ],
+     [
+      346,
+      932
+     ],
+     [
+      360,
+      931
+     ],
+     [
+      374,
+      932
+     ],
+     [
+      388,
+      935
+     ],
+     [
+      400,
+      940
+     ],
+     [
+      410,
+      947
+     ],
+     [
+      418,
+      955
+     ],
+     [
+      422,
+      964
+     ],
+     [
+      424,
+      974
+     ],
+     [
+      424,
+      988
+     ]
+    ],
+    [
+     [
+      262,
+      988
+     ],
+     [
+      262,
+      965
+     ],
+     [
+      264,
+      949
+     ],
+     [
+      272,
+      934
+     ],
+     [
+      283,
+      921
+     ],
+     [
+      299,
+      910
+     ],
+     [
+      317,
+      902
+     ],
+     [
+      338,
+      897
+     ],
+     [
+      360,
+      895
+     ],
+     [
+      382,
+      897
+     ],
+     [
+      403,
+      902
+     ],
+     [
+      421,
+      910
+     ],
+     [
+      437,
+      921
+     ],
+     [
+      448,
+      934
+     ],
+     [
+      456,
+      949
+     ],
+     [
+      458,
+      965
+     ],
+     [
+      458,
+      988
+     ]
+    ],
+    [
+     [
+      228,
+      988
+     ],
+     [
+      228,
+      956
+     ],
+     [
+      231,
+      934
+     ],
+     [
+      241,
+      914
+     ],
+     [
+      257,
+      895
+     ],
+     [
+      278,
+      880
+     ],
+     [
+      303,
+      869
+     ],
+     [
+      331,
+      861
+     ],
+     [
+      360,
+      859
+     ],
+     [
+      389,
+      861
+     ],
+     [
+      417,
+      869
+     ],
+     [
+      442,
+      880
+     ],
+     [
+      463,
+      895
+     ],
+     [
+      479,
+      914
+     ],
+     [
+      489,
+      934
+     ],
+     [
+      492,
+      956
+     ],
+     [
+      492,
+      988
+     ]
+    ]
+   ],
+   "critical_strokes": [
+    0,
+    1,
+    2
+   ],
+   "naive": [
+    [
+     [
+      286,
+      988
+     ],
+     [
+      286,
+      973
+     ],
+     [
+      288,
+      963
+     ],
+     [
+      293,
+      953
+     ],
+     [
+      302,
+      944
+     ],
+     [
+      314,
+      937
+     ],
+     [
+      328,
+      932
+     ],
+     [
+      344,
+      928
+     ],
+     [
+      360,
+      927
+     ],
+     [
+      376,
+      928
+     ],
+     [
+      392,
+      932
+     ],
+     [
+      406,
+      937
+     ],
+     [
+      418,
+      944
+     ],
+     [
+      427,
+      953
+     ],
+     [
+      432,
+      963
+     ],
+     [
+      434,
+      973
+     ],
+     [
+      434,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "9-10",
+   "world": 9,
+   "name": "Rainha da Noite",
+   "tip": "A Rainha sopra vento, o Vagalume acelera e as moscas se dividem. Encoste o abrigo nas pedras!",
+   "teaches": "Chefona com novos ajudantes.",
+   "ink": 365,
+   "survive": 14,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      200,
+      941
+     ],
+     "r": 30
+    },
+    {
+     "pos": [
+      520,
+      941
+     ],
+     "r": 30
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      274,
+      1000
+     ],
+     "count": 3,
+     "interval": 1.0,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      446,
+      1000
+     ],
+     "count": 3,
+     "interval": 1.0,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      90,
+      320
+     ],
+     "count": 5,
+     "interval": 0.9,
+     "delay": 0.5
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      630,
+      320
+     ],
+     "count": 8,
+     "interval": 0.8,
+     "delay": 1.1
+    },
+    {
+     "insect": "firefly",
+     "pos": [
+      360,
+      250
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [
+    {
+     "pos": [
+      360,
+      330
+     ],
+     "sway": 180
+    }
+   ],
+   "solution": [
+    [
+     [
+      256,
+      988
+     ],
+     [
+      282,
+      988
+     ],
+     [
+      274,
+      968
+     ],
+     [
+      276,
+      955
+     ],
+     [
+      283,
+      943
+     ],
+     [
+      293,
+      931
+     ],
+     [
+      306,
+      922
+     ],
+     [
+      323,
+      915
+     ],
+     [
+      341,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      379,
+      910
+     ],
+     [
+      397,
+      915
+     ],
+     [
+      414,
+      922
+     ],
+     [
+      427,
+      931
+     ],
+     [
+      437,
+      943
+     ],
+     [
+      444,
+      955
+     ],
+     [
+      446,
+      968
+     ],
+     [
+      438,
+      988
+     ],
+     [
+      464,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "10-1",
+   "world": 10,
+   "name": "Pum-Pum!",
+   "tip": "O Besouro Pum-Pum MIRA (arco pontilhado) e lança fumaça por cima. Só telhado segura!",
+   "teaches": "Ataque em arco: precisa de teto.",
+   "ink": 310,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "mel",
+     "pos": [
+      380,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bombardier",
+     "pos": [
+      70,
+      980
+     ],
+     "count": 2,
+     "interval": 2.2,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      330,
+      988
+     ],
+     [
+      330,
+      927
+     ],
+     [
+      331,
+      916
+     ],
+     [
+      335,
+      905
+     ],
+     [
+      341,
+      896
+     ],
+     [
+      349,
+      888
+     ],
+     [
+      358,
+      882
+     ],
+     [
+      369,
+      878
+     ],
+     [
+      380,
+      877
+     ],
+     [
+      391,
+      878
+     ],
+     [
+      402,
+      882
+     ],
+     [
+      411,
+      888
+     ],
+     [
+      419,
+      896
+     ],
+     [
+      425,
+      905
+     ],
+     [
+      429,
+      916
+     ],
+     [
+      430,
+      927
+     ],
+     [
+      430,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      195,
+      988
+     ],
+     [
+      222.5,
+      905.5
+     ],
+     [
+      250,
+      838
+     ],
+     [
+      277.5,
+      905.5
+     ],
+     [
+      305,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "10-2",
+   "world": 10,
+   "name": "Canto da Cigarra",
+   "tip": "A Cigarra carrega o canto e EMPURRA a linha com uma onda de som. Pontas nos buracos, encostadas nas pedras!",
+   "teaches": "Cigarra: onda que empurra linhas soltas.",
+   "ink": 305,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      254,
+      978
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      466,
+      978
+     ],
+     "r": 22
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "zeca",
+     "pos": [
+      360,
+      975
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      304,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      416,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "cicada",
+     "pos": [
+      610,
+      320
+     ],
+     "count": 2,
+     "interval": 2.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      120,
+      340
+     ],
+     "count": 8,
+     "interval": 0.35,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      286,
+      988
+     ],
+     [
+      312,
+      988
+     ],
+     [
+      304,
+      967
+     ],
+     [
+      305,
+      955
+     ],
+     [
+      310,
+      943
+     ],
+     [
+      316,
+      932
+     ],
+     [
+      325,
+      923
+     ],
+     [
+      336,
+      917
+     ],
+     [
+      348,
+      912
+     ],
+     [
+      360,
+      911
+     ],
+     [
+      372,
+      912
+     ],
+     [
+      384,
+      917
+     ],
+     [
+      395,
+      923
+     ],
+     [
+      404,
+      932
+     ],
+     [
+      410,
+      943
+     ],
+     [
+      415,
+      955
+     ],
+     [
+      416,
+      967
+     ],
+     [
+      408,
+      988
+     ],
+     [
+      434,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "10-3",
+   "world": 10,
+   "name": "Chuva de Fumaça",
+   "tip": "Besouros Pum-Pum dos DOIS lados e Tesouras nos buracos! Tampe e cubra tudo.",
+   "teaches": "Arcos dos dois lados.",
+   "ink": 355,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "pompom",
+     "pos": [
+      360,
+      957
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      308,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      412,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 3,
+     "interval": 1.6,
+     "delay": 0.2
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 3,
+     "interval": 1.6,
+     "delay": 0.8
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      360,
+      280
+     ],
+     "count": 4,
+     "interval": 0.6,
+     "delay": 1.5
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      290,
+      988
+     ],
+     [
+      316,
+      988
+     ],
+     [
+      308,
+      937
+     ],
+     [
+      309,
+      925
+     ],
+     [
+      313,
+      914
+     ],
+     [
+      319,
+      905
+     ],
+     [
+      328,
+      896
+     ],
+     [
+      337,
+      890
+     ],
+     [
+      348,
+      886
+     ],
+     [
+      360,
+      885
+     ],
+     [
+      372,
+      886
+     ],
+     [
+      383,
+      890
+     ],
+     [
+      392,
+      896
+     ],
+     [
+      401,
+      905
+     ],
+     [
+      407,
+      914
+     ],
+     [
+      411,
+      925
+     ],
+     [
+      412,
+      937
+     ],
+     [
+      404,
+      988
+     ],
+     [
+      430,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "10-4",
+   "world": 10,
+   "name": "Gruta da Brasa",
+   "tip": "TINTA FIRME: a tampa não cai nem é empurrada. Feche a gruta da Brasa!",
+   "teaches": "Tinta Firme contra empurrões.",
+   "ink": 105,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       258,
+       860
+      ],
+      [
+       318,
+       860
+      ],
+      [
+       318,
+       1000
+      ],
+      [
+       258,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       382,
+       860
+      ],
+      [
+       442,
+       860
+      ],
+      [
+       442,
+       1000
+      ],
+      [
+       382,
+       1000
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "brasa",
+     "pos": [
+      350,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bombardier",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 3,
+     "interval": 1.5,
+     "delay": 0.2
+    },
+    {
+     "insect": "cicada",
+     "pos": [
+      600,
+      300
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "wasp",
+     "pos": [
+      120,
+      320
+     ],
+     "count": 3,
+     "interval": 1.2,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      304,
+      846
+     ],
+     [
+      350,
+      846
+     ],
+     [
+      396,
+      846
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "10-5",
+   "world": 10,
+   "name": "Lava e Tesouras",
+   "tip": "Tesouras nos buracos e fumaça vindo pelo alto! Tampe e cubra.",
+   "teaches": "Tampar + telhado.",
+   "ink": 340,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "kiko",
+     "pos": [
+      360,
+      961
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      306,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      414,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 3,
+     "interval": 1.6,
+     "delay": 0.5
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      288,
+      988
+     ],
+     [
+      314,
+      988
+     ],
+     [
+      306,
+      947
+     ],
+     [
+      307,
+      935
+     ],
+     [
+      311,
+      924
+     ],
+     [
+      318,
+      913
+     ],
+     [
+      326,
+      905
+     ],
+     [
+      337,
+      898
+     ],
+     [
+      348,
+      894
+     ],
+     [
+      360,
+      893
+     ],
+     [
+      372,
+      894
+     ],
+     [
+      383,
+      898
+     ],
+     [
+      394,
+      905
+     ],
+     [
+      402,
+      913
+     ],
+     [
+      409,
+      924
+     ],
+     [
+      413,
+      935
+     ],
+     [
+      414,
+      947
+     ],
+     [
+      406,
+      988
+     ],
+     [
+      432,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      286.0,
+      988
+     ],
+     [
+      286.0,
+      957
+     ],
+     [
+      288,
+      941
+     ],
+     [
+      293,
+      925
+     ],
+     [
+      302,
+      911
+     ],
+     [
+      314,
+      899
+     ],
+     [
+      328,
+      890
+     ],
+     [
+      344,
+      885
+     ],
+     [
+      360,
+      883
+     ],
+     [
+      376,
+      885
+     ],
+     [
+      392,
+      890
+     ],
+     [
+      406,
+      899
+     ],
+     [
+      418,
+      911
+     ],
+     [
+      427,
+      925
+     ],
+     [
+      432,
+      941
+     ],
+     [
+      434.0,
+      957
+     ],
+     [
+      434.0,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "10-6",
+   "world": 10,
+   "name": "Grilos no Fogo",
+   "tip": "Grilos nos buracos e a Cigarra empurrando. Pontas nos buracos, encostadas nas pedras!",
+   "teaches": "Pulo + empurrão.",
+   "ink": 380,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      224,
+      978
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      496,
+      978
+     ],
+     "r": 22
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "cricket",
+     "pos": [
+      274,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "cricket",
+     "pos": [
+      446,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "cricket",
+     "pos": [
+      80,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.9,
+     "delay": 0.6,
+     "hole": true
+    },
+    {
+     "insect": "cicada",
+     "pos": [
+      360,
+      270
+     ],
+     "count": 2,
+     "interval": 2.4,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      256,
+      988
+     ],
+     [
+      282,
+      988
+     ],
+     [
+      274,
+      966
+     ],
+     [
+      276,
+      951
+     ],
+     [
+      283,
+      937
+     ],
+     [
+      293,
+      924
+     ],
+     [
+      306,
+      914
+     ],
+     [
+      323,
+      906
+     ],
+     [
+      341,
+      901
+     ],
+     [
+      360,
+      899
+     ],
+     [
+      379,
+      901
+     ],
+     [
+      397,
+      906
+     ],
+     [
+      414,
+      914
+     ],
+     [
+      427,
+      924
+     ],
+     [
+      437,
+      937
+     ],
+     [
+      444,
+      951
+     ],
+     [
+      446,
+      966
+     ],
+     [
+      438,
+      988
+     ],
+     [
+      464,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "10-7",
+   "world": 10,
+   "name": "Muralha de Três",
+   "tip": "Três amigos e três traços. Moscas, vespas e fumaça — cada um precisa do seu telhado!",
+   "teaches": "Três abrigos sob pressão.",
+   "ink": 875,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 3,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "pompom",
+     "pos": [
+      140,
+      957
+     ],
+     "flip": false
+    },
+    {
+     "type": "brasa",
+     "pos": [
+      360,
+      953
+     ],
+     "flip": false
+    },
+    {
+     "type": "zeca",
+     "pos": [
+      580,
+      975
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "leafcutter",
+     "pos": [
+      304,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "leafcutter",
+     "pos": [
+      416,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.9,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      360,
+      270
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "wasp",
+     "pos": [
+      90,
+      330
+     ],
+     "count": 3,
+     "interval": 1.3,
+     "delay": 1.0
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      680,
+      980
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 0.6
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      96,
+      988
+     ],
+     [
+      96,
+      929
+     ],
+     [
+      97,
+      919
+     ],
+     [
+      100,
+      910
+     ],
+     [
+      106,
+      902
+     ],
+     [
+      113,
+      895
+     ],
+     [
+      121,
+      889
+     ],
+     [
+      130,
+      886
+     ],
+     [
+      140,
+      885
+     ],
+     [
+      150,
+      886
+     ],
+     [
+      159,
+      889
+     ],
+     [
+      167,
+      895
+     ],
+     [
+      174,
+      902
+     ],
+     [
+      180,
+      910
+     ],
+     [
+      183,
+      919
+     ],
+     [
+      184,
+      929
+     ],
+     [
+      184,
+      988
+     ]
+    ],
+    [
+     [
+      286,
+      988
+     ],
+     [
+      312,
+      988
+     ],
+     [
+      304,
+      933
+     ],
+     [
+      305,
+      921
+     ],
+     [
+      310,
+      909
+     ],
+     [
+      316,
+      898
+     ],
+     [
+      325,
+      889
+     ],
+     [
+      336,
+      883
+     ],
+     [
+      348,
+      878
+     ],
+     [
+      360,
+      877
+     ],
+     [
+      372,
+      878
+     ],
+     [
+      384,
+      883
+     ],
+     [
+      395,
+      889
+     ],
+     [
+      404,
+      898
+     ],
+     [
+      410,
+      909
+     ],
+     [
+      415,
+      921
+     ],
+     [
+      416,
+      933
+     ],
+     [
+      408,
+      988
+     ],
+     [
+      434,
+      988
+     ]
+    ],
+    [
+     [
+      532,
+      988
+     ],
+     [
+      532,
+      969
+     ],
+     [
+      533,
+      958
+     ],
+     [
+      537,
+      948
+     ],
+     [
+      542,
+      939
+     ],
+     [
+      550,
+      931
+     ],
+     [
+      559,
+      926
+     ],
+     [
+      569,
+      922
+     ],
+     [
+      580,
+      921
+     ],
+     [
+      591,
+      922
+     ],
+     [
+      601,
+      926
+     ],
+     [
+      610,
+      931
+     ],
+     [
+      618,
+      939
+     ],
+     [
+      623,
+      948
+     ],
+     [
+      627,
+      958
+     ],
+     [
+      628,
+      969
+     ],
+     [
+      628,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
+  },
+  {
+   "id": "10-8",
+   "world": 10,
+   "name": "Fumaça Dupla",
+   "tip": "Bombardeio dos dois lados e um vagalume acelerando tudo. Telhado alto e firme!",
+   "teaches": "Muita pressão de cima.",
+   "ink": 320,
+   "survive": 12,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "fiapo",
+     "pos": [
+      360,
+      978
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      286,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      434,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 4,
+     "interval": 1.3,
+     "delay": 0.2
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 4,
+     "interval": 1.3,
+     "delay": 0.6
+    },
+    {
+     "insect": "firefly",
+     "pos": [
+      360,
+      260
+     ],
+     "count": 2,
+     "interval": 1.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 1.5
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      268,
+      988
+     ],
+     [
+      294,
+      988
+     ],
+     [
+      286,
+      971
+     ],
+     [
+      288,
+      960
+     ],
+     [
+      293,
+      949
+     ],
+     [
+      302,
+      940
+     ],
+     [
+      314,
+      932
+     ],
+     [
+      328,
+      926
+     ],
+     [
+      344,
+      922
+     ],
+     [
+      360,
+      921
+     ],
+     [
+      376,
+      922
+     ],
+     [
+      392,
+      926
+     ],
+     [
+      406,
+      932
+     ],
+     [
+      418,
+      940
+     ],
+     [
+      427,
+      949
+     ],
+     [
+      432,
+      960
+     ],
+     [
+      434,
+      971
+     ],
+     [
+      426,
+      988
+     ],
+     [
+      452,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "10-9",
+   "world": 10,
+   "name": "Cratera",
+   "tip": "A Mel caiu numa cratera! Uma tampa de Tinta Firme por cima resolve — se você achar os apoios.",
+   "teaches": "Achar o apoio no cenário.",
+   "ink": 110,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       326,
+       1000
+      ],
+      [
+       326,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       326,
+       1100
+      ],
+      [
+       394,
+       1100
+      ],
+      [
+       394,
+       1800
+      ],
+      [
+       326,
+       1800
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       394,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       394,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "mel",
+     "pos": [
+      360,
+      1053
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 8,
+     "interval": 0.4,
+     "delay": 0.2
+    },
+    {
+     "insect": "cicada",
+     "pos": [
+      600,
+      300
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 3,
+     "interval": 1.5,
+     "delay": 0.6
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      312,
+      986
+     ],
+     [
+      360,
+      986
+     ],
+     [
+      408,
+      986
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "10-10",
+   "world": 10,
+   "name": "Coração do Vulcão",
+   "tip": "O grande final: o Caranguejo Rei joga conchas, Pum-Pum lança fumaça e a Cigarra canta. Abrigo firme!",
+   "teaches": "Chefão final.",
+   "ink": 380,
+   "survive": 13,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      118,
+      941
+     ],
+     "r": 30
+    },
+    {
+     "pos": [
+      342,
+      941
+     ],
+     "r": 30
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "mel",
+     "pos": [
+      230,
+      953
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "crab",
+     "pos": [
+      172,
+      1000
+     ],
+     "count": 2,
+     "interval": 1.2,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "crab",
+     "pos": [
+      288,
+      1000
+     ],
+     "count": 2,
+     "interval": 1.2,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "bombardier",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 3,
+     "interval": 1.6,
+     "delay": 0.8
+    },
+    {
+     "insect": "cicada",
+     "pos": [
+      100,
+      300
+     ],
+     "count": 2,
+     "interval": 2.6,
+     "delay": 1.2
+    },
+    {
+     "insect": "fly",
+     "pos": [
+      360,
+      260
+     ],
+     "count": 5,
+     "interval": 0.6,
+     "delay": 1.6
+    }
+   ],
+   "bosses": [
+    {
+     "kind": "crab_king",
+     "pos": [
+      590,
+      955
+     ],
+     "sway": 40,
+     "every": 3.0,
+     "delay": 0.8
+    }
+   ],
+   "solution": [
+    [
+     [
+      154,
+      988
+     ],
+     [
+      180,
+      988
+     ],
+     [
+      172,
+      935
+     ],
+     [
+      173,
+      922
+     ],
+     [
+      178,
+      910
+     ],
+     [
+      185,
+      899
+     ],
+     [
+      194,
+      890
+     ],
+     [
+      205,
+      883
+     ],
+     [
+      217,
+      878
+     ],
+     [
+      230,
+      877
+     ],
+     [
+      243,
+      878
+     ],
+     [
+      255,
+      883
+     ],
+     [
+      266,
+      890
+     ],
+     [
+      275,
+      899
+     ],
+     [
+      282,
+      910
+     ],
+     [
+      287,
+      922
+     ],
+     [
+      288,
+      935
+     ],
+     [
+      280,
+      988
+     ],
+     [
+      306,
+      988
+     ]
+    ]
+   ],
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true,
+   "no_daily": true
   }
  ]
 }

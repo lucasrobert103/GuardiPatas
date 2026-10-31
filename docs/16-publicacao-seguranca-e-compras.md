@@ -2,6 +2,8 @@
 
 Revisão em 30/10/2026. Branch `ccr-69427eab-1v26vu`.
 
+> **Atualização 0.8 (31/10/2026):** a loja passou a 18 produtos (ver doc 23) e ganhou o adaptador `src/autoload/play_billing.gd` para o plugin GodotGooglePlayBilling, que só entrega depois da verificação no servidor configurado em `guardipatas/billing/verify_url` e falha fechado sem plugin ou sem servidor. O fluxo real não foi testado em aparelho; os bloqueios abaixo continuam valendo.
+
 **Parecer: ainda não elegível para publicar com compras reais.** O jogo pode ser preparado para testes internos; não há evidência de AAB assinado, instalação Android ou aprovação da Play Console. A revisão de código e os testes headless não equivalem a auditoria independente ou certificação de segurança.
 
 ## O que foi implementado

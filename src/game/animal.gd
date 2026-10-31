@@ -21,6 +21,9 @@ const SPECIES := {
 	"tito": {"name": "Tito", "shape": "circle", "r": 24.0, "h": 0.0, "mass": 1.0, "rolls": false, "shell": 0, "swims": true},
 	"patinha": {"name": "Patinha", "shape": "circle", "r": 22.0, "h": 0.0, "mass": 0.5, "rolls": false, "shell": 0, "swims": true},
 	"kiko": {"name": "Kiko", "shape": "vcapsule", "r": 24.0, "h": 76.0, "mass": 0.7, "rolls": false, "shell": 0, "swims": false},
+	"zeca": {"name": "Zeca", "shape": "circle", "r": 24.0, "h": 0.0, "mass": 0.9, "rolls": false, "shell": 0, "swims": true},
+	"mel": {"name": "Mel", "shape": "vcapsule", "r": 27.0, "h": 92.0, "mass": 4.5, "rolls": false, "shell": 0, "swims": false},
+	"fiapo": {"name": "Fiapo", "shape": "hcapsule", "r": 21.0, "h": 88.0, "mass": 2.0, "rolls": false, "shell": 1, "swims": false},
 }
 
 const SCARE_RADIUS := 210.0
@@ -29,7 +32,7 @@ const SCARE_VOICE := {
 	"capi": ["gasp", 0.75], "brasa": ["gasp", 1.2], "pingo": ["gasp", 1.45], "nino": ["gasp", 1.7],
 	"tuca": ["gasp", 0.6], "lulu": ["bloop", 1.2], "gelinho": ["gasp", 1.3], "nuvem": ["baa", 1.0],
 	"kiko": ["gasp", 0.9], "tata": ["gasp", 1.1], "pompom": ["gasp", 1.6], "patinha": ["quack", 1.0],
-	"fofa": ["gasp", 0.8], "tito": ["bloop", 0.9],
+	"fofa": ["gasp", 0.8], "tito": ["bloop", 0.9], "zeca": ["bloop", 1.4], "mel": ["gasp", 0.65], "fiapo": ["gasp", 0.8],
 }
 
 var species := "capi"

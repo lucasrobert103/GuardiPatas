@@ -37,6 +37,9 @@ const RAM_RECOVERY := 1.55
 var _ram_charge := 0.0
 var _ram_cooldown := 0.0
 var _ram_direction := 0.0
+## Luz do Vagalume: até este instante (tempo da simulação) o inseto fica mais rápido.
+var boost_until := -1.0
+const BOOST := 1.35
 
 
 func setup(p_level: Level, p_kind: String) -> void:
@@ -89,6 +92,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		art.dazed = false
 		_behave(delta)
+	art.boosted = boost_until >= 0.0 and boosted() and not calmed
 	if absf(linear_velocity.x) > 8.0:
 		art.facing = signf(linear_velocity.x)
 	if global_position.y > 1700.0 or global_position.y < -900.0 or absf(global_position.x - 360.0) > 1400.0:
@@ -185,7 +189,13 @@ func predicted_target(seconds: float) -> Vector2:
 	return point
 
 
+func boosted() -> bool:
+	return level != null and level._sim_time < boost_until
+
+
 func _steer_velocity(desired: Vector2, gain: float) -> void:
+	if boosted():
+		desired *= BOOST
 	apply_central_force((desired - linear_velocity) * mass * gain)
 
 
@@ -225,7 +235,7 @@ func _walk_toward(point: Vector2, climb_height: float, push_force: float) -> voi
 	var dir := signf(point.x - global_position.x)
 	if dir == 0.0:
 		return
-	var dvx := dir * max_speed - linear_velocity.x
+	var dvx := dir * max_speed * (BOOST if boosted() else 1.0) - linear_velocity.x
 	var f := clampf(dvx * mass * agility, -push_force, push_force)
 	apply_central_force(Vector2(f, 0.0))
 	if climb_height <= 0.0 or not _on_ground():

@@ -6,8 +6,9 @@ extends StaticBody2D
 ## Buraco: fica rente ao chão, não bloqueia o desenho e pode ser TAMPADO — se uma linha
 ## ou caixa cobrir os dois lados da boca quando um inseto for sair, ele não sai.
 
-const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar", "cricket", "broca", "spider", "crab", "jellyfish", "puffer", "drillfish"]
-const FLYERS := ["bee", "mosquito", "wasp", "moth", "broca"]
+const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar", "cricket", "broca", "spider", "crab", "jellyfish", "puffer", "drillfish",
+	"firefly", "fly", "cicada", "bombardier", "mantis", "leafcutter"]
+const FLYERS := ["bee", "mosquito", "wasp", "moth", "broca", "firefly", "fly", "cicada"]
 const SEA := ["jellyfish", "puffer", "drillfish"]
 const PLUG_RADIUS := 2.0
 const MOUTH_HALF_WIDTH := 12.0
@@ -180,6 +181,12 @@ static func make_insect(kind: String) -> Insect:
 		"crab": return Crab.new()
 		"jellyfish": return Jellyfish.new()
 		"puffer": return Puffer.new()
+		"firefly": return Firefly.new()
+		"fly": return Fly.new()
+		"cicada": return Cicada.new()
+		"bombardier": return Bombardier.new()
+		"mantis": return Mantis.new()
+		"leafcutter": return Leafcutter.new()
 	return Bee.new()
 
 
@@ -217,6 +224,12 @@ func _draw() -> void:
 			col = Color("c4b0e0")
 		elif insect == "broca":
 			col = Color("a07a5a")
+		elif insect == "firefly":
+			col = Color("d6f27a")
+		elif insect == "fly":
+			col = Color("9fb7a8")
+		elif insect == "cicada":
+			col = Color("9ccf8a")
 		for i in 4:
 			var w := (24.0 - absf(i - 1.5) * 5.0) * s
 			DrawUtil.oval(self, Vector2(0, -18 + i * 12.0) * s, Vector2(w, 9.0 * s), col, o, 3.0)

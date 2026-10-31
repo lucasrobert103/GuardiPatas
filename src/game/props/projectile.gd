@@ -14,18 +14,18 @@ var _spin := 0.0
 func setup(p_level: Level, p_kind: String) -> void:
 	level = p_level
 	kind = p_kind
-	radius = 15.0 if kind == "snow" else 12.0
-	life = 6.0 if kind == "snow" else 5.0
+	radius = 15.0 if kind == "snow" else (10.0 if kind == "puff" else 12.0)
+	life = 6.0 if kind == "snow" else (2.6 if kind == "puff" else 5.0)
 	# camada própria, que os insetos não enxergam: uma bola de neve rápida "atiraria"
 	# a abelha através da linha
 	collision_layer = Layers.PROJECTILE
 	collision_mask = Layers.TERRAIN | Layers.LINE | Layers.ANIMAL | Layers.PROP | Layers.NEST | Layers.PROJECTILE
-	mass = 1.2 if kind == "snow" else 0.8
+	mass = 1.2 if kind == "snow" else (0.35 if kind == "puff" else 0.8)
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 	contact_monitor = true
 	max_contacts_reported = 4
 	var mat := PhysicsMaterial.new()
-	mat.bounce = 0.2 if kind == "snow" else 0.45
+	mat.bounce = 0.2 if kind == "snow" else (0.1 if kind == "puff" else 0.45)
 	mat.friction = 0.3
 	physics_material_override = mat
 	var cs := CollisionShape2D.new()
@@ -38,7 +38,7 @@ func setup(p_level: Level, p_kind: String) -> void:
 
 func _on_hit(body: Node) -> void:
 	if body is Animal and linear_velocity.length() > 140.0 and level != null:
-		level.on_animal_bonked(body as Animal, "snow" if kind == "snow" else "shell")
+		level.on_animal_bonked(body as Animal, kind if kind in ["snow", "puff"] else "shell")
 	elif linear_velocity.length() > 180.0:
 		Sfx.play("line_land", -6.0, 1.3 if kind == "shell" else 0.7, 0.1, 0.1)
 
@@ -59,7 +59,13 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var o := Palette.OUTLINE
-	if kind == "snow":
+	if kind == "puff":
+		# bolinha de fumaça quente do Besouro Pum-Pum
+		for k in 3:
+			var a := _t * 5.0 + TAU * k / 3.0
+			DrawUtil.disc(self, Vector2.from_angle(a) * radius * 0.45, radius * 0.7, Color("ffb067").lerp(Color("fff0c2"), k * 0.3), o, 2.0)
+		draw_circle(Vector2(-2, -3), 3.0, Color(1, 1, 1, 0.8), true, -1.0, true)
+	elif kind == "snow":
 		DrawUtil.disc(self, Vector2.ZERO, radius, Color("f6fbff"), o, 3.0)
 		draw_circle(Vector2(-5, -5), 4.0, Color(1, 1, 1), true, -1.0, true)
 		draw_arc(Vector2.ZERO, radius - 4.0, 0.3, 1.6, 8, Color("bfd9f0"), 2.5, true)

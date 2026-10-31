@@ -39,7 +39,31 @@ func _ready() -> void:
 		check(Store.checkout("pet_" + pet, "order-" + pet)["ok"], "adoção " + pet)
 		check(Store.has_pet(pet), "direito de companheiro " + pet)
 		check(not Store.checkout("pet_" + pet, "repeat-" + pet)["ok"], "companheiro não repete")
-	check(Store.companions().size() == 3, "três companheiros")
+	check(Store.companions().size() == Store.PETS.size(), "todos os companheiros")
+	check(Store.fully_owned("pet_lumi"), "bichinho avulso adquirido")
+	# pacotes, efeitos e Pata Dourada
+	check(Store.checkout("effects_all", "fx-1")["ok"], "pacote de efeitos")
+	check(Game.EFFECTS.keys().all(func(fx): return Game.owns_effect(fx)), "todos os efeitos liberados")
+	check(not Store.checkout("effects_all", "fx-2")["ok"], "pacote de efeitos não repete")
+	check(Game.equip_effect("capi", "fogo") and Game.effect_of("capi") == "fogo", "equipa efeito")
+	check(Game.equip_effect("capi", "fogo") and Game.effect_of("capi") == "", "tira efeito")
+	check(Game.effect_of("faisca") == "fogo", "bichinho mágico tem efeito próprio")
+	check(not Store.has_vip(), "sem Pata Dourada")
+	check(Store.checkout("vip_coins", "vip-1")["ok"] and Store.has_vip(), "Pata Dourada ativa")
+	var c0 := Game.coins()
+	var gain: int = Game.complete_level("store-test-level", 3, 0.5, [])["coins"]
+	check(gain > 0 and Game.coins() == c0 + gain and gain == 2 * Scoring.coins_for(0, 3), "Pata Dourada dobra as moedas da fase")
+	var h0 := Game.hints()
+	check(Store.checkout("hints_10", "hints-1")["ok"] and Game.hints() == h0 + 10, "pacote de dicas")
+	c0 = Game.coins()
+	check(Store.checkout("coins_12000", "big-1")["ok"] and Game.coins() == c0 + 12000, "tesouro de moedas")
+	var fx_price: int = Game.EFFECTS["neve"]["price"]
+	Game.data["fx_owned"].erase("neve")
+	c0 = Game.coins()
+	check(Game.buy_effect("neve") and Game.coins() == c0 - fx_price, "efeito comprado com moedas")
+	check(not Game.buy_effect("neve"), "efeito não cobra duas vezes")
+	for id in Store.PRODUCTS:
+		check(Store.CATEGORIES.any(func(c): return c[0] == str(Store.PRODUCTS[id].get("category", ""))), "produto %s tem aba" % id)
 	for item in ["pirata", "fones", "gravata", "halo"]:
 		check(Game.buy_item(item), "compra cosmético " + item)
 		Game.equip("amora", item)
@@ -65,12 +89,12 @@ func _ready() -> void:
 	screen._pay()
 	screen._pay()
 	check(Game.coins() == balance + 300, "pagar confirma uma única entrega")
-	check(screen._status.text.contains("sucesso"), "confirmação visível")
+	check(screen._status.text == tr("Compra de teste realizada com sucesso! Conteúdo liberado. Nenhuma cobrança foi feita."), "confirmação visível")
 	screen.queue_free()
 	var home := HomeScreen.new()
 	add_child(home)
 	await get_tree().process_frame
-	check(home._pets.size() == 3, "novos animais aparecem na Casinha")
+	check(home._pets.size() == Store.PETS.size(), "novos animais aparecem na Casinha")
 	home.queue_free()
 	# Persistência e falha de disco usam diretório XDG separado no comando de teste.
 	if not OS.get_cmdline_user_args().has("--test-io") or not OS.get_environment("XDG_DATA_HOME").ends_with("/guardipatas-store-tests"):
@@ -81,7 +105,7 @@ func _ready() -> void:
 	Game.set_setting("colorblind", 2)
 	check(Game.save(), "save atômico")
 	Game.load_save()
-	check(Game.coins() == balance + 300 and Store.companions().size() == 3, "recarga preserva moedas e direitos")
+	check(Game.coins() == balance + 300 and Store.companions().size() == Store.PETS.size(), "recarga preserva moedas e direitos")
 	check(int(Game.setting("colorblind")) == 2, "configuração numérica preservada no JSON")
 	check(not Store.checkout("coins_300", "order-1")["ok"], "replay rejeitado após recarga")
 	DirAccess.make_dir_absolute(Game.save_path() + ".tmp")

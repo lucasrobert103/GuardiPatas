@@ -19,6 +19,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Versão 0.8: 83 fases, novos insetos, loja cheia e editor refeito
+
+**Mundo 9 — Bosque dos Vagalumes** e **Mundo 10 — Vulcão Fumegante**: 20 fases novas, bem mais difíceis, com 6 insetos que têm poderes próprios (Vagalume que acelera o enxame, Mosca que se divide, Cigarra que empurra a linha com som, Besouro Pum-Pum que lança fumaça em arco, Louva-a-deus que levanta a linha e Formiga Tesoura que corta a tinta) e 3 bichinhos novos (Zeca, Mel e Fiapo). O editor agora cabe em qualquer celular e mostra todos os bichinhos e insetos; a tela inicial ficou mais limpa, com bichinhos passando. A Loja ganhou abas, 4 bichinhos mágicos com efeitos especiais, 8 efeitos e 18 produtos. Veja [o que mudou, como testar e o que falta para compras reais](docs/23-versao-0-8-mundos-loja-editor.md).
+
 ## Campanha 0.4: mais estratégia
 
 As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, camadas contra brocas, rampas até as tocas e ancoragem contra vento. As duas primeiras ensinam o desenho; depois é preciso ler o cenário e administrar a tinta. Os objetivos iniciais não mostram mais a receita da solução. Veja [o que mudou e como testar](docs/18-estrategia-e-dificuldade.md).
@@ -50,10 +54,10 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 **Não publicar com compras reais ainda.** Consulte a [revisão de segurança e os requisitos de publicação](docs/16-publicacao-seguranca-e-compras.md) antes de integrar Google Play Billing ou preencher a Play Console. Não há API de pagamento real nesta entrega.
 
 ## O que já tem
-- **63 fases em 8 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, **Montanha Gelada, Praia do Sol, Fundo do Mar**) + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
+- **83 fases em 10 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, Montanha Gelada, Praia do Sol, Fundo do Mar, **Bosque dos Vagalumes e Vulcão Fumegante**) + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
 - **Estratégia de verdade:** buracos para tampar, Tinta Firme para rampas e tobogãs, tocas de destino, abelha que fura a linha, iscas de mel, cocos caindo, vento e correnteza — e o teste automático garante que o **círculo genérico perde** nessas fases.
-- **14 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca) e Tito (polvo) — **cada um com seu próprio jeito e som de susto**.
-- **15 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva, baiacu e **Baiacu-broca**.
+- **17 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca), Tito (polvo), **Zeca (sapo), Mel (ursinha) e Fiapo (bicho-preguiça)** — **cada um com seu próprio jeito e som de susto**.
+- **21 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva, baiacu, Baiacu-broca e **Vagalume, Mosca Gêmea, Cigarra, Besouro Pum-Pum, Louva-a-deus e Formiga Tesoura**.
 - **Modo Livre** com tinta infinita nas fases já vencidas, **57 conquistas**, 15 acessórios e abertura com o logo da **RetroNexa**.
 - **Desafio do Dia**, **medalhas extras** (Pegada Dourada, De Primeira, Relâmpago), **Casinha da Turma**, **Álbum de fotos** das vitórias e **editor de fases**.
 - **Português, inglês e espanhol**, texto grande e correção de cores para daltonismo.
@@ -89,6 +93,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 23 | [Versão 0.8: editor, tela inicial, mundos 9–10, novos insetos, loja e compras reais](docs/23-versao-0-8-mundos-loja-editor.md) |
 
 ## Decisão técnica
 **Godot 4.7.2 + GDScript.** A mecânica central — criar um corpo físico de forma livre a cada tentativa e validar o traço contra o cenário — é natural no Godot; ele roda **headless com passo fixo**, o que permite testar automaticamente se cada fase é solucionável; é **MIT, sem royalties**, leve para celulares modestos e guarda cenas/dados em texto. Detalhes e fontes no [doc 02](docs/02-pesquisa-tecnologica.md).

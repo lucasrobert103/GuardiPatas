@@ -25,6 +25,23 @@ func _ready() -> void:
 	get_window().size = sz
 	get_tree().root.content_scale_size = Vector2i(720, 1280)
 	await get_tree().process_frame
+	if screen.begins_with("level:"):
+		var idx := LevelDB.index_of(screen.substr(6))
+		var lv := Level.new()
+		lv.setup(idx, LevelDB.get_level(idx), true)
+		add_child(lv)
+		await get_tree().physics_frame
+		for st in lv.solution_strokes():
+			lv.drawer.feed_stroke(st)
+			await get_tree().physics_frame
+		if lv.state == Level.State.DRAWING:
+			lv.start_simulation()
+		await get_tree().create_timer(wait).timeout
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(out)
+		print("salvo ", out)
+		get_tree().quit()
+		return
 	var c: Control
 	match screen:
 		"editor":
@@ -32,10 +49,47 @@ func _ready() -> void:
 			ed.custom_index = -1
 			c = ed
 		"store": c = StoreScreen.new()
+		"magic":
+			c = Control.new()
+			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			c.add_child(MenuBg.new())
+			var pets := ["faisca", "lumi", "cometa", "pipoca", "capi", "mel", "zeca", "kiko"]
+			var fxs := ["", "", "", "", "coracoes", "bolhas", "neve", "folhas"]
+			for i in pets.size():
+				var a := AnimalArt.new()
+				a.species = pets[i]
+				a.preview = true
+				a.effect = fxs[i]
+				a.scale = Vector2(1.5, 1.5)
+				a.position = Vector2(180 + (i % 2) * 360, 170 + (i / 2) * 290)
+				c.add_child(a)
+		"gallery":
+			c = Control.new()
+			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			c.add_child(MenuBg.new())
+			var sp := ["zeca", "mel", "fiapo", "capi", "kiko"]
+			for i in sp.size():
+				for m in 2:
+					var a := AnimalArt.new()
+					a.species = sp[i]
+					a.preview = true
+					a.mood = "idle" if m == 0 else "scared"
+					a.scale = Vector2(1.6, 1.6)
+					a.position = Vector2(180 + m * 360, 160 + i * 220)
+					c.add_child(a)
+			var kinds := ["firefly", "fly", "cicada", "bombardier", "mantis", "leafcutter"]
+			for i in kinds.size():
+				var ia := InsectArt.new()
+				ia.kind = kinds[i]
+				ia.radius = 22.0
+				ia.aiming = i % 2 == 0
+				ia.aim_progress = 0.6
+				ia.position = Vector2(90 + (i % 3) * 270, 1180 + (i / 3) * 70)
+				c.add_child(ia)
 		"collection": c = CollectionScreen.new()
-		"map":
+		"map", "map9", "map10":
 			var m := LevelSelect.new()
-			m.setup(-1)
+			m.setup(-1 if screen == "map" else int(screen.substr(3)))
 			c = m
 		_: c = TitleScreen.new()
 	c.theme = UiKit.make_theme()

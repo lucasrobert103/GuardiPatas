@@ -27,11 +27,11 @@ static func reward(streak: int) -> int:
 	return 30 + 5 * mini(maxi(streak - 1, 0), 6)
 
 
-## Fases que podem virar desafio: sem toca de destino e sem chefão.
+## Fases que podem virar desafio: sem toca de destino, sem chefão e fora dos mundos de especialista.
 static func eligible(index: int) -> bool:
 	var lv := LevelDB.get_level(index)
 	return not lv.is_empty() and not lv.has("goal") and (lv.get("bosses", []) as Array).is_empty() \
-		and not (lv.get("solution", []) as Array).is_empty()
+		and not (lv.get("solution", []) as Array).is_empty() and not bool(lv.get("no_daily", false))
 
 
 ## Fases já liberadas pelo jogador (pelo menos as 6 primeiras), para o desafio usar mecânicas conhecidas.

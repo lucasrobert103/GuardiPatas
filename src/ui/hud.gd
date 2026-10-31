@@ -317,6 +317,7 @@ const LOSE_TEXT := {
 	"time": ["O tempo acabou!", "Desenhe uma rampa de Tinta Firme que leve o bichinho até a toca."],
 	"coconut": ["Bonk!", "O coco cai onde a linha pontilhada mostra. Proteja por cima ou desvie!"],
 	"snow": ["Bonk de neve!", "A Coruja avisa com X no chão onde a neve vai cair. Telhado inclinado faz a neve escorregar!"],
+	"puff": ["Bonk de fumaça!", "O Besouro Pum-Pum mostra o arco pontilhado antes de lançar. Só um telhado segura!"],
 	"shell": ["Bonk de concha!", "O Caranguejo Rei mostra o arco pontilhado antes de jogar. Faça uma parede do lado dele!"],
 	"hug": ["Abraço apertado!", "O Polvo Gigante suga tudo! Prenda o abrigo embaixo das pedras para ele não subir."],
 	"sting": ["Ai! Uma picadinha!", "Procure frestas: os insetos deslizam pela linha até achar uma brecha."],

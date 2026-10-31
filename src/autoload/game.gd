@@ -30,6 +30,18 @@ const ITEMS := {
 	"halo": {"name": "Auréola Solar", "price": 220},
 }
 
+## Efeitos especiais: partículas em volta do bichinho (só visual, nunca muda a física).
+const EFFECTS := {
+	"folhas": {"name": "Folhinhas ao Vento", "price": 200},
+	"neve": {"name": "Floquinhos de Neve", "price": 280},
+	"bolhas": {"name": "Bolhas de Sabão", "price": 300},
+	"coracoes": {"name": "Chuva de Corações", "price": 300},
+	"brilho": {"name": "Brilho Dourado", "price": 350},
+	"estrelas": {"name": "Poeira de Estrelas", "price": 400},
+	"fogo": {"name": "Chama Mágica", "price": 450},
+	"arco_iris": {"name": "Arco-íris", "price": 500},
+}
+
 ## Conquistas: [id, nome, descrição]. As condições estão em _achievement_checks().
 const ACHIEVEMENT_LIST := [
 	["first_win", "Primeiro Abraço", "Vença a primeira fase."],
@@ -53,6 +65,8 @@ const ACHIEVEMENT_LIST := [
 	["world_6", "Alpinista", "Complete a Montanha Gelada."],
 	["world_7", "Rei da Praia", "Complete a Praia do Sol."],
 	["world_8", "Explorador dos Mares", "Complete o Fundo do Mar."],
+	["world_9", "Amigo dos Vagalumes", "Complete o Bosque dos Vagalumes."],
+	["world_10", "Domador do Vulcão", "Complete o Vulcão Fumegante."],
 	["queen", "Amiga da Rainha", "Vença a Rainha Zumbina."],
 	["owl", "Abraço Quentinho", "Vença a Coruja Nevasca."],
 	["crab_king", "Rei da Areia", "Vença o Caranguejo Rei."],
@@ -78,6 +92,7 @@ const ACHIEVEMENT_LIST := [
 	["stylist", "Estilista", "Equipe um acessório."],
 	["shopper", "Comprinhas", "Tenha 3 acessórios."],
 	["wardrobe", "Guarda-roupa Lotado", "Tenha todos os acessórios."],
+	["sparkle", "Cheio de Brilho", "Coloque um efeito especial num bichinho."],
 	["rich", "Cofrinho Cheio", "Tenha 500 moedas de uma vez."],
 	["plumber", "Tampa-Buracos", "Tampe 5 buracos de insetos."],
 	["delivery", "Entrega Fofa", "Leve bichinhos até a toca 3 vezes."],
@@ -133,6 +148,8 @@ func _default_data() -> Dictionary:
 		"hints": START_HINTS,
 		"owned": [],
 		"equipped": {},
+		"fx_owned": [],
+		"fx_equipped": {},
 		"met": [],
 		"achievements": [],
 		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0, "owl": 0, "crab_king": 0, "octopus": 0},
@@ -185,6 +202,10 @@ func load_save() -> void:
 	for pet in data["equipped"].keys():
 		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["owned"].has(data["equipped"][pet]):
 			data["equipped"].erase(pet)
+	data["fx_owned"] = data["fx_owned"].filter(func(fx): return fx is String and EFFECTS.has(fx))
+	for pet in data["fx_equipped"].keys():
+		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["fx_owned"].has(data["fx_equipped"][pet]):
+			data["fx_equipped"].erase(pet)
 	data["custom"] = data["custom"].filter(func(level): return level is Dictionary).slice(0, CUSTOM_MAX)
 	data["coins"] = clampi(int(data["coins"]), 0, 10000000)
 	data["hints"] = clampi(int(data["hints"]), 0, 100000)
@@ -289,6 +310,8 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array, bos
 			new_medals.append(m)
 	data["levels"][id] = rec
 	var gained := Scoring.coins_for(prev, stars) + 5 * new_medals.size()
+	if Store.has_vip():
+		gained *= 2
 	data["coins"] = coins() + gained
 	data["stats"]["wins"] = int(data["stats"]["wins"]) + 1
 	add_stat("streak", 1, false)
@@ -508,6 +531,7 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"friends_6": met >= 6, "friends_10": met >= 10, "friends_14": met >= 14,
 		"stylist": not data["equipped"].is_empty(),
 		"shopper": data["owned"].size() >= 3, "wardrobe": data["owned"].size() >= ITEMS.size(),
+		"sparkle": not data["fx_equipped"].is_empty(),
 		"rich": coins() >= 500,
 		"plumber": stat("plugs") >= 5, "delivery": stat("goals") >= 3, "artist": stat("free_wins") >= 1,
 		"hint_1": stat("hints_used") >= 1,
@@ -523,7 +547,7 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"daily_streak_3": int(data["daily"].get("best_streak", 0)) >= 3,
 		"daily_streak_7": int(data["daily"].get("best_streak", 0)) >= 7,
 	}
-	for w in range(1, 9):
+	for w in range(1, 11):
 		c["world_%d" % w] = world_completed(w)
 	return c
 
@@ -587,6 +611,49 @@ func buy_item(item: String) -> bool:
 
 func equipped(animal: String) -> String:
 	return str(data["equipped"].get(animal, ""))
+
+
+func owns_effect(fx: String) -> bool:
+	return data["fx_owned"].has(fx)
+
+
+func buy_effect(fx: String) -> bool:
+	if not EFFECTS.has(fx) or owns_effect(fx):
+		return false
+	var price: int = EFFECTS[fx]["price"]
+	if coins() < price:
+		return false
+	var before := data.duplicate(true)
+	data["coins"] = coins() - price
+	data["fx_owned"].append(fx)
+	if not save():
+		data = before
+		return false
+	coins_changed.emit(coins())
+	return true
+
+
+## Efeito em uso: o escolhido pelo jogador ou, nos bichinhos mágicos da Loja, o efeito próprio deles.
+func effect_of(animal: String) -> String:
+	var fx := str(data["fx_equipped"].get(animal, ""))
+	if fx == "" and Store.PETS.has(animal):
+		fx = str(Store.PETS[animal].get("effect", ""))
+	return fx
+
+
+func equip_effect(animal: String, fx: String) -> bool:
+	var before := data.duplicate(true)
+	if fx == "" or str(data["fx_equipped"].get(animal, "")) == fx:
+		data["fx_equipped"].erase(animal)
+	elif owns_effect(fx):
+		data["fx_equipped"][animal] = fx
+	else:
+		return false
+	_check_achievements(0, 1.0)
+	if not save():
+		data = before
+		return false
+	return true
 
 
 func equip(animal: String, item: String) -> bool:

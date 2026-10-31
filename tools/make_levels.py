@@ -24,9 +24,11 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "le
 GROUND = 1000
 # metade da altura de cada espécie (casa com Animal.SPECIES)
 HALF_H = {"capi": 30, "brasa": 46, "pingo": 28, "lulu": 18, "tuca": 24, "nino": 22,
-          "gelinho": 36, "tata": 24, "pompom": 42, "nuvem": 32, "fofa": 24, "tito": 24, "patinha": 22, "kiko": 38}
+          "gelinho": 36, "tata": 24, "pompom": 42, "nuvem": 32, "fofa": 24, "tito": 24, "patinha": 22, "kiko": 38,
+          "zeca": 24, "mel": 46, "fiapo": 21}
 HALF_W = {"capi": 56, "brasa": 26, "pingo": 28, "lulu": 37, "tuca": 46, "nino": 22,
-          "gelinho": 22, "tata": 24, "pompom": 22, "nuvem": 32, "fofa": 50, "tito": 24, "patinha": 22, "kiko": 24}
+          "gelinho": 22, "tata": 24, "pompom": 22, "nuvem": 32, "fofa": 50, "tito": 24, "patinha": 22, "kiko": 24,
+          "zeca": 26, "mel": 28, "fiapo": 44}
 
 
 def ground(y=GROUND, x0=-400, x1=1120):
@@ -155,6 +157,8 @@ WORLDS = [
     {"id": 6, "name": "Montanha Gelada"},
     {"id": 7, "name": "Praia do Sol"},
     {"id": 8, "name": "Fundo do Mar"},
+    {"id": 9, "name": "Bosque dos Vagalumes"},
+    {"id": 10, "name": "Vulcão Fumegante"},
 ]
 
 
@@ -830,6 +834,205 @@ def campaign():
     expert_campaign(lv)
     cover_exit_width(lv)
     pressure_campaign(lv)
+    lv.extend(forest_volcano_worlds())
+    return lv
+
+
+def anchored(kind, x, foot=80, floor=GROUND, rock_r=30, **kw):
+    """Abrigo com pezinhos para fora + pedras em cima dos pés (contra garras e ondas)."""
+    hd = hooked_dome(kind, x, foot=foot, floor=floor, **kw)
+    feet = [hd[0][0] + 26, hd[-1][0] - 26]
+    rocks = [{"pos": [feet[0], floor - 59], "r": rock_r}, {"pos": [feet[1], floor - 59], "r": rock_r}]
+    return hd, rocks
+
+
+def braced(kind, x, pad=30, rock_r=22, floor=GROUND, **kw):
+    """Abrigo com pernas nos buracos e uma pedra encostada por fora de cada perna:
+    ondas e garras não conseguem arrastar o abrigo para o lado."""
+    st = dome_over(kind, x, floor, pad=pad, **kw)
+    off = 18 + 7 + rock_r + 3
+    rocks = [{"pos": [st[0][0] - off, floor - rock_r], "r": rock_r}, {"pos": [st[-1][0] + off, floor - rock_r], "r": rock_r}]
+    return st, rocks
+
+
+def pocket(x0, x1, top, floor=GROUND, style="stone"):
+    """Dois paredões de pedra; o bichinho fica no vão entre eles."""
+    return [block(x0 - 60, top, x0, floor, style), block(x1, top, x1 + 60, floor, style)]
+
+
+def lid(x0, x1, top):
+    """Tampa reta sobre um vão de pedra (pousa 14 px acima dos paredões)."""
+    y = top - 14
+    return [[x0 - 14, y], [round((x0 + x1) / 2), y], [x1 + 14, y]]
+
+
+def forest_volcano_worlds():
+    """Mundos 9 e 10: insetos com poderes próprios e ondas bem mais pesadas."""
+    lv = []
+    hard = dict(stars=(0.7, 0.9))
+    # ============================================================ Mundo 9 — Bosque dos Vagalumes
+    lv.append(L("9-1", 9, "Luzinhas na Mata",
+                "O Vagalume brilha e deixa as abelhas perto dele MAIS RÁPIDAS. Abrigo sem frestas!",
+                [animal("zeca", 360)], [hive(600, 330, insect="firefly", count=2, interval=1.0), hive(140, 340, count=8, interval=0.3, delay=0.8)],
+                [dome_over("zeca", 360)], survive=9, **hard,
+                teaches="Vagalume: acelera o enxame."))
+    lv.append(L("9-2", 9, "Mosca Gêmea",
+                "A Mosca Gêmea se DIVIDE quando bate na tinta. As mosquinhas passam em qualquer fresta!",
+                [animal("mel", 360)], [hive(600, 330, insect="fly", count=5, interval=0.6), hive(120, 330, insect="fly", count=4, interval=0.6, delay=1.2)],
+                [dome_over("mel", 360, pad=20)], survive=9, **hard,
+                teaches="Mosca que se divide: frestas pequenas viram problema."))
+    hd3, rk3 = anchored("fiapo", 360, pad=30, apex_gap=40)
+    fi3 = animal("fiapo", 360)
+    lv.append(L("9-3", 9, "Garras na Clareira",
+                "O Louva-a-deus LEVANTA a linha! Passe os pezinhos do abrigo por baixo das pedras.",
+                [fi3], [mound(60, insect="mantis", count=2, interval=2.2, delay=0.4), mound(660, insect="mantis", count=2, interval=2.2, delay=1.2), hive(600, 320, count=6, interval=0.4, delay=2.0)],
+                [hd3], survive=11, rocks=rk3, **hard,
+                naive=[dome_over("fiapo", 360, pad=30, apex_gap=40)],
+                teaches="Louva-a-deus: travar o abrigo com pedras."))
+    kk4 = animal("kiko", 360)
+    lv.append(L("9-4", 9, "Tesouras no Chão",
+                "Formigas Tesoura CORTAM a tinta! Tampe os buracos com as pontas da linha antes que elas saiam.",
+                [kk4], holes_beside("kiko", 360, insect="leafcutter", count=4, interval=0.7) + [hive(600, 330, insect="fly", count=3, interval=0.7, delay=1.0)],
+                [dome_over("kiko", 360, pad=30)], survive=10, **hard,
+                naive=[wide_dome([kk4])],
+                teaches="Formiga Tesoura: tampar a saída é melhor que resistir ao corte."))
+    cave5 = [ground()] + pocket(300, 362, 880)
+    lv.append(L("9-5", 9, "Corredor de Pedra",
+                "Pedra ninguém corta nem levanta! Só falta uma tampa em cima do Pompom.",
+                [animal("pompom", 330)], [mound(70, insect="leafcutter", count=5, interval=0.6), mound(660, insect="mantis", count=2, interval=1.6),
+                                           hive(600, 330, insect="fly", count=5, interval=0.5, delay=0.6), hive(120, 300, insect="firefly", count=2, interval=1.2)],
+                [lid(300, 362, 880)], survive=11, terrain=cave5, ink=160, **hard,
+                teaches="Usar o cenário contra quem corta e levanta."))
+    ze6 = animal("zeca", 200)
+    me6 = animal("mel", 520)
+    lv.append(L("9-6", 9, "Enxame Iluminado",
+                "Dois amigos, dois traços, buracos dos dois lados e um enxame acelerado pelos vagalumes!",
+                [ze6, me6], holes_beside("zeca", 200, insect="ant", count=3, interval=0.8) + holes_beside("mel", 520, insect="ant", count=3, interval=0.8)
+                + [hive(360, 290, insect="firefly", count=3, interval=0.9), hive(640, 330, count=8, interval=0.3, delay=0.9)],
+                [dome_over("zeca", 200, pad=30), dome_over("mel", 520, pad=30)], survive=10, strokes=2, **hard,
+                naive=[wide_dome([ze6], pad=50), wide_dome([me6], pad=50)],
+                teaches="Dois abrigos contra um enxame rápido."))
+    cp7 = animal("capi", 360)
+    lv.append(L("9-7", 9, "Garra e Tesoura",
+                "TINTA FIRME: a linha não cai nem é levantada. Tesouras nos buracos: pontas em cima deles!",
+                [cp7], holes_beside("capi", 360, insect="leafcutter", count=3, interval=0.8) + [mound(60, insect="mantis", count=3, interval=1.8, delay=0.6),
+                                                                                          hive(620, 320, insect="fly", count=4, interval=0.6, delay=1.4)],
+                [dome_over("capi", 360, pad=30, apex_gap=40)], survive=11, ink_mode="static", **hard,
+                naive=[wide_dome([cp7])],
+                teaches="Combinar tampar e Tinta Firme."))
+    lv.append(L("9-8", 9, "Mil Moscas",
+                "Moscas que se dividem, um vagalume no meio e Tesouras nos buracos. Pontas em cima dos buracos!",
+                [animal("pingo", 360)], holes_beside("pingo", 360, insect="leafcutter", count=3, interval=0.8)
+                + [hive(110, 330, insect="fly", count=6, interval=0.45), hive(610, 330, insect="fly", count=6, interval=0.45, delay=0.7),
+                   hive(360, 270, insect="firefly", count=2, interval=1.5)],
+                [dome_over("pingo", 360, pad=30)], survive=10, **hard,
+                teaches="Muitas mosquinhas: nada de frestas."))
+    fi9 = animal("fiapo", 360)
+    lv.append(L("9-9", 9, "Parede Dupla",
+                "Um bando de Tesouras dos dois lados! Cada traço é uma camada a mais para cortar: use os três.",
+                [fi9], [mound(60, insect="leafcutter", count=6, interval=0.45), mound(660, insect="leafcutter", count=6, interval=0.45, delay=0.3)],
+                [dome_over("fiapo", 360, pad=20, apex_gap=26), dome_over("fiapo", 360, pad=54, apex_gap=62), dome_over("fiapo", 360, pad=88, apex_gap=98)],
+                survive=7.5, strokes=3, critical_strokes=[0, 1, 2], **hard,
+                naive=[dome_over("fiapo", 360, pad=30)],
+                teaches="Camadas contra quem corta."))
+    lv.append(L("9-10", 9, "Rainha da Noite",
+                "A Rainha sopra vento, o Vagalume acelera e as moscas se dividem. Encoste o abrigo nas pedras!",
+                [animal("capi", 360)], holes_beside("capi", 360, insect="ant", count=3, interval=1.0)
+                + [hive(90, 320, insect="fly", count=5, interval=0.9, delay=0.5), hive(630, 320, count=8, interval=0.8, delay=1.1),
+                   hive(360, 250, insect="firefly", count=2, interval=2.0, delay=1.0)],
+                [dome_over("capi", 360, pad=30)], survive=14,
+                rocks=[{"pos": [200, 941], "r": 30}, {"pos": [520, 941], "r": 30}],
+                bosses=[{"pos": [360, 330], "sway": 180}], **hard,
+                teaches="Chefona com novos ajudantes."))
+
+    # ============================================================ Mundo 10 — Vulcão Fumegante
+    lv.append(L("10-1", 10, "Pum-Pum!",
+                "O Besouro Pum-Pum MIRA (arco pontilhado) e lança fumaça por cima. Só telhado segura!",
+                [animal("mel", 380)], [mound(70, insect="bombardier", count=2, interval=2.2, delay=0.3), hive(620, 330, count=6, interval=0.4, delay=1.2)],
+                [dome_over("mel", 380)], survive=10, **hard,
+                naive=[tent(250, height=150)],
+                teaches="Ataque em arco: precisa de teto."))
+    hd2, rk2 = braced("zeca", 360, apex_gap=40)
+    lv.append(L("10-2", 10, "Canto da Cigarra",
+                "A Cigarra carrega o canto e EMPURRA a linha com uma onda de som. Pontas nos buracos, encostadas nas pedras!",
+                [animal("zeca", 360)], holes_beside("zeca", 360, insect="ant", count=3, interval=0.9)
+                + [hive(610, 320, insect="cicada", count=2, interval=2.5, delay=0.3), hive(120, 340, count=8, interval=0.35, delay=1.0)],
+                [hd2], survive=11, rocks=rk2, **hard,
+                teaches="Cigarra: onda que empurra linhas soltas."))
+    lv.append(L("10-3", 10, "Chuva de Fumaça",
+                "Besouros Pum-Pum dos DOIS lados e Tesouras nos buracos! Tampe e cubra tudo.",
+                [animal("pompom", 360)], holes_beside("pompom", 360, insect="leafcutter", count=3, interval=0.9)
+                + [mound(60, insect="bombardier", count=3, interval=1.6), mound(660, insect="bombardier", count=3, interval=1.6, delay=0.8),
+                   hive(360, 280, insect="fly", count=4, interval=0.6, delay=1.5)],
+                [dome_over("pompom", 360, pad=30)], survive=11, **hard,
+                teaches="Arcos dos dois lados."))
+    cave4 = [ground()] + pocket(318, 382, 860)
+    lv.append(L("10-4", 10, "Gruta da Brasa",
+                "TINTA FIRME: a tampa não cai nem é empurrada. Feche a gruta da Brasa!",
+                [animal("brasa", 350)], [mound(60, insect="bombardier", count=3, interval=1.5), hive(600, 300, insect="cicada", count=2, interval=2.0),
+                                          hive(120, 320, insect="wasp", count=3, interval=1.2, delay=1.0)],
+                [lid(318, 382, 860)], survive=11, terrain=cave4, ink_mode="static", ink=160, **hard,
+                teaches="Tinta Firme contra empurrões."))
+    kk5 = animal("kiko", 360)
+    lv.append(L("10-5", 10, "Lava e Tesouras",
+                "Tesouras nos buracos e fumaça vindo pelo alto! Tampe e cubra.",
+                [kk5], holes_beside("kiko", 360, insect="leafcutter", count=3, interval=0.8) + [mound(660, insect="bombardier", count=3, interval=1.6, delay=0.5)],
+                [dome_over("kiko", 360, pad=30)], survive=11, **hard,
+                naive=[wide_dome([kk5])],
+                teaches="Tampar + telhado."))
+    hd6, rk6 = braced("capi", 360, apex_gap=40)
+    lv.append(L("10-6", 10, "Grilos no Fogo",
+                "Grilos nos buracos e a Cigarra empurrando. Pontas nos buracos, encostadas nas pedras!",
+                [animal("capi", 360)], holes_beside("capi", 360, insect="cricket", count=4, interval=0.9)
+                + [hole(80, insect="cricket", count=4, interval=0.9, delay=0.6), hive(360, 270, insect="cicada", count=2, interval=2.4, delay=0.8)],
+                [hd6], survive=11, rocks=rk6, **hard,
+                teaches="Pulo + empurrão."))
+    pp7 = animal("pompom", 140)
+    br7 = animal("brasa", 360)
+    ze7 = animal("zeca", 580)
+    lv.append(L("10-7", 10, "Muralha de Três",
+                "Três amigos e três traços. Moscas, vespas e fumaça — cada um precisa do seu telhado!",
+                [pp7, br7, ze7], holes_beside("brasa", 360, insect="leafcutter", count=3, interval=0.9)
+                + [hive(360, 270, insect="fly", count=6, interval=0.5), hive(90, 330, insect="wasp", count=3, interval=1.3, delay=1.0),
+                   mound(680, insect="bombardier", count=2, interval=2.0, delay=0.6)],
+                [dome_over("pompom", 140), dome_over("brasa", 360, pad=30), dome_over("zeca", 580)], survive=11, strokes=3, **hard,
+                teaches="Três abrigos sob pressão."))
+    lv.append(L("10-8", 10, "Fumaça Dupla",
+                "Bombardeio dos dois lados e um vagalume acelerando tudo. Telhado alto e firme!",
+                [animal("fiapo", 360)], holes_beside("fiapo", 360, insect="ant", count=4, interval=0.7)
+                + [mound(60, insect="bombardier", count=4, interval=1.3), mound(660, insect="bombardier", count=4, interval=1.3, delay=0.6),
+                   hive(360, 260, insect="firefly", count=2, interval=1.5), hive(600, 330, count=7, interval=0.35, delay=1.5)],
+                [dome_over("fiapo", 360, pad=30, apex_gap=36)], survive=12, **hard,
+                teaches="Muita pressão de cima."))
+    pit = [ground(x0=-400, x1=326), {"poly": [[326, 1100], [394, 1100], [394, 1800], [326, 1800]], "style": "stone"}, ground(x0=394, x1=1120)]
+    lv.append(L("10-9", 10, "Cratera",
+                "A Mel caiu numa cratera! Uma tampa de Tinta Firme por cima resolve — se você achar os apoios.",
+                [{"type": "mel", "pos": [360, 1100 - 47], "flip": False}], [mound(60, insect="ant", count=8, interval=0.4), hive(600, 300, insect="cicada", count=2, interval=2.0),
+                                                                            mound(660, insect="bombardier", count=3, interval=1.5, delay=0.6)],
+                [[[312, 986], [360, 986], [408, 986]]], survive=11, terrain=pit, ink_mode="static", **hard,
+                teaches="Achar o apoio no cenário."))
+    lv.append(L("10-10", 10, "Coração do Vulcão",
+                "O grande final: o Caranguejo Rei joga conchas, Pum-Pum lança fumaça e a Cigarra canta. Abrigo firme!",
+                [animal("mel", 230)], holes_beside("mel", 230, insect="crab", count=2, interval=1.2)
+                + [mound(660, insect="bombardier", count=3, interval=1.6, delay=0.8), hive(100, 300, insect="cicada", count=2, interval=2.6, delay=1.2),
+                                        hive(360, 260, insect="fly", count=5, interval=0.6, delay=1.6)],
+                [dome_over("mel", 230, pad=30)], survive=13,
+                rocks=[{"pos": [118, 941], "r": 30}, {"pos": [342, 941], "r": 30}],
+                bosses=[{"kind": "crab_king", "pos": [590, 955], "sway": 40, "every": 3.0, "delay": 0.8}], **hard,
+                teaches="Chefão final."))
+    cover_exit_width(lv)
+    # sem atalho genérico (auditado com tests/strategy_test.tscn -- --audit --extended):
+    # círculos, arcos e arcos duplos precisam perder nestas fases
+    strategic = {"9-4", "9-6", "9-7", "9-8", "9-9", "10-2", "10-3", "10-5", "10-7", "10-10"}
+    for level in lv:
+        level["stars"] = [0.94, 0.99]
+        if level["id"] in strategic:
+            level["strategy_required"] = True
+            level["reject_individual_circles"] = True
+            level["reject_double_arches"] = True
+        # mundos de especialista: fora do sorteio do Desafio do Dia (as regras extras
+        # foram calibradas para as fases da campanha principal)
+        level["no_daily"] = True
     return lv
 
 

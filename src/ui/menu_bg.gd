@@ -22,7 +22,7 @@ func _draw() -> void:
 	var w := size.x
 	var h := size.y
 	DrawUtil.vgradient(self, Rect2(Vector2.ZERO, size), pal["sky_top"], pal["sky_bottom"])
-	if world_id == 5:
+	if world_id == 5 or world_id == 9:
 		DrawUtil.disc(self, Vector2(w * 0.8, h * 0.14), 44.0, Color("fff6cf"), Color(0, 0, 0, 0), 0.0)
 	else:
 		draw_circle(Vector2(w * 0.8, h * 0.14), 86.0, Color(1, 0.95, 0.6, 0.25), true, -1.0, true)

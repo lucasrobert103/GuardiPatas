@@ -13,7 +13,7 @@ func setup(p_world: int) -> void:
 	z_index = -100
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1000 + world_id
-	var cloud_count := 4 if world_id != 5 and world_id != 8 else 0
+	var cloud_count := 4 if not world_id in [5, 8, 9] else 0
 	for i in cloud_count:
 		var c := CloudPuff.new()
 		c.position = Vector2(rng.randf_range(-200, 900), rng.randf_range(120, 520))
@@ -30,7 +30,7 @@ func _draw() -> void:
 	if world_id == 8:
 		_draw_sea(pal, rng)
 		return
-	if world_id == 5:
+	if world_id == 5 or world_id == 9:
 		for i in 60:
 			var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(-300, 700))
 			draw_circle(p, rng.randf_range(1.0, 2.6), Color(1, 1, 0.9, rng.randf_range(0.4, 0.9)), true, -1.0, true)
@@ -42,7 +42,9 @@ func _draw() -> void:
 	else:
 		draw_circle(Vector2(590, 230), 90.0, Color(1, 0.95, 0.6, 0.25), true, -1.0, true)
 		DrawUtil.disc(self, Vector2(590, 230), 52.0, Color("ffe066"), Color("f5b83d"), 4.0)
-	if world_id == 6:
+	if world_id == 10:
+		_volcano(pal, rng)
+	elif world_id == 6:
 		_mountains(pal)
 	elif world_id == 7:
 		_beach(pal, rng)
@@ -56,6 +58,14 @@ func _draw() -> void:
 		3:
 			for i in 4:
 				_mesa(Vector2(-150 + i * 330 + rng.randf_range(-40, 40), 830), rng.randf_range(0.8, 1.2), Color(pal["near"]).lightened(0.05))
+		9:
+			for i in 9:
+				_tree(Vector2(-200 + i * 140 + rng.randf_range(-30, 30), 810 + rng.randf_range(-20, 30)), rng.randf_range(0.9, 1.4), Color(pal["near"]).darkened(0.25))
+			# vagalumes piscando entre as árvores
+			for i in 30:
+				var p := Vector2(rng.randf_range(-200, 920), rng.randf_range(560, 900))
+				draw_circle(p, 9.0, Color(0.85, 1.0, 0.4, 0.18), true, -1.0, true)
+				draw_circle(p, 3.0, Color("eaff8a"), true, -1.0, true)
 		4:
 			draw_rect(Rect2(-700, 800, 2120, 120), Color(0.55, 0.78, 0.95, 0.6), true)
 			for i in 10:
@@ -65,6 +75,25 @@ func _draw() -> void:
 	if world_id == 5:
 		_tent(Vector2(110, 930), Color("e07a5f"))
 		_tent(Vector2(640, 940), Color("81b29a"))
+
+
+func _volcano(pal: Dictionary, rng: RandomNumberGenerator) -> void:
+	# vulcão fumegante ao fundo, com lava escorrendo e fumacinhas
+	var base := Vector2(360, 880)
+	var cone := PackedVector2Array([base + Vector2(-520, 0), base + Vector2(-110, -430), base + Vector2(110, -430), base + Vector2(520, 0)])
+	draw_colored_polygon(cone, pal["far"])
+	draw_polyline(PackedVector2Array([cone[0], cone[1], cone[2], cone[3]]), Color(pal["far"]).darkened(0.2), 4.0, true)
+	for k in 3:
+		var x0 := -60.0 + k * 60.0
+		var lava := PackedVector2Array([base + Vector2(x0 - 14, -430), base + Vector2(x0 + 14, -430), base + Vector2(x0 * 2.2 + 18, -180 + k * 40), base + Vector2(x0 * 2.2 - 6, -170 + k * 40)])
+		draw_colored_polygon(lava, Color("ff6a3d"))
+	draw_rect(Rect2(base + Vector2(-110, -436), Vector2(220, 14)), Color("ffb347"), true)
+	for i in 6:
+		var p := base + Vector2(rng.randf_range(-80, 80), -470 - i * 55)
+		DrawUtil.cloud(self, p, 26.0 + i * 6.0, Color(0.45, 0.4, 0.42, 0.35 - i * 0.04))
+	for i in 18:
+		var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(300, 820))
+		draw_circle(p, rng.randf_range(1.5, 3.0), Color(1.0, 0.6, 0.3, 0.7), true, -1.0, true)
 
 
 func _mountains(pal: Dictionary) -> void:
