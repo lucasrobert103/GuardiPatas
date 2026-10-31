@@ -8,11 +8,18 @@ var waypoint := Vector2.INF
 var _goal := Vector2.INF
 var _timer := 0.0
 var _recent: Array[Vector2] = []
+var _stalled := 0.0
 
 
 func next_point(bug: Insect, goal: Vector2, delta: float, avoid_ink: bool = true) -> Vector2:
 	_timer -= delta
-	if waypoint.is_finite() and bug.global_position.distance_to(waypoint) < 6:
+	if waypoint.is_finite() and bug.linear_velocity.length() < bug.max_speed * 0.15:
+		_stalled += delta
+	else:
+		_stalled = 0
+	# Um canto bloqueado pelo próprio enxame não pode prender toda a onda.
+	if waypoint.is_finite() and (bug.global_position.distance_to(waypoint) < 6 or _stalled > 0.7):
+		_stalled = 0
 		_recent.append(waypoint)
 		if _recent.size() > 4: _recent.pop_front()
 		waypoint = Vector2.INF
@@ -27,7 +34,7 @@ func next_point(bug: Insect, goal: Vector2, delta: float, avoid_ink: bool = true
 	_goal = goal
 	var mask := MASK if avoid_ink else Layers.TERRAIN | Layers.PROP
 	var hit := obstacle(bug, bug.global_position, goal, mask)
-	if hit.is_empty() or hit["collider"] is HoneyPot:
+	if hit.is_empty() or (hit["collider"] is HoneyPot and hit["collider"].has_honey() and goal.distance_to(hit["collider"].global_position) < 30):
 		waypoint = Vector2.INF
 		_recent.clear()
 		return goal
@@ -92,6 +99,10 @@ static func candidates(body: Node2D, body_radius: float) -> Array[Vector2]:
 			var outward := (incoming.orthogonal() + outgoing.orthogonal()).normalized()
 			if Geometry2D.is_point_in_polygon(vertices[i] + outward * 2, vertices): outward = -outward
 			result.append(vertices[i] + outward * margin * 1.5)
+	elif body is HoneyPot:
+		# O pote vazio continua físico: contornar em vez de ficar preso nele.
+		for corner in [Vector2(-22,-22),Vector2(22,-22),Vector2(22,22),Vector2(-22,22)]:
+			vertices.append(body.to_global(corner))
 	elif body is Crate:
 		var half: Vector2 = body.size / 2
 		for corner in [Vector2(-half.x, -half.y), Vector2(half.x, -half.y), half, Vector2(-half.x, half.y)]:

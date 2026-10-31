@@ -1,10 +1,10 @@
 class_name CarpenterBee
 extends Insect
-## Abelha Broca: empurra a linha e, depois de 2,2 s encostada no mesmo traço, FURA e passa.
+## Abelha Broca: empurra a linha e, depois de 1,6 s encostada no mesmo traço, FURA e passa.
 ## Cada traço novo é uma camada a mais para furar. Pedra e terreno ela não fura.
-## Bloqueio justo: parede dupla (dois traços), pedra ou isca de mel.
+## Bloqueio justo: camadas independentes, pedra, ninho tampado ou isca de mel.
 
-const DRILL_TIME := 2.2
+const DRILL_TIME := 1.6
 
 var _drill: Dictionary = {}
 var _route_timer := 0.0
@@ -15,9 +15,9 @@ func _configure() -> void:
 	lured_by_honey = true
 	water_proof = kind == "drillfish"
 	radius = 12.0
-	max_speed = 220.0
-	agility = 2.4
-	mass = 0.22
+	max_speed = 270.0
+	agility = 3.4
+	mass = 0.36
 	linear_damp = 0.4
 
 

@@ -8,7 +8,7 @@ var _climbing := false
 
 func _configure() -> void:
 	radius = 9.0
-	max_speed = 50.0
+	max_speed = 65.0
 	agility = 6.0
 	mass = 0.25
 	flying = false

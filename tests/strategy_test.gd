@@ -1,7 +1,7 @@
 extends Node
 ## Tenta soluções genéricas pela mesma validação do desenho do jogador.
 ## --level=6-5 / --world=6 filtram o teste; --audit só relata resultados.
-## --extended acrescenta paredes, teto curto e arcos largos/duplos (diagnóstico).
+## --extended acrescenta paredes, teto curto e arcos largos aos padrões obrigatórios.
 ## --omissions remove um traço da solução por vez. Só os índices declarados em
 ## critical_strokes são negativos obrigatórios; outras omissões são diagnósticas.
 var audit := false
@@ -95,8 +95,12 @@ func probes(data: Dictionary) -> Array:
 	var separate: Array = []
 	for animal in data["animals"]: separate.append(ellipse(animal_bounds(animal), 22.0))
 	result.append({"name": "circulos_individuais", "strokes": separate, "required": bool(data.get("reject_individual_circles", false))})
-	if extended: result.append_array(extended_probes(bounds))
-	if omissions:
+	if extended or bool(data.get("reject_double_arches", false)):
+		for probe in extended_probes(bounds):
+			if bool(data.get("reject_double_arches", false)) and str(probe["name"]).begins_with("arcos_duplos_"):
+				probe["required"] = true
+			if extended or bool(probe.get("required", false)): result.append(probe)
+	if omissions or not data.get("critical_strokes", []).is_empty():
 		result.append_array(omission_probes(data))
 	return result
 

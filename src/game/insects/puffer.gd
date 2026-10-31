@@ -13,9 +13,9 @@ var _pressure_time := 0.0
 
 func _configure() -> void:
 	radius = BASE_R
-	max_speed = 120.0
+	max_speed = 150.0
 	agility = 2.5
-	mass = 0.5
+	mass = 0.75
 	water_proof = true
 
 
@@ -33,5 +33,5 @@ func _behave(delta: float) -> void:
 	var r := lerpf(BASE_R, BIG_R, inflate)
 	shape.radius = r
 	art.radius = r
-	mass = 0.5 + 1.2 * inflate
+	mass = 0.75 + 1.8 * inflate
 	_fly_toward(t, 20.0, 0.5)

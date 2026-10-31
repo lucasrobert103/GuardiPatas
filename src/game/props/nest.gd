@@ -4,12 +4,14 @@ extends StaticBody2D
 ## Visual pelo tipo: colmeia (voadores), teia (aranha), coral (criaturas do mar),
 ## montinho (andarilhos) ou BURACO NO CHÃO (`"hole": true`).
 ## Buraco: fica rente ao chão, não bloqueia o desenho e pode ser TAMPADO — se uma linha
-## ou caixa estiver em cima dele quando um inseto for sair, ele não sai.
+## ou caixa cobrir os dois lados da boca quando um inseto for sair, ele não sai.
 
 const KINDS := ["bee", "mosquito", "wasp", "moth", "ant", "beetle", "termite", "caterpillar", "cricket", "broca", "spider", "crab", "jellyfish", "puffer", "drillfish"]
 const FLYERS := ["bee", "mosquito", "wasp", "moth", "broca"]
 const SEA := ["jellyfish", "puffer", "drillfish"]
-const PLUG_RADIUS := 10.0
+const PLUG_RADIUS := 2.0
+const MOUTH_HALF_WIDTH := 12.0
+const EXIT_HALF_WIDTH := 24.0
 
 var insect := "bee"
 var count := 6
@@ -27,6 +29,9 @@ var _t := 0.0
 var _pulse := 0.0
 var _plug_shape := CircleShape2D.new()
 var _plug_announced := false
+var covered_sides := 0
+var _coverage_timer := 0.0
+var _coverage_marks: MouthCoverage
 
 
 func setup(p_level: Level, cfg: Dictionary) -> void:
@@ -44,6 +49,10 @@ func setup(p_level: Level, cfg: Dictionary) -> void:
 	if hole:
 		# rente ao chão e sem colisão: dá para desenhar por cima (e tampar)
 		collision_layer = 0
+		_coverage_marks = MouthCoverage.new()
+		_coverage_marks.nest = self
+		_coverage_marks.z_index = 31
+		add_child(_coverage_marks)
 		return
 	collision_layer = Layers.NEST
 	var cs := CollisionShape2D.new()
@@ -70,6 +79,11 @@ func begin() -> void:
 func _physics_process(delta: float) -> void:
 	if is_instance_valid(mount): position = mount.position + mount_offset
 	_pulse = maxf(_pulse - delta * 3.0, 0.0)
+	if hole:
+		_coverage_timer -= delta
+		if _coverage_timer <= 0:
+			_is_plugged()
+			_coverage_timer = 0.1
 	if not running or remaining <= 0:
 		return
 	_timer -= delta
@@ -94,15 +108,18 @@ func _physics_process(delta: float) -> void:
 func _is_plugged() -> bool:
 	var q := PhysicsShapeQueryParameters2D.new()
 	q.shape = _plug_shape
-	q.transform = Transform2D(0.0, global_position + Vector2(0, -8))
 	q.collision_mask = Layers.LINE | Layers.PROP
-	return not get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
+	covered_sides = 0
+	for index in 2:
+		var offset := -MOUTH_HALF_WIDTH if index == 0 else MOUTH_HALF_WIDTH
+		q.transform = Transform2D(0.0, global_position + Vector2(offset, -8))
+		if not get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty(): covered_sides |= 1 << index
+	if _coverage_marks != null: _coverage_marks.queue_redraw()
+	return covered_sides == 3
 
 
 func _spawn() -> void:
-	remaining -= 1
-	var ordinal := count - remaining - 1
-	_pulse = 1.0
+	var ordinal := count - remaining
 	var bug := make_insect(insect)
 	bug.setup(level, insect)
 	var out := Vector2(0, -40)
@@ -110,7 +127,29 @@ func _spawn() -> void:
 		out = Vector2(0, -bug.radius - 6.0)
 	elif is_hanging():
 		out = Vector2(0, 44)
-	bug.position = position + out + Vector2(((ordinal * 5) % 9 - 4) * 1.4 if not hole else 0.0, 0)
+	var spawn := position + out + Vector2(((ordinal * 5) % 9 - 4) * 1.4 if not hole else 0.0, 0)
+	if hole:
+		# Uma abertura parcial usa o lado livre. Nunca nascer dentro da tinta.
+		var query := PhysicsShapeQueryParameters2D.new()
+		query.shape = bug.shape
+		query.margin = 1
+		query.collision_mask = Layers.TERRAIN | Layers.LINE | Layers.PROP
+		var side := 1.0 if covered_sides == 1 else (-1.0 if covered_sides == 2 else (1.0 if ordinal % 2 == 0 else -1.0))
+		var offset := side * maxf(0, EXIT_HALF_WIDTH - bug.radius - 1)
+		var found := false
+		for horizontal in [0.0, offset, -offset]:
+			var candidate := spawn + Vector2(horizontal, 0)
+			query.transform = Transform2D(0, get_parent().to_global(candidate))
+			if get_world_2d().direct_space_state.intersect_shape(query, 1).is_empty():
+				spawn = candidate
+				found = true
+				break
+		if not found:
+			bug.free()
+			return
+	remaining -= 1
+	_pulse = 1.0
+	bug.position = spawn
 	level.add_insect(bug)
 	if hole:
 		bug.linear_velocity = Vector2(((ordinal * 13) % 41) - 20, -180)
@@ -203,7 +242,7 @@ func _draw_hole(o: Color, s: float) -> void:
 	# buraco no chão (desenhado sobre a grama), com aviso pulsante enquanto aberto
 	DrawUtil.oval(self, Vector2(0, -2), Vector2(24, 9) * s, Color("5a3a2a"), o, 3.0)
 	DrawUtil.oval(self, Vector2(0, 0), Vector2(15, 5) * s, Color("2b1d18"), o, 0.0)
-	if plugged:
+	if covered_sides == 3:
 		draw_line(Vector2(-14, -12), Vector2(14, -12), Palette.UI_GOOD, 4.0, true)
 		return
 	if insect in ["broca", "drillfish"]:
@@ -213,3 +252,15 @@ func _draw_hole(o: Color, s: float) -> void:
 	if not running:
 		var pulse := 0.5 + 0.5 * sin(_t * 4.0)
 		draw_arc(Vector2(0, -2), 30.0 + pulse * 4.0, PI, TAU, 16, Color(Palette.DANGER, 0.6), 3.0, true)
+
+
+## Indicadores acima da tinta, para a cobertura parcial continuar legível.
+class MouthCoverage:
+	extends Node2D
+	var nest: Nest
+	func _draw() -> void:
+		for index in 2:
+			var center := Vector2(-Nest.MOUTH_HALF_WIDTH if index == 0 else Nest.MOUTH_HALF_WIDTH, -8)
+			var covered := bool(nest.covered_sides & (1 << index))
+			DrawUtil.disc(self, center, 3.5, Palette.UI_GOOD if covered else Palette.GOLD, Palette.OUTLINE, 1)
+			if covered: draw_line(center - Vector2(2, 0), center + Vector2(2, 0), Palette.WHITE, 1.5, true)

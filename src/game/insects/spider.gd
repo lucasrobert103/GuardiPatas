@@ -15,9 +15,9 @@ var _pass_y := 0.0
 
 func _configure() -> void:
 	radius = 11
-	max_speed = 130
+	max_speed = 165
 	agility = 4
-	mass = 0.22
+	mass = 0.30
 
 
 func _behave(delta: float) -> void:
@@ -47,7 +47,7 @@ func _behave(delta: float) -> void:
 				_blocked += delta
 			else:
 				_blocked = maxf(0, _blocked - delta)
-			if _blocked > 0.5:
+			if _blocked > 0.35:
 				_attempt += 1
 				_pass_y = global_position.y + radius * 3
 				var side := 1 if (_attempt + tactic_id) % 2 == 0 else -1

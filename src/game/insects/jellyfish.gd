@@ -8,9 +8,9 @@ var _pulse := 0.0
 
 func _configure() -> void:
 	radius = 14.0
-	max_speed = 90.0
+	max_speed = 110.0
 	agility = 1.5
-	mass = 0.2
+	mass = 0.32
 	linear_damp = 1.4
 	water_proof = true
 
@@ -18,8 +18,8 @@ func _configure() -> void:
 func _behave(delta: float) -> void:
 	_pulse -= delta
 	if _pulse <= 0.0:
-		_pulse = 0.9
-		var route := navigator.next_point(self, predicted_target(0.25), 0.9)
+		_pulse = 0.7
+		var route := navigator.next_point(self, predicted_target(0.25), 0.7)
 		var dir := (route - global_position).normalized()
-		apply_central_impulse(dir * 150.0 * mass)
+		apply_central_impulse(dir * 180.0 * mass)
 		art.squash = 1.0

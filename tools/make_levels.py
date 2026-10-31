@@ -509,6 +509,82 @@ def expert_campaign(levels):
         level['tip'] = 'Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.'
 
 
+def cover_exit_width(levels):
+    """Uma tampa cobre os dois lados da abertura. Encostar só na lateral não basta."""
+    for level in levels:
+        mouths = [n['pos'] for n in level['nests'] if n.get('hole')]
+        for stroke in level['solution']:
+            for end in (0, -1):
+                point = stroke[end]
+                nearby = [m for m in mouths if math.dist(point, [m[0],m[1]-8]) < 18]
+                if not nearby: continue
+                mouth = min(nearby,key=lambda m: math.dist(point,[m[0],m[1]-8]))
+                neighbor = stroke[1 if end == 0 else -2]
+                if abs(neighbor[1]-point[1]) < 5 and abs(neighbor[0]-point[0]) > 10:
+                    point[0] += -16 if point[0] < neighbor[0] else 16
+                else:
+                    friend = min(level['animals'],key=lambda a:abs(a['pos'][0]-mouth[0]))
+                    outward = -1 if mouth[0] < friend['pos'][0] else 1
+                    outside = [mouth[0]+outward*18,point[1]]
+                    inside = [mouth[0]-outward*8,point[1]]
+                    if end == 0: stroke[:1] = [outside,inside]
+                    else: stroke[-1:] = [inside,outside]
+        if level['id'] == '4-1':
+            # A saída à direita exige uma tampa própria, além dos dois pés do teto.
+            level['nests'][-1]['pos'][0] = 477
+            level['solution'][0] = [[459,968],[477,968],[495,968]]
+        if level['id'] == '5-5':
+            # As três coberturas dividem as bordas das duas saídas, sem sobrepor traços.
+            level['solution'][0][-1] = [234,988]
+            level['solution'][1][:2] = [[270,988],[252,988]]
+            level['solution'][1][-1:] = [[420,988],[434,988]]
+            level['solution'][2][:2] = [[464,988],[452,988]]
+        length = sum(stroke_len(stroke) for stroke in level['solution'])
+        level['ink'] = math.ceil(length / 0.90 / 5)*5
+        if level.get('strategy') == 'double_layer':
+            level['objective'] = 'As brocas perfuram mais rápido. Planeje três camadas separadas.'
+
+
+def pressure_campaign(levels):
+    """Pressão 0.7: ondas mais próximas e impacto significativo, com avisos preservados."""
+    for level in levels:
+        level["reject_individual_circles"] = True
+        level["reject_double_arches"] = True
+        for nest in level["nests"]:
+            nest["count"] = math.ceil(nest["count"] * 1.4)
+            nest["interval"] = round(max(0.22, nest["interval"] * 0.72), 3)
+            nest["delay"] = round(max(0.18, nest["delay"] * 0.8), 3)
+        # Cada ninho anuncia a quantidade real. Não exceder a população simultânea
+        # suportada pelo jogo nem depender de descartar nascimentos para vencer.
+        while sum(n["count"] for n in level["nests"]) > 42:
+            largest = max(level["nests"], key=lambda n:n["count"])
+            largest["count"] -= 1
+
+
+def reinforce_layers(levels):
+    for level in levels:
+        if level['id'] in ('3-6','7-3','7-4'):
+            outer = level['solution'][0]
+            level['rocks'] += [{'pos':[outer[0][0]-56,1000],'r':26}, {'pos':[outer[-1][0]+56,1000],'r':26}]
+            level['impact_bracing'] = True
+        if level['id'] == '7-4':
+            level['props'][0]['amount'] = 1.5
+        if level['id'] == '4-6':
+            level['animals'][-1]['pos'][0] -= 30
+            for point in level['solution'][-1]: point[0] -= 30
+            for nest in level['nests']:
+                if nest.get('hole') and nest['pos'][0] > 520: nest['pos'][0] -= 30
+            for stroke, floor in zip(level['solution'],[1000,980,1000]):
+                level['rocks'] += [{'pos':[stroke[0][0]-49,floor],'r':16}, {'pos':[stroke[-1][0]+49,floor],'r':16}]
+            level['impact_bracing'] = True
+        if level.get("strategy") != "double_layer": continue
+        level["solution"].append(dome_over("capi", 360, pad=110, apex_gap=128))
+        level["strokes"] = 3
+        if level["id"] == "3-5": level["name"] = "Três Barreiras"
+        level["survive"] = 5.4
+        level["critical_strokes"] = [0,1,2]
+
+
 def mirror_scene(level):
     """Espelha dados geométricos sem mudar o sentido da gravidade."""
     for friend in level["animals"]:
@@ -750,7 +826,10 @@ def campaign():
             lvl["stars"] = [0.9, 0.97]
     redesign_strategy(lv)
     add_tactical_waves(lv)
+    reinforce_layers(lv)
     expert_campaign(lv)
+    cover_exit_width(lv)
+    pressure_campaign(lv)
     return lv
 
 

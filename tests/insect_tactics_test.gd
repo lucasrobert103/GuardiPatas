@@ -138,6 +138,7 @@ func _ready() -> void:
 	level.world.add_child(honey)
 	level.honeys.append(honey)
 	check(bee.target_point() == honey.position, "mel tem prioridade sobre escolha de alvo exposto")
+	bee.position = Vector2(430,790)
 	honey.amount = 0
 	var remembered := bee.target_point()
 	check(remembered == level.animals[0].position, "ao acabar o mel persegue o amigo próximo da isca")
@@ -160,7 +161,7 @@ func _ready() -> void:
 			break
 	check(dashed and warnings >= 38, "vespa avisa por pelo menos 0,63 s antes da investida")
 	check(locked != Vector2.ZERO and wasp._dash_dir.is_equal_approx(locked), "direção fica travada no final do aviso em vez de seguir o alvo invisivelmente")
-	check(wasp.linear_velocity.length() > 700, "investida tem impacto maior que voo normal")
+	check(wasp.linear_velocity.length() > 950 and wasp.mass * wasp.linear_velocity.length() > 700, "investida tem impacto maior que voo normal")
 	wasp.calm_down()
 	check(not wasp.art.aiming and wasp.art.aim_vector == Vector2.ZERO, "fim de fase cancela avisos de ataque")
 	await close(level)
@@ -174,7 +175,7 @@ func _ready() -> void:
 	for i in 300:
 		await get_tree().physics_frame
 		saw_charge = saw_charge or beetle.art.aiming
-		if beetle._ram_cooldown > 1.9:
+		if beetle._ram_cooldown > Insect.RAM_RECOVERY - 0.1:
 			rammed = true
 			break
 	check(saw_charge and rammed, "besouro carrega golpe visível antes de empurrar a barreira")
@@ -237,8 +238,8 @@ func _ready() -> void:
 		saw_drill_progress = saw_drill_progress or drill.art.work_progress > 0.2
 		if first_hole < 0 and not first_layer.holes.is_empty(): first_hole = i / 60.0
 		if second_hole < 0 and not second_layer.holes.is_empty(): second_hole = i / 60.0
-	check(saw_drill_progress and first_hole >= 2.15, "broca mostra progresso e precisa completar o tempo de contato")
-	check(second_hole > first_hole + 2.15, "cada camada exige uma nova perfuração completa")
+	check(saw_drill_progress and first_hole >= CarpenterBee.DRILL_TIME - 0.05, "broca mostra progresso e precisa completar o tempo de contato")
+	check(second_hole > first_hole + CarpenterBee.DRILL_TIME - 0.05, "cada camada exige uma nova perfuração completa")
 	await close(level)
 
 	level = fixture(Vector2(760, 300))
@@ -263,5 +264,84 @@ func _ready() -> void:
 	var repeatable := true
 	for i in 3: repeatable = repeatable and trajectories[0][i].distance_to(trajectories[1][i]) < 0.1
 	check(repeatable, "mesma tentativa mantém trajetória mesmo mudando RNG global")
+
+	level = fixture()
+	var nest := Nest.new()
+	nest.position = Vector2(350,1000)
+	nest.setup(level,{"insect":"mosquito","hole":true,"count":2})
+	level.world.add_child(nest)
+	level.nests.append(nest)
+	await frames(2)
+	check(not nest._is_plugged(), "abertura sem proteção fica aberta")
+	var partial := line(level,[Vector2(350,960),Vector2(350,988)])
+	await frames(2)
+	check(not nest._is_plugged(), "traço vertical encostado no centro não sela uma boca inteira")
+	partial.queue_free()
+	await frames(2)
+	var left := line(level,[Vector2(326,988),Vector2(350,988)])
+	await frames(2)
+	check(not nest._is_plugged() and nest.covered_sides == 1, "cobertura de um lado só informa proteção parcial")
+	nest.insect = "broca"
+	nest.begin()
+	await frames(30)
+	check(nest.remaining == 2 and level.insects.is_empty(), "broca espera quando a fresta parcial é menor que seu corpo; não nasce além da tampa")
+	nest.running = false
+	nest.insect = "mosquito"
+	line(level,[Vector2(350,988),Vector2(374,988)])
+	await frames(2)
+	check(nest._is_plugged() and nest.covered_sides == 3, "duas peças físicas podem fechar a saída sem copiar um formato")
+	nest.begin()
+	await frames(45)
+	check(nest.remaining == 2 and level.insects.is_empty(), "saída totalmente selada impede nascimentos")
+	left.queue_free()
+	await frames(60)
+	check(nest.remaining < 2 and not level.insects.is_empty(), "reabrir um lado permite a saída dos insetos")
+	await close(level)
+
+	level = fixture(Vector2(150, 600))
+	honey = HoneyPot.new()
+	honey.position = Vector2(350, 600)
+	honey.setup(1)
+	level.world.add_child(honey)
+	level.honeys.append(honey)
+	var swarm: Array[Insect] = []
+	for i in 4:
+		var bug := spawn(level, "broca" if i % 2 == 0 else "bee", Vector2(530 + i * 28, 600))
+		bug.target_point()
+		swarm.append(bug)
+	honey.amount = 0
+	await frames(480)
+	var all_crossed := true
+	for bug in swarm: all_crossed = all_crossed and bug.position.x < 230
+	check(all_crossed, "enxame contorna o pote vazio para perseguir o amigo em vez de ficar preso")
+	await close(level)
+
+	var previous_push := await swarm_push(true)
+	var current_push := await swarm_push(false)
+	print("PRESSÃO: antiga=%.2f px, atual=%.2f px" % [previous_push, current_push])
+	check(current_push > previous_push * 1.5 and current_push > 5, "enxame atual desloca barreira significativamente mais que o perfil anterior")
 	print("==== TÁTICAS: %d ok, %d falhas ====" % [passed, failures])
 	get_tree().quit(1 if failures else 0)
+
+
+func swarm_push(previous: bool) -> float:
+	var level := fixture(Vector2(500,900))
+	var points: Array = []
+	for i in 49: points.append(Vector2(500,900)+Vector2.from_angle(TAU*i/48.0)*70)
+	var barrier := line(level,points,false)
+	barrier.mass = 9
+	barrier.gravity_scale = 0
+	barrier.linear_damp = 1
+	barrier.lock_rotation = true
+	for i in 4:
+		var bee := spawn(level,"bee",Vector2(250-i*25,880+i*12))
+		if previous:
+			bee.max_speed = 245
+			bee.agility = 3
+			bee.mass = 0.18
+	var maximum := 0.0
+	for i in 120:
+		await get_tree().physics_frame
+		maximum = maxf(maximum,barrier.position.x-500)
+	await close(level)
+	return maximum

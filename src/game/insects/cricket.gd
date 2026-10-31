@@ -2,9 +2,9 @@ class_name Cricket
 extends Insect
 ## Escolhe pular perto de parede, beirada ou alvo elevado, com preparação visível.
 ## Teto e vãos maiores que o alcance físico continuam sendo defesas.
-const JUMP_EVERY := 1.5
+const JUMP_EVERY := 1.1
 const JUMP_VY := 560.0
-const JUMP_VX := 185.0
+const JUMP_VX := 210.0
 const WINDUP := 0.3
 var _jump_cd := 0.6
 var _windup := 0.0
@@ -13,9 +13,9 @@ var _jump_direction := 1.0
 
 func _configure() -> void:
 	radius = 9
-	max_speed = 80
+	max_speed = 100
 	agility = 6
-	mass = 0.24
+	mass = 0.32
 	flying = false
 
 

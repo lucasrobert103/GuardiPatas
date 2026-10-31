@@ -24,6 +24,7 @@ var navigator := InsectNavigator.new()
 var _target: Animal
 var _target_timer := 0.0
 var _lure_memory := false
+var _lure_origin := Vector2.ZERO
 
 var _t := 0.0
 var _phase := 0.0
@@ -32,6 +33,7 @@ var _stuck := 0.0
 var _slide := 1.0
 var _slide_timer := 0.0
 var _bonk_cd := 0.0
+const RAM_RECOVERY := 1.55
 var _ram_charge := 0.0
 var _ram_cooldown := 0.0
 var _ram_direction := 0.0
@@ -138,15 +140,14 @@ func target_point() -> Vector2:
 	if lured_by_honey:
 		var h: HoneyPot = level.nearest_honey(global_position)
 		if h != null:
-			_target = null
-			_lure_memory = true
+			remember_lure(h.global_position)
 			if global_position.distance_to(h.global_position) < 70.0:
 				h.eat(get_physics_process_delta_time())
 			return h.global_position
 	# A isca é uma decisão estratégica: ao acabar, o inseto mantém o cheiro
 	# do amigo mais próximo dali, em vez de adivinhar um alvo do outro lado da fase.
 	if _lure_memory:
-		if not is_instance_valid(_target): _target = level.nearest_animal(global_position)
+		if not is_instance_valid(_target): _target = level.nearest_animal(_lure_origin)
 		return _target.global_position if is_instance_valid(_target) else global_position
 	if not is_instance_valid(_target) or _target_timer <= 0:
 		_target_timer = 0.65 + (tactic_id % 3) * 0.08
@@ -160,6 +161,12 @@ func target_point() -> Vector2:
 				score = candidate
 		_target = best
 	return _target.global_position if is_instance_valid(_target) else global_position
+
+
+func remember_lure(point: Vector2) -> void:
+	_target = null
+	_lure_memory = true
+	_lure_origin = point
 
 
 func _target_score(animal: Animal) -> float:
@@ -259,7 +266,7 @@ func _ram_barrier(delta: float, impulse: float) -> bool:
 		barrier.apply_impulse(Vector2(_ram_direction * impulse, 0), global_position - barrier.global_position)
 		apply_central_impulse(Vector2(-_ram_direction * impulse * 0.08, 0))
 		_ram_charge = 0
-		_ram_cooldown = 2.1
+		_ram_cooldown = RAM_RECOVERY
 		art.aiming = false
 		art.squash = 1
 		Sfx.play("bonk", -7, 0.7, 0.1)

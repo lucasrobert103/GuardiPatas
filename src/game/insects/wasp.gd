@@ -8,8 +8,8 @@ enum State { APPROACH, AIM, DASH, RECOVER }
 
 const AIM_TIME := 0.7
 const DASH_TIME := 0.35
-const DASH_SPEED := 850.0
-const RECOVER_TIME := 0.9
+const DASH_SPEED := 1050.0
+const RECOVER_TIME := 0.65
 const ATTACK_RANGE := 260.0
 
 var state := State.APPROACH
@@ -20,9 +20,9 @@ var _dash_dir := Vector2.ZERO
 func _configure() -> void:
 	lured_by_honey = true
 	radius = 13.0
-	max_speed = 215.0
+	max_speed = 270.0
 	agility = 3.0
-	mass = 0.36
+	mass = 0.72
 	linear_damp = 0.3
 	continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 

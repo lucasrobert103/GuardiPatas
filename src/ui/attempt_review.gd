@@ -282,6 +282,12 @@ class ReviewCanvas:
 			DrawUtil.disc(self, center, 20, Color("a88c72"), Palette.OUTLINE, 2)
 			DrawUtil.disc(self, center, 9, Color("68535c"), Color.TRANSPARENT, 0)
 			if nest["remaining"] > 0: draw_string(UiKit.font(), center + Vector2(16,-22), "×%d" % nest["remaining"], HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Palette.OUTLINE)
+			if nest["hole"]:
+				for index in 2:
+					var side := Vector2(-Nest.MOUTH_HALF_WIDTH if index == 0 else Nest.MOUTH_HALF_WIDTH, -8)
+					var covered := bool(int(nest.get("coverage", 0)) & (1 << index))
+					DrawUtil.disc(self, center + side, 3.5, Palette.UI_GOOD if covered else Palette.GOLD, Palette.OUTLINE, 1)
+					if covered: draw_line(center + side - Vector2(2, 0), center + side + Vector2(2, 0), Palette.WHITE, 1.5, true)
 			if nest["plugged"]: HomeArt.object(self, "check", Rect2(center - Vector2(14, 32), Vector2(28, 28)))
 		for lamp in frame["lamps"]:
 			DrawUtil.disc(self, lamp["position"], 20, Palette.GOLD if lamp["lit"] else Color("b2adb6"), Palette.OUTLINE, 2)

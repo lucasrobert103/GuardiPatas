@@ -49,7 +49,7 @@ func record(level: Level, delta: float, force: bool = false) -> void:
 	for body in level.props + level.platforms:
 		if is_instance_valid(body): frame["blocks"].append({"id": body.get_instance_id(), "transform": body.global_transform, "size": body.size, "wood": body is Crate})
 	for nest in level.nests:
-		frame["nests"].append({"id": nest.get_instance_id(), "position": nest.global_position, "hole": nest.hole, "remaining": nest.remaining, "plugged": nest.hole and nest._is_plugged()})
+		frame["nests"].append({"id": nest.get_instance_id(), "position": nest.global_position, "hole": nest.hole, "remaining": nest.remaining, "plugged": nest.hole and nest._is_plugged(), "coverage": nest.covered_sides})
 	for shot in level.projectiles:
 		if is_instance_valid(shot): frame["shots"].append({"id": shot.get_instance_id(), "position": shot.global_position, "radius": shot.radius, "kind": shot.kind})
 	for coconut in level.coconuts:

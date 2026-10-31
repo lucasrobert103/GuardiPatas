@@ -23,6 +23,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, camadas contra brocas, rampas até as tocas e ancoragem contra vento. As duas primeiras ensinam o desenho; depois é preciso ler o cenário e administrar a tinta. Os objetivos iniciais não mostram mais a receita da solução. Veja [o que mudou e como testar](docs/18-estrategia-e-dificuldade.md).
 
+## Pressão 0.7: insetos mais fortes
+
+Enxames mais densos, mosquitos mais rápidos, investidas de vespa mais pesadas e brocas que perfuram em 1,6 s. As saídas precisam de cobertura dos dois lados e mostram a proteção parcial. Quatro fases agora exigem três camadas independentes. A IA contorna o pote vazio e tenta outro caminho quando um canto fica bloqueado. Veja [mudanças e testes](docs/22-pressao-e-defesas.md).
+
 ## Reveja onde falhou
 
 Depois de perder, **Ver onde falhou** mostra uma revisão visual dos últimos três segundos, com o local da derrota, câmera lenta e controle para arrastar o histórico. O recurso é gratuito e ajuda a comparar o movimento dos insetos com os apoios e as saídas. Veja [como usar e testar](docs/21-revisao-das-tentativas.md).
@@ -57,7 +61,7 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 - Linha com **peso real** (corpo rígido de cápsulas), validação do traço por física, tinta limitada com metas de estrela visíveis, caixas, lâmpadas, água, plataformas móveis, zonas proibidas.
 - Menus, mapa, coleção com histórias, **guarda-roupa cosmético**, conquistas, dicas, ajustes de acessibilidade (alto contraste, reduzir movimento), salvamento local, botão voltar do Android.
 - **Dezenas de efeitos sonoros + músicas** sintetizados do zero (`tools/gen_audio.py`).
-- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas 54 fases estratégicas, três círculos/elipses e dois arcos genéricos precisam perder. **Mais de 400 verificações da campanha**, 270 verificações contra padrões genéricos, 202 combinações de desafios diários e teste de fluxo da interface, sem falhas.
+- **Testes automáticos**: cada fase é desenhada com a solução registrada e simulada — tem que vencer; e sem linha tem que perder. Nas 63 fases, oito padrões genéricos precisam perder; as provas de camadas também verificam a omissão de cada traço. **Mais de 400 verificações da campanha**, 516 verificações contra padrões genéricos e camadas, 200 combinações de desafios diários e teste de fluxo da interface, sem falhas.
 - **Sem anúncios, sem cobranças reais, sem coleta de dados** nesta versão (monetização planejada com ética no doc 11).
 
 ## Rodar
