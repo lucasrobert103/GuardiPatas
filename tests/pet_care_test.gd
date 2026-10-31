@@ -66,7 +66,7 @@ func _ready() -> void:
 		home._pets[i].art.position = Vector2(180 + i * 320, 600)
 	check(home._pets.size() == 2, "elenco resgatado disponível")
 	await get_tree().process_frame
-	var bottom_bar: ProgressBar = home._bars["love"][1]
+	var bottom_bar: HomeNeed = home._needs["love"]
 	check(bottom_bar.get_global_rect().end.y < home.size.y * 0.4, "indicadores não cobrem área de interação")
 	var click := InputEventMouseButton.new()
 	click.button_index = MOUSE_BUTTON_LEFT
@@ -134,8 +134,8 @@ func _ready() -> void:
 		await get_tree().process_frame
 		await get_tree().process_frame
 		localized.set_process(false)
-		check((localized._bars["food"][0] as Label).text.begins_with(language[1]), "indicadores traduzidos " + language[0])
-		check((localized._bars["love"][1] as ProgressBar).get_global_rect().end.y < localized.size.y * 0.4, "layout texto grande " + language[0])
+		check((localized._needs["food"] as HomeNeed).tooltip_text.begins_with(language[1]), "indicadores traduzidos " + language[0])
+		check((localized._needs["love"] as HomeNeed).get_global_rect().end.y < localized.size.y * 0.4, "layout texto grande " + language[0])
 		localized.queue_free()
 		await get_tree().process_frame
 	Game.set_setting("lang", "pt_BR")

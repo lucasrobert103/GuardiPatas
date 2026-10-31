@@ -25,7 +25,7 @@ As 63 fases foram rebalanceadas: ninhos nos apoios, cavernas com duas entradas, 
 
 ## Cuidados na Casinha
 
-Alimente, dê banho com sabão e enxágue, coloque para dormir, jogue bola e experimente roupas. Cada bichinho tem barrinhas próprias de comida, higiene, energia e carinho. Os cuidados são gratuitos e ficam pausados fora da Casinha. Veja [como brincar e testar](docs/17-casinha-cuidados.md).
+Cinco ambientes ilustrados: sala, cozinha, banheiro, quarto e guarda-roupa. Arraste alimentos e sabão até o bichinho, toque na cama para dormir e lance uma bola com gravidade e quique. Retratos e acessórios ficam em carrosséis; pequenos indicadores mostram as necessidades de cada amigo. Os cuidados são gratuitos e ficam pausados fora da Casinha. Veja [como brincar e testar](docs/17-casinha-cuidados.md).
 
 ## Loja em fase de teste
 

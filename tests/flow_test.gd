@@ -121,8 +121,10 @@ func _ready() -> void:
 	ev.position = home._pets[0].art.position
 	home._gui_input(ev)
 	_expect(Game.stat("pets") == pets_before + 1, "carinho num bichinho")
-	await _press_text("Petisco")
-	await _press_text("Álbum", true)
+	home._set_mode("food")
+	await _wait(0.1)
+	home._objects["snack"].pressed.emit()
+	home._album.pressed.emit()
 	await _wait(0.6)
 	_expect(main._current is AlbumScreen, "abre o Álbum")
 

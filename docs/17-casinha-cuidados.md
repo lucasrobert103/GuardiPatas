@@ -1,49 +1,49 @@
-# Casinha: cuidar dos bichinhos
+# Casinha: ambientes e cuidados visuais
 
-A Casinha agora funciona como um espaço de bichinhos virtuais, com arte própria do GuardiPatas. Não usa imagens, personagens ou código do Pou.
+A Casinha 0.4.1 tem cinco ambientes ilustrados com arte própria do GuardiPatas. Um amigo fica em destaque, com um carrossel de retratos para trocar de bichinho. Os animais resgatados e os companheiros adquiridos aparecem juntos; antes do primeiro resgate, a Capitu já está disponível.
+
+<p>
+<img src="img/casinha.png" width="200" alt="Sala com Capitu e bola"> <img src="img/casinha-banho.png" width="200" alt="Banho com banheira e espuma"> <img src="img/casinha-roupas.png" width="200" alt="Guarda-roupa com acessórios ilustrados">
+</p>
+
+Capturas reais do Godot no desktop. Os objetos substituem os antigos painéis, seletores de texto e botões com legendas. As necessidades aparecem em quatro pequenos indicadores circulares: comida, higiene, energia e carinho. Toque prolongado/mouse sobre os indicadores revela nome e percentual.
 
 ## Como brincar
 
-1. Abra **Casinha** no menu. Escolha um amigo na lista ou toque nele. Os animais resgatados e companheiros adquiridos aparecem juntos. Antes de resgatar alguém, a Capitu já fica disponível.
-2. **Comida:** escolha Refeição ou Frutinhas e toque no bichinho para oferecer. Petisco é um atalho para alimentar o amigo selecionado. Uma barriguinha cheia não recebe mais comida.
-3. **Banho:** toque em Sabão e esfregue o bichinho com o dedo/mouse ou dê quatro toques. Ao chegar em 100% de espuma, toque em Enxaguar. A sujeira desaparece e há feedback de água e som. Sabão sozinho não completa o banho.
-4. **Soneca:** apague a luz para descansar. O bichinho fecha os olhos e recupera energia enquanto a Casinha estiver aberta. Toque em Acordar para voltar a comer e brincar.
-5. **Brincar:** toque na bola na sala ou em Jogar bola. O amigo corre para brincar, ganha carinho e gasta um pouco de energia. Se estiver cansado, ofereça uma soneca. Também é possível fazer carinho diretamente no bichinho.
-6. **Roupas:** toque no nome do acessório para experimentar sem comprar. Vestir usa um item já adquirido; o botão de moedas compra e veste. Sem acessório tira a roupa. A prévia não dá direito ao item e desaparece ao trocar de seção/bichinho ou sair.
-7. **Álbum** continua acessível no topo. Voltar retorna ao menu.
+- **Sala (bola no rodapé):** toque na bola ou segure, arraste e solte para lançar. Ela tem gravidade, rotação, colisão com as paredes e quique; o bichinho acompanha a brincadeira. Toque no amigo para fazer carinho.
+- **Cozinha (pratinho):** toque na refeição, maçã ou biscoito para alimentar; também pode arrastar o alimento até o bichinho. Soltar fora dele cancela. Uma barriguinha cheia não recebe mais comida.
+- **Banheiro (banheira):** arraste o sabão sobre o amigo para fazer espuma. Também pode selecionar o sabão e dar quatro toques no bichinho. Quando houver espuma suficiente, o chuveiro ganha um brilho: toque para enxaguar. A toalha seca depois. Sabão sozinho não conclui o banho.
+- **Quarto (caminha):** toque na cama ou luminária para dormir ou acordar. O ambiente escurece, os olhos fecham e a energia se recupera enquanto a Casinha estiver aberta.
+- **Guarda-roupa (armário):** deslize pelos acessórios ilustrados. Um cadeado indica item ainda não adquirido. Toque para experimentar sem gastar; uma ficha com moeda e preço permite confirmar a compra. O saldo aparece separado. Itens adquiridos vestem com um toque; o cabide vazio tira o acessório. Trocar de ambiente/bichinho ou sair desfaz a prévia.
+- **Retratos:** deslize a fileira para encontrar todos os amigos. O livro no topo abre o Álbum; a seta retorna ao menu.
 
-As quatro barras são **Barriguinha, Higiene, Energia e Carinho**, com texto numérico além da cor. Todos os cuidados básicos e alimentos são gratuitos e ilimitados. Só roupas custam moedas do jogo, com saldo e preço visíveis. Não há anúncios, cobrança real, remédios, morte, doença, perda de animais ou penalidade por deixar de jogar. Nenhum cuidado libera moeda para evitar uma rotina de farm.
+Os cuidados e alimentos são gratuitos e ilimitados. Somente roupas custam moedas do jogo. Não há anúncios, cobrança real, remédios, morte, doença, perda de animais ou penalidade por deixar de jogar. Cuidar não gera moedas nem altera a dificuldade das fases.
 
-## Progresso
+## Progresso e persistência
 
-- Necessidades e estado de sono são individuais, guardados em `care` no save ativo. Saves anteriores recebem os valores iniciais ao conhecer esse recurso.
-- O tempo das necessidades só avança com a Casinha aberta; não usamos relógio do sistema, data de retorno ou redução de barras enquanto o jogo estiver fechado. Uma pausa longa de frame é limitada a dois segundos de simulação.
+- Necessidades e sono são individuais, guardados em `care` no save ativo. Saves anteriores recebem os valores iniciais ao usar o recurso.
+- As necessidades só avançam com a Casinha aberta. Não há deterioração offline; uma pausa longa de frame é limitada a dois segundos de simulação.
 - Ações são salvas imediatamente. O avanço passivo é salvo a cada 15 segundos, ao sair e ao minimizar. Encerramento forçado pode perder até esse intervalo de avanço passivo.
-- Falha de gravação reverte o cuidado ou compra de roupa e informa o erro. A troca de roupa também reverte se não puder ser gravada.
-- A simulação de compras continua usando save separado. Apagar progresso limpa os cuidados do modo ativo.
-- Roupas são visuais. Cuidados não afetam vitórias, atributos físicos, tinta ou dificuldade das fases.
-- Bichinhos dormindo não comem nem brincam. Espuma parcial e rodadas da bola são efeitos de sessão; trocar de bichinho limpa a espuma, sem transferir banho a outro amigo.
+- Falhas de gravação revertem o cuidado, a compra ou a troca de roupa, com um aviso curto.
+- A simulação de compras usa save separado. Apagar progresso limpa os cuidados do modo ativo.
+- Bichinhos dormindo não comem nem brincam. Espuma e estado da bola são efeitos de sessão; trocar de bichinho limpa a espuma.
 
-## Acessibilidade e testes
+## Layout, controles e testes
 
-Controles por toque ou mouse; banho também funciona só com toques. A Casinha respeita texto grande e reduz movimento de pulos, corações, chuva e nuvens. Há traduções dos novos controles e mensagens de cuidado em português, inglês e espanhol.
+O cenário e os objetos se reorganizam conforme a área útil, incluindo a área segura do Android. Os carrosséis permitem acessar todos os retratos e acessórios sem amontoar controles. Objetos têm áreas de toque, dicas traduzidas para português/inglês/espanhol e foco visível para teclado; os carrosséis acompanham o foco. O banho também funciona só com toques. Reduzir movimento desliga o deslocamento dos corações, as nuvens, os pulos e a chuva animada; lançar a bola continua sendo uma interação física.
 
-Teste dedicado (Godot 4.7.2, a partir da raiz):
+Testes com Godot 4.7.2, a partir da raiz:
 
 ```bash
-export XDG_CACHE_HOME=/workspace/.cache XDG_CONFIG_HOME=/workspace/.config
-export XDG_DATA_HOME=/workspace/guardipatas-care-tests
-mkdir -p "$XDG_DATA_HOME"
-/workspace/.tools/godot/4.7.2/Godot_v4.7.2-stable_linux.x86_64 --headless --path . res://tests/pet_care_test.tscn -- --test-io
+godot --headless --fixed-fps 60 --path . res://tests/home_visual_test.tscn
+godot --headless --path . res://tests/pet_care_test.tscn
 ```
 
-O diretório precisa terminar em `/guardipatas-care-tests` e o argumento `--test-io` precisa estar presente para executar a etapa de persistência. Isso evita apagar o progresso pessoal por acidente. Os testes exercitam cuidados individuais, limites, sono, alimentação por toque, espuma/esfregar/enxaguar, prévia sem débito, compra de roupa, persistência e falhas de gravação. O CI inclui esse teste.
+Para incluir persistência e falhas de gravação no segundo teste, use `-- --test-io` e `XDG_DATA_HOME` terminado em `/guardipatas-care-tests`. Essa restrição evita apagar progresso pessoal.
 
-A interface foi renderizada e inspecionada no desktop com OpenGL Compatibility/Mesa, incluindo banho, roupas e soneca com texto grande. Isso não substitui testes de toque e desempenho no Android. Permanecem avisos de recursos de áudio no encerramento, já observados antes deste recurso.
+Validação desta interface:
 
-## Validação desta entrega
-
-- 48 verificações de cuidados aprovadas, incluindo persistência, falha de gravação, localização EN/ES e limites de layout com texto grande.
-- 405 verificações da campanha, 40 do fluxo da interface e 52 da loja aprovadas.
-- 73 scripts compilados sem erros; `git diff --check` passou.
-- Renderização desktop inspecionada para banho com espuma, prévia de roupas e sono com texto grande. Testes Android e execução remota do CI continuam pendentes.
+- 53 verificações de gestos e layout: entrada real pela GUI, alimentação sem duplicar, arraste cancelado, teclado, banho, cama, contraste noturno, roupas, lançamento/gravidade/quique e objetos dentro da tela nos cinco ambientes. Tamanhos: 360×640, 720×1280, 720×1600, 1024×1366 e 1280×720.
+- 48 verificações de cuidados, 52 de loja e fluxo completo da interface aprovados; 81 scripts compilados sem erros.
+- Renderização desktop inspecionada com OpenGL Compatibility/Mesa, incluindo telas pequenas, tablet e paisagem. O CI inclui os testes de gestos/layout e persistência.
+- Toque e desempenho em aparelho Android e a execução remota do CI ainda precisam ser verificados. Há avisos de recursos de áudio no encerramento de alguns testes, já observados antes desta interface.

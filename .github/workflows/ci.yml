@@ -91,6 +91,12 @@ jobs:
           timeout 120 ~/godot/godot --headless --path . res://tests/pet_care_test.tscn -- --test-io 2>&1 | tee care.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" care.log; then exit 1; fi
 
+      - name: Gestos e layout da Casinha
+        run: |
+          set -o pipefail
+          timeout 120 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/home_visual_test.tscn 2>&1 | tee home-visual.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" home-visual.log; then exit 1; fi
+
       - name: Velocidade da simulação
         run: |
           set -o pipefail
