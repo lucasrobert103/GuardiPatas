@@ -29,7 +29,6 @@ var _tool_btns: Dictionary = {}
 var _name_label: Label
 var _status: Label
 var _species: Array = []
-var _root: Control
 
 
 func _ready() -> void:
@@ -70,115 +69,80 @@ static func playable(d: Dictionary, index: int) -> Dictionary:
 
 
 func _build_ui() -> void:
-	# a interface fica numa camada própria: a câmera da fase de fundo não pode arrastá-la
-	var layer := CanvasLayer.new()
-	layer.layer = 5
-	add_child(layer)
-	_root = Control.new()
-	_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_root.theme = UiKit.make_theme()
-	_root.gui_input.connect(_on_canvas_input)
-	layer.add_child(_root)
-	var col := UiKit.vbox(10)
-	col.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	col.offset_left = 14
-	col.offset_right = -14
-	col.offset_top = 18
-	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(col)
 	var top := UiKit.hbox(10)
-	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(top)
-	var back := UiKit.icon_button("back", Palette.UI_PANEL, 80)
+	top.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	top.offset_left = 16
+	top.offset_right = -16
+	top.offset_top = 20
+	add_child(top)
+	var back := UiKit.icon_button("back")
 	back.pressed.connect(_save_and_exit)
 	top.add_child(back)
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	top.add_child(spacer)
-	var test := UiKit.button("Testar", Palette.UI_GOOD, "play", 190, 80)
+	var prev := UiKit.icon_button("back", Palette.UI_SECONDARY, 72)
+	prev.pressed.connect(func(): _world(-1))
+	top.add_child(prev)
+	_name_label = UiKit.label("", 26, Palette.WHITE, 10, Palette.OUTLINE)
+	_name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	top.add_child(_name_label)
+	var nxt := UiKit.icon_button("next", Palette.UI_SECONDARY, 72)
+	nxt.pressed.connect(func(): _world(1))
+	top.add_child(nxt)
+	var test := UiKit.button("Testar", Palette.UI_GOOD, "play", 170, 84)
 	test.pressed.connect(_test)
 	top.add_child(test)
-	# cenário: setas + nome (linha própria, o nome pode ser comprido)
-	var wrow := UiKit.hbox(10)
-	wrow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(wrow)
-	var prev := UiKit.icon_button("back", Palette.UI_SECONDARY, 64)
-	prev.pressed.connect(func(): _world(-1))
-	wrow.add_child(prev)
-	_name_label = UiKit.label("", 24, Palette.WHITE, 10, Palette.OUTLINE)
-	_name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_name_label.clip_text = true
-	_name_label.custom_minimum_size.x = 80
-	wrow.add_child(_name_label)
-	var nxt := UiKit.icon_button("next", Palette.UI_SECONDARY, 64)
-	nxt.pressed.connect(func(): _world(1))
-	wrow.add_child(nxt)
-	var opts := HFlowContainer.new()
-	opts.alignment = FlowContainer.ALIGNMENT_CENTER
-	opts.add_theme_constant_override("h_separation", 8)
-	opts.add_theme_constant_override("v_separation", 8)
-	opts.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(opts)
+
+	var opts := UiKit.hbox(10)
+	opts.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	opts.offset_left = 16
+	opts.offset_right = -16
+	opts.offset_top = 116
+	opts.alignment = BoxContainer.ALIGNMENT_CENTER
+	add_child(opts)
 	for spec in [["time", "timer"], ["ink", "ink"], ["strokes", "pencil"]]:
-		var b := UiKit.button("-", Palette.UI_PANEL, spec[1], 0, 60)
-		b.add_theme_font_size_override("font_size", UiKit.fs(20))
-		b.custom_minimum_size.x = 190
+		var b := UiKit.button("-", Palette.UI_PANEL, spec[1], 0, 70)
+		b.add_theme_font_size_override("font_size", 22)
+		b.custom_minimum_size.x = 200
 		var key: String = spec[0]
 		b.pressed.connect(func():
 			_cycle(key)
 			_option_text(b, key))
 		_option_text(b, key)
 		opts.add_child(b)
-	_status = UiKit.label("", 20, Palette.WHITE, 8, Palette.OUTLINE, true)
+
+	_status = UiKit.label("", 22, Palette.WHITE, 8, Palette.OUTLINE, true)
+	_status.anchor_right = 1.0
+	_status.offset_left = 20
+	_status.offset_right = -20
+	_status.offset_top = 196
+	_status.offset_bottom = 256
 	_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(_status)
+	add_child(_status)
 
-	var bottom_bar := UiKit.vbox(8)
-	bottom_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	bottom_bar.offset_top = -150
-	bottom_bar.offset_left = 8
-	bottom_bar.offset_right = -8
-	bottom_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_root.add_child(bottom_bar)
-
-	# primeira linha: animal selector
-	var animal_row := UiKit.hbox(8)
-	animal_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bottom_bar.add_child(animal_row)
-	var animal_btn := UiKit.tile("Bichinho", "paw", Palette.UI_PANEL, 100, 100)
-	animal_btn.pressed.connect(_show_animals_picker)
-	animal_row.add_child(animal_btn)
-	_tool_btns["animal"] = animal_btn
-
-	var species_label := UiKit.label("", 18, Palette.WHITE, 8, Palette.OUTLINE)
-	species_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	animal_row.add_child(species_label)
-	# guardar referência para atualizar
-	_root.set_meta("species_label", species_label)
-
-	# segunda linha: outras ferramentas
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.y = 120
+	scroll.anchor_left = 0.0
+	scroll.anchor_right = 1.0
+	scroll.anchor_top = 1.0
+	scroll.anchor_bottom = 1.0
+	scroll.offset_top = -170
+	scroll.offset_bottom = -30
+	scroll.offset_left = 10
+	scroll.offset_right = -10
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.mouse_filter = Control.MOUSE_FILTER_STOP
-	bottom_bar.add_child(scroll)
-	var row := UiKit.hbox(8)
+	add_child(scroll)
+	var row := UiKit.hbox(10)
 	scroll.add_child(row)
-
 	for t in TOOLS:
-		if t[0] == "animal":
-			continue
-		var b := UiKit.tile(t[1], t[2], Palette.UI_PANEL, 100, 100)
+		var b := UiKit.tile(t[1], t[2], Palette.UI_PANEL, 118, 124)
 		var id: String = t[0]
 		if id in ["bee", "mosquito", "ant", "beetle"]:
+			# o próprio inseto no lugar do ícone
 			for c in b.get_children():
 				if c is UiIcon:
 					c.queue_free()
 			var ia := InsectArt.new()
 			ia.kind = id
-			ia.radius = 15.0
-			ia.position = Vector2(50, 40)
+			ia.radius = 16.0
+			ia.position = Vector2(59, 44)
 			b.add_child(ia)
 		b.pressed.connect(func(): _select(id))
 		row.add_child(b)
@@ -232,16 +196,9 @@ func _select(id: String) -> void:
 func _update_labels() -> void:
 	var w := LevelDB.world_info(int(draft["world"]))
 	_name_label.text = tr(str(w.get("name", ""))) if w.has("name") else tr("Mundo %d") % int(draft["world"])
-
-	# atualizar label de bichinho
-	if _root.has_meta("species_label"):
-		var sp := _species[species_i]
-		var lbl: Label = _root.get_meta("species_label")
-		lbl.text = Animal.SPECIES[sp]["name"]
-
 	var msg := ""
 	match tool:
-		"animal": msg = tr("Toque para pôr: %s") % Animal.SPECIES[_species[species_i]]["name"]
+		"animal": msg = tr("Toque para pôr: %s (toque de novo no botão para trocar)") % Animal.SPECIES[_species[species_i]]["name"]
 		"erase": msg = tr("Toque perto de algo para apagar")
 		"bee", "mosquito": msg = tr("Toque no céu para pôr o ninho")
 		"ant", "beetle": msg = tr("Toque no chão para pôr o formigueiro")
@@ -290,15 +247,12 @@ func _count(kind: String) -> int:
 	return 0
 
 
-func _on_canvas_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	var mb := event as InputEventMouseButton
 	if mb == null or not mb.pressed or mb.button_index != MOUSE_BUTTON_LEFT:
 		return
-	# fora da faixa dos botões (em cima) e da barra de ferramentas (embaixo)
-	if mb.position.y < 300.0 or mb.position.y > _root.size.y - 140.0:
-		return
 	var p := _to_world(mb.position)
-	if p.y < 150.0 or p.y > GROUND + 40.0 or p.x < 30.0 or p.x > 690.0:
+	if p.y < 250.0 or p.y > GROUND + 40.0 or p.x < 30.0 or p.x > 690.0:
 		return
 	_place(p)
 
@@ -373,78 +327,3 @@ func _save_and_exit() -> void:
 	if not draft["animals"].is_empty() or not draft["nests"].is_empty():
 		custom_index = Game.save_custom(custom_index, draft)
 	go.emit("editor", null)
-
-
-func _show_animals_picker() -> void:
-	var all_species := Cast.ORDER.duplicate()
-
-	var modal := Control.new()
-	modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	modal.modulate.a = 0.0
-	_root.add_child(modal)
-
-	var bg := ColorRect.new()
-	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	bg.color = Color.BLACK
-	bg.color.a = 0.6
-	modal.add_child(bg)
-
-	var panel := PanelContainer.new()
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(700, 600)
-	panel.add_theme_stylebox_override("panel", UiKit.panel_style(Palette.BG, 20))
-	modal.add_child(panel)
-
-	var inner := UiKit.vbox(12)
-	inner.offset_left = 20
-	inner.offset_top = 20
-	inner.offset_right = -20
-	inner.offset_bottom = -20
-	panel.add_child(inner)
-
-	var title := UiKit.label("Escolha um Bichinho", 28, Palette.WHITE, 10, Palette.OUTLINE)
-	inner.add_child(title)
-
-	var grid := GridContainer.new()
-	grid.columns = 3
-	grid.add_theme_constant_override("h_separation", 10)
-	grid.add_theme_constant_override("v_separation", 10)
-	inner.add_child(grid)
-
-	for sp in all_species:
-		var btn := Button.new()
-		btn.custom_minimum_size = Vector2(140, 140)
-		btn.add_theme_stylebox_override("normal", UiKit.btn_style(Palette.UI_PANEL, false))
-		btn.add_theme_stylebox_override("hover", UiKit.btn_style(Palette.GOLD.lightened(0.1), false))
-
-		var v := UiKit.vbox(4)
-		v.alignment = BoxContainer.ALIGNMENT_CENTER
-		btn.add_child(v)
-
-		var art := AnimalArt.new()
-		art.species = sp
-		art.preview = true
-		art.scale = Vector2(1.1, 1.1)
-		art.custom_minimum_size = Vector2(120, 80)
-		v.add_child(art)
-
-		var name_lbl := UiKit.label(Animal.SPECIES[sp]["name"], 16, Palette.WHITE, 8, Palette.OUTLINE)
-		name_lbl.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		v.add_child(name_lbl)
-
-		btn.pressed.connect(func():
-			species_i = all_species.find(sp)
-			_update_labels()
-			modal.queue_free()
-			Sfx.play("pop", 0.0, 1.2))
-		grid.add_child(btn)
-
-	var close_btn := UiKit.button("Fechar", Palette.UI_SECONDARY, "close", 200, 60)
-	close_btn.pressed.connect(modal.queue_free)
-	inner.add_child(close_btn)
-
-	# animação de entrada
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(modal, "modulate:a", 1.0, 0.3)

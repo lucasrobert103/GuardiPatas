@@ -12,10 +12,10 @@ func _ready() -> void:
 	reload()
 
 
-func reload(path: String = LEVELS_PATH) -> void:
+func reload() -> void:
 	worlds.clear()
 	levels.clear()
-	var f := FileAccess.open(path, FileAccess.READ)
+	var f := FileAccess.open(LEVELS_PATH, FileAccess.READ)
 	if f == null:
 		push_error("levels.json não encontrado")
 		return
