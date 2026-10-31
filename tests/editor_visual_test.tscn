@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/editor_visual_test.gd" id="1_editor"]
+
+[node name="EditorVisualTest" type="Node"]
+script = ExtResource("1_editor")
