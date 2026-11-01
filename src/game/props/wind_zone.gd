@@ -13,6 +13,8 @@ var delay := 1.0
 var underwater := false
 ## Quanto os insetos/criaturas sentem o vento (as linhas sentem 100 %).
 var insect_scale := 0.3
+## Vento que muda de lado a cada rajada (Nuvens Altas).
+var flip := false
 var active := false
 var warning := false
 var _cycle := 0.0
@@ -30,6 +32,7 @@ func setup(cfg: Dictionary, p_underwater: bool) -> void:
 	off_time = float(cfg.get("off", 2.0))
 	delay = float(cfg.get("delay", 1.0))
 	insect_scale = float(cfg.get("insects", 0.3))
+	flip = bool(cfg.get("flip", false))
 	underwater = p_underwater
 	z_index = 25
 
@@ -50,6 +53,8 @@ func tick(delta: float) -> void:
 	warning = not active and ((phase >= period - 0.6) or (_cycle < 0.0 and _cycle > -0.6))
 	if active and not was:
 		Sfx.play("wasp_dash", -10.0, 0.5, 0.1, 0.2)
+		if flip and _cycle > on_time:
+			dir = -dir
 
 
 func push(body: RigidBody2D, scale: float = 1.0) -> void:

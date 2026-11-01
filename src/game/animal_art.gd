@@ -14,6 +14,8 @@ var preview := false        # usado nas telas de menu (sem física)
 ## Efeito especial (partículas só visuais). Vazio + auto_effect = usa o do jogador.
 var effect := ""
 var auto_effect := true
+## Amassadinho do pulo de susto (Plim).
+var _jump_squash := 0.0
 
 var _t := 0.0
 var _blink := 0.0
@@ -46,6 +48,11 @@ const COLORS := {
 	"zeca": {"main": Color("6fcf6a"), "light": Color("e8f7b8"), "dark": Color("3f9a4a")},
 	"mel": {"main": Color("b9773f"), "light": Color("f2d2a6"), "dark": Color("7f4e27")},
 	"fiapo": {"main": Color("a8957c"), "light": Color("efe2c8"), "dark": Color("6b5a47")},
+	"bolota": {"main": Color("e8a35a"), "light": Color("fff3e0"), "dark": Color("9c5b2b")},
+	"plim": {"main": Color("d39a66"), "light": Color("f8e1c4"), "dark": Color("8f5a34")},
+	"duda": {"main": Color("f6c453"), "light": Color("fff3cf"), "dark": Color("b06a2e")},
+	"nhoque": {"main": Color("c9e7a8"), "light": Color("eef8e0"), "dark": Color("c0703f")},
+	"lua": {"main": Color("6b5b8a"), "light": Color("c7b8e6"), "dark": Color("3e3257")},
 }
 
 ## Pontos de ancoragem para acessórios (cabeça, olhos, pescoço).
@@ -74,6 +81,11 @@ const ANCHORS := {
 	"zeca": {"head": Vector2(2, -28), "eyes": Vector2(2, -14), "neck": Vector2(2, 8), "scale": 0.75},
 	"mel": {"head": Vector2(2, -42), "eyes": Vector2(4, -22), "neck": Vector2(2, 2), "scale": 1.0},
 	"fiapo": {"head": Vector2(30, -22), "eyes": Vector2(32, -8), "neck": Vector2(18, 8), "scale": 0.75},
+	"bolota": {"head": Vector2(10, -24), "eyes": Vector2(12, -8), "neck": Vector2(8, 8), "scale": 0.8},
+	"plim": {"head": Vector2(6, -40), "eyes": Vector2(8, -24), "neck": Vector2(4, -6), "scale": 0.8},
+	"duda": {"head": Vector2(12, -80), "eyes": Vector2(14, -64), "neck": Vector2(4, -30), "scale": 0.8},
+	"nhoque": {"head": Vector2(34, -18), "eyes": Vector2(36, -10), "neck": Vector2(26, 6), "scale": 0.6},
+	"lua": {"head": Vector2(0, 26), "eyes": Vector2(0, 6), "neck": Vector2(0, -8), "scale": 0.7},
 }
 
 
@@ -89,6 +101,7 @@ func _process(delta: float) -> void:
 		_mood_t = 0.0
 	_mood_t += delta
 	shell_flash = maxf(shell_flash - delta * 2.5, 0.0)
+	_jump_squash = maxf(_jump_squash - delta * 4.0, 0.0)
 	_next_blink -= delta
 	if _next_blink <= 0.0:
 		_blink = 0.14
@@ -141,6 +154,8 @@ func _draw() -> void:
 		"sad":
 			sc = Vector2(1.03, 0.93)
 			off.y = 3.0
+	if _jump_squash > 0.0:
+		sc *= Vector2(1.0 - 0.15 * _jump_squash, 1.0 + 0.2 * _jump_squash)
 	# a escala pivota pela base para o bicho "amassar" no chão
 	var base_y := _base_y()
 	off.y += base_y * (1.0 - sc.y)
@@ -170,6 +185,11 @@ func _draw() -> void:
 		"zeca": _draw_zeca()
 		"mel": _draw_mel()
 		"fiapo": _draw_fiapo()
+		"bolota": _draw_bolota()
+		"plim": _draw_plim()
+		"duda": _draw_duda()
+		"nhoque": _draw_nhoque()
+		"lua": _draw_lua()
 		"amora", "bambu", "gotinha": _draw_companion()
 		"faisca", "lumi", "cometa", "pipoca": _draw_magic()
 	_draw_accessory()
@@ -204,6 +224,11 @@ func _base_y() -> float:
 		"zeca": return 24.0
 		"mel": return 46.0
 		"fiapo": return 21.0
+		"bolota": return 26.0
+		"plim": return 40.0
+		"duda": return 75.0
+		"nhoque": return 20.0
+		"lua": return 22.0
 	return 28.0
 
 
@@ -699,6 +724,124 @@ func _draw_fiapo() -> void:
 			draw_line(Vector2(ex - 4, -8), Vector2(ex + 4, -8), o, 2.5, true)
 	DrawUtil.oval(self, Vector2(33, -1), Vector2(3, 2), o, o, 0.0)
 	_mouth(Vector2(33, 4), 5.0)
+
+
+func squash_jump() -> void:
+	_jump_squash = 1.0
+
+
+func _draw_bolota() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var o := Palette.OUTLINE
+	for x in [-14.0, 12.0]:
+		DrawUtil.oval(self, Vector2(x, 24), Vector2(7, 4), Color("f2b8a2"))
+	DrawUtil.oval(self, Vector2(0, 2), Vector2(32, 25), m)
+	# manchas brancas e caramelo de porquinho-da-índia
+	DrawUtil.oval(self, Vector2(-14, -2), Vector2(14, 18), _c("light"), o, 0.0, 0.3)
+	DrawUtil.oval(self, Vector2(-26, 6), Vector2(8, 12), d, o, 0.0, 0.2)
+	DrawUtil.oval(self, Vector2(18, -14), Vector2(8, 6), Color("f2b8a2"), o, 2.5, -0.4)
+	DrawUtil.oval(self, Vector2(26, 6), Vector2(6, 5), Color("f2b8a2"), o, 2.0)
+	_blush(Vector2(14, 6), 4.5)
+	_eye(Vector2(12, -6), 4.8)
+	_mouth(Vector2(24, 12), 6.0)
+	# tremidinha de nervoso
+	if mood == "scared":
+		for k in 3:
+			draw_line(Vector2(-38 - k * 4, -10 + k * 10), Vector2(-44 - k * 4, -8 + k * 10), o, 2.0, true)
+
+
+func _draw_plim() -> void:
+	var m := _c("main")
+	var o := Palette.OUTLINE
+	# rabo grosso e pés compridos
+	DrawUtil.oval(self, Vector2(-26, 26), Vector2(20, 8), m, o, 3.0, 0.5)
+	DrawUtil.oval(self, Vector2(-6, 38), Vector2(14, 4), _c("dark"))
+	DrawUtil.oval(self, Vector2(14, 38), Vector2(14, 4), _c("dark"))
+	DrawUtil.oval(self, Vector2(0, 14), Vector2(20, 26), m)
+	DrawUtil.oval(self, Vector2(4, 18), Vector2(12, 17), _c("light"), o, 0.0)
+	# bolsinha com a pedrinha
+	draw_arc(Vector2(4, 22), 9.0, 0.2, PI - 0.2, 10, o, 2.5, true)
+	DrawUtil.disc(self, Vector2(6, 18), 4.0, Color("a7a2b8"), o, 2.0)
+	for sx in [-8.0, 12.0]:
+		DrawUtil.oval(self, Vector2(sx, -40), Vector2(5, 14), m, o, 3.0, sx * 0.02)
+		DrawUtil.oval(self, Vector2(sx, -40), Vector2(2.5, 9), Color("f2b8a2"), o, 0.0, sx * 0.02)
+	DrawUtil.disc(self, Vector2(4, -20), 17.0, m)
+	DrawUtil.oval(self, Vector2(14, -14), Vector2(8, 6), _c("light"), o, 0.0)
+	DrawUtil.disc(self, Vector2(20, -16), 3.0, o, o, 0.0)
+	_blush(Vector2(-4, -12), 3.5)
+	_eye(Vector2(0, -24), 4.0)
+	_eye(Vector2(12, -24), 3.8)
+	_mouth(Vector2(14, -8), 5.0)
+
+
+func _draw_duda() -> void:
+	var m := _c("main")
+	var d := _c("dark")
+	var o := Palette.OUTLINE
+	for x in [-12.0, 4.0, 14.0]:
+		draw_line(Vector2(x, 40), Vector2(x, 72), o, 9.0, true)
+		draw_line(Vector2(x, 40), Vector2(x, 72), m, 5.0, true)
+	DrawUtil.oval(self, Vector2(0, 32), Vector2(24, 18), m)
+	# pescoço comprido
+	DrawUtil.shape(self, PackedVector2Array([Vector2(-8, 30), Vector2(2, -60), Vector2(16, -60), Vector2(10, 30)]), m)
+	for p in [Vector2(-10, 30), Vector2(8, 36), Vector2(4, 0), Vector2(8, -30), Vector2(6, -48), Vector2(-14, 38)]:
+		DrawUtil.oval(self, p, Vector2(5, 4), d, o, 0.0)
+	DrawUtil.oval(self, Vector2(12, -66), Vector2(16, 12), m)
+	DrawUtil.oval(self, Vector2(24, -62), Vector2(9, 7), _c("light"), o, 2.0)
+	for hx in [4.0, 14.0]:
+		draw_line(Vector2(hx, -76), Vector2(hx, -88), o, 3.0, true)
+		DrawUtil.disc(self, Vector2(hx, -89), 3.5, d, o, 2.0)
+	DrawUtil.oval(self, Vector2(-2, -72), Vector2(6, 3), m, o, 2.0, -0.4)
+	_blush(Vector2(8, -60), 3.0)
+	_eye(Vector2(12, -70), 3.8)
+	_mouth(Vector2(26, -58), 4.0)
+
+
+func _draw_nhoque() -> void:
+	var m := _c("main")
+	var o := Palette.OUTLINE
+	# corpinho mole e casinha espiral
+	DrawUtil.oval(self, Vector2(6, 12), Vector2(36, 9), m)
+	DrawUtil.oval(self, Vector2(30, -4), Vector2(9, 14), m, o, 3.0, -0.2)
+	for k in 2:
+		draw_line(Vector2(28 + k * 8, -16), Vector2(30 + k * 10, -32), o, 2.5, true)
+		DrawUtil.disc(self, Vector2(30 + k * 10, -33), 4.0, m, o, 2.0)
+	var shell_col := _c("dark") if shell_flash <= 0.0 else _c("dark").lerp(Palette.WHITE, shell_flash)
+	DrawUtil.disc(self, Vector2(-6, -6), 22.0, shell_col)
+	var pts := PackedVector2Array()
+	for i in 30:
+		var a := float(i) * 0.42
+		pts.append(Vector2(-6, -6) + Vector2.from_angle(a) * (18.0 - i * 0.55))
+	draw_polyline(pts, Color("8a4a26"), 3.0, true)
+	_eye(Vector2(28, -30), 3.4)
+	_eye(Vector2(38, -31), 3.2)
+	_mouth(Vector2(36, 0), 4.0)
+	# rastro brilhante
+	for k in 3:
+		draw_circle(Vector2(-36 - k * 10, 18), 2.0, Color(1, 1, 1, 0.6 - k * 0.15), true, -1.0, true)
+
+
+func _draw_lua() -> void:
+	var m := _c("main")
+	var o := Palette.OUTLINE
+	# pendurada de cabeça para baixo: pezinhos em cima, asas enroladas
+	draw_line(Vector2(-6, -22), Vector2(-6, -32), o, 3.0, true)
+	draw_line(Vector2(6, -22), Vector2(6, -32), o, 3.0, true)
+	var flap := 0.0 if mood == "idle" else sin(_t * 18.0) * 6.0
+	for sx in [-1.0, 1.0]:
+		DrawUtil.shape(self, PackedVector2Array([Vector2(sx * 10, -16), Vector2(sx * (34 + flap), -6), Vector2(sx * 26, 6), Vector2(sx * (30 + flap), 14), Vector2(sx * 10, 12)]), _c("dark"), o, 3.0)
+	DrawUtil.oval(self, Vector2(0, -2), Vector2(14, 18), m)
+	DrawUtil.disc(self, Vector2(0, 14), 12.0, m)
+	for sx in [-1.0, 1.0]:
+		DrawUtil.tri(self, Vector2(sx * 4, 22), Vector2(sx * 12, 32), Vector2(sx * 12, 18), m, o, 2.5)
+	_eye(Vector2(-5, 12), 3.4)
+	_eye(Vector2(5, 12), 3.4)
+	_blush(Vector2(-9, 8), 2.5)
+	_blush(Vector2(9, 8), 2.5)
+	if mood == "idle" and not preview:
+		var font := ThemeDB.fallback_font
+		draw_string(font, Vector2(14, 36 + fmod(_t * 8.0, 10.0)), "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(o, 0.6))
 
 
 # ------------------------------------------------------------------ sustos individuais

@@ -9,6 +9,9 @@ var size := Vector2(60, 60)
 var plank := false
 var hp := WOOD_HP
 var _wobble := 0.0
+## Bloco de montar que cai: fica parado no alto até `drop_at` (tempo da simulação).
+var drop_at := -1.0
+var _toy := Color("ff6b6b")
 
 
 func setup(p_size: Vector2, p_plank: bool, rot: float) -> void:
@@ -53,8 +56,17 @@ func _process(delta: float) -> void:
 		queue_redraw()
 
 
+func make_toy(at: float, color: Color) -> void:
+	drop_at = at
+	_toy = color
+	mass = clampf(mass * 1.6, 0.6, 8.0)
+
+
 func _draw() -> void:
 	var rect := Rect2(-size * 0.5, size)
+	if drop_at >= 0.0:
+		_draw_toy(rect)
+		return
 	if _wobble > 0.0:
 		draw_set_transform(Vector2(sin(Time.get_ticks_msec() * 0.06) * 1.5 * _wobble, 0))
 	draw_rect(rect.grow(Palette.OUTLINE_W * 0.5), Palette.OUTLINE, true)
@@ -70,6 +82,24 @@ func _draw() -> void:
 	draw_rect(inset, Palette.WOOD_DARK, false, 3.0, true)
 	draw_line(inset.position, inset.end, Palette.WOOD_DARK, 4.0, true)
 	_draw_cracks(rect)
+
+
+func _draw_toy(rect: Rect2) -> void:
+	var o := Palette.OUTLINE
+	draw_rect(rect.grow(Palette.OUTLINE_W * 0.5), o, true)
+	draw_rect(rect.grow(-Palette.OUTLINE_W * 0.5), _toy, true)
+	# pininhos de bloco de montar em cima
+	var n := maxi(1, int(size.x / 26.0))
+	for i in n:
+		var x := rect.position.x + size.x * (i + 0.5) / n
+		draw_rect(Rect2(Vector2(x - 7, rect.position.y - 8), Vector2(14, 9)), o, true)
+		draw_rect(Rect2(Vector2(x - 5, rect.position.y - 6), Vector2(10, 7)), _toy.lightened(0.2), true)
+	if freeze and drop_at > 0.0:
+		# linha pontilhada até o chão: onde ele vai cair
+		var y := rect.end.y + 10.0
+		while y < 1000.0 - global_position.y:
+			draw_line(Vector2(0, y), Vector2(0, y + 10), Color(Palette.DANGER, 0.6), 3.0, true)
+			y += 22.0
 
 
 func _draw_cracks(rect: Rect2) -> void:

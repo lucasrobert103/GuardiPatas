@@ -10,6 +10,7 @@ var _bg: MenuBg
 var _grid: GridContainer
 var _title: Label
 var _stars: Label
+var _done: Label
 var _prev: Button
 var _next: Button
 var _info: PanelContainer
@@ -74,6 +75,8 @@ func _ready() -> void:
 	_next.pressed.connect(func(): _switch(1))
 	nav.add_child(_next)
 
+	_done = UiKit.label("", 22, Palette.WHITE, 8, Palette.OUTLINE, true)
+	col.add_child(_done)
 	var panel := UiKit.panel(Color(1, 1, 1, 0.82))
 	col.add_child(panel)
 	_grid = GridContainer.new()
@@ -118,8 +121,13 @@ func _switch(dir: int) -> void:
 func _refresh() -> void:
 	_bg.world_id = world_id
 	var info := LevelDB.world_info(world_id)
+	var levels := LevelDB.levels_in_world(world_id)
+	var span := ""
+	if not levels.is_empty():
+		span = tr("Fases %d a %d") % [int(levels[0]) + 1, int(levels[-1]) + 1] + "  ·  "
 	_title.text = tr(str(info.get("name", ""))) if info.has("name") else tr("Mundo %d") % world_id
 	_stars.text = "%d / %d" % [Game.total_stars(), LevelDB.count() * 3]
+	_done.text = span + tr("%d de %d fases vencidas") % [Game.completed_count(), LevelDB.count()] + "  ·  " + tr("Missões %d/%d") % [Missions.total_done(), Missions.total_possible()]
 	var ids := _worlds()
 	_prev.disabled = ids.find(world_id) <= 0
 	_next.disabled = ids.find(world_id) >= ids.size() - 1
@@ -169,7 +177,8 @@ func _level_button(index: int, n: int) -> Control:
 	var lv := LevelDB.get_level(index)
 	var unlocked := Game.is_unlocked(index)
 	var stars := Game.stars_of(str(lv["id"]))
-	var b := UiKit.button("" if not unlocked else str(n), Palette.UI_PRIMARY if unlocked else Palette.UI_MUTED, "lock" if not unlocked else "", 180, 150)
+	# número contínuo da campanha (Fase 1, 2, 3... até a última)
+	var b := UiKit.button("" if not unlocked else str(index + 1), Palette.UI_PRIMARY if unlocked else Palette.UI_MUTED, "lock" if not unlocked else "", 180, 150)
 	b.add_theme_font_size_override("font_size", 48)
 	if unlocked:
 		var row := UiKit.hbox(0)
@@ -183,6 +192,13 @@ func _level_button(index: int, n: int) -> Control:
 			ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.add_child(ic)
 		b.add_child(row)
+		# missões cumpridas (0 a 3) no canto
+		var mc := Missions.done_count(str(lv["id"]))
+		var ml := UiKit.label("%d/3" % mc, 16, Palette.UI_GOOD.darkened(0.3) if mc == 3 else Color(Palette.OUTLINE, 0.6))
+		ml.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ml.position = Vector2(132, 6)
+		ml.size = Vector2(44, 22)
+		b.add_child(ml)
 		# medalhas extras no topo do botão (apagadas até serem ganhas)
 		var medals := UiKit.hbox(2)
 		medals.mouse_filter = Control.MOUSE_FILTER_IGNORE

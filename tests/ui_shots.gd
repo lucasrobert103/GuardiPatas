@@ -22,6 +22,8 @@ func _ready() -> void:
 	Game.load_save()
 	Game.data["met"] = Cast.ORDER.duplicate()
 	Game.data["coins"] = 1250
+	if not "--intro" in OS.get_cmdline_user_args():
+		Game.data["seen_insects"] = Nest.KINDS.duplicate() + ["termite_queen"]
 	get_window().size = sz
 	get_tree().root.content_scale_size = Vector2i(720, 1280)
 	await get_tree().process_frame
@@ -31,11 +33,12 @@ func _ready() -> void:
 		lv.setup(idx, LevelDB.get_level(idx), true)
 		add_child(lv)
 		await get_tree().physics_frame
-		for st in lv.solution_strokes():
-			lv.drawer.feed_stroke(st)
-			await get_tree().physics_frame
-		if lv.state == Level.State.DRAWING:
-			lv.start_simulation()
+		if not "--intro" in OS.get_cmdline_user_args():
+			for st in lv.solution_strokes():
+				lv.drawer.feed_stroke(st)
+				await get_tree().physics_frame
+			if lv.state == Level.State.DRAWING:
+				lv.start_simulation()
 		await get_tree().create_timer(wait).timeout
 		if "--pause" in OS.get_cmdline_user_args():
 			lv.hud._open_pause()
@@ -52,6 +55,11 @@ func _ready() -> void:
 			ed.custom_index = -1
 			c = ed
 		"store": c = StoreScreen.new()
+		"infinite":
+			var inf := InfiniteScreen.new()
+			inf.director = InfiniteDirector.new()
+			inf.add_child(inf.director)
+			c = inf
 		"magic":
 			c = Control.new()
 			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -70,7 +78,7 @@ func _ready() -> void:
 			c = Control.new()
 			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			c.add_child(MenuBg.new())
-			var sp := ["zeca", "mel", "fiapo", "capi", "kiko"]
+			var sp := ["bolota", "plim", "duda", "nhoque", "lua"]
 			for i in sp.size():
 				for m in 2:
 					var a := AnimalArt.new()

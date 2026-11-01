@@ -1,7 +1,7 @@
 class_name Cast
 ## Textos do elenco exibidos na Coleção (ficha completa em docs/05-personagens.md).
 
-const ORDER := ["capi", "brasa", "pingo", "nino", "tuca", "lulu", "gelinho", "nuvem", "kiko", "tata", "pompom", "patinha", "fofa", "tito", "zeca", "mel", "fiapo"]
+const ORDER := ["capi", "brasa", "pingo", "nino", "tuca", "lulu", "gelinho", "nuvem", "kiko", "tata", "pompom", "patinha", "fofa", "tito", "zeca", "mel", "fiapo", "bolota", "plim", "duda", "nhoque", "lua"]
 
 const INFO := {
 	"capi": {
@@ -89,6 +89,31 @@ const INFO := {
 		"bio": "Fiapo dorme vinte horas por dia, de preferência abraçado num galho. Quando acorda, sorri devagarinho e volta a dormir.",
 		"trait": "Pelo grosso: aguenta UMA picadinha, mas é comprido — o abrigo precisa ser largo.",
 	},
+	"bolota": {
+		"species": "Porquinho-da-índia",
+		"bio": "Bolota é redondinha, fofa e muito ansiosa. Quando um inseto chega perto, ela não para quieta: dá passinhos para lá e para cá.",
+		"trait": "Agitada: anda para os lados de nervoso — o abrigo precisa ser folgado.",
+	},
+	"plim": {
+		"species": "Canguruzinho",
+		"bio": "Plim carrega uma pedrinha na bolsa da barriga e pula de susto com qualquer zumbido.",
+		"trait": "Pula de susto: o teto do abrigo precisa ser bem alto.",
+	},
+	"duda": {
+		"species": "Girafinha",
+		"bio": "Duda é a mais alta da turma e enxerga os insetos de longe. Adora folhinhas do alto das árvores.",
+		"trait": "Altíssima: o abrigo precisa ser muito alto (e gasta mais tinta).",
+	},
+	"nhoque": {
+		"species": "Caracol",
+		"bio": "Nhoque leva a casinha nas costas e nunca tem pressa. Deixa um rastro brilhante por onde passa.",
+		"trait": "Casinha nas costas: aguenta DUAS picadas, mas escorrega fácil.",
+	},
+	"lua": {
+		"species": "Morceguinho",
+		"bio": "Lua dorme de cabeça para baixo o dia todo e acorda para ver as estrelas. É a mais leve da turma.",
+		"trait": "Fica pendurada no teto: não cai — o abrigo é desenhado em volta dela, no alto.",
+	},
 }
 
 const INSECTS := {
@@ -113,4 +138,11 @@ const INSECTS := {
 	"bombardier": {"name": "Besouro Pum-Pum", "desc": "Mira de longe e lança fumaça em arco. Só telhado segura!"},
 	"mantis": {"name": "Louva-a-deus Garra", "desc": "Agarra a linha e a LEVANTA para passar por baixo."},
 	"leafcutter": {"name": "Formiga Tesoura", "desc": "Corta a tinta encostada nela. Pedra ela não corta."},
+	"ladybug": {"name": "Joaninha Mamãe", "desc": "Encostada na tinta por 2 s, solta 3 filhotinhos rápidos."},
+	"rollbug": {"name": "Besouro-tatu", "desc": "Encolhe, sai rolando e quebra a tinta no impacto. Pedra segura."},
+	"ninja": {"name": "Mosquito-Ninja", "desc": "Solta fumacinha e fica quase invisível por 1 segundo."},
+	"aphid": {"name": "Pulgão Cola", "desc": "Gruda na tinta e a deixa pesada até ela cair."},
+	"dragonfly": {"name": "Libélula Relâmpago", "desc": "Patrulha no alto e dá uma arrancada em zigue-zague."},
+	"ghost": {"name": "Boo, o Fantasminha", "desc": "Atravessa tinta comum! Só a Tinta Firme e a luz o seguram."},
+	"termite_queen": {"name": "Rainha Térmita", "desc": "Abre túneis novos no chão. A rachadura avisa onde."},
 }

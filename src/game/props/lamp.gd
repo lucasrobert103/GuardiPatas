@@ -22,7 +22,34 @@ func setup(p_duration: float) -> void:
 	add_child(cs)
 
 
+## Lâmpada ritmada: acende `on` s e apaga `off` s, sem parar (mostra o tempo para virar).
+var rhythm_on := 0.0
+var rhythm_off := 0.0
+var _rhythm_t := 0.0
+
+
+func set_rhythm(on: float, off: float, delay: float) -> void:
+	rhythm_on = on
+	rhythm_off = off
+	_rhythm_t = -delay
+	duration = -1.0
+
+
+func rhythm_left() -> float:
+	if rhythm_on <= 0.0:
+		return -1.0
+	var phase := fposmod(_rhythm_t, rhythm_on + rhythm_off)
+	return (rhythm_on - phase) if phase < rhythm_on else (rhythm_on + rhythm_off - phase)
+
+
 func tick(delta: float) -> void:
+	if rhythm_on > 0.0:
+		_rhythm_t += delta
+		var was := lit
+		lit = _rhythm_t < 0.0 or fposmod(_rhythm_t, rhythm_on + rhythm_off) < rhythm_on
+		if was != lit:
+			Sfx.play("ui_back" if not lit else "ui_click", -6.0, 0.6 if not lit else 1.2)
+		return
 	if duration < 0.0 or not lit:
 		return
 	time_left -= delta

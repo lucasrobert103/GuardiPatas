@@ -20,6 +20,8 @@ var jump_velocity := Vector2.ZERO
 var boosted := false
 ## Onda de som da Cigarra (1 → 0).
 var wave := 0.0
+## Giro do Besouro-tatu rolando.
+var spin := 0.0
 
 var _t := 0.0
 var _hc := false
@@ -71,6 +73,12 @@ func _draw() -> void:
 		"bombardier": _draw_bombardier()
 		"mantis": _draw_mantis()
 		"leafcutter": _draw_leafcutter()
+		"ladybug": _draw_ladybug()
+		"rollbug": _draw_rollbug()
+		"ninja": _draw_ninja()
+		"aphid": _draw_aphid()
+		"dragonfly": _draw_dragonfly()
+		"ghost": _draw_ghost()
 		"drillfish":
 			_draw_puffer()
 			DrawUtil.tri(self, Vector2(radius * 0.8, -4), Vector2(radius * 1.8, 0), Vector2(radius * 0.8, 4), Color("b9dfe5"), Palette.OUTLINE, 2)
@@ -445,6 +453,117 @@ func _draw_leafcutter() -> void:
 	_eye_pair(Vector2(r * 0.9, -r * 0.45), r * 0.24)
 
 
+func _draw_ladybug() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var flap := _wing_flap()
+	DrawUtil.oval(self, Vector2(-r * 0.2, -r * 0.85 * flap), Vector2(r * 0.7, r * 0.5 * flap), Color(1, 1, 1, 0.6), o, 1.5, -0.4)
+	var shell := Color("e8402f")
+	if aiming:
+		shell = shell.lerp(Color("ffd23f"), 0.5 + 0.5 * sin(_t * 20.0))
+	DrawUtil.disc(self, Vector2(-r * 0.1, 0), r * 0.95, shell, o, 2.5)
+	draw_line(Vector2(-r * 0.1, -r * 0.9), Vector2(-r * 0.1, r * 0.9), o, 2.0, true)
+	for p in [Vector2(-0.5, -0.4), Vector2(0.3, -0.4), Vector2(-0.55, 0.35), Vector2(0.35, 0.35)]:
+		draw_circle(Vector2(p.x * r, p.y * r), r * 0.18, o, true, -1.0, true)
+	DrawUtil.disc(self, Vector2(r * 0.85, -r * 0.05), r * 0.42, Color("2b2230"), o, 2.0)
+	_eye_pair(Vector2(r * 0.95, -r * 0.15), r * 0.2)
+
+
+func _draw_rollbug() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var col := Color("8f96a8")
+	if excited:
+		# enrolado como bolinha, girando
+		draw_set_transform(Vector2.ZERO, spin, Vector2(facing, 1.0))
+		DrawUtil.disc(self, Vector2.ZERO, r, col, o, 2.5)
+		for k in 4:
+			var a := TAU * k / 4.0
+			draw_line(Vector2.from_angle(a) * r * 0.2, Vector2.from_angle(a) * r * 0.95, Color("5f6678"), 2.5, true)
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(facing, 1.0))
+		return
+	var curl := aim_progress if aiming else 0.0
+	var step := sin(_t * 10.0)
+	for i in 4:
+		var lx := -r * 0.6 + r * 0.4 * i
+		draw_line(Vector2(lx, r * 0.3), Vector2(lx + step * 2.0, r * 0.9), o, 2.0, true)
+	var seg := PackedVector2Array()
+	for i in 15:
+		var a := PI + PI * float(i) / 14.0
+		seg.append(Vector2(cos(a) * r * (1.1 - curl * 0.2), r * 0.4 + sin(a) * r * (0.9 + curl * 0.3)))
+	DrawUtil.shape(self, seg, col, o, 2.5)
+	for k in 3:
+		draw_arc(Vector2(0, r * 0.4), r * (0.4 + k * 0.25), PI * 1.1, PI * 1.9, 10, Color("5f6678"), 2.0, true)
+	_eye_pair(Vector2(r * 0.85, r * 0.05), r * 0.2)
+
+
+func _draw_ninja() -> void:
+	_draw_mosquito()
+	var r := radius
+	# faixa de ninja na cabeça
+	draw_line(Vector2(r * 0.5, -r * 0.45), Vector2(r * 1.35, -r * 0.45), Color("e8402f"), 3.0, true)
+	draw_line(Vector2(r * 0.45, -r * 0.45), Vector2(r * 0.1, -r * 0.9 + sin(_t * 12.0) * 2.0), Color("e8402f"), 2.0, true)
+	if aiming:
+		for k in 3:
+			var p := Vector2(-r * 0.5 + k * r * 0.5, -r * 0.2) + Vector2(sin(_t * 9.0 + k) * 4.0, -k * 4.0)
+			draw_circle(p, r * (0.5 + 0.3 * aim_progress), Color(0.8, 0.8, 0.85, 0.5), true, -1.0, true)
+
+
+func _draw_aphid() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	if not excited:
+		var flap := _wing_flap()
+		DrawUtil.oval(self, Vector2(-r * 0.2, -r * 0.9 * flap), Vector2(r * 0.6, r * 0.45 * flap), Color(1, 1, 1, 0.6), o, 1.5, -0.4)
+	DrawUtil.oval(self, Vector2(0, 0), Vector2(r * 1.05, r * 0.85), Color("a8d86a"), o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.8, -r * 0.2), r * 0.42, Color("8fc451"), o, 2.0)
+	_eye_pair(Vector2(r * 0.9, -r * 0.3), r * 0.2)
+	# gotinhas de cola
+	for k in 2:
+		var dy := fmod(_t * 14.0 + k * 6.0, 10.0)
+		DrawUtil.oval(self, Vector2(-r * 0.4 + k * r * 0.5, r * 0.9 + dy), Vector2(2.0, 3.0), Color("d8f5a0"), o, 1.0)
+
+
+func _draw_dragonfly() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var flap := 0.5 + 0.5 * absf(sin(_t * 40.0))
+	var glow := Color(1, 1, 1, 0.55)
+	if aiming:
+		glow = Color(1.0, 0.95, 0.4, 0.5 + 0.5 * aim_progress)
+	for s in [-1.0, 1.0]:
+		DrawUtil.oval(self, Vector2(r * 0.1, s * r * 0.55 * flap - r * 0.2), Vector2(r * 0.9, r * 0.28), glow, o, 1.5, s * 0.25)
+		DrawUtil.oval(self, Vector2(-r * 0.4, s * r * 0.5 * flap - r * 0.15), Vector2(r * 0.8, r * 0.24), glow, o, 1.5, s * 0.35)
+	DrawUtil.oval(self, Vector2(-r * 1.0, 0), Vector2(r * 1.2, r * 0.22), Color("3fa6d9"), o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.4, 0), r * 0.38, Color("2f8fc4"), o, 2.0)
+	DrawUtil.disc(self, Vector2(r * 0.95, -r * 0.05), r * 0.42, Color("7fd3e8"), o, 2.0)
+	_eye_pair(Vector2(r * 1.05, -r * 0.12), r * 0.22)
+
+
+func _draw_ghost() -> void:
+	var r := radius
+	var o := Palette.OUTLINE
+	var wav := PackedVector2Array()
+	for i in 13:
+		var a := PI + PI * float(i) / 12.0
+		wav.append(Vector2(cos(a) * r, sin(a) * r * 1.1 - r * 0.1))
+	for k in 6:
+		var x := r - k * r * 0.4
+		wav.append(Vector2(x, r * 0.9 + (sin(_t * 6.0 + k) * 2.0) + (6.0 if k % 2 == 0 else 0.0)))
+	var col := Color(0.95, 0.94, 1.0, 0.85)
+	if excited:
+		col = Color(0.9, 0.9, 1.0, 0.45)
+	DrawUtil.shape(self, wav, col, o, 2.5)
+	if excited:
+		# com medo da luz: olhos apertados
+		for s in [-1.0, 1.0]:
+			draw_line(Vector2(s * r * 0.35 - 3, -r * 0.2), Vector2(s * r * 0.35 + 3, -r * 0.1), o, 2.5, true)
+	else:
+		for s in [-1.0, 1.0]:
+			DrawUtil.oval(self, Vector2(s * r * 0.35, -r * 0.2), Vector2(r * 0.14, r * 0.22), o, o, 0.0)
+		DrawUtil.oval(self, Vector2(0, r * 0.25), Vector2(r * 0.2, r * 0.14), Color("7a2e3a"), o, 1.5)
+
+
 func _draw_status() -> void:
 	if not calmed and not dazed:
 		if work_progress > 0:
@@ -472,7 +591,7 @@ func _draw_status() -> void:
 			var a := _t * 6.0 + PI * i
 			var p := top + Vector2(cos(a) * 10.0, sin(a) * 3.0)
 			DrawUtil.shape(self, DrawUtil.star_points(p, 5.0, 2.2), Palette.GOLD, Palette.OUTLINE, 1.5)
-	elif calmed and kind in ["ant", "beetle", "termite", "caterpillar", "cricket", "crab", "bombardier", "mantis", "leafcutter"]:
+	elif calmed and kind in ["ant", "beetle", "termite", "caterpillar", "cricket", "crab", "bombardier", "mantis", "leafcutter", "rollbug"]:
 		var z := fmod(_t, 1.5) / 1.5
 		var font := ThemeDB.fallback_font
 		draw_string(font, top + Vector2(4, -z * 14.0), "z", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(Palette.OUTLINE, 1.0 - z))

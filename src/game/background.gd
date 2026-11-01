@@ -13,7 +13,7 @@ func setup(p_world: int) -> void:
 	z_index = -100
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1000 + world_id
-	var cloud_count := 4 if not world_id in [5, 8, 9] else 0
+	var cloud_count := 4 if not world_id in [5, 8, 9, 14] else (0 if world_id != 12 else 9)
 	for i in cloud_count:
 		var c := CloudPuff.new()
 		c.position = Vector2(rng.randf_range(-200, 900), rng.randf_range(120, 520))
@@ -30,7 +30,7 @@ func _draw() -> void:
 	if world_id == 8:
 		_draw_sea(pal, rng)
 		return
-	if world_id == 5 or world_id == 9:
+	if world_id == 5 or world_id == 9 or world_id == 14:
 		for i in 60:
 			var p := Vector2(rng.randf_range(-300, 1020), rng.randf_range(-300, 700))
 			draw_circle(p, rng.randf_range(1.0, 2.6), Color(1, 1, 0.9, rng.randf_range(0.4, 0.9)), true, -1.0, true)
@@ -42,6 +42,11 @@ func _draw() -> void:
 	else:
 		draw_circle(Vector2(590, 230), 90.0, Color(1, 0.95, 0.6, 0.25), true, -1.0, true)
 		DrawUtil.disc(self, Vector2(590, 230), 52.0, Color("ffe066"), Color("f5b83d"), 4.0)
+	if world_id == 12:
+		# só céu e nuvens: não há chão lá embaixo
+		for i in 8:
+			DrawUtil.cloud(self, Vector2(rng.randf_range(-200, 920), rng.randf_range(600, 1200)), rng.randf_range(60, 110), Color(1, 1, 1, 0.55))
+		return
 	if world_id == 10:
 		_volcano(pal, rng)
 	elif world_id == 6:
@@ -58,6 +63,32 @@ func _draw() -> void:
 		3:
 			for i in 4:
 				_mesa(Vector2(-150 + i * 330 + rng.randf_range(-40, 40), 830), rng.randf_range(0.8, 1.2), Color(pal["near"]).lightened(0.05))
+		11:
+			# cidade de blocos de montar ao fundo
+			var cols := [Color("ff6b6b"), Color("5ec8f2"), Color("ffd23f"), Color("7fd46a"), Color("b18cff")]
+			for i in 12:
+				var x := -250 + i * 110 + rng.randf_range(-20, 20)
+				var h := rng.randf_range(120, 300)
+				var c: Color = cols[i % cols.size()]
+				draw_rect(Rect2(x, 860 - h, 90, h), c.lightened(0.25), true)
+				for k in 3:
+					draw_rect(Rect2(x + 10 + k * 26, 852 - h, 16, 10), c.lightened(0.15), true)
+		13:
+			# dunas e cactos
+			for i in 6:
+				var b := Vector2(-200 + i * 200 + rng.randf_range(-30, 30), 880)
+				draw_rect(Rect2(b + Vector2(-10, -90), Vector2(20, 90)), Color("6fae6a"), true)
+				draw_rect(Rect2(b + Vector2(-34, -60), Vector2(18, 10)), Color("6fae6a"), true)
+				draw_rect(Rect2(b + Vector2(-34, -80), Vector2(10, 28)), Color("6fae6a"), true)
+		14:
+			# castelo ao luar
+			var cb := Vector2(360, 860)
+			draw_rect(Rect2(cb + Vector2(-170, -260), Vector2(340, 260)), pal["far"], true)
+			for k in 3:
+				var tx: float = cb.x - 200 + k * 200
+				draw_rect(Rect2(Vector2(tx - 35, cb.y - 380), Vector2(70, 380)), pal["far"], true)
+				draw_colored_polygon(PackedVector2Array([Vector2(tx - 45, cb.y - 380), Vector2(tx, cb.y - 450), Vector2(tx + 45, cb.y - 380)]), Color(pal["far"]).darkened(0.2))
+				draw_rect(Rect2(Vector2(tx - 10, cb.y - 320), Vector2(20, 30)), Color("ffe08a"), true)
 		9:
 			for i in 9:
 				_tree(Vector2(-200 + i * 140 + rng.randf_range(-30, 30), 810 + rng.randf_range(-20, 30)), rng.randf_range(0.9, 1.4), Color(pal["near"]).darkened(0.25))

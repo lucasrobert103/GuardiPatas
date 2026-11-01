@@ -5,6 +5,7 @@ var _current: Node
 var _fade: ColorRect
 var _busy := false
 var _cb_filter: ColorRect
+var infinite: InfiniteDirector
 
 
 func _apply_colorblind() -> void:
@@ -14,6 +15,8 @@ func _apply_colorblind() -> void:
 
 
 func _ready() -> void:
+	infinite = InfiniteDirector.new()
+	add_child(infinite)
 	# filtro de daltonismo (Ajustes): corrige as cores da tela toda, abaixo da transição
 	var cb_layer := CanvasLayer.new()
 	cb_layer.layer = 99
@@ -120,6 +123,12 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 			_current = SplashScreen.new()
 		"settings":
 			_current = SettingsScreen.new()
+		"infinite":
+			var inf := InfiniteScreen.new()
+			inf.director = infinite
+			if arg is int:
+				inf.waiting_stage = int(arg)
+			_current = inf
 		_:
 			_current = TitleScreen.new()
 	(_current as Control).theme = UiKit.make_theme()
@@ -150,6 +159,9 @@ func _start_level(index: int) -> void:
 ## Fase fora da campanha (Desafio do Dia ou fase do editor): os dados vêm prontos.
 func _start_custom(data: Dictionary) -> void:
 	Game.current_custom = data
+	# Modo Infinito: já prepara (e valida escondida) a próxima fase enquanto esta é jogada
+	if str(data.get("mode", "")) == "infinite":
+		infinite.prepare(int(data.get("stage", 1)) + 1)
 	var lv := Level.new()
 	lv.setup(-1, data, true)
 	lv.navigate.connect(_on_level_nav)
@@ -161,7 +173,39 @@ func _start_custom(data: Dictionary) -> void:
 		lv.hud._on_hint()
 
 
+func _infinite_nav(action: String) -> void:
+	match action:
+		"next":
+			go("infinite", int(Infinite.run.get("stage", 1)))
+		"restart":
+			_open("level", Game.current_custom, false)
+		"infinite_new":
+			Infinite.start_run()
+			infinite.clear()
+			Game.current_custom = {}
+			go("infinite", 1)
+		_:
+			Game.current_custom = {}
+			go("infinite", null)
+
+
 func _on_level_nav(action: String) -> void:
+	# treino de um inseto novo (pedido pelo cartão do tutorial)
+	if action.begins_with("practice:"):
+		var data := Tutorials.practice_level(action.substr(9), Game.current_index)
+		go("level", data)
+		return
+	if str(Game.current_custom.get("mode", "")) == "practice":
+		var back := int(Game.current_custom.get("return_index", Game.current_index))
+		if action == "restart":
+			_open("level", Game.current_custom, false)
+			return
+		Game.current_custom = {}
+		go("level", back)
+		return
+	if str(Game.current_custom.get("mode", "")) == "infinite":
+		_infinite_nav(action)
+		return
 	if not Game.current_custom.is_empty():
 		match action:
 			"restart":

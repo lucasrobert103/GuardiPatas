@@ -12,7 +12,7 @@ jobs:
   test:
     name: Testes headless (Godot 4.7.2)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
 
@@ -56,7 +56,7 @@ jobs:
       - name: Rodar testes
         run: |
           set -o pipefail
-          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn 2>&1 | tee test.log
+          timeout 1500 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn 2>&1 | tee test.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed to load script|Invalid call|Invalid access|Invalid assignment" test.log; then
             echo "::error::Erros de script durante os testes"
             exit 1
@@ -65,7 +65,7 @@ jobs:
       - name: Círculos e arcos genéricos nas fases estratégicas
         run: |
           set -o pipefail
-          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/strategy_test.tscn 2>&1 | tee strategy.log
+          timeout 1800 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/strategy_test.tscn 2>&1 | tee strategy.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" strategy.log; then exit 1; fi
 
       - name: Táticas dos insetos e colisões
@@ -84,9 +84,21 @@ jobs:
         run: |
           set -o pipefail
           for d in 1 2; do
-            timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --world=0 --difficulty=$d 2>&1 | tee difficulty-$d.log
+            timeout 1500 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --world=0 --difficulty=$d 2>&1 | tee difficulty-$d.log
           done
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" difficulty-*.log; then exit 1; fi
+
+      - name: Tutorial, missões, petiscos e bolhas
+        run: |
+          set -o pipefail
+          timeout 600 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/features_test.tscn 2>&1 | tee features.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" features.log; then exit 1; fi
+
+      - name: Modo Infinito (fases geradas sempre com solução)
+        run: |
+          set -o pipefail
+          timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/infinite_test.tscn -- --stages=30 2>&1 | tee infinite.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" infinite.log; then exit 1; fi
 
       - name: Rolagem por arraste
         run: |

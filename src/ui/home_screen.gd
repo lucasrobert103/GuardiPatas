@@ -317,12 +317,17 @@ func _build_actions() -> void:
 				var object := _object(food, food, PetCare.FOODS[food]["name"])
 				object.button_down.connect(_begin_drag.bind(food))
 				_objects[food] = object
+			# pote dos petiscos ganhos nas fases
+			var jar := _object("treats", "treat_jar", "Petiscos")
+			jar.cost = Treats.total()
+			_objects["treats"] = jar
 		"bath":
 			var soap := _object("soap", "soap", "Sabão")
 			soap.button_down.connect(_begin_drag.bind("soap"))
 			_objects["soap"] = soap
 			_objects["shower"] = _object("shower", "shower", "Enxaguar")
 			_objects["towel"] = _object("towel", "towel", "Secar")
+			_objects["bubbles"] = _object("bubbles", "bubbles", "Brincar com bolhas")
 		"sleep":
 			_objects["bed"] = _object("bed", "", "Dormir ou acordar")
 			_objects["lamp"] = _object("lamp", "lamp", "Apagar a luz e dormir")
@@ -369,6 +374,9 @@ func _place_objects() -> void:
 				var object: HomeObject = _objects[["meal", "fruit", "snack"][i]]
 				object.position = Vector2(_stage.get_center().x + (i - 1) * (object_size + 28) - object_size / 2, tray_y)
 				object.size = Vector2.ONE * object_size
+			if _objects.has("treats"):
+				_objects["treats"].position = _stage.position + Vector2(12, 12)
+				_objects["treats"].size = Vector2.ONE * object_size
 		"bath":
 			_objects["soap"].position = Vector2(_stage.get_center().x - object_size - 40, tray_y)
 			_objects["soap"].size = Vector2.ONE * object_size
@@ -376,6 +384,9 @@ func _place_objects() -> void:
 			_objects["towel"].size = Vector2.ONE * object_size
 			_objects["shower"].position = Vector2(_stage.get_center().x + minf(180, _stage.size.x * 0.27) - 50, maxf(_stage.position.y + 12, _hero_floor() - minf(220, _stage.size.y * 0.5)))
 			_objects["shower"].size = Vector2(100, 148)
+			if _objects.has("bubbles"):
+				_objects["bubbles"].position = _stage.position + Vector2(12, 12)
+				_objects["bubbles"].size = Vector2.ONE * object_size
 		"sleep":
 			var width := minf(_stage.size.x * 0.62, 430)
 			_objects["bed"].position = Vector2(_stage.get_center().x - width / 2, _hero_floor() - 58)
@@ -425,6 +436,8 @@ func _activate_object(key: String) -> void:
 					_rinse = 0
 					_celebrate()
 			"bed", "lamp": _sleep()
+			"treats": _open_treats()
+			"bubbles": _open_bubbles()
 			"buy": _buy_clothing(_preview)
 
 
@@ -827,3 +840,27 @@ class Effects:
 				var phase := 30.0 if bool(Game.setting("reduce_motion")) else fmod(home._rinse * 155 + i * 19, 170)
 				var p := point + Vector2(i * 10 - 65, -130 + phase)
 				draw_line(p, p + Vector2(-3, 13), Color("84c8db"), 3, true)
+
+
+
+# ------------------------------------------------------------------ petiscos e bolhas
+func _open_treats() -> void:
+	var pick := TreatPicker.new()
+	pick.pet = _selected
+	pick.used.connect(func(kind: String):
+		_refresh()
+		_celebrate()
+		_toast("Que delícia!")
+		if _objects.has("treats"):
+			_objects["treats"].cost = Treats.total()
+			_objects["treats"].queue_redraw())
+	add_child(pick)
+
+
+func _open_bubbles() -> void:
+	var game := BubbleGame.new()
+	game.pet = _selected
+	game.finished.connect(func(_score: int):
+		_refresh()
+		_celebrate())
+	add_child(game)

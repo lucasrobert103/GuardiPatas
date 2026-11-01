@@ -8,6 +8,10 @@ Praia do Sol
 Fundo do Mar
 Bosque dos Vagalumes
 Vulcão Fumegante
+Cidade dos Brinquedos
+Nuvens Altas
+Deserto das Dunas
+Castelo Assombrado
 Oi, Capitu!
 Observe todas as saídas antes de desenhar. Separe tinta para tampá-las e aproveite os apoios do cenário.
 Zumbido em Dobro
@@ -115,6 +119,86 @@ Cratera
 A Mel caiu numa cratera! Uma tampa de Tinta Firme por cima resolve — se você achar os apoios.
 Coração do Vulcão
 O grande final: o Caranguejo Rei joga conchas, Pum-Pum lança fumaça e a Cigarra canta. Abrigo firme!
+Joaninha Mamãe
+A Joaninha Mamãe encosta na tinta e solta FILHOTES! A Bolota é agitada: abrigo bem folgado.
+Pula, Plim!
+O Plim pula de susto! O teto precisa ficar bem lá no alto.
+Besouro-tatu
+O Besouro-tatu ENCOLHE e sai rolando: quebra a tinta no tranco! Encoste o abrigo nas pedras.
+Túnel do Trenzinho
+O trenzinho passa e EMPURRA tudo no trilho! Faça o abrigo em cima do bloco, longe do chão.
+Chuva de Blocos
+Blocos de montar vão CAIR (veja o pontilhado)! Telhado firme e inclinado para eles escorregarem.
+Creche das Joaninhas
+Dois amigos, buracos ao lado da Bolota e a Joaninha Mamãe no meio. Dois traços!
+Trem e Tatu
+O tatu rola em cima do bloco e o trem passa embaixo! Pedras seguram o abrigo da Duda.
+Torre de Blocos
+Buracos de formiga, joaninhas e blocos caindo! Pontas em cima dos buracos.
+Parque Lotado
+Três amigos e três traços. Cada um precisa do seu abrigo — a Duda é altíssima!
+Rainha dos Brinquedos
+A Rainha sopra vento, blocos caem e joaninhas chegam. Encoste o abrigo nas pedras!
+Nas Nuvens
+Não há chão aqui em cima! A nuvem AFUNDA um pouco com peso. Abrigo alto para o Plim.
+Libélula Relâmpago
+A Libélula patrulha no alto, as asas brilham e ela ARRANCA em zigue-zague. Abrigo fechado!
+Lua Pendurada
+A Lua dorme pendurada! TINTA FIRME: faça uma concha embaixo do teto, em volta dela.
+Vento que Vira
+O vento muda de lado a cada rajada! Encoste o abrigo nas pedras da nuvem.
+Mosquito-Ninja
+O Mosquito-Ninja solta fumaça e fica quase INVISÍVEL. Nenhuma frestinha!
+Pulgão Cola
+Pulgões GRUDAM na tinta e pesam! Muitos juntos entortam o abrigo: use bastante tinta.
+Nuvem que Afunda
+A nuvem afunda bastante com peso! Tudo junto em cima dela: bichinho e abrigo.
+Duas Nuvens
+Duas nuvens, dois amigos e dois traços. A do Plim afunda!
+Ninja e Libélula
+Ninjas que somem, libélulas que arrancam e pulgões que pesam. Abrigo firme e justo!
+Coruja das Nuvens
+A Coruja joga neve onde aparece o X, e não há chão embaixo! Telhado firme.
+Areia Movediça
+Areia movediça PUXA a linha para baixo! Apoie as pontas do abrigo no chão firme.
+Nhoque Escorrega
+O Nhoque escorrega fácil, mas a casinha aguenta DUAS picadas. Abrigo justo e firme!
+Tempestade de Areia
+A poeira esconde o céu de tempos em tempos! Planeje o abrigo antes de ela chegar.
+Oásis
+A Duda não nada! Mantenha a girafinha longe do oásis e protegida das abelhas.
+Pulgões na Duna
+Pulgões grudam e a areia puxa! Pontas no chão firme e abrigo bem largo.
+Tatu na Duna
+Besouros-tatu rolando dos dois lados! As pedras seguram o abrigo do Nhoque.
+Miragem Ninja
+Ninjas somem na poeira da tempestade! Abrigo sem nenhuma fresta.
+Duas Dunas
+Dois amigos separados pela areia movediça. Dois traços com as pontas no chão firme!
+Areia Funda
+Buracos de formiga do lado da Bolota e areia movediça mais longe. Pontas nos buracos!
+Rainha Térmita
+A Rainha Térmita abre TÚNEIS no chão — a rachadura avisa onde! Deixe as pontas do abrigo em cima delas.
+Boo!
+Boo, o fantasminha, ATRAVESSA a tinta comum! Só a Tinta Firme (que brilha) segura ele.
+Luz que Pisca
+A lanterna acende e apaga no ritmo! Mariposas giram na luz e atacam no escuro.
+Corredor Assombrado
+Pedra o Boo não atravessa! Só falta uma tampa firme em cima do Plim.
+Morcego no Lustre
+A Lua dorme pendurada no lustre. Uma concha de Tinta Firme em volta dela!
+Fantasmas e Lanternas
+Os fantasmas fogem da luz acesa. Quando ela apaga, eles vêm! Abrigo firme.
+Porão Úmido
+Buracos de cupim no porão e fantasmas no ar. Pontas nos buracos!
+Baile das Mariposas
+Duas lanternas piscando fora de ritmo. As mariposas trocam de luz! Abrigo fechado.
+Salão dos Retratos
+Dois amigos e dois traços firmes. Fantasmas, mosquitos e joaninhas!
+Torre do Relógio
+Libélulas arrancam, ninjas somem e o Boo atravessa paredes. Tudo de uma vez!
+Noite do Boo
+O grande final: a Rainha sopra vento, os fantasmas vêm no escuro e as lanternas piscam. Abrigo firme!
 Álbum de Fotos
 Ainda não tem fotos.
 Na tela de vitória, toque na câmera para guardar o momento!
@@ -130,6 +214,13 @@ Recomeçar
 Pausar
 %.1f / %.1f s
 ×%d
+Bolhas: %d
+Combo ×%d!
+Estoure as bolhas! %d s
+Banho de bolhas!
+Você estourou %d bolhas!
+De novo
+Pronto
 Amigos
 Roupinhas
 Conquistas
@@ -214,9 +305,11 @@ Roupas
 room:
 pet:
 Android
+Petiscos
 Sabão
 Enxaguar
 Secar
+Brincar com bolhas
 Dormir ou acordar
 Apagar a luz e dormir
 wear:none
@@ -237,7 +330,8 @@ Não foi possível salvar
 food:
 Comprar por %d moedas
 z z
-%s  %s
+Que delícia!
+Fase %d · %s
 Pronto!
 Velocidade: 1×
 Livre: sim
@@ -254,6 +348,10 @@ Troque %d moedas por 1 dica.
 Você tem %d moedas.
 Agora não
 Trocar
+Novo inseto!
+Veja o poder dele num abrigo de verdade. Quer treinar antes?
+Treinar
+practice:
 Pausa
 Continuar
 Mapa
@@ -277,10 +375,13 @@ Ops! Caiu!
 Cuidado com o peso da linha: ela cai e pode empurrar o bichinho.
 Molhou!
 Esse bichinho não nada. Segure-o longe da água!
+Treino feito!
+Agora é para valer: a fase está esperando.
+Treinar de novo
+Jogar a fase
 Salvos!
 Sua fase funciona! Agora desafie alguém a resolver.
 Editor
-De novo
 Modo Livre!
 Sem limites, só diversão! Estrelas e moedas valem no modo normal.
 Conquista: %s
@@ -289,18 +390,47 @@ Salvo!
 Tinta usada: %d%%
 +%d   (total %d)
 Novo amigo: %s!
++%d petiscos para a Casinha!
+Fases vencidas: %d de %d
+Marco: %d fases vencidas!
 +%d conquistas! Veja em Bichinhos.
 Próxima
-%s %s
+Missões %d/3
+  +%d
 Foto salva no Álbum da Casinha!
 Desafio vencido!
 %s · fase %s
 %d dia seguido!
 %d dias seguidos!
 O prêmio de hoje já foi pego. Volte amanhã para um desafio novo!
-Ver onde falhou
+Fase %d vencida!
+Sequência: %d
+NOVO RECORDE!
+Baú de 5 fases: +40 moedas e petiscos!
+Próxima: Fase %d (mais difícil!)
+Ainda restam %d corações. Tente de novo!
 De novo!
+Fim da corrida! Você passou %d fases seguidas.
+Recorde: %d
+Menu
+Nova corrida
+Quase!
+Ir para a fase
+Ver onde falhou
+Modo Infinito
+Fases novas sem parar, cada vez mais difíceis.
+Três corações: perdeu, tenta de novo. Acabaram, fim da corrida!
+Recorde: %d fases seguidas
+Corridas: %d  ·  Fases vencidas no total: %d
+A cada 5 fases: baú com 40 moedas e petiscos!
+Continuar · Fase %d
+Começar corrida
+Preparando a Fase %d…
+Testando se ela tem solução!
+Fases %d a %d
 %d / %d
+%d de %d fases vencidas
+Missões %d/%d
 Insetos deste mundo
 Ver em outro bichinho
 O que vem: %s
@@ -363,9 +493,15 @@ Resposta
 Pagar (simulação)
 Peça ajuda a um responsável e tente novamente
 GuardiPatas
+Próxima: Fase %d  ·  %d de %d vencidas
+Modo Infinito · Recorde %d
 Bichinhos
 Casinha
 Criar
+Vença fases para ganhar petiscos!
+Mais estrelas, mais petiscos.
+%s  ×%d
+Dar
 Label
 Button
 PanelContainer
@@ -420,6 +556,21 @@ Grandona e alta: precisa de um abrigo largo e alto, mas quase não é empurrada.
 Bicho-preguiça
 Fiapo dorme vinte horas por dia, de preferência abraçado num galho. Quando acorda, sorri devagarinho e volta a dormir.
 Pelo grosso: aguenta UMA picadinha, mas é comprido — o abrigo precisa ser largo.
+Porquinho-da-índia
+Bolota é redondinha, fofa e muito ansiosa. Quando um inseto chega perto, ela não para quieta: dá passinhos para lá e para cá.
+Agitada: anda para os lados de nervoso — o abrigo precisa ser folgado.
+Canguruzinho
+Plim carrega uma pedrinha na bolsa da barriga e pula de susto com qualquer zumbido.
+Pula de susto: o teto do abrigo precisa ser bem alto.
+Girafinha
+Duda é a mais alta da turma e enxerga os insetos de longe. Adora folhinhas do alto das árvores.
+Altíssima: o abrigo precisa ser muito alto (e gasta mais tinta).
+Caracol
+Nhoque leva a casinha nas costas e nunca tem pressa. Deixa um rastro brilhante por onde passa.
+Casinha nas costas: aguenta DUAS picadas, mas escorrega fácil.
+Morceguinho
+Lua dorme de cabeça para baixo o dia todo e acorda para ver as estrelas. É a mais leve da turma.
+Fica pendurada no teto: não cai — o abrigo é desenhado em volta dela, no alto.
 Baiacu-broca
 Fura linhas como a abelha-broca. Tampe a toca no coral antes que ele saia.
 Abelha Zumbi
@@ -460,6 +611,14 @@ Louva-a-deus Garra
 Agarra a linha e a LEVANTA para passar por baixo.
 Formiga Tesoura
 Corta a tinta encostada nela. Pedra ela não corta.
+Encostada na tinta por 2 s, solta 3 filhotinhos rápidos.
+Encolhe, sai rolando e quebra a tinta no impacto. Pedra segura.
+Solta fumacinha e fica quase invisível por 1 segundo.
+Gruda na tinta e a deixa pesada até ela cair.
+Patrulha no alto e dá uma arrancada em zigue-zague.
+Boo, o Fantasminha
+Atravessa tinta comum! Só a Tinta Firme e a luz o seguram.
+Abre túneis novos no chão. A rachadura avisa onde.
 Tinta Curta
 Só 80% da tinta de sempre!
 Enxame
@@ -472,8 +631,16 @@ Pressa
 Os insetos estão 30% mais rápidos!
 T12:00:00
 Desafio: %s
+%s  %s
 Difícil
 Extremo
+Infinito · Fase %d
+Quantas você consegue passar seguidas?
+Use até %d%% da tinta
+Vença no Extremo
+Vença no Difícil ou no Extremo
+Vença de primeira
+Vença sem pedir dica
 Refeição
 Frutinhas
 Petisco
@@ -482,8 +649,12 @@ Boa soneca!
 Bom dia! Vamos brincar?
 Escolha uma comida.
 Cuidado indisponível.
-Que delícia!
 Adorei esse cuidado!
+Biscoito de Patinha
+Morango Doce
+Picolé de Fruta
+Bolinho de Mel
+Treino: %s
 Boné Listrado
 Laço de Bolinhas
 Óculos de Sol
@@ -553,6 +724,14 @@ Amigo dos Vagalumes
 Complete o Bosque dos Vagalumes.
 Domador do Vulcão
 Complete o Vulcão Fumegante.
+Mestre dos Brinquedos
+Complete a Cidade dos Brinquedos.
+Pé nas Nuvens
+Complete as Nuvens Altas.
+Viajante do Deserto
+Complete o Deserto das Dunas.
+Caça-Fantasmas
+Complete o Castelo Assombrado.
 Amiga da Rainha
 Vença a Rainha Zumbina.
 Abraço Quentinho
@@ -605,6 +784,18 @@ Guarda-roupa Lotado
 Tenha todos os acessórios.
 Cheio de Brilho
 Coloque um efeito especial num bichinho.
+Missionário
+Cumpra 10 missões extras.
+Agente Especial
+Cumpra 100 missões extras.
+Confeiteiro
+Dê 10 petiscos na Casinha.
+Sem Parar
+Vença 10 fases seguidas no Modo Infinito.
+Lenda Infinita
+Vença 30 fases seguidas no Modo Infinito.
+Estoura-Bolhas
+Estoure 50 bolhas no banho.
 Cofrinho Cheio
 Tenha 500 moedas de uma vez.
 Tampa-Buracos
@@ -751,6 +942,11 @@ Kiko
 Zeca
 Mel
 Fiapo
+Bolota
+Plim
+Duda
+Nhoque
+Lua
 Quá!
 toc!
 Bééé!
@@ -769,7 +965,11 @@ Uma broca alcançou o bichinho. Confira as saídas e as camadas.
 Chefão
 Furou!
 Dividiu!
+Filhotes!
 Cortou!
 Upa!
+Crack!
+Túnel!
 Crec!
 Tampado!
+por trás

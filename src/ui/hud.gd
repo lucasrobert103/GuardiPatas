@@ -40,6 +40,11 @@ func bind(p_level: Level) -> void:
 	level.drawer.stroke_started.connect(hide_tip)
 	Game.hints_changed.connect(_on_hints_changed)
 	refresh()
+	# primeira vez com um inseto: cartão com demonstração ao vivo e treino
+	if level.mode == "campaign" and not level.free_mode:
+		var kinds := Tutorials.new_kinds(level.data)
+		if not kinds.is_empty():
+			_open_intro.call_deferred(kinds)
 
 
 func _on_hints_changed(_h: int) -> void:
@@ -64,11 +69,23 @@ func _build_top() -> void:
 	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(mid)
-	var title_text := "%s  %s" % [level.data.get("id", ""), tr(str(level.data.get("name", "")))] if level.mode == "campaign" else str(level.data.get("name", ""))
+	# a campanha é numerada sem parar: Fase 1, 2, 3... (o mundo-fase fica entre parênteses)
+	var title_text := (tr("Fase %d · %s") % [level.index + 1, tr(str(level.data.get("name", "")))]) if level.mode == "campaign" else tr(str(level.data.get("name", "")))
 	title_label = UiKit.label(title_text, 26, Palette.WHITE, 10, Palette.OUTLINE)
 	title_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title_label.clip_text = true
 	mid.add_child(title_label)
+	if level.mode == "infinite":
+		# corações da corrida
+		var hearts := UiKit.hbox(4)
+		hearts.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		for i in Infinite.HEARTS:
+			var h := UiIcon.new()
+			h.icon = "heart"
+			h.custom_minimum_size = Vector2(30, 30)
+			h.modulate = Color.WHITE if i < int(Infinite.run.get("hearts", 0)) else Color(0.2, 0.2, 0.2, 0.35)
+			hearts.add_child(h)
+		mid.add_child(hearts)
 	ink_bar = InkBar.new()
 	ink_bar.level = level
 	ink_bar.custom_minimum_size = Vector2(300, 46)
@@ -233,6 +250,40 @@ func _show_buy_hint() -> void:
 			_close_overlay()
 			_on_hint())
 	row.add_child(yes)
+
+
+# ------------------------------------------------------------------ inseto novo
+func _open_intro(kinds: Array) -> void:
+	if kinds.is_empty() or level.state != Level.State.DRAWING:
+		return
+	var kind: String = kinds[0]
+	var box := _open_overlay()
+	var info: Dictionary = Cast.INSECTS.get(kind, {})
+	box.add_child(UiKit.label("Novo inseto!", 26, Palette.DANGER))
+	box.add_child(UiKit.label(tr(str(info.get("name", kind))), 40))
+	var demo := InsectIntro.new()
+	demo.kind = kind
+	box.add_child(demo)
+	var desc := UiKit.label(tr(str(info.get("desc", ""))), 22, Palette.UI_TEXT, 0, Palette.WHITE, true)
+	desc.custom_minimum_size = Vector2(480, 0)
+	box.add_child(desc)
+	box.add_child(UiKit.label("Veja o poder dele num abrigo de verdade. Quer treinar antes?", 19, Color(Palette.UI_TEXT, 0.7), 0, Palette.WHITE, true))
+	var row := UiKit.hbox(14)
+	box.add_child(row)
+	var train := UiKit.button("Treinar", Palette.UI_SECONDARY, "pencil", 230, 88)
+	train.pressed.connect(func():
+		Tutorials.mark_seen(kinds)
+		_close_overlay()
+		action.emit("practice:" + kind))
+	row.add_child(train)
+	var go_btn := UiKit.button("Jogar", Palette.UI_GOOD, "play", 230, 88)
+	go_btn.pressed.connect(func():
+		Tutorials.mark_seen([kind])
+		_close_overlay()
+		level._draw_clock = 0.0
+		if kinds.size() > 1:
+			_open_intro(kinds.slice(1)))
+	row.add_child(go_btn)
 
 
 # ------------------------------------------------------------------ pausa
@@ -437,6 +488,21 @@ func _on_result(won: bool, info: Dictionary) -> void:
 
 
 func _build_win(box: VBoxContainer, info: Dictionary) -> void:
+	if info.get("practice", false):
+		box.add_child(UiKit.title("Treino feito!", 56))
+		box.add_child(UiKit.label("Agora é para valer: a fase está esperando.", 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		var prow := UiKit.hbox(16)
+		box.add_child(prow)
+		var pagain := UiKit.button("Treinar de novo", Palette.UI_SECONDARY, "restart", 260, 90)
+		pagain.pressed.connect(func(): action.emit("restart"))
+		prow.add_child(pagain)
+		var pgo := UiKit.button("Jogar a fase", Palette.UI_GOOD, "play", 260, 90)
+		pgo.pressed.connect(func(): action.emit("menu"))
+		prow.add_child(pgo)
+		return
+	if info.get("infinite", false):
+		_build_infinite_win(box)
+		return
 	if info.get("daily", false):
 		_build_daily_win(box, info)
 		return
@@ -499,6 +565,29 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 		if f != "capi" or Game.data["met"].size() > 1:
 			box.add_child(UiKit.label(tr("Novo amigo: %s!") % Animal.SPECIES[f]["name"], 28, Palette.UI_PRIMARY))
 	_add_medals(box, info)
+	if level.mode == "campaign" and not level.free_mode:
+		_add_missions(box, info)
+		var treats: Dictionary = info.get("treats", {})
+		if not treats.is_empty():
+			var tl := UiKit.hbox(6)
+			for k in treats:
+				var dot := TreatIcon.new()
+				dot.kind = k
+				dot.custom_minimum_size = Vector2(36, 36)
+				tl.add_child(dot)
+			var n := 0
+			for k in treats:
+				n += int(treats[k])
+			tl.add_child(UiKit.label(tr("+%d petiscos para a Casinha!") % n, 22, Palette.UI_TEXT))
+			box.add_child(tl)
+		var done := Game.completed_count()
+		var prog := UiKit.label(tr("Fases vencidas: %d de %d") % [done, LevelDB.count()], 24, Palette.UI_PRIMARY.darkened(0.25))
+		box.add_child(prog)
+		if info.get("prev_stars", 0) == 0 and done % 10 == 0 and done > 0:
+			var milestone := UiKit.label(tr("Marco: %d fases vencidas!") % done, 30, Palette.GOLD.darkened(0.25), 8, Palette.WHITE)
+			box.add_child(milestone)
+			UiKit.pop_in(milestone, 1.4)
+			get_tree().create_timer(1.4).timeout.connect(func(): Sfx.play("unlock"))
 	var got: Array = info.get("achievements", [])
 	for k in mini(got.size(), 2):
 		box.add_child(UiKit.label(tr("Conquista: %s") % tr(Game.achievement_info(got[k])["name"]), 26, Palette.UI_GOOD))
@@ -521,6 +610,40 @@ func _build_win(box: VBoxContainer, info: Dictionary) -> void:
 	var nxt := UiKit.button("Próxima" if has_next else "Mapa", Palette.UI_GOOD, "next", 240, 96)
 	nxt.pressed.connect(func(): action.emit("next" if has_next else "menu"))
 	row.add_child(nxt)
+
+
+## Missões extras da fase: as cumpridas agora pulam na tela (+10 moedas cada).
+func _add_missions(box: VBoxContainer, info: Dictionary) -> void:
+	var id := str(level.data.get("id", ""))
+	var fresh: Array = info.get("missions_new", [])
+	var have := Missions.done(id)
+	var panel := PanelContainer.new()
+	var st := UiKit.panel_style(Palette.CREAM, 20)
+	st.content_margin_top = 8
+	st.content_margin_bottom = 8
+	st.content_margin_left = 14
+	st.content_margin_right = 14
+	panel.add_theme_stylebox_override("panel", st)
+	box.add_child(panel)
+	var col := UiKit.vbox(4)
+	panel.add_child(col)
+	col.add_child(UiKit.label(tr("Missões %d/3") % have.size(), 22, Palette.UI_TEXT))
+	var i := 0
+	for m in Missions.for_level(id):
+		var row := UiKit.hbox(8)
+		row.alignment = BoxContainer.ALIGNMENT_BEGIN
+		var ic := UiIcon.new()
+		ic.icon = "check" if have.has(m["kind"]) else "star_empty"
+		ic.custom_minimum_size = Vector2(30, 30)
+		row.add_child(ic)
+		var l := UiKit.label(str(m["text"]) + ("  +%d" % Missions.REWARD if fresh.has(m["kind"]) else ""), 19,
+			Palette.UI_GOOD.darkened(0.2) if have.has(m["kind"]) else Color(Palette.UI_TEXT, 0.7))
+		row.add_child(l)
+		col.add_child(row)
+		if fresh.has(m["kind"]):
+			UiKit.pop_in(row, 1.2 + i * 0.25)
+			get_tree().create_timer(1.2 + i * 0.25).timeout.connect(func(): Sfx.play("coin", -2.0, 1.2))
+		i += 1
 
 
 ## Três medalhas extras: pegada dourada, de primeira e relâmpago (as novas pulam na tela).
@@ -563,7 +686,7 @@ func _take_photo(btn: Button) -> void:
 		hint_btn.visible = false
 		play_btn.visible = false
 	overlay.visible = true
-	var cap := "%s %s" % [level.data.get("id", ""), tr(str(level.data.get("name", "")))] if level.mode == "campaign" else str(level.data.get("name", ""))
+	var cap := (tr("Fase %d · %s") % [level.index + 1, tr(str(level.data.get("name", "")))]) if level.mode == "campaign" else str(level.data.get("name", ""))
 	Game.add_photo(img, cap)
 	Sfx.play("ui_click", 2.0, 0.6)
 	var flash := ColorRect.new()
@@ -619,7 +742,92 @@ func _build_daily_win(box: VBoxContainer, info: Dictionary) -> void:
 	row.add_child(again)
 
 
+func _build_infinite_win(box: VBoxContainer) -> void:
+	var res := Infinite.cleared()
+	box.add_child(UiKit.title(tr("Fase %d vencida!") % int(res["stage"]), 52))
+	var seq := UiKit.label(tr("Sequência: %d") % int(res["stage"]), 40, Palette.UI_PRIMARY.darkened(0.2))
+	box.add_child(seq)
+	UiKit.pop_in(seq, 0.2)
+	if res["record"]:
+		var rl := UiKit.label("NOVO RECORDE!", 36, Palette.GOLD.darkened(0.2), 8, Palette.WHITE)
+		box.add_child(rl)
+		UiKit.pop_in(rl, 0.6)
+		get_tree().create_timer(0.6).timeout.connect(func(): Sfx.play("unlock"))
+	var coin_row := UiKit.hbox(8)
+	var ci := UiIcon.new()
+	ci.icon = "coin"
+	ci.custom_minimum_size = Vector2(44, 44)
+	coin_row.add_child(ci)
+	coin_row.add_child(UiKit.label("+%d" % int(res["coins"]), 30))
+	box.add_child(coin_row)
+	if res["chest"]:
+		var cl := UiKit.label("Baú de 5 fases: +40 moedas e petiscos!", 24, Palette.UI_GOOD.darkened(0.2))
+		box.add_child(cl)
+		UiKit.pop_in(cl, 1.0)
+	var next := int(Infinite.run["stage"])
+	box.add_child(UiKit.label(tr("Próxima: Fase %d (mais difícil!)") % next, 22, Color(Palette.UI_TEXT, 0.7)))
+	var row := UiKit.hbox(16)
+	box.add_child(row)
+	var home := UiKit.icon_button("home", Palette.UI_PANEL, 96)
+	home.pressed.connect(func(): action.emit("menu"))
+	row.add_child(home)
+	var nxt := UiKit.button("Próxima", Palette.UI_GOOD, "next", 280, 96)
+	nxt.pressed.connect(func(): action.emit("next"))
+	row.add_child(nxt)
+
+
+func _build_infinite_lose(box: VBoxContainer, info: Dictionary) -> void:
+	var hearts := Infinite.failed()
+	var reason := str(info.get("reason", "sting"))
+	var txt: Array = LOSE_TEXT.get(reason, LOSE_TEXT["sting"])
+	box.add_child(UiKit.title(txt[0], 48))
+	var hr := UiKit.hbox(6)
+	for i in Infinite.HEARTS:
+		var h := UiIcon.new()
+		h.icon = "heart"
+		h.custom_minimum_size = Vector2(56, 56)
+		h.modulate = Color.WHITE if i < hearts else Color(0.2, 0.2, 0.2, 0.3)
+		hr.add_child(h)
+	box.add_child(hr)
+	var row := UiKit.hbox(16)
+	if hearts > 0:
+		box.add_child(UiKit.label(tr("Ainda restam %d corações. Tente de novo!") % hearts, 24, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		box.add_child(row)
+		var home := UiKit.icon_button("home", Palette.UI_PANEL, 96)
+		home.pressed.connect(func(): action.emit("menu"))
+		row.add_child(home)
+		var again := UiKit.button("De novo!", Palette.UI_GOOD, "restart", 260, 96)
+		again.pressed.connect(func(): action.emit("restart"))
+		row.add_child(again)
+		return
+	var reached := int(Infinite.run.get("stage", 1)) - 1
+	box.add_child(UiKit.label(tr("Fim da corrida! Você passou %d fases seguidas.") % reached, 28, Palette.UI_TEXT, 0, Palette.WHITE, true))
+	box.add_child(UiKit.label(tr("Recorde: %d") % Infinite.best(), 32, Palette.GOLD.darkened(0.25)))
+	box.add_child(row)
+	var menu := UiKit.button("Menu", Palette.UI_SECONDARY, "home", 220, 96)
+	menu.pressed.connect(func(): action.emit("menu"))
+	row.add_child(menu)
+	var fresh := UiKit.button("Nova corrida", Palette.UI_GOOD, "play", 280, 96)
+	fresh.pressed.connect(func(): action.emit("infinite_new"))
+	row.add_child(fresh)
+
+
 func _build_lose(box: VBoxContainer, info: Dictionary) -> void:
+	if level.mode == "infinite":
+		_build_infinite_lose(box, info)
+		return
+	if level.mode == "practice":
+		box.add_child(UiKit.title("Quase!", 52))
+		box.add_child(UiKit.label(tr(str(level.data.get("tip", ""))), 22, Palette.UI_TEXT, 0, Palette.WHITE, true))
+		var prow := UiKit.hbox(16)
+		box.add_child(prow)
+		var pgo := UiKit.button("Ir para a fase", Palette.UI_SECONDARY, "next", 260, 90)
+		pgo.pressed.connect(func(): action.emit("menu"))
+		prow.add_child(pgo)
+		var pagain := UiKit.button("Treinar de novo", Palette.UI_GOOD, "restart", 260, 90)
+		pagain.pressed.connect(func(): action.emit("restart"))
+		prow.add_child(pagain)
+		return
 	var reason := str(info.get("reason", "sting"))
 	var txt: Array = LOSE_TEXT.get(reason, LOSE_TEXT["sting"])
 	box.add_child(UiKit.title(txt[0], 52))
@@ -703,3 +911,28 @@ class InkBar:
 			for k in n:
 				var p := Vector2(x - (n - 1) * 7.0 + k * 14.0, r.position.y - 2)
 				DrawUtil.shape(self, DrawUtil.star_points(p, 8.0, 3.6), Palette.GOLD, o, 2.0)
+
+
+## Desenhinho do petisco (biscoito, morango, picolé, bolinho).
+class TreatIcon:
+	extends Control
+	var kind := "biscoito"
+	func _draw() -> void:
+		var c := size * 0.5
+		var r := minf(size.x, size.y) * 0.42
+		var o := Palette.OUTLINE
+		var col := Color(str(Treats.KINDS.get(kind, {}).get("color", "e0a860")))
+		match kind:
+			"morango":
+				DrawUtil.shape(self, PackedVector2Array([c + Vector2(-r, -r * 0.3), c + Vector2(r, -r * 0.3), c + Vector2(0, r)]), col, o, 2.0)
+				DrawUtil.tri(self, c + Vector2(-r * 0.5, -r * 0.3), c + Vector2(0, -r * 0.8), c + Vector2(r * 0.5, -r * 0.3), Color("5cc46a"), o, 2.0)
+			"picole":
+				draw_rect(Rect2(c + Vector2(-r * 0.15, r * 0.3), Vector2(r * 0.3, r * 0.7)), Color("e0a860"), true)
+				DrawUtil.oval(self, c + Vector2(0, -r * 0.2), Vector2(r * 0.6, r * 0.75), col, o, 2.0)
+			"bolinho":
+				DrawUtil.oval(self, c + Vector2(0, r * 0.2), Vector2(r, r * 0.6), Color("c98a4a"), o, 2.0)
+				DrawUtil.oval(self, c + Vector2(0, -r * 0.1), Vector2(r * 0.85, r * 0.45), col, o, 2.0)
+			_:
+				DrawUtil.disc(self, c, r, col, o, 2.0)
+				for p in [Vector2(-0.35, -0.2), Vector2(0.3, -0.25), Vector2(0, 0.3)]:
+					draw_circle(c + p * r, r * 0.15, Color("8a5a39"), true, -1.0, true)

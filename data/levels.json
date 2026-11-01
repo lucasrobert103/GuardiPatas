@@ -40,6 +40,22 @@
   {
    "id": 10,
    "name": "Vulcão Fumegante"
+  },
+  {
+   "id": 11,
+   "name": "Cidade dos Brinquedos"
+  },
+  {
+   "id": 12,
+   "name": "Nuvens Altas"
+  },
+  {
+   "id": 13,
+   "name": "Deserto das Dunas"
+  },
+  {
+   "id": 14,
+   "name": "Castelo Assombrado"
   }
  ],
  "levels": [
@@ -19956,6 +19972,7516 @@
      ]
     ]
    ],
+   "no_daily": true
+  },
+  {
+   "id": "11-1",
+   "world": 11,
+   "name": "Joaninha Mamãe",
+   "tip": "A Joaninha Mamãe encosta na tinta e solta FILHOTES! A Bolota é agitada: abrigo bem folgado.",
+   "teaches": "Joaninha que se multiplica; bichinho agitado.",
+   "ink": 270,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      360,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ladybug",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      120,
+      340
+     ],
+     "count": 7,
+     "interval": 0.32,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      294,
+      988
+     ],
+     [
+      294,
+      968
+     ],
+     [
+      296,
+      954
+     ],
+     [
+      301,
+      941
+     ],
+     [
+      308,
+      930
+     ],
+     [
+      319,
+      920
+     ],
+     [
+      331,
+      913
+     ],
+     [
+      345,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      375,
+      909
+     ],
+     [
+      389,
+      913
+     ],
+     [
+      401,
+      920
+     ],
+     [
+      412,
+      930
+     ],
+     [
+      419,
+      941
+     ],
+     [
+      424,
+      954
+     ],
+     [
+      426,
+      968
+     ],
+     [
+      426,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-2",
+   "world": 11,
+   "name": "Pula, Plim!",
+   "tip": "O Plim pula de susto! O teto precisa ficar bem lá no alto.",
+   "teaches": "Bichinho que pula: teto alto.",
+   "ink": 430,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "plim",
+     "pos": [
+      380,
+      959
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      130,
+      330
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      620,
+      360
+     ],
+     "count": 5,
+     "interval": 0.4,
+     "delay": 1.4
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      332,
+      988
+     ],
+     [
+      332,
+      871
+     ],
+     [
+      333,
+      860
+     ],
+     [
+      337,
+      850
+     ],
+     [
+      342,
+      841
+     ],
+     [
+      350,
+      833
+     ],
+     [
+      359,
+      828
+     ],
+     [
+      369,
+      824
+     ],
+     [
+      380,
+      823
+     ],
+     [
+      391,
+      824
+     ],
+     [
+      401,
+      828
+     ],
+     [
+      410,
+      833
+     ],
+     [
+      418,
+      841
+     ],
+     [
+      423,
+      850
+     ],
+     [
+      427,
+      860
+     ],
+     [
+      428,
+      871
+     ],
+     [
+      428,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-3",
+   "world": 11,
+   "name": "Besouro-tatu",
+   "tip": "O Besouro-tatu ENCOLHE e sai rolando: quebra a tinta no tranco! Encoste o abrigo nas pedras.",
+   "teaches": "Besouro que rola: pedras seguram.",
+   "ink": 305,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      256,
+      978
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      464,
+      978
+     ],
+     "r": 22
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "kiko",
+     "pos": [
+      360,
+      961
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "rollbug",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 3,
+     "interval": 2.0,
+     "delay": 0.4
+    },
+    {
+     "insect": "rollbug",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 2,
+     "interval": 2.4,
+     "delay": 1.2
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      306,
+      988
+     ],
+     [
+      306,
+      937
+     ],
+     [
+      307,
+      925
+     ],
+     [
+      311,
+      914
+     ],
+     [
+      318,
+      903
+     ],
+     [
+      326,
+      895
+     ],
+     [
+      337,
+      888
+     ],
+     [
+      348,
+      884
+     ],
+     [
+      360,
+      883
+     ],
+     [
+      372,
+      884
+     ],
+     [
+      383,
+      888
+     ],
+     [
+      394,
+      895
+     ],
+     [
+      402,
+      903
+     ],
+     [
+      409,
+      914
+     ],
+     [
+      413,
+      925
+     ],
+     [
+      414,
+      937
+     ],
+     [
+      414,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-4",
+   "world": 11,
+   "name": "Túnel do Trenzinho",
+   "tip": "O trenzinho passa e EMPURRA tudo no trilho! Faça o abrigo em cima do bloco, longe do chão.",
+   "teaches": "Trem que empurra: usar o bloco como base.",
+   "ink": 270,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       250,
+       880
+      ],
+      [
+       470,
+       880
+      ],
+      [
+       470,
+       1000
+      ],
+      [
+       250,
+       1000
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "train",
+     "y": 975,
+     "dir": 1,
+     "every": 4.5,
+     "delay": 1.0,
+     "speed": 320
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "kiko",
+     "pos": [
+      360,
+      841
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 8,
+     "interval": 0.32,
+     "delay": 0.6
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      316,
+      868
+     ],
+     [
+      316,
+      817
+     ],
+     [
+      317,
+      807
+     ],
+     [
+      320,
+      798
+     ],
+     [
+      326,
+      790
+     ],
+     [
+      333,
+      783
+     ],
+     [
+      341,
+      777
+     ],
+     [
+      350,
+      774
+     ],
+     [
+      360,
+      773
+     ],
+     [
+      370,
+      774
+     ],
+     [
+      379,
+      777
+     ],
+     [
+      387,
+      783
+     ],
+     [
+      394,
+      790
+     ],
+     [
+      400,
+      798
+     ],
+     [
+      403,
+      807
+     ],
+     [
+      404,
+      817
+     ],
+     [
+      404,
+      868
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      276.0,
+      988
+     ],
+     [
+      276.0,
+      962
+     ],
+     [
+      278,
+      944
+     ],
+     [
+      284,
+      928
+     ],
+     [
+      294,
+      913
+     ],
+     [
+      308,
+      900
+     ],
+     [
+      324,
+      891
+     ],
+     [
+      341,
+      885
+     ],
+     [
+      360,
+      883
+     ],
+     [
+      379,
+      885
+     ],
+     [
+      396,
+      891
+     ],
+     [
+      412,
+      900
+     ],
+     [
+      426,
+      913
+     ],
+     [
+      436,
+      928
+     ],
+     [
+      442,
+      944
+     ],
+     [
+      444.0,
+      962
+     ],
+     [
+      444.0,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-5",
+   "world": 11,
+   "name": "Chuva de Blocos",
+   "tip": "Blocos de montar vão CAIR (veja o pontilhado)! Telhado firme e inclinado para eles escorregarem.",
+   "teaches": "Objetos que caem e ficam no cenário.",
+   "ink": 450,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "toyblock",
+     "pos": [
+      360,
+      180
+     ],
+     "size": [
+      70,
+      50
+     ],
+     "drop": 2.0,
+     "color": "5ec8f2"
+    },
+    {
+     "type": "toyblock",
+     "pos": [
+      320,
+      120
+     ],
+     "size": [
+      70,
+      50
+     ],
+     "drop": 4.5,
+     "color": "ffd23f"
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      360,
+      924
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      310,
+      988
+     ],
+     [
+      310,
+      865
+     ],
+     [
+      311,
+      854
+     ],
+     [
+      315,
+      843
+     ],
+     [
+      321,
+      834
+     ],
+     [
+      329,
+      826
+     ],
+     [
+      338,
+      820
+     ],
+     [
+      349,
+      816
+     ],
+     [
+      360,
+      815
+     ],
+     [
+      371,
+      816
+     ],
+     [
+      382,
+      820
+     ],
+     [
+      391,
+      826
+     ],
+     [
+      399,
+      834
+     ],
+     [
+      405,
+      843
+     ],
+     [
+      409,
+      854
+     ],
+     [
+      410,
+      865
+     ],
+     [
+      410,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-6",
+   "world": 11,
+   "name": "Creche das Joaninhas",
+   "tip": "Dois amigos, buracos ao lado da Bolota e a Joaninha Mamãe no meio. Dois traços!",
+   "teaches": "Combinar buracos, filhotes e pulo.",
+   "ink": 745,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 2,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      200,
+      973
+     ],
+     "flip": false
+    },
+    {
+     "type": "plim",
+     "pos": [
+      520,
+      959
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      140,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      260,
+      1000
+     ],
+     "count": 3,
+     "interval": 0.8,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ladybug",
+     "pos": [
+      360,
+      290
+     ],
+     "count": 3,
+     "interval": 1.4,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      640,
+      330
+     ],
+     "count": 6,
+     "interval": 0.35,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      122,
+      988
+     ],
+     [
+      148,
+      988
+     ],
+     [
+      140,
+      967
+     ],
+     [
+      142,
+      954
+     ],
+     [
+      146,
+      941
+     ],
+     [
+      153,
+      930
+     ],
+     [
+      163,
+      920
+     ],
+     [
+      174,
+      913
+     ],
+     [
+      187,
+      909
+     ],
+     [
+      200,
+      907
+     ],
+     [
+      213,
+      909
+     ],
+     [
+      226,
+      913
+     ],
+     [
+      237,
+      920
+     ],
+     [
+      247,
+      930
+     ],
+     [
+      254,
+      941
+     ],
+     [
+      258,
+      954
+     ],
+     [
+      260,
+      967
+     ],
+     [
+      252,
+      988
+     ],
+     [
+      278,
+      988
+     ]
+    ],
+    [
+     [
+      472,
+      988
+     ],
+     [
+      472,
+      871
+     ],
+     [
+      473,
+      860
+     ],
+     [
+      477,
+      850
+     ],
+     [
+      482,
+      841
+     ],
+     [
+      490,
+      833
+     ],
+     [
+      499,
+      828
+     ],
+     [
+      509,
+      824
+     ],
+     [
+      520,
+      823
+     ],
+     [
+      531,
+      824
+     ],
+     [
+      541,
+      828
+     ],
+     [
+      550,
+      833
+     ],
+     [
+      558,
+      841
+     ],
+     [
+      563,
+      850
+     ],
+     [
+      567,
+      860
+     ],
+     [
+      568,
+      871
+     ],
+     [
+      568,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      120.0,
+      988
+     ],
+     [
+      120.0,
+      968
+     ],
+     [
+      122,
+      954
+     ],
+     [
+      128,
+      941
+     ],
+     [
+      137,
+      930
+     ],
+     [
+      150,
+      920
+     ],
+     [
+      165,
+      913
+     ],
+     [
+      182,
+      909
+     ],
+     [
+      200,
+      907
+     ],
+     [
+      218,
+      909
+     ],
+     [
+      235,
+      913
+     ],
+     [
+      250,
+      920
+     ],
+     [
+      263,
+      930
+     ],
+     [
+      272,
+      941
+     ],
+     [
+      278,
+      954
+     ],
+     [
+      280.0,
+      968
+     ],
+     [
+      280.0,
+      988
+     ]
+    ],
+    [
+     [
+      472,
+      988
+     ],
+     [
+      472,
+      871
+     ],
+     [
+      473,
+      860
+     ],
+     [
+      477,
+      850
+     ],
+     [
+      482,
+      841
+     ],
+     [
+      490,
+      833
+     ],
+     [
+      499,
+      828
+     ],
+     [
+      509,
+      824
+     ],
+     [
+      520,
+      823
+     ],
+     [
+      531,
+      824
+     ],
+     [
+      541,
+      828
+     ],
+     [
+      550,
+      833
+     ],
+     [
+      558,
+      841
+     ],
+     [
+      563,
+      850
+     ],
+     [
+      567,
+      860
+     ],
+     [
+      568,
+      871
+     ],
+     [
+      568,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true,
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true
+  },
+  {
+   "id": "11-7",
+   "world": 11,
+   "name": "Trem e Tatu",
+   "tip": "O tatu rola em cima do bloco e o trem passa embaixo! Pedras seguram o abrigo da Duda.",
+   "teaches": "Dois perigos de uma vez.",
+   "ink": 440,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       220,
+       880
+      ],
+      [
+       520,
+       880
+      ],
+      [
+       520,
+       1000
+      ],
+      [
+       220,
+       1000
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      300,
+      858
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      500,
+      858
+     ],
+     "r": 22
+    }
+   ],
+   "props": [
+    {
+     "type": "train",
+     "y": 975,
+     "dir": -1,
+     "every": 4.0,
+     "delay": 1.5,
+     "speed": 340
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      400,
+      804
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "rollbug",
+     "pos": [
+      250,
+      860
+     ],
+     "count": 2,
+     "interval": 2.4,
+     "delay": 0.6
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      300
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      350,
+      868
+     ],
+     [
+      350,
+      749
+     ],
+     [
+      351,
+      738
+     ],
+     [
+      355,
+      727
+     ],
+     [
+      361,
+      718
+     ],
+     [
+      369,
+      710
+     ],
+     [
+      378,
+      704
+     ],
+     [
+      389,
+      700
+     ],
+     [
+      400,
+      699
+     ],
+     [
+      411,
+      700
+     ],
+     [
+      422,
+      704
+     ],
+     [
+      431,
+      710
+     ],
+     [
+      439,
+      718
+     ],
+     [
+      445,
+      727
+     ],
+     [
+      449,
+      738
+     ],
+     [
+      450,
+      749
+     ],
+     [
+      450,
+      868
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-8",
+   "world": 11,
+   "name": "Torre de Blocos",
+   "tip": "Buracos de formiga, joaninhas e blocos caindo! Pontas em cima dos buracos.",
+   "teaches": "Tampar e aguentar o peso.",
+   "ink": 320,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "toyblock",
+     "pos": [
+      420,
+      160
+     ],
+     "size": [
+      70,
+      50
+     ],
+     "drop": 3.0,
+     "color": "7fd46a"
+    },
+    {
+     "type": "toyblock",
+     "pos": [
+      300,
+      120
+     ],
+     "size": [
+      70,
+      50
+     ],
+     "drop": 5.5,
+     "color": "b18cff"
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      360,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      300,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      420,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ladybug",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      308,
+      988
+     ],
+     [
+      300,
+      967
+     ],
+     [
+      302,
+      954
+     ],
+     [
+      306,
+      941
+     ],
+     [
+      313,
+      930
+     ],
+     [
+      323,
+      920
+     ],
+     [
+      334,
+      913
+     ],
+     [
+      347,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      373,
+      909
+     ],
+     [
+      386,
+      913
+     ],
+     [
+      397,
+      920
+     ],
+     [
+      407,
+      930
+     ],
+     [
+      414,
+      941
+     ],
+     [
+      418,
+      954
+     ],
+     [
+      420,
+      967
+     ],
+     [
+      412,
+      988
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      280.0,
+      988
+     ],
+     [
+      280.0,
+      968
+     ],
+     [
+      282,
+      954
+     ],
+     [
+      288,
+      941
+     ],
+     [
+      297,
+      930
+     ],
+     [
+      310,
+      920
+     ],
+     [
+      325,
+      913
+     ],
+     [
+      342,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      378,
+      909
+     ],
+     [
+      395,
+      913
+     ],
+     [
+      410,
+      920
+     ],
+     [
+      423,
+      930
+     ],
+     [
+      432,
+      941
+     ],
+     [
+      438,
+      954
+     ],
+     [
+      440.0,
+      968
+     ],
+     [
+      440.0,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "11-9",
+   "world": 11,
+   "name": "Parque Lotado",
+   "tip": "Três amigos e três traços. Cada um precisa do seu abrigo — a Duda é altíssima!",
+   "teaches": "Três abrigos diferentes.",
+   "ink": 1120,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 3,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      150,
+      924
+     ],
+     "flip": false
+    },
+    {
+     "type": "plim",
+     "pos": [
+      360,
+      959
+     ],
+     "flip": false
+    },
+    {
+     "type": "bolota",
+     "pos": [
+      580,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      360,
+      260
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "ladybug",
+     "pos": [
+      80,
+      330
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 1.0
+    },
+    {
+     "insect": "rollbug",
+     "pos": [
+      680,
+      980
+     ],
+     "count": 2,
+     "interval": 2.4,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      106,
+      988
+     ],
+     [
+      106,
+      863
+     ],
+     [
+      107,
+      853
+     ],
+     [
+      110,
+      844
+     ],
+     [
+      116,
+      836
+     ],
+     [
+      123,
+      829
+     ],
+     [
+      131,
+      823
+     ],
+     [
+      140,
+      820
+     ],
+     [
+      150,
+      819
+     ],
+     [
+      160,
+      820
+     ],
+     [
+      169,
+      823
+     ],
+     [
+      177,
+      829
+     ],
+     [
+      184,
+      836
+     ],
+     [
+      190,
+      844
+     ],
+     [
+      193,
+      853
+     ],
+     [
+      194,
+      863
+     ],
+     [
+      194,
+      988
+     ]
+    ],
+    [
+     [
+      314,
+      988
+     ],
+     [
+      314,
+      869
+     ],
+     [
+      315,
+      859
+     ],
+     [
+      319,
+      849
+     ],
+     [
+      324,
+      840
+     ],
+     [
+      331,
+      833
+     ],
+     [
+      340,
+      828
+     ],
+     [
+      350,
+      824
+     ],
+     [
+      360,
+      823
+     ],
+     [
+      370,
+      824
+     ],
+     [
+      380,
+      828
+     ],
+     [
+      389,
+      833
+     ],
+     [
+      396,
+      840
+     ],
+     [
+      401,
+      849
+     ],
+     [
+      405,
+      859
+     ],
+     [
+      406,
+      869
+     ],
+     [
+      406,
+      988
+     ]
+    ],
+    [
+     [
+      516,
+      988
+     ],
+     [
+      516,
+      968
+     ],
+     [
+      518,
+      954
+     ],
+     [
+      522,
+      941
+     ],
+     [
+      530,
+      930
+     ],
+     [
+      540,
+      920
+     ],
+     [
+      552,
+      913
+     ],
+     [
+      566,
+      909
+     ],
+     [
+      580,
+      907
+     ],
+     [
+      594,
+      909
+     ],
+     [
+      608,
+      913
+     ],
+     [
+      620,
+      920
+     ],
+     [
+      630,
+      930
+     ],
+     [
+      638,
+      941
+     ],
+     [
+      642,
+      954
+     ],
+     [
+      644,
+      968
+     ],
+     [
+      644,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true,
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true
+  },
+  {
+   "id": "11-10",
+   "world": 11,
+   "name": "Rainha dos Brinquedos",
+   "tip": "A Rainha sopra vento, blocos caem e joaninhas chegam. Encoste o abrigo nas pedras!",
+   "teaches": "Chefona com blocos caindo.",
+   "ink": 285,
+   "survive": 14,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      200,
+      941
+     ],
+     "r": 30
+    },
+    {
+     "pos": [
+      520,
+      941
+     ],
+     "r": 30
+    }
+   ],
+   "props": [
+    {
+     "type": "toyblock",
+     "pos": [
+      360,
+      160
+     ],
+     "size": [
+      70,
+      50
+     ],
+     "drop": 4.0,
+     "color": "ffd23f"
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ladybug",
+     "pos": [
+      90,
+      320
+     ],
+     "count": 3,
+     "interval": 1.2,
+     "delay": 0.6
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      630,
+      320
+     ],
+     "count": 8,
+     "interval": 0.8,
+     "delay": 1.1
+    }
+   ],
+   "bosses": [
+    {
+     "pos": [
+      360,
+      330
+     ],
+     "sway": 180
+    }
+   ],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-1",
+   "world": 12,
+   "name": "Nas Nuvens",
+   "tip": "Não há chão aqui em cima! A nuvem AFUNDA um pouco com peso. Abrigo alto para o Plim.",
+   "teaches": "Nuvens que afundam; cair é perder.",
+   "ink": 430,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      220,
+      900,
+      280,
+      40
+     ],
+     "drop": 60,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "plim",
+     "pos": [
+      360,
+      859
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      312,
+      888
+     ],
+     [
+      312,
+      771
+     ],
+     [
+      313,
+      760
+     ],
+     [
+      317,
+      750
+     ],
+     [
+      322,
+      741
+     ],
+     [
+      330,
+      733
+     ],
+     [
+      339,
+      728
+     ],
+     [
+      349,
+      724
+     ],
+     [
+      360,
+      723
+     ],
+     [
+      371,
+      724
+     ],
+     [
+      381,
+      728
+     ],
+     [
+      390,
+      733
+     ],
+     [
+      398,
+      741
+     ],
+     [
+      403,
+      750
+     ],
+     [
+      407,
+      760
+     ],
+     [
+      408,
+      771
+     ],
+     [
+      408,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-2",
+   "world": 12,
+   "name": "Libélula Relâmpago",
+   "tip": "A Libélula patrulha no alto, as asas brilham e ela ARRANCA em zigue-zague. Abrigo fechado!",
+   "teaches": "Libélula: arrancada em linha.",
+   "ink": 265,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      200,
+      900,
+      320,
+      40
+     ],
+     "drop": 40,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      360,
+      873
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "dragonfly",
+     "pos": [
+      130,
+      300
+     ],
+     "count": 2,
+     "interval": 1.8,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      610,
+      330
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      296,
+      888
+     ],
+     [
+      296,
+      868
+     ],
+     [
+      298,
+      854
+     ],
+     [
+      302,
+      841
+     ],
+     [
+      310,
+      830
+     ],
+     [
+      320,
+      820
+     ],
+     [
+      332,
+      813
+     ],
+     [
+      346,
+      809
+     ],
+     [
+      360,
+      807
+     ],
+     [
+      374,
+      809
+     ],
+     [
+      388,
+      813
+     ],
+     [
+      400,
+      820
+     ],
+     [
+      410,
+      830
+     ],
+     [
+      418,
+      841
+     ],
+     [
+      422,
+      854
+     ],
+     [
+      424,
+      868
+     ],
+     [
+      424,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-3",
+   "world": 12,
+   "name": "Lua Pendurada",
+   "tip": "A Lua dorme pendurada! TINTA FIRME: faça uma concha embaixo do teto, em volta dela.",
+   "teaches": "Abrigo pendurado (Tinta Firme).",
+   "ink": 300,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       200,
+       560
+      ],
+      [
+       520,
+       560
+      ],
+      [
+       520,
+       600
+      ],
+      [
+       200,
+       600
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      160,
+      1040,
+      420,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "lua",
+     "pos": [
+      360,
+      634
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "mosquito",
+     "pos": [
+      620,
+      900
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      100,
+      880
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      302,
+      612
+     ],
+     [
+      302,
+      657.0
+     ],
+     [
+      304,
+      671
+     ],
+     [
+      310,
+      684
+     ],
+     [
+      319,
+      696
+     ],
+     [
+      331,
+      705
+     ],
+     [
+      345,
+      710
+     ],
+     [
+      360,
+      712
+     ],
+     [
+      375,
+      710
+     ],
+     [
+      389,
+      705
+     ],
+     [
+      401,
+      696
+     ],
+     [
+      410,
+      684
+     ],
+     [
+      416,
+      671
+     ],
+     [
+      418,
+      657.0
+     ],
+     [
+      418,
+      612
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "12-4",
+   "world": 12,
+   "name": "Vento que Vira",
+   "tip": "O vento muda de lado a cada rajada! Encoste o abrigo nas pedras da nuvem.",
+   "teaches": "Vento que alterna.",
+   "ink": 320,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [
+    {
+     "pos": [
+      224,
+      878
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      496,
+      878
+     ],
+     "r": 22
+    }
+   ],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      150,
+      900,
+      420,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      869
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      110,
+      320
+     ],
+     "count": 7,
+     "interval": 0.4,
+     "delay": 1.0
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      610,
+      320
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 1.6
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      274,
+      888
+     ],
+     [
+      274,
+      866
+     ],
+     [
+      276,
+      851
+     ],
+     [
+      283,
+      837
+     ],
+     [
+      293,
+      824
+     ],
+     [
+      306,
+      814
+     ],
+     [
+      323,
+      806
+     ],
+     [
+      341,
+      801
+     ],
+     [
+      360,
+      799
+     ],
+     [
+      379,
+      801
+     ],
+     [
+      397,
+      806
+     ],
+     [
+      414,
+      814
+     ],
+     [
+      427,
+      824
+     ],
+     [
+      437,
+      837
+     ],
+     [
+      444,
+      851
+     ],
+     [
+      446,
+      866
+     ],
+     [
+      446,
+      888
+     ]
+    ]
+   ],
+   "winds": [
+    {
+     "rect": [
+      -100,
+      150,
+      920,
+      900
+     ],
+     "dir": [
+      1,
+      0
+     ],
+     "force": 900,
+     "on": 2.0,
+     "off": 1.4,
+     "delay": 0.6,
+     "flip": true
+    }
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-5",
+   "world": 12,
+   "name": "Mosquito-Ninja",
+   "tip": "O Mosquito-Ninja solta fumaça e fica quase INVISÍVEL. Nenhuma frestinha!",
+   "teaches": "Inseto que some por um instante.",
+   "ink": 210,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      200,
+      900,
+      320,
+      40
+     ],
+     "drop": 30,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      360,
+      879
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ninja",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 7,
+     "interval": 0.4,
+     "delay": 0.3
+    },
+    {
+     "insect": "ninja",
+     "pos": [
+      120,
+      320
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      304,
+      888
+     ],
+     [
+      304,
+      873
+     ],
+     [
+      305,
+      863
+     ],
+     [
+      310,
+      854
+     ],
+     [
+      316,
+      846
+     ],
+     [
+      325,
+      839
+     ],
+     [
+      336,
+      833
+     ],
+     [
+      348,
+      830
+     ],
+     [
+      360,
+      829
+     ],
+     [
+      372,
+      830
+     ],
+     [
+      384,
+      833
+     ],
+     [
+      395,
+      839
+     ],
+     [
+      404,
+      846
+     ],
+     [
+      410,
+      854
+     ],
+     [
+      415,
+      863
+     ],
+     [
+      416,
+      873
+     ],
+     [
+      416,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-6",
+   "world": 12,
+   "name": "Pulgão Cola",
+   "tip": "Pulgões GRUDAM na tinta e pesam! Muitos juntos entortam o abrigo: use bastante tinta.",
+   "teaches": "Inseto que pesa na linha.",
+   "ink": 450,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      180,
+      900,
+      360,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      360,
+      824
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "aphid",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      120,
+      340
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.6
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      310,
+      888
+     ],
+     [
+      310,
+      765
+     ],
+     [
+      311,
+      754
+     ],
+     [
+      315,
+      743
+     ],
+     [
+      321,
+      734
+     ],
+     [
+      329,
+      726
+     ],
+     [
+      338,
+      720
+     ],
+     [
+      349,
+      716
+     ],
+     [
+      360,
+      715
+     ],
+     [
+      371,
+      716
+     ],
+     [
+      382,
+      720
+     ],
+     [
+      391,
+      726
+     ],
+     [
+      399,
+      734
+     ],
+     [
+      405,
+      743
+     ],
+     [
+      409,
+      754
+     ],
+     [
+      410,
+      765
+     ],
+     [
+      410,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-7",
+   "world": 12,
+   "name": "Nuvem que Afunda",
+   "tip": "A nuvem afunda bastante com peso! Tudo junto em cima dela: bichinho e abrigo.",
+   "teaches": "Plataforma que cede.",
+   "ink": 270,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      230,
+      880,
+      260,
+      40
+     ],
+     "drop": 110,
+     "speed": 30
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "kiko",
+     "pos": [
+      360,
+      841
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      300
+     ],
+     "count": 8,
+     "interval": 0.32,
+     "delay": 0.3
+    },
+    {
+     "insect": "dragonfly",
+     "pos": [
+      120,
+      600
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      314,
+      868
+     ],
+     [
+      314,
+      819
+     ],
+     [
+      315,
+      809
+     ],
+     [
+      319,
+      799
+     ],
+     [
+      324,
+      790
+     ],
+     [
+      331,
+      783
+     ],
+     [
+      340,
+      778
+     ],
+     [
+      350,
+      774
+     ],
+     [
+      360,
+      773
+     ],
+     [
+      370,
+      774
+     ],
+     [
+      380,
+      778
+     ],
+     [
+      389,
+      783
+     ],
+     [
+      396,
+      790
+     ],
+     [
+      401,
+      799
+     ],
+     [
+      405,
+      809
+     ],
+     [
+      406,
+      819
+     ],
+     [
+      406,
+      868
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-8",
+   "world": 12,
+   "name": "Duas Nuvens",
+   "tip": "Duas nuvens, dois amigos e dois traços. A do Plim afunda!",
+   "teaches": "Duas plataformas.",
+   "ink": 690,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 2,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      60,
+      900,
+      240,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    },
+    {
+     "type": "cloud",
+     "rect": [
+      420,
+      880,
+      240,
+      40
+     ],
+     "drop": 70,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      180,
+      873
+     ],
+     "flip": false
+    },
+    {
+     "type": "plim",
+     "pos": [
+      540,
+      839
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      360,
+      280
+     ],
+     "count": 9,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "ninja",
+     "pos": [
+      360,
+      1150
+     ],
+     "count": 4,
+     "interval": 0.6,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      116,
+      888
+     ],
+     [
+      116,
+      868
+     ],
+     [
+      118,
+      854
+     ],
+     [
+      122,
+      841
+     ],
+     [
+      130,
+      830
+     ],
+     [
+      140,
+      820
+     ],
+     [
+      152,
+      813
+     ],
+     [
+      166,
+      809
+     ],
+     [
+      180,
+      807
+     ],
+     [
+      194,
+      809
+     ],
+     [
+      208,
+      813
+     ],
+     [
+      220,
+      820
+     ],
+     [
+      230,
+      830
+     ],
+     [
+      238,
+      841
+     ],
+     [
+      242,
+      854
+     ],
+     [
+      244,
+      868
+     ],
+     [
+      244,
+      888
+     ]
+    ],
+    [
+     [
+      494,
+      868
+     ],
+     [
+      494,
+      749
+     ],
+     [
+      495,
+      739
+     ],
+     [
+      499,
+      729
+     ],
+     [
+      504,
+      720
+     ],
+     [
+      511,
+      713
+     ],
+     [
+      520,
+      708
+     ],
+     [
+      530,
+      704
+     ],
+     [
+      540,
+      703
+     ],
+     [
+      550,
+      704
+     ],
+     [
+      560,
+      708
+     ],
+     [
+      569,
+      713
+     ],
+     [
+      576,
+      720
+     ],
+     [
+      581,
+      729
+     ],
+     [
+      585,
+      739
+     ],
+     [
+      586,
+      749
+     ],
+     [
+      586,
+      868
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-9",
+   "world": 12,
+   "name": "Ninja e Libélula",
+   "tip": "Ninjas que somem, libélulas que arrancam e pulgões que pesam. Abrigo firme e justo!",
+   "teaches": "Revisão das nuvens.",
+   "ink": 215,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      180,
+      900,
+      360,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      360,
+      879
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ninja",
+     "pos": [
+      600,
+      300
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.3
+    },
+    {
+     "insect": "dragonfly",
+     "pos": [
+      120,
+      300
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 0.8
+    },
+    {
+     "insect": "aphid",
+     "pos": [
+      360,
+      240
+     ],
+     "count": 4,
+     "interval": 0.8,
+     "delay": 1.6
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      302,
+      888
+     ],
+     [
+      302,
+      873
+     ],
+     [
+      303,
+      863
+     ],
+     [
+      308,
+      854
+     ],
+     [
+      315,
+      846
+     ],
+     [
+      324,
+      839
+     ],
+     [
+      335,
+      833
+     ],
+     [
+      347,
+      830
+     ],
+     [
+      360,
+      829
+     ],
+     [
+      373,
+      830
+     ],
+     [
+      385,
+      833
+     ],
+     [
+      396,
+      839
+     ],
+     [
+      405,
+      846
+     ],
+     [
+      412,
+      854
+     ],
+     [
+      417,
+      863
+     ],
+     [
+      418,
+      873
+     ],
+     [
+      418,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "12-10",
+   "world": 12,
+   "name": "Coruja das Nuvens",
+   "tip": "A Coruja joga neve onde aparece o X, e não há chão embaixo! Telhado firme.",
+   "teaches": "Chefão nas nuvens.",
+   "ink": 320,
+   "survive": 13,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [],
+   "rocks": [],
+   "props": [
+    {
+     "type": "cloud",
+     "rect": [
+      140,
+      900,
+      440,
+      40
+     ],
+     "drop": 0,
+     "speed": 26
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      869
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "dragonfly",
+     "pos": [
+      90,
+      330
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 1.5
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      630,
+      330
+     ],
+     "count": 6,
+     "interval": 0.8,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [
+    {
+     "kind": "owl",
+     "pos": [
+      540,
+      300
+     ],
+     "sway": 60,
+     "every": 3.0,
+     "delay": 1.0
+    }
+   ],
+   "solution": [
+    [
+     [
+      270,
+      888
+     ],
+     [
+      270,
+      867
+     ],
+     [
+      272,
+      853
+     ],
+     [
+      279,
+      839
+     ],
+     [
+      290,
+      827
+     ],
+     [
+      304,
+      817
+     ],
+     [
+      321,
+      809
+     ],
+     [
+      340,
+      805
+     ],
+     [
+      360,
+      803
+     ],
+     [
+      380,
+      805
+     ],
+     [
+      399,
+      809
+     ],
+     [
+      416,
+      817
+     ],
+     [
+      430,
+      827
+     ],
+     [
+      441,
+      839
+     ],
+     [
+      448,
+      853
+     ],
+     [
+      450,
+      867
+     ],
+     [
+      450,
+      888
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-1",
+   "world": 13,
+   "name": "Areia Movediça",
+   "tip": "Areia movediça PUXA a linha para baixo! Apoie as pontas do abrigo no chão firme.",
+   "teaches": "Areia que afunda a tinta.",
+   "ink": 220,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       380,
+       1000
+      ],
+      [
+       380,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       380,
+       1120
+      ],
+      [
+       600,
+       1120
+      ],
+      [
+       600,
+       1800
+      ],
+      [
+       380,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       600,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       600,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "quicksand",
+     "rect": [
+      380,
+      994,
+      220,
+      126
+     ],
+     "pull": 320
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      250,
+      979
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      320
+     ],
+     "count": 8,
+     "interval": 0.32,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      190,
+      988
+     ],
+     [
+      190,
+      973
+     ],
+     [
+      192,
+      963
+     ],
+     [
+      196,
+      954
+     ],
+     [
+      203,
+      946
+     ],
+     [
+      213,
+      939
+     ],
+     [
+      224,
+      933
+     ],
+     [
+      237,
+      930
+     ],
+     [
+      250,
+      929
+     ],
+     [
+      263,
+      930
+     ],
+     [
+      276,
+      933
+     ],
+     [
+      287,
+      939
+     ],
+     [
+      297,
+      946
+     ],
+     [
+      304,
+      954
+     ],
+     [
+      308,
+      963
+     ],
+     [
+      310,
+      973
+     ],
+     [
+      310,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-2",
+   "world": 13,
+   "name": "Nhoque Escorrega",
+   "tip": "O Nhoque escorrega fácil, mas a casinha aguenta DUAS picadas. Abrigo justo e firme!",
+   "teaches": "Casinha que aguenta duas picadas.",
+   "ink": 215,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      360,
+      979
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      120,
+      330
+     ],
+     "count": 8,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "wasp",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 1.4
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      302,
+      988
+     ],
+     [
+      302,
+      973
+     ],
+     [
+      303,
+      963
+     ],
+     [
+      308,
+      954
+     ],
+     [
+      315,
+      946
+     ],
+     [
+      324,
+      939
+     ],
+     [
+      335,
+      933
+     ],
+     [
+      347,
+      930
+     ],
+     [
+      360,
+      929
+     ],
+     [
+      373,
+      930
+     ],
+     [
+      385,
+      933
+     ],
+     [
+      396,
+      939
+     ],
+     [
+      405,
+      946
+     ],
+     [
+      412,
+      954
+     ],
+     [
+      417,
+      963
+     ],
+     [
+      418,
+      973
+     ],
+     [
+      418,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-3",
+   "world": 13,
+   "name": "Tempestade de Areia",
+   "tip": "A poeira esconde o céu de tempos em tempos! Planeje o abrigo antes de ela chegar.",
+   "teaches": "Atenção mesmo sem ver.",
+   "ink": 450,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "sandstorm",
+     "rect": [
+      -40,
+      100,
+      800,
+      620
+     ],
+     "on": 2.5,
+     "off": 2.0,
+     "delay": 1.2
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      360,
+      924
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "mosquito",
+     "pos": [
+      120,
+      330
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 7,
+     "interval": 0.4,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      310,
+      988
+     ],
+     [
+      310,
+      865
+     ],
+     [
+      311,
+      854
+     ],
+     [
+      315,
+      843
+     ],
+     [
+      321,
+      834
+     ],
+     [
+      329,
+      826
+     ],
+     [
+      338,
+      820
+     ],
+     [
+      349,
+      816
+     ],
+     [
+      360,
+      815
+     ],
+     [
+      371,
+      816
+     ],
+     [
+      382,
+      820
+     ],
+     [
+      391,
+      826
+     ],
+     [
+      399,
+      834
+     ],
+     [
+      405,
+      843
+     ],
+     [
+      409,
+      854
+     ],
+     [
+      410,
+      865
+     ],
+     [
+      410,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-4",
+   "world": 13,
+   "name": "Oásis",
+   "tip": "A Duda não nada! Mantenha a girafinha longe do oásis e protegida das abelhas.",
+   "teaches": "Água e areia.",
+   "ink": 435,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       400,
+       1000
+      ],
+      [
+       400,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       400,
+       1060
+      ],
+      [
+       640,
+       1060
+      ],
+      [
+       640,
+       1800
+      ],
+      [
+       400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       640,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       640,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "water",
+     "rect": [
+      400,
+      990,
+      240,
+      70
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      230,
+      924
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 8,
+     "interval": 0.32,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      184,
+      988
+     ],
+     [
+      184,
+      865
+     ],
+     [
+      185,
+      855
+     ],
+     [
+      189,
+      845
+     ],
+     [
+      194,
+      836
+     ],
+     [
+      201,
+      829
+     ],
+     [
+      210,
+      824
+     ],
+     [
+      220,
+      820
+     ],
+     [
+      230,
+      819
+     ],
+     [
+      240,
+      820
+     ],
+     [
+      250,
+      824
+     ],
+     [
+      259,
+      829
+     ],
+     [
+      266,
+      836
+     ],
+     [
+      271,
+      845
+     ],
+     [
+      275,
+      855
+     ],
+     [
+      276,
+      865
+     ],
+     [
+      276,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-5",
+   "world": 13,
+   "name": "Pulgões na Duna",
+   "tip": "Pulgões grudam e a areia puxa! Pontas no chão firme e abrigo bem largo.",
+   "teaches": "Peso + areia.",
+   "ink": 265,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       380,
+       1000
+      ],
+      [
+       380,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       380,
+       1120
+      ],
+      [
+       600,
+       1120
+      ],
+      [
+       600,
+       1800
+      ],
+      [
+       380,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       600,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       600,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "quicksand",
+     "rect": [
+      380,
+      994,
+      220,
+      126
+     ],
+     "pull": 320
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      230,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "aphid",
+     "pos": [
+      560,
+      300
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      100,
+      330
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.4
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      166,
+      988
+     ],
+     [
+      166,
+      968
+     ],
+     [
+      168,
+      954
+     ],
+     [
+      172,
+      941
+     ],
+     [
+      180,
+      930
+     ],
+     [
+      190,
+      920
+     ],
+     [
+      202,
+      913
+     ],
+     [
+      216,
+      909
+     ],
+     [
+      230,
+      907
+     ],
+     [
+      244,
+      909
+     ],
+     [
+      258,
+      913
+     ],
+     [
+      270,
+      920
+     ],
+     [
+      280,
+      930
+     ],
+     [
+      288,
+      941
+     ],
+     [
+      292,
+      954
+     ],
+     [
+      294,
+      968
+     ],
+     [
+      294,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-6",
+   "world": 13,
+   "name": "Tatu na Duna",
+   "tip": "Besouros-tatu rolando dos dois lados! As pedras seguram o abrigo do Nhoque.",
+   "teaches": "Tatus dos dois lados.",
+   "ink": 240,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      244,
+      978
+     ],
+     "r": 22
+    },
+    {
+     "pos": [
+      476,
+      978
+     ],
+     "r": 22
+    }
+   ],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      360,
+      979
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "rollbug",
+     "pos": [
+      60,
+      980
+     ],
+     "count": 3,
+     "interval": 1.8,
+     "delay": 0.2
+    },
+    {
+     "insect": "rollbug",
+     "pos": [
+      660,
+      980
+     ],
+     "count": 3,
+     "interval": 1.8,
+     "delay": 0.9
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      360,
+      260
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 2.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      294,
+      988
+     ],
+     [
+      294,
+      972
+     ],
+     [
+      296,
+      961
+     ],
+     [
+      301,
+      951
+     ],
+     [
+      308,
+      941
+     ],
+     [
+      319,
+      934
+     ],
+     [
+      331,
+      928
+     ],
+     [
+      345,
+      924
+     ],
+     [
+      360,
+      923
+     ],
+     [
+      375,
+      924
+     ],
+     [
+      389,
+      928
+     ],
+     [
+      401,
+      934
+     ],
+     [
+      412,
+      941
+     ],
+     [
+      419,
+      951
+     ],
+     [
+      424,
+      961
+     ],
+     [
+      426,
+      972
+     ],
+     [
+      426,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-7",
+   "world": 13,
+   "name": "Miragem Ninja",
+   "tip": "Ninjas somem na poeira da tempestade! Abrigo sem nenhuma fresta.",
+   "teaches": "Inseto invisível + poeira.",
+   "ink": 425,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "sandstorm",
+     "rect": [
+      -40,
+      100,
+      800,
+      700
+     ],
+     "on": 2.2,
+     "off": 1.8,
+     "delay": 1.0
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "plim",
+     "pos": [
+      360,
+      959
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ninja",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 8,
+     "interval": 0.35,
+     "delay": 0.3
+    },
+    {
+     "insect": "ninja",
+     "pos": [
+      120,
+      320
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      314,
+      988
+     ],
+     [
+      314,
+      869
+     ],
+     [
+      315,
+      859
+     ],
+     [
+      319,
+      849
+     ],
+     [
+      324,
+      840
+     ],
+     [
+      331,
+      833
+     ],
+     [
+      340,
+      828
+     ],
+     [
+      350,
+      824
+     ],
+     [
+      360,
+      823
+     ],
+     [
+      370,
+      824
+     ],
+     [
+      380,
+      828
+     ],
+     [
+      389,
+      833
+     ],
+     [
+      396,
+      840
+     ],
+     [
+      401,
+      849
+     ],
+     [
+      405,
+      859
+     ],
+     [
+      406,
+      869
+     ],
+     [
+      406,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-8",
+   "world": 13,
+   "name": "Duas Dunas",
+   "tip": "Dois amigos separados pela areia movediça. Dois traços com as pontas no chão firme!",
+   "teaches": "Dois abrigos e um buraco de areia.",
+   "ink": 650,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 2,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       300,
+       1000
+      ],
+      [
+       300,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       300,
+       1120
+      ],
+      [
+       440,
+       1120
+      ],
+      [
+       440,
+       1800
+      ],
+      [
+       300,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       440,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       440,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "quicksand",
+     "rect": [
+      300,
+      994,
+      140,
+      126
+     ],
+     "pull": 320
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      170,
+      924
+     ],
+     "flip": false
+    },
+    {
+     "type": "nhoque",
+     "pos": [
+      560,
+      979
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      360,
+      280
+     ],
+     "count": 9,
+     "interval": 0.3,
+     "delay": 0.3
+    },
+    {
+     "insect": "aphid",
+     "pos": [
+      640,
+      320
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      124,
+      988
+     ],
+     [
+      124,
+      865
+     ],
+     [
+      125,
+      855
+     ],
+     [
+      129,
+      845
+     ],
+     [
+      134,
+      836
+     ],
+     [
+      141,
+      829
+     ],
+     [
+      150,
+      824
+     ],
+     [
+      160,
+      820
+     ],
+     [
+      170,
+      819
+     ],
+     [
+      180,
+      820
+     ],
+     [
+      190,
+      824
+     ],
+     [
+      199,
+      829
+     ],
+     [
+      206,
+      836
+     ],
+     [
+      211,
+      845
+     ],
+     [
+      215,
+      855
+     ],
+     [
+      216,
+      865
+     ],
+     [
+      216,
+      988
+     ]
+    ],
+    [
+     [
+      500,
+      988
+     ],
+     [
+      500,
+      973
+     ],
+     [
+      502,
+      963
+     ],
+     [
+      506,
+      954
+     ],
+     [
+      513,
+      946
+     ],
+     [
+      523,
+      939
+     ],
+     [
+      534,
+      933
+     ],
+     [
+      547,
+      930
+     ],
+     [
+      560,
+      929
+     ],
+     [
+      573,
+      930
+     ],
+     [
+      586,
+      933
+     ],
+     [
+      597,
+      939
+     ],
+     [
+      607,
+      946
+     ],
+     [
+      614,
+      954
+     ],
+     [
+      618,
+      963
+     ],
+     [
+      620,
+      973
+     ],
+     [
+      620,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true,
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true
+  },
+  {
+   "id": "13-9",
+   "world": 13,
+   "name": "Areia Funda",
+   "tip": "Buracos de formiga do lado da Bolota e areia movediça mais longe. Pontas nos buracos!",
+   "teaches": "Buracos e areia.",
+   "ink": 320,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       120,
+       1000
+      ],
+      [
+       120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       120,
+       1100
+      ],
+      [
+       200,
+       1100
+      ],
+      [
+       200,
+       1800
+      ],
+      [
+       120,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       200,
+       1000
+      ],
+      [
+       520,
+       1000
+      ],
+      [
+       520,
+       1800
+      ],
+      [
+       200,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       520,
+       1100
+      ],
+      [
+       600,
+       1100
+      ],
+      [
+       600,
+       1800
+      ],
+      [
+       520,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       600,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       600,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "quicksand",
+     "rect": [
+      120,
+      994,
+      80,
+      106
+     ],
+     "pull": 320
+    },
+    {
+     "type": "quicksand",
+     "rect": [
+      520,
+      994,
+      80,
+      106
+     ],
+     "pull": 320
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      360,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ant",
+     "pos": [
+      300,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ant",
+     "pos": [
+      420,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      308,
+      988
+     ],
+     [
+      300,
+      967
+     ],
+     [
+      302,
+      954
+     ],
+     [
+      306,
+      941
+     ],
+     [
+      313,
+      930
+     ],
+     [
+      323,
+      920
+     ],
+     [
+      334,
+      913
+     ],
+     [
+      347,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      373,
+      909
+     ],
+     [
+      386,
+      913
+     ],
+     [
+      397,
+      920
+     ],
+     [
+      407,
+      930
+     ],
+     [
+      414,
+      941
+     ],
+     [
+      418,
+      954
+     ],
+     [
+      420,
+      967
+     ],
+     [
+      412,
+      988
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ],
+   "naive": [
+    [
+     [
+      280.0,
+      988
+     ],
+     [
+      280.0,
+      968
+     ],
+     [
+      282,
+      954
+     ],
+     [
+      288,
+      941
+     ],
+     [
+      297,
+      930
+     ],
+     [
+      310,
+      920
+     ],
+     [
+      325,
+      913
+     ],
+     [
+      342,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      378,
+      909
+     ],
+     [
+      395,
+      913
+     ],
+     [
+      410,
+      920
+     ],
+     [
+      423,
+      930
+     ],
+     [
+      432,
+      941
+     ],
+     [
+      438,
+      954
+     ],
+     [
+      440.0,
+      968
+     ],
+     [
+      440.0,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "13-10",
+   "world": 13,
+   "name": "Rainha Térmita",
+   "tip": "A Rainha Térmita abre TÚNEIS no chão — a rachadura avisa onde! Deixe as pontas do abrigo em cima delas.",
+   "teaches": "Chefona: túneis que aparecem.",
+   "ink": 380,
+   "survive": 13,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "bee",
+     "pos": [
+      620,
+      320
+     ],
+     "count": 6,
+     "interval": 0.6,
+     "delay": 2.0
+    }
+   ],
+   "bosses": [
+    {
+     "kind": "termite_queen",
+     "pos": [
+      640,
+      1000
+     ],
+     "tunnels": [
+      [
+       274,
+       2.5
+      ],
+      [
+       446,
+       4.5
+      ],
+      [
+       120,
+       6.0
+      ]
+     ],
+     "insect": "termite",
+     "count": 4,
+     "interval": 0.5
+    }
+   ],
+   "solution": [
+    [
+     [
+      256,
+      988
+     ],
+     [
+      282,
+      988
+     ],
+     [
+      274,
+      966
+     ],
+     [
+      276,
+      951
+     ],
+     [
+      283,
+      937
+     ],
+     [
+      293,
+      924
+     ],
+     [
+      306,
+      914
+     ],
+     [
+      323,
+      906
+     ],
+     [
+      341,
+      901
+     ],
+     [
+      360,
+      899
+     ],
+     [
+      379,
+      901
+     ],
+     [
+      397,
+      906
+     ],
+     [
+      414,
+      914
+     ],
+     [
+      427,
+      924
+     ],
+     [
+      437,
+      937
+     ],
+     [
+      444,
+      951
+     ],
+     [
+      446,
+      966
+     ],
+     [
+      438,
+      988
+     ],
+     [
+      464,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "14-1",
+   "world": 14,
+   "name": "Boo!",
+   "tip": "Boo, o fantasminha, ATRAVESSA a tinta comum! Só a Tinta Firme (que brilha) segura ele.",
+   "teaches": "Fantasma: só Tinta Firme e luz.",
+   "ink": 285,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 3,
+     "interval": 1.4,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-2",
+   "world": 14,
+   "name": "Luz que Pisca",
+   "tip": "A lanterna acende e apaga no ritmo! Mariposas giram na luz e atacam no escuro.",
+   "teaches": "Lâmpada ritmada.",
+   "ink": 265,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "lamp",
+     "pos": [
+      600,
+      560
+     ],
+     "rhythm": [
+      2.0,
+      3.0,
+      0.0
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      360,
+      973
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "moth",
+     "pos": [
+      620,
+      330
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "bee",
+     "pos": [
+      100,
+      330
+     ],
+     "count": 5,
+     "interval": 0.5,
+     "delay": 2.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      296,
+      988
+     ],
+     [
+      296,
+      968
+     ],
+     [
+      298,
+      954
+     ],
+     [
+      302,
+      941
+     ],
+     [
+      310,
+      930
+     ],
+     [
+      320,
+      920
+     ],
+     [
+      332,
+      913
+     ],
+     [
+      346,
+      909
+     ],
+     [
+      360,
+      907
+     ],
+     [
+      374,
+      909
+     ],
+     [
+      388,
+      913
+     ],
+     [
+      400,
+      920
+     ],
+     [
+      410,
+      930
+     ],
+     [
+      418,
+      941
+     ],
+     [
+      422,
+      954
+     ],
+     [
+      424,
+      968
+     ],
+     [
+      424,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-3",
+   "world": 14,
+   "name": "Corredor Assombrado",
+   "tip": "Pedra o Boo não atravessa! Só falta uma tampa firme em cima do Plim.",
+   "teaches": "Usar o castelo.",
+   "ink": 100,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       240,
+       880
+      ],
+      [
+       300,
+       880
+      ],
+      [
+       300,
+       1000
+      ],
+      [
+       240,
+       1000
+      ]
+     ],
+     "style": "stone"
+    },
+    {
+     "poly": [
+      [
+       362,
+       880
+      ],
+      [
+       422,
+       880
+      ],
+      [
+       422,
+       1000
+      ],
+      [
+       362,
+       1000
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "plim",
+     "pos": [
+      331,
+      959
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      600,
+      330
+     ],
+     "count": 4,
+     "interval": 1.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      120,
+      300
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.3
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      286,
+      866
+     ],
+     [
+      331,
+      866
+     ],
+     [
+      376,
+      866
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-4",
+   "world": 14,
+   "name": "Morcego no Lustre",
+   "tip": "A Lua dorme pendurada no lustre. Uma concha de Tinta Firme em volta dela!",
+   "teaches": "Concha pendurada contra fantasmas.",
+   "ink": 300,
+   "survive": 10,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    },
+    {
+     "poly": [
+      [
+       220,
+       560
+      ],
+      [
+       500,
+       560
+      ],
+      [
+       500,
+       600
+      ],
+      [
+       220,
+       600
+      ]
+     ],
+     "style": "stone"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "lua",
+     "pos": [
+      360,
+      634
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      620,
+      900
+     ],
+     "count": 3,
+     "interval": 1.2,
+     "delay": 0.3
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      100,
+      880
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      302,
+      612
+     ],
+     [
+      302,
+      657.0
+     ],
+     [
+      304,
+      671
+     ],
+     [
+      310,
+      684
+     ],
+     [
+      319,
+      696
+     ],
+     [
+      331,
+      705
+     ],
+     [
+      345,
+      710
+     ],
+     [
+      360,
+      712
+     ],
+     [
+      375,
+      710
+     ],
+     [
+      389,
+      705
+     ],
+     [
+      401,
+      696
+     ],
+     [
+      410,
+      684
+     ],
+     [
+      416,
+      671
+     ],
+     [
+      418,
+      657.0
+     ],
+     [
+      418,
+      612
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-5",
+   "world": 14,
+   "name": "Fantasmas e Lanternas",
+   "tip": "Os fantasmas fogem da luz acesa. Quando ela apaga, eles vêm! Abrigo firme.",
+   "teaches": "Luz que protege às vezes.",
+   "ink": 435,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "lamp",
+     "pos": [
+      360,
+      520
+     ],
+     "rhythm": [
+      2.0,
+      2.0,
+      0.5
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "duda",
+     "pos": [
+      360,
+      924
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      110,
+      320
+     ],
+     "count": 4,
+     "interval": 1.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "ghost",
+     "pos": [
+      610,
+      320
+     ],
+     "count": 4,
+     "interval": 1.0,
+     "delay": 0.8
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      314,
+      988
+     ],
+     [
+      314,
+      865
+     ],
+     [
+      315,
+      855
+     ],
+     [
+      319,
+      845
+     ],
+     [
+      324,
+      836
+     ],
+     [
+      331,
+      829
+     ],
+     [
+      340,
+      824
+     ],
+     [
+      350,
+      820
+     ],
+     [
+      360,
+      819
+     ],
+     [
+      370,
+      820
+     ],
+     [
+      380,
+      824
+     ],
+     [
+      389,
+      829
+     ],
+     [
+      396,
+      836
+     ],
+     [
+      401,
+      845
+     ],
+     [
+      405,
+      855
+     ],
+     [
+      406,
+      865
+     ],
+     [
+      406,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-6",
+   "world": 14,
+   "name": "Porão Úmido",
+   "tip": "Buracos de cupim no porão e fantasmas no ar. Pontas nos buracos!",
+   "teaches": "Tampar no castelo.",
+   "ink": 290,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "nhoque",
+     "pos": [
+      360,
+      979
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "termite",
+     "pos": [
+      294,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "termite",
+     "pos": [
+      426,
+      1000
+     ],
+     "count": 4,
+     "interval": 0.7,
+     "delay": 0.4,
+     "hole": true
+    },
+    {
+     "insect": "ghost",
+     "pos": [
+      600,
+      320
+     ],
+     "count": 3,
+     "interval": 1.2,
+     "delay": 1.0
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      276,
+      988
+     ],
+     [
+      302,
+      988
+     ],
+     [
+      294,
+      973
+     ],
+     [
+      296,
+      963
+     ],
+     [
+      301,
+      954
+     ],
+     [
+      308,
+      946
+     ],
+     [
+      319,
+      939
+     ],
+     [
+      331,
+      933
+     ],
+     [
+      345,
+      930
+     ],
+     [
+      360,
+      929
+     ],
+     [
+      375,
+      930
+     ],
+     [
+      389,
+      933
+     ],
+     [
+      401,
+      939
+     ],
+     [
+      412,
+      946
+     ],
+     [
+      419,
+      954
+     ],
+     [
+      424,
+      963
+     ],
+     [
+      426,
+      973
+     ],
+     [
+      418,
+      988
+     ],
+     [
+      444,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "naive": [
+    [
+     [
+      274.0,
+      988
+     ],
+     [
+      274.0,
+      971
+     ],
+     [
+      276,
+      959
+     ],
+     [
+      283,
+      948
+     ],
+     [
+      293,
+      938
+     ],
+     [
+      306,
+      930
+     ],
+     [
+      323,
+      924
+     ],
+     [
+      341,
+      920
+     ],
+     [
+      360,
+      919
+     ],
+     [
+      379,
+      920
+     ],
+     [
+      397,
+      924
+     ],
+     [
+      414,
+      930
+     ],
+     [
+      427,
+      938
+     ],
+     [
+      437,
+      948
+     ],
+     [
+      444,
+      959
+     ],
+     [
+      446.0,
+      971
+     ],
+     [
+      446.0,
+      988
+     ]
+    ]
+   ],
+   "no_daily": true
+  },
+  {
+   "id": "14-7",
+   "world": 14,
+   "name": "Baile das Mariposas",
+   "tip": "Duas lanternas piscando fora de ritmo. As mariposas trocam de luz! Abrigo fechado.",
+   "teaches": "Luzes alternadas.",
+   "ink": 425,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [
+    {
+     "type": "lamp",
+     "pos": [
+      120,
+      560
+     ],
+     "rhythm": [
+      2.0,
+      2.6,
+      0.0
+     ]
+    },
+    {
+     "type": "lamp",
+     "pos": [
+      600,
+      560
+     ],
+     "rhythm": [
+      2.0,
+      2.6,
+      1.0
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "plim",
+     "pos": [
+      360,
+      959
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "moth",
+     "pos": [
+      110,
+      330
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.3
+    },
+    {
+     "insect": "moth",
+     "pos": [
+      610,
+      330
+     ],
+     "count": 6,
+     "interval": 0.5,
+     "delay": 0.6
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      360,
+      250
+     ],
+     "count": 4,
+     "interval": 0.5,
+     "delay": 2.5
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      314,
+      988
+     ],
+     [
+      314,
+      869
+     ],
+     [
+      315,
+      859
+     ],
+     [
+      319,
+      849
+     ],
+     [
+      324,
+      840
+     ],
+     [
+      331,
+      833
+     ],
+     [
+      340,
+      828
+     ],
+     [
+      350,
+      824
+     ],
+     [
+      360,
+      823
+     ],
+     [
+      370,
+      824
+     ],
+     [
+      380,
+      828
+     ],
+     [
+      389,
+      833
+     ],
+     [
+      396,
+      840
+     ],
+     [
+      401,
+      849
+     ],
+     [
+      405,
+      859
+     ],
+     [
+      406,
+      869
+     ],
+     [
+      406,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-8",
+   "world": 14,
+   "name": "Salão dos Retratos",
+   "tip": "Dois amigos e dois traços firmes. Fantasmas, mosquitos e joaninhas!",
+   "teaches": "Dois abrigos firmes.",
+   "ink": 700,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 2,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "bolota",
+     "pos": [
+      200,
+      973
+     ],
+     "flip": false
+    },
+    {
+     "type": "duda",
+     "pos": [
+      520,
+      924
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      360,
+      280
+     ],
+     "count": 4,
+     "interval": 1.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "mosquito",
+     "pos": [
+      640,
+      330
+     ],
+     "count": 7,
+     "interval": 0.35,
+     "delay": 0.8
+    },
+    {
+     "insect": "ladybug",
+     "pos": [
+      80,
+      330
+     ],
+     "count": 2,
+     "interval": 1.6,
+     "delay": 1.2
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      136,
+      988
+     ],
+     [
+      136,
+      968
+     ],
+     [
+      138,
+      954
+     ],
+     [
+      142,
+      941
+     ],
+     [
+      150,
+      930
+     ],
+     [
+      160,
+      920
+     ],
+     [
+      172,
+      913
+     ],
+     [
+      186,
+      909
+     ],
+     [
+      200,
+      907
+     ],
+     [
+      214,
+      909
+     ],
+     [
+      228,
+      913
+     ],
+     [
+      240,
+      920
+     ],
+     [
+      250,
+      930
+     ],
+     [
+      258,
+      941
+     ],
+     [
+      262,
+      954
+     ],
+     [
+      264,
+      968
+     ],
+     [
+      264,
+      988
+     ]
+    ],
+    [
+     [
+      474,
+      988
+     ],
+     [
+      474,
+      865
+     ],
+     [
+      475,
+      855
+     ],
+     [
+      479,
+      845
+     ],
+     [
+      484,
+      836
+     ],
+     [
+      491,
+      829
+     ],
+     [
+      500,
+      824
+     ],
+     [
+      510,
+      820
+     ],
+     [
+      520,
+      819
+     ],
+     [
+      530,
+      820
+     ],
+     [
+      540,
+      824
+     ],
+     [
+      549,
+      829
+     ],
+     [
+      556,
+      836
+     ],
+     [
+      561,
+      845
+     ],
+     [
+      565,
+      855
+     ],
+     [
+      566,
+      865
+     ],
+     [
+      566,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true,
+   "strategy_required": true,
+   "reject_individual_circles": true,
+   "reject_double_arches": true
+  },
+  {
+   "id": "14-9",
+   "world": 14,
+   "name": "Torre do Relógio",
+   "tip": "Libélulas arrancam, ninjas somem e o Boo atravessa paredes. Tudo de uma vez!",
+   "teaches": "Revisão do castelo.",
+   "ink": 305,
+   "survive": 11,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [],
+   "props": [],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "dragonfly",
+     "pos": [
+      110,
+      300
+     ],
+     "count": 2,
+     "interval": 2.0,
+     "delay": 0.3
+    },
+    {
+     "insect": "ninja",
+     "pos": [
+      610,
+      300
+     ],
+     "count": 6,
+     "interval": 0.4,
+     "delay": 0.6
+    },
+    {
+     "insect": "ghost",
+     "pos": [
+      360,
+      240
+     ],
+     "count": 3,
+     "interval": 1.2,
+     "delay": 1.4
+    }
+   ],
+   "bosses": [],
+   "solution": [
+    [
+     [
+      278,
+      988
+     ],
+     [
+      278,
+      967
+     ],
+     [
+      280,
+      953
+     ],
+     [
+      286,
+      939
+     ],
+     [
+      296,
+      927
+     ],
+     [
+      309,
+      917
+     ],
+     [
+      324,
+      909
+     ],
+     [
+      342,
+      905
+     ],
+     [
+      360,
+      903
+     ],
+     [
+      378,
+      905
+     ],
+     [
+      396,
+      909
+     ],
+     [
+      411,
+      917
+     ],
+     [
+      424,
+      927
+     ],
+     [
+      434,
+      939
+     ],
+     [
+      440,
+      953
+     ],
+     [
+      442,
+      967
+     ],
+     [
+      442,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
+   "no_daily": true
+  },
+  {
+   "id": "14-10",
+   "world": 14,
+   "name": "Noite do Boo",
+   "tip": "O grande final: a Rainha sopra vento, os fantasmas vêm no escuro e as lanternas piscam. Abrigo firme!",
+   "teaches": "Chefona no castelo.",
+   "ink": 285,
+   "survive": 14,
+   "stars": [
+    0.94,
+    0.99
+   ],
+   "strokes": 1,
+   "terrain": [
+    {
+     "poly": [
+      [
+       -400,
+       1000
+      ],
+      [
+       1120,
+       1000
+      ],
+      [
+       1120,
+       1800
+      ],
+      [
+       -400,
+       1800
+      ]
+     ],
+     "style": "ground"
+    }
+   ],
+   "rocks": [
+    {
+     "pos": [
+      200,
+      941
+     ],
+     "r": 30
+    },
+    {
+     "pos": [
+      520,
+      941
+     ],
+     "r": 30
+    }
+   ],
+   "props": [
+    {
+     "type": "lamp",
+     "pos": [
+      140,
+      600
+     ],
+     "rhythm": [
+      2.5,
+      2.0,
+      0.0
+     ]
+    },
+    {
+     "type": "lamp",
+     "pos": [
+      580,
+      600
+     ],
+     "rhythm": [
+      2.5,
+      2.0,
+      2.2
+     ]
+    }
+   ],
+   "nodraw": [],
+   "animals": [
+    {
+     "type": "capi",
+     "pos": [
+      360,
+      969
+     ],
+     "flip": false
+    }
+   ],
+   "nests": [
+    {
+     "insect": "ghost",
+     "pos": [
+      90,
+      320
+     ],
+     "count": 5,
+     "interval": 1.0,
+     "delay": 0.5
+    },
+    {
+     "insect": "ghost",
+     "pos": [
+      630,
+      320
+     ],
+     "count": 5,
+     "interval": 1.0,
+     "delay": 1.0
+    },
+    {
+     "insect": "moth",
+     "pos": [
+      360,
+      240
+     ],
+     "count": 4,
+     "interval": 0.8,
+     "delay": 1.5
+    }
+   ],
+   "bosses": [
+    {
+     "pos": [
+      360,
+      330
+     ],
+     "sway": 180
+    }
+   ],
+   "solution": [
+    [
+     [
+      282,
+      988
+     ],
+     [
+      282,
+      968
+     ],
+     [
+      284,
+      955
+     ],
+     [
+      290,
+      943
+     ],
+     [
+      299,
+      931
+     ],
+     [
+      311,
+      922
+     ],
+     [
+      326,
+      915
+     ],
+     [
+      343,
+      910
+     ],
+     [
+      360,
+      909
+     ],
+     [
+      377,
+      910
+     ],
+     [
+      394,
+      915
+     ],
+     [
+      409,
+      922
+     ],
+     [
+      421,
+      931
+     ],
+     [
+      430,
+      943
+     ],
+     [
+      436,
+      955
+     ],
+     [
+      438,
+      968
+     ],
+     [
+      438,
+      988
+     ]
+    ]
+   ],
+   "ink_mode": "static",
    "no_daily": true
   }
  ]

@@ -61,6 +61,19 @@ static func object(ci: CanvasItem, kind: String, rect: Rect2, active: bool = fal
 			box(ci, Rect2(c + Vector2(-22, -25) * s, Vector2(50, 51) * s), Color("fffaf0"), 5 * s)
 			box(ci, Rect2(c + Vector2(-17, -20) * s, Vector2(40, 31) * s), Color("b7ddd7"), 4 * s)
 			heart(ci, c + Vector2(3, -3) * s, 0.67 * s, Color("e697a7"))
+		"treat_jar":
+			# pote de petiscos ganhos nas fases
+			oval(ci, c + Vector2(0, 34) * s, Vector2(30, 6) * s, Color("897e7730"))
+			box(ci, Rect2(c + Vector2(-26, -18) * s, Vector2(52, 52) * s), Color("dff1f6"), 14 * s, Color("9bc8bf"), 3 * s)
+			box(ci, Rect2(c + Vector2(-30, -30) * s, Vector2(60, 14) * s), Color("e5a19f"), 6 * s)
+			for i in 4:
+				var p := c + Vector2(-12 + (i % 2) * 22, 6 + (i / 2) * 16) * s
+				DrawUtil.disc(ci, p, 8 * s, [Color("e0a860"), Color("ff6b6b"), Color("8fd3ff"), Color("ffd23f")][i], Color.TRANSPARENT, 0)
+		"bubbles":
+			for i in 4:
+				var p := c + Vector2(-18 + i * 12, 14 - i * 12) * s
+				ci.draw_arc(p, (10 + i * 3) * s, 0, TAU, 18, Color("8fd3ff"), 3 * s, true)
+				DrawUtil.disc(ci, p + Vector2(-4, -4) * s, 3 * s, Color(1, 1, 1, 0.8), Color.TRANSPARENT, 0)
 		"meal", "food":
 			oval(ci, c + Vector2(0, 25) * s, Vector2(38, 9) * s, Color("897e7730"))
 			box(ci, Rect2(c + Vector2(-34, -5) * s, Vector2(68, 34) * s), Color("e5a19f"), 14 * s)

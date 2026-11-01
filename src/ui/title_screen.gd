@@ -70,12 +70,23 @@ func _ready() -> void:
 
 	_menu = UiKit.vbox(16)
 	add_child(_menu)
+	# quantas já foram e qual é a próxima (a campanha é numerada sem parar)
+	var done := Game.completed_count()
+	var next_n := Game.next_level_index() + 1
+	var prog := UiKit.label(tr("Próxima: Fase %d  ·  %d de %d vencidas") % [next_n, done, LevelDB.count()], 22, Palette.WHITE, 8, Palette.OUTLINE)
+	_menu.add_child(prog)
 	var play := UiKit.button("Jogar", Palette.UI_GOOD, "play", 420, 112)
 	play.add_theme_font_size_override("font_size", UiKit.fs(44))
 	play.pressed.connect(func(): go.emit("map", -1))
 	play.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_menu.add_child(play)
 	UiKit.pop_in(play, 0.2)
+	var inf := UiKit.button(tr("Modo Infinito · Recorde %d") % Infinite.best(), Color("b18cff"), "bolt", 420, 76)
+	inf.add_theme_font_size_override("font_size", UiKit.fs(24))
+	inf.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	inf.pressed.connect(func(): go.emit("infinite", null))
+	_menu.add_child(inf)
+	UiKit.pop_in(inf, 0.25)
 	var row := UiKit.hbox(12)
 	_menu.add_child(row)
 	var tiles := [

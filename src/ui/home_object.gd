@@ -59,5 +59,8 @@ func _draw() -> void:
 		draw_string(UiKit.font(), Vector2(70, size.y / 2 + 9), str(cost), HORIZONTAL_ALIGNMENT_LEFT, -1, 25, HomeArt.INK)
 	else:
 		HomeArt.object(self, kind, inset, selected, Color("fff7ed") if light else HomeArt.INK)
+	if kind == "treat_jar" and cost > 0:
+		DrawUtil.disc(self, Vector2(size.x - 18, 18), 15, Color("e8766f"), Color.TRANSPARENT, 0)
+		draw_string(UiKit.font(), Vector2(size.x - 33, 26), str(cost), HORIZONTAL_ALIGNMENT_CENTER, 30, 18, Color.WHITE)
 	if progress > 0:
 		draw_arc(size / 2, minf(size.x, size.y) / 2 - 3, -PI / 2, -PI / 2 + TAU * progress, 32, Color("91c5bb"), 3, true)

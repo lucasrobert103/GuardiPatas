@@ -19,6 +19,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Versão 1.0: 123 fases, Modo Infinito e muito mais
+
+**Modo Infinito** com fases geradas sem parar (cada uma é simulada escondida antes de aparecer, então sempre tem solução), **4 mundos novos** (Cidade dos Brinquedos, Nuvens Altas, Deserto das Dunas e Castelo Assombrado), 5 bichinhos e 7 insetos novos, **tutorial jogável** quando um inseto aparece pela primeira vez, **369 missões extras**, petiscos e banho de bolhas na Casinha, e a campanha numerada de 1 a 123. Veja [o que mudou](docs/25-versao-1-0-infinito-mundos-missoes.md).
+
 ## Versão 0.8: 83 fases, novos insetos, loja cheia e editor refeito
 
 **Mundo 9 — Bosque dos Vagalumes** e **Mundo 10 — Vulcão Fumegante**: 20 fases novas, bem mais difíceis, com 6 insetos que têm poderes próprios (Vagalume que acelera o enxame, Mosca que se divide, Cigarra que empurra a linha com som, Besouro Pum-Pum que lança fumaça em arco, Louva-a-deus que levanta a linha e Formiga Tesoura que corta a tinta) e 3 bichinhos novos (Zeca, Mel e Fiapo). O editor agora cabe em qualquer celular e mostra todos os bichinhos e insetos; a tela inicial ficou mais limpa, com bichinhos passando. A Loja ganhou abas, 4 bichinhos mágicos com efeitos especiais, 8 efeitos e 18 produtos. Veja [o que mudou, como testar e o que falta para compras reais](docs/23-versao-0-8-mundos-loja-editor.md).
@@ -54,7 +58,7 @@ A versão de desenvolvimento possui **compras simuladas, sem cobrança**: 3 paco
 **Não publicar com compras reais ainda.** Consulte a [revisão de segurança e os requisitos de publicação](docs/16-publicacao-seguranca-e-compras.md) antes de integrar Google Play Billing ou preencher a Play Console. Não há API de pagamento real nesta entrega.
 
 ## O que já tem
-- **83 fases em 10 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, Montanha Gelada, Praia do Sol, Fundo do Mar, **Bosque dos Vagalumes e Vulcão Fumegante**) + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
+- **123 fases em 14 mundos** (Jardim, Floresta, Vale das Formigas, Lagoa, Acampamento, Montanha Gelada, Praia do Sol, Fundo do Mar, Bosque dos Vagalumes, Vulcão Fumegante, **Cidade dos Brinquedos, Nuvens Altas, Deserto das Dunas e Castelo Assombrado**) + **Modo Infinito** + **4 chefões sem violência**: Rainha Zumbina, Coruja Nevasca, Caranguejo Rei e Polvo Gigante.
 - **Estratégia de verdade:** buracos para tampar, Tinta Firme para rampas e tobogãs, tocas de destino, abelha que fura a linha, iscas de mel, cocos caindo, vento e correnteza — e o teste automático garante que o **círculo genérico perde** nessas fases.
 - **17 bichinhos** originais com traços de física próprios — Capitu, Brasa, Pingo, Nino, Tuca, Lulu, Gelinho (pinguim que escorrega), Nuvem (ovelha de lã grossa), Kiko (coala), Tatá (tatu-bola que rola), Pompom (coelho), Patinha (pato), Fofa (foca), Tito (polvo), **Zeca (sapo), Mel (ursinha) e Fiapo (bicho-preguiça)** — **cada um com seu próprio jeito e som de susto**.
 - **21 criaturas** com regras diferentes: abelha, formiga, besouro, mosquito, vespa, mariposa, cupim, lagarta, grilo, abelha broca, aranha, caranguejo, água-viva, baiacu, Baiacu-broca e **Vagalume, Mosca Gêmea, Cigarra, Besouro Pum-Pum, Louva-a-deus e Formiga Tesoura**.
@@ -93,6 +97,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 25 | [Versão 1.0: Modo Infinito, mundos 11–14, missões, tutoriais e petiscos](docs/25-versao-1-0-infinito-mundos-missoes.md) |
 | 24 | [Versão 0.9: rolagem, pausa ilustrada, prévias e dificuldade](docs/24-versao-0-9-pausa-previas-dificuldade.md) |
 | 23 | [Versão 0.8: editor, tela inicial, mundos 9–10, novos insetos, loja e compras reais](docs/23-versao-0-8-mundos-loja-editor.md) |
 

@@ -67,6 +67,10 @@ const ACHIEVEMENT_LIST := [
 	["world_8", "Explorador dos Mares", "Complete o Fundo do Mar."],
 	["world_9", "Amigo dos Vagalumes", "Complete o Bosque dos Vagalumes."],
 	["world_10", "Domador do Vulcão", "Complete o Vulcão Fumegante."],
+	["world_11", "Mestre dos Brinquedos", "Complete a Cidade dos Brinquedos."],
+	["world_12", "Pé nas Nuvens", "Complete as Nuvens Altas."],
+	["world_13", "Viajante do Deserto", "Complete o Deserto das Dunas."],
+	["world_14", "Caça-Fantasmas", "Complete o Castelo Assombrado."],
 	["queen", "Amiga da Rainha", "Vença a Rainha Zumbina."],
 	["owl", "Abraço Quentinho", "Vença a Coruja Nevasca."],
 	["crab_king", "Rei da Areia", "Vença o Caranguejo Rei."],
@@ -93,6 +97,12 @@ const ACHIEVEMENT_LIST := [
 	["shopper", "Comprinhas", "Tenha 3 acessórios."],
 	["wardrobe", "Guarda-roupa Lotado", "Tenha todos os acessórios."],
 	["sparkle", "Cheio de Brilho", "Coloque um efeito especial num bichinho."],
+	["missions_10", "Missionário", "Cumpra 10 missões extras."],
+	["missions_100", "Agente Especial", "Cumpra 100 missões extras."],
+	["treats_10", "Confeiteiro", "Dê 10 petiscos na Casinha."],
+	["infinite_10", "Sem Parar", "Vença 10 fases seguidas no Modo Infinito."],
+	["infinite_30", "Lenda Infinita", "Vença 30 fases seguidas no Modo Infinito."],
+	["bubbles_50", "Estoura-Bolhas", "Estoure 50 bolhas no banho."],
 	["rich", "Cofrinho Cheio", "Tenha 500 moedas de uma vez."],
 	["plumber", "Tampa-Buracos", "Tampe 5 buracos de insetos."],
 	["delivery", "Entrega Fofa", "Leve bichinhos até a toca 3 vezes."],
@@ -153,6 +163,10 @@ func _default_data() -> Dictionary:
 		"equipped": {},
 		"fx_owned": [],
 		"fx_equipped": {},
+		"seen_insects": [],
+		"missions": {},
+		"treats": {},
+		"infinite": {"best": 0, "runs": 0, "cleared": 0},
 		"met": [],
 		"achievements": [],
 		"stats": {"wins": 0, "losses": 0, "retries": 0, "lines": 0, "streak": 0, "plugs": 0, "goals": 0, "free_wins": 0, "hints_used": 0, "queen": 0, "owl": 0, "crab_king": 0, "octopus": 0},
@@ -207,6 +221,19 @@ func load_save() -> void:
 		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["owned"].has(data["equipped"][pet]):
 			data["equipped"].erase(pet)
 	data["fx_owned"] = data["fx_owned"].filter(func(fx): return fx is String and EFFECTS.has(fx))
+	data["seen_insects"] = data["seen_insects"].filter(func(k): return k is String and k.length() < 40).slice(0, 200)
+	for key in data["missions"].keys():
+		if not data["missions"][key] is Array:
+			data["missions"].erase(key)
+		else:
+			data["missions"][key] = (data["missions"][key] as Array).filter(func(m): return m is String and Missions.KINDS.has(m))
+	for key in data["treats"].keys():
+		if not Treats.KINDS.has(key):
+			data["treats"].erase(key)
+		else:
+			data["treats"][key] = clampi(int(data["treats"][key]), 0, 999)
+	for key in ["best", "runs", "cleared"]:
+		data["infinite"][key] = clampi(int(data["infinite"].get(key, 0)), 0, 1000000)
 	for pet in data["fx_equipped"].keys():
 		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["fx_owned"].has(data["fx_equipped"][pet]):
 			data["fx_equipped"].erase(pet)
@@ -273,6 +300,23 @@ func stars_of(id: String) -> int:
 
 func is_completed(id: String) -> bool:
 	return level_record(id).has("stars")
+
+
+## Quantas fases da campanha já foram vencidas (cada fase conta uma vez).
+func completed_count() -> int:
+	var n := 0
+	for i in LevelDB.count():
+		if is_completed(str(LevelDB.get_level(i)["id"])):
+			n += 1
+	return n
+
+
+## Próxima fase ainda não vencida (número da campanha começa em 1).
+func next_level_index() -> int:
+	for i in LevelDB.count():
+		if not is_completed(str(LevelDB.get_level(i)["id"])):
+			return i
+	return LevelDB.count() - 1
 
 
 func is_unlocked(index: int) -> bool:
@@ -538,6 +582,9 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"stylist": not data["equipped"].is_empty(),
 		"shopper": data["owned"].size() >= 3, "wardrobe": data["owned"].size() >= ITEMS.size(),
 		"sparkle": not data["fx_equipped"].is_empty(),
+		"missions_10": Missions.total_done() >= 10, "missions_100": Missions.total_done() >= 100,
+		"treats_10": stat("treats_given") >= 10, "bubbles_50": stat("bubbles") >= 50,
+		"infinite_10": int(data["infinite"].get("best", 0)) >= 10, "infinite_30": int(data["infinite"].get("best", 0)) >= 30,
 		"rich": coins() >= 500,
 		"plumber": stat("plugs") >= 5, "delivery": stat("goals") >= 3, "artist": stat("free_wins") >= 1,
 		"hint_1": stat("hints_used") >= 1,
@@ -553,7 +600,7 @@ func _achievement_checks(stars: int, ink_used: float) -> Dictionary:
 		"daily_streak_3": int(data["daily"].get("best_streak", 0)) >= 3,
 		"daily_streak_7": int(data["daily"].get("best_streak", 0)) >= 7,
 	}
-	for w in range(1, 11):
+	for w in range(1, 15):
 		c["world_%d" % w] = world_completed(w)
 	return c
 

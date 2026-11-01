@@ -25,10 +25,10 @@ GROUND = 1000
 # metade da altura de cada espécie (casa com Animal.SPECIES)
 HALF_H = {"capi": 30, "brasa": 46, "pingo": 28, "lulu": 18, "tuca": 24, "nino": 22,
           "gelinho": 36, "tata": 24, "pompom": 42, "nuvem": 32, "fofa": 24, "tito": 24, "patinha": 22, "kiko": 38,
-          "zeca": 24, "mel": 46, "fiapo": 21}
+          "zeca": 24, "mel": 46, "fiapo": 21, "bolota": 26, "plim": 40, "duda": 75, "nhoque": 20, "lua": 22}
 HALF_W = {"capi": 56, "brasa": 26, "pingo": 28, "lulu": 37, "tuca": 46, "nino": 22,
           "gelinho": 22, "tata": 24, "pompom": 22, "nuvem": 32, "fofa": 50, "tito": 24, "patinha": 22, "kiko": 24,
-          "zeca": 26, "mel": 28, "fiapo": 44}
+          "zeca": 26, "mel": 28, "fiapo": 44, "bolota": 30, "plim": 22, "duda": 20, "nhoque": 36, "lua": 26}
 
 
 def ground(y=GROUND, x0=-400, x1=1120):
@@ -159,6 +159,10 @@ WORLDS = [
     {"id": 8, "name": "Fundo do Mar"},
     {"id": 9, "name": "Bosque dos Vagalumes"},
     {"id": 10, "name": "Vulcão Fumegante"},
+    {"id": 11, "name": "Cidade dos Brinquedos"},
+    {"id": 12, "name": "Nuvens Altas"},
+    {"id": 13, "name": "Deserto das Dunas"},
+    {"id": 14, "name": "Castelo Assombrado"},
 ]
 
 
@@ -835,6 +839,7 @@ def campaign():
     cover_exit_width(lv)
     pressure_campaign(lv)
     lv.extend(forest_volcano_worlds())
+    lv.extend(toys_clouds_desert_castle())
     return lv
 
 
@@ -1033,6 +1038,345 @@ def forest_volcano_worlds():
         # mundos de especialista: fora do sorteio do Desafio do Dia (as regras extras
         # foram calibradas para as fases da campanha principal)
         level["no_daily"] = True
+    return lv
+
+
+def cloud(x0, y, w, h=40, drop=0, speed=26):
+    """Nuvem: plataforma (TERRAIN) que pode afundar com peso (drop > 0)."""
+    return {"type": "cloud", "rect": [x0, y, w, h], "drop": drop, "speed": speed}
+
+
+def toy(x, y, drop, w=70, h=50, color="ff6b6b"):
+    return {"type": "toyblock", "pos": [x, y], "size": [w, h], "drop": drop, "color": color}
+
+
+def hang(kind, x, ceiling):
+    """Bichinho pendurado embaixo de um teto (a Lua): o corpo fica 34 px abaixo."""
+    return {"type": kind, "pos": [x, ceiling + 34], "flip": False}
+
+
+def cup(x, ceiling, half_w=58, depth=100):
+    """Concha de Tinta Firme pendurada no teto, em volta de quem dorme pendurado."""
+    y0 = ceiling + 12
+    pts = [[x - half_w, y0], [x - half_w, y0 + depth * 0.45]]
+    for i in range(1, 12):
+        a = math.pi * i / 12
+        pts.append([round(x - math.cos(a) * half_w), round(y0 + depth * 0.45 + math.sin(a) * depth * 0.55)])
+    pts += [[x + half_w, y0 + depth * 0.45], [x + half_w, y0]]
+    return pts
+
+
+def covered(level_like, xs, floor=GROUND):
+    """Aplica as "pezinhos" de cover_exit_width como se houvesse buracos em xs (túneis da
+    Rainha Térmita aparecem durante a fase, então não estão em nests desde o começo)."""
+    tmp = copy.deepcopy(level_like)
+    real = tmp["nests"]
+    tmp["nests"] = real + [{"insect": "termite", "pos": [x, floor], "hole": True, "count": 0} for x in xs]
+    cover_exit_width([tmp])
+    level_like["solution"] = tmp["solution"]
+
+
+def toys_clouds_desert_castle():
+    """Mundos 11-14: perigos de cenário novos, bichinhos com física própria e o Boo."""
+    lv = []
+    # ============================================================ Mundo 11 — Cidade dos Brinquedos
+    lv.append(L("11-1", 11, "Joaninha Mamãe",
+                "A Joaninha Mamãe encosta na tinta e solta FILHOTES! A Bolota é agitada: abrigo bem folgado.",
+                [animal("bolota", 360)], [hive(600, 330, insect="ladybug", count=2, interval=1.6), hive(120, 340, count=7, interval=0.32, delay=1.2)],
+                [dome_over("bolota", 360, pad=36, apex_gap=40)], survive=10,
+                teaches="Joaninha que se multiplica; bichinho agitado."))
+    lv.append(L("11-2", 11, "Pula, Plim!",
+                "O Plim pula de susto! O teto precisa ficar bem lá no alto.",
+                [animal("plim", 380)], [hive(130, 330, count=8, interval=0.3), hive(620, 360, insect="mosquito", count=5, interval=0.4, delay=1.4)],
+                [dome_over("plim", 380, pad=26, apex_gap=96)], survive=10,
+                teaches="Bichinho que pula: teto alto."))
+    st3, rk3 = braced("kiko", 360, apex_gap=40)
+    lv.append(L("11-3", 11, "Besouro-tatu",
+                "O Besouro-tatu ENCOLHE e sai rolando: quebra a tinta no tranco! Encoste o abrigo nas pedras.",
+                [animal("kiko", 360)], [mound(60, insect="rollbug", count=3, interval=2.0, delay=0.4), mound(660, insect="rollbug", count=2, interval=2.4, delay=1.2),
+                                         hive(600, 320, count=6, interval=0.4, delay=1.8)],
+                [st3], survive=11, rocks=rk3,
+                teaches="Besouro que rola: pedras seguram."))
+    shelf4 = [ground(), block(250, 880, 470, 1000, "stone")]
+    lv.append(L("11-4", 11, "Túnel do Trenzinho",
+                "O trenzinho passa e EMPURRA tudo no trilho! Faça o abrigo em cima do bloco, longe do chão.",
+                [animal("kiko", 360, floor=880)], [hive(600, 320, count=8, interval=0.32, delay=0.6), mound(60, count=6, interval=0.5)],
+                [dome_over("kiko", 360, floor=880, pad=20)], survive=11, terrain=shelf4,
+                props=[{"type": "train", "y": 975, "dir": 1, "every": 4.5, "delay": 1.0, "speed": 320}],
+                naive=[wide_dome([animal("kiko", 360)], pad=60)],
+                teaches="Trem que empurra: usar o bloco como base."))
+    lv.append(L("11-5", 11, "Chuva de Blocos",
+                "Blocos de montar vão CAIR (veja o pontilhado)! Telhado firme e inclinado para eles escorregarem.",
+                [animal("duda", 360)], [hive(620, 330, count=7, interval=0.35, delay=1.0)],
+                [dome_over("duda", 360, pad=30, apex_gap=34)], survive=10,
+                props=[toy(360, 180, 2.0, color="5ec8f2"), toy(320, 120, 4.5, color="ffd23f")],
+                teaches="Objetos que caem e ficam no cenário."))
+    bo6 = animal("bolota", 200)
+    pl6 = animal("plim", 520)
+    lv.append(L("11-6", 11, "Creche das Joaninhas",
+                "Dois amigos, buracos ao lado da Bolota e a Joaninha Mamãe no meio. Dois traços!",
+                [bo6, pl6], holes_beside("bolota", 200, insect="ant", count=3, interval=0.8)
+                + [hive(360, 290, insect="ladybug", count=3, interval=1.4), hive(640, 330, count=6, interval=0.35, delay=1.2)],
+                [dome_over("bolota", 200, pad=30, apex_gap=40), dome_over("plim", 520, pad=26, apex_gap=96)], survive=11, strokes=2,
+                naive=[wide_dome([bo6], pad=50), dome_over("plim", 520, pad=26, apex_gap=96)],
+                teaches="Combinar buracos, filhotes e pulo."))
+    shelf7 = [ground(), block(220, 880, 520, 1000, "stone")]
+    st7, rk7 = braced("duda", 400, floor=880, apex_gap=30)
+    lv.append(L("11-7", 11, "Trem e Tatu",
+                "O tatu rola em cima do bloco e o trem passa embaixo! Pedras seguram o abrigo da Duda.",
+                [animal("duda", 400, floor=880)], [mound(250, insect="rollbug", count=2, interval=2.4, delay=0.6, floor=880), hive(620, 300, count=7, interval=0.35, delay=1.0)],
+                [st7], survive=11, terrain=shelf7, rocks=rk7,
+                props=[{"type": "train", "y": 975, "dir": -1, "every": 4.0, "delay": 1.5, "speed": 340}],
+                teaches="Dois perigos de uma vez."))
+    bo8 = animal("bolota", 360)
+    lv.append(L("11-8", 11, "Torre de Blocos",
+                "Buracos de formiga, joaninhas e blocos caindo! Pontas em cima dos buracos.",
+                [bo8], holes_beside("bolota", 360, insect="ant", count=4, interval=0.7)
+                + [hive(600, 320, insect="ladybug", count=2, interval=1.6, delay=0.8)],
+                [dome_over("bolota", 360, pad=30, apex_gap=40)], survive=11,
+                props=[toy(420, 160, 3.0, color="7fd46a"), toy(300, 120, 5.5, color="b18cff")],
+                naive=[wide_dome([bo8])],
+                teaches="Tampar e aguentar o peso."))
+    d9 = animal("duda", 150)
+    k9 = animal("plim", 360)
+    b9 = animal("bolota", 580)
+    lv.append(L("11-9", 11, "Parque Lotado",
+                "Três amigos e três traços. Cada um precisa do seu abrigo — a Duda é altíssima!",
+                [d9, k9, b9], [hive(360, 260, count=8, interval=0.3), hive(80, 330, insect="ladybug", count=2, interval=1.6, delay=1.0),
+                               mound(680, insect="rollbug", count=2, interval=2.4, delay=1.2)],
+                [dome_over("duda", 150, pad=24, apex_gap=30), dome_over("plim", 360, pad=24, apex_gap=96), dome_over("bolota", 580, pad=34, apex_gap=40)],
+                survive=11, strokes=3,
+                teaches="Três abrigos diferentes."))
+    lv.append(L("11-10", 11, "Rainha dos Brinquedos",
+                "A Rainha sopra vento, blocos caem e joaninhas chegam. Encoste o abrigo nas pedras!",
+                [animal("capi", 360)], [hive(90, 320, insect="ladybug", count=3, interval=1.2, delay=0.6), hive(630, 320, count=8, interval=0.8, delay=1.1)],
+                [dome_over("capi", 360)], survive=14,
+                rocks=[{"pos": [200, 941], "r": 30}, {"pos": [520, 941], "r": 30}],
+                props=[toy(360, 160, 4.0, color="ffd23f")],
+                bosses=[{"pos": [360, 330], "sway": 180}],
+                teaches="Chefona com blocos caindo."))
+
+    # ============================================================ Mundo 12 — Nuvens Altas (sem chão!)
+    def sky(*clouds):
+        return list(clouds)
+    lv.append(L("12-1", 12, "Nas Nuvens",
+                "Não há chão aqui em cima! A nuvem AFUNDA um pouco com peso. Abrigo alto para o Plim.",
+                [animal("plim", 360, floor=900)], [hive(600, 320, count=7, interval=0.35)],
+                [dome_over("plim", 360, floor=900, pad=26, apex_gap=96)], survive=10, terrain=[],
+                props=[cloud(220, 900, 280, drop=60)],
+                teaches="Nuvens que afundam; cair é perder."))
+    lv.append(L("12-2", 12, "Libélula Relâmpago",
+                "A Libélula patrulha no alto, as asas brilham e ela ARRANCA em zigue-zague. Abrigo fechado!",
+                [animal("bolota", 360, floor=900)], [hive(130, 300, insect="dragonfly", count=2, interval=1.8), hive(610, 330, count=6, interval=0.4, delay=1.0)],
+                [dome_over("bolota", 360, floor=900, pad=34, apex_gap=40)], survive=11, terrain=[],
+                props=[cloud(200, 900, 320, drop=40)],
+                teaches="Libélula: arrancada em linha."))
+    lv.append(L("12-3", 12, "Lua Pendurada",
+                "A Lua dorme pendurada! TINTA FIRME: faça uma concha embaixo do teto, em volta dela.",
+                [hang("lua", 360, 600)], [hive(620, 900, insect="mosquito", count=8, interval=0.3), hive(100, 880, count=6, interval=0.4, delay=0.8)],
+                [cup(360, 600)], survive=10, terrain=[block(200, 560, 520, 600, "stone")], ink_mode="static",
+                props=[cloud(160, 1040, 420, drop=0)],
+                teaches="Abrigo pendurado (Tinta Firme)."))
+    st4, rk4 = braced("capi", 360, floor=900, apex_gap=40)
+    lv.append(L("12-4", 12, "Vento que Vira",
+                "O vento muda de lado a cada rajada! Encoste o abrigo nas pedras da nuvem.",
+                [animal("capi", 360, floor=900)], [hive(110, 320, count=7, interval=0.4, delay=1.0), hive(610, 320, count=5, interval=0.5, delay=1.6)],
+                [st4], survive=11, terrain=[], rocks=rk4,
+                props=[cloud(150, 900, 420, drop=0)],
+                winds=[{"rect": [-100, 150, 920, 900], "dir": [1, 0], "force": 900, "on": 2.0, "off": 1.4, "delay": 0.6, "flip": True}],
+                teaches="Vento que alterna."))
+    lv.append(L("12-5", 12, "Mosquito-Ninja",
+                "O Mosquito-Ninja solta fumaça e fica quase INVISÍVEL. Nenhuma frestinha!",
+                [animal("nhoque", 360, floor=900)], [hive(600, 320, insect="ninja", count=7, interval=0.4), hive(120, 320, insect="ninja", count=5, interval=0.5, delay=1.0)],
+                [dome_over("nhoque", 360, floor=900, pad=20, apex_gap=30)], survive=10, terrain=[],
+                props=[cloud(200, 900, 320, drop=30)],
+                teaches="Inseto que some por um instante."))
+    lv.append(L("12-6", 12, "Pulgão Cola",
+                "Pulgões GRUDAM na tinta e pesam! Muitos juntos entortam o abrigo: use bastante tinta.",
+                [animal("duda", 360, floor=900)], [hive(600, 320, insect="aphid", count=6, interval=0.5), hive(120, 340, count=6, interval=0.4, delay=1.6)],
+                [dome_over("duda", 360, floor=900, pad=30, apex_gap=34)], survive=11, terrain=[],
+                props=[cloud(180, 900, 360, drop=0)],
+                teaches="Inseto que pesa na linha."))
+    lv.append(L("12-7", 12, "Nuvem que Afunda",
+                "A nuvem afunda bastante com peso! Tudo junto em cima dela: bichinho e abrigo.",
+                [animal("kiko", 360, floor=880)], [hive(600, 300, count=8, interval=0.32), hive(120, 600, insect="dragonfly", count=2, interval=2.0, delay=1.0)],
+                [dome_over("kiko", 360, floor=880, pad=22)], survive=11, terrain=[],
+                props=[cloud(230, 880, 260, drop=110, speed=30)],
+                teaches="Plataforma que cede."))
+    bo8b = animal("bolota", 180, floor=900)
+    pl8b = animal("plim", 540, floor=880)
+    lv.append(L("12-8", 12, "Duas Nuvens",
+                "Duas nuvens, dois amigos e dois traços. A do Plim afunda!",
+                [bo8b, pl8b], [hive(360, 280, count=9, interval=0.3), hive(360, 1150, insect="ninja", count=4, interval=0.6, delay=1.0)],
+                [dome_over("bolota", 180, floor=900, pad=34, apex_gap=40), dome_over("plim", 540, floor=880, pad=24, apex_gap=96)], survive=11, strokes=2, terrain=[],
+                props=[cloud(60, 900, 240, drop=0), cloud(420, 880, 240, drop=70)],
+                teaches="Duas plataformas."))
+    lv.append(L("12-9", 12, "Ninja e Libélula",
+                "Ninjas que somem, libélulas que arrancam e pulgões que pesam. Abrigo firme e justo!",
+                [animal("nhoque", 360, floor=900)], [hive(600, 300, insect="ninja", count=6, interval=0.4), hive(120, 300, insect="dragonfly", count=2, interval=2.0, delay=0.8),
+                                                     hive(360, 240, insect="aphid", count=4, interval=0.8, delay=1.6)],
+                [dome_over("nhoque", 360, floor=900, pad=22, apex_gap=30)], survive=11, terrain=[],
+                props=[cloud(180, 900, 360, drop=0)],
+                teaches="Revisão das nuvens."))
+    lv.append(L("12-10", 12, "Coruja das Nuvens",
+                "A Coruja joga neve onde aparece o X, e não há chão embaixo! Telhado firme.",
+                [animal("capi", 360, floor=900)], [hive(90, 330, insect="dragonfly", count=2, interval=2.0, delay=1.5), hive(630, 330, count=6, interval=0.8, delay=1.0)],
+                [dome_over("capi", 360, floor=900, pad=34, apex_gap=36)], survive=13, terrain=[],
+                props=[cloud(140, 900, 440, drop=0)],
+                bosses=[{"kind": "owl", "pos": [540, 300], "sway": 60, "every": 3.0, "delay": 1.0}],
+                teaches="Chefão nas nuvens."))
+
+    # ============================================================ Mundo 13 — Deserto das Dunas
+    def pit_ground(x0, x1, depth=120):
+        return [ground(x0=-400, x1=x0), {"poly": [[x0, GROUND + depth], [x1, GROUND + depth], [x1, 1800], [x0, 1800]], "style": "ground"}, ground(x0=x1, x1=1120)]
+    def sand(x0, x1, depth=120, pull=320):
+        return {"type": "quicksand", "rect": [x0, GROUND - 6, x1 - x0, depth + 6], "pull": pull}
+    nh1 = animal("nhoque", 250)
+    lv.append(L("13-1", 13, "Areia Movediça",
+                "Areia movediça PUXA a linha para baixo! Apoie as pontas do abrigo no chão firme.",
+                [nh1], [hive(620, 320, count=8, interval=0.32)],
+                [dome_over("nhoque", 250, pad=24)], survive=10, terrain=pit_ground(380, 600), props=[sand(380, 600)],
+                teaches="Areia que afunda a tinta."))
+    lv.append(L("13-2", 13, "Nhoque Escorrega",
+                "O Nhoque escorrega fácil, mas a casinha aguenta DUAS picadas. Abrigo justo e firme!",
+                [animal("nhoque", 360)], [hive(120, 330, count=8, interval=0.3), hive(620, 330, insect="wasp", count=2, interval=1.6, delay=1.4)],
+                [dome_over("nhoque", 360, pad=22)], survive=10,
+                teaches="Casinha que aguenta duas picadas."))
+    lv.append(L("13-3", 13, "Tempestade de Areia",
+                "A poeira esconde o céu de tempos em tempos! Planeje o abrigo antes de ela chegar.",
+                [animal("duda", 360)], [hive(120, 330, insect="mosquito", count=6, interval=0.4), hive(620, 330, count=7, interval=0.4, delay=0.8)],
+                [dome_over("duda", 360, pad=30, apex_gap=34)], survive=11,
+                props=[{"type": "sandstorm", "rect": [-40, 100, 800, 620], "on": 2.5, "off": 2.0, "delay": 1.2}],
+                teaches="Atenção mesmo sem ver."))
+    lv.append(L("13-4", 13, "Oásis",
+                "A Duda não nada! Mantenha a girafinha longe do oásis e protegida das abelhas.",
+                [animal("duda", 230)], [hive(600, 320, count=8, interval=0.32)],
+                [dome_over("duda", 230, pad=26, apex_gap=30)], survive=10,
+                terrain=[ground(x0=-400, x1=400), {"poly": [[400, 1060], [640, 1060], [640, 1800], [400, 1800]], "style": "ground"}, ground(x0=640, x1=1120)],
+                props=[{"type": "water", "rect": [400, 990, 240, 70]}],
+                teaches="Água e areia."))
+    lv.append(L("13-5", 13, "Pulgões na Duna",
+                "Pulgões grudam e a areia puxa! Pontas no chão firme e abrigo bem largo.",
+                [animal("bolota", 230)], [hive(560, 300, insect="aphid", count=6, interval=0.5), hive(100, 330, count=6, interval=0.4, delay=1.4)],
+                [dome_over("bolota", 230, pad=34, apex_gap=40)], survive=11, terrain=pit_ground(380, 600), props=[sand(380, 600)],
+                teaches="Peso + areia."))
+    st6, rk6 = braced("nhoque", 360, apex_gap=36)
+    lv.append(L("13-6", 13, "Tatu na Duna",
+                "Besouros-tatu rolando dos dois lados! As pedras seguram o abrigo do Nhoque.",
+                [animal("nhoque", 360)], [mound(60, insect="rollbug", count=3, interval=1.8), mound(660, insect="rollbug", count=3, interval=1.8, delay=0.9),
+                                          hive(360, 260, count=5, interval=0.5, delay=2.0)],
+                [st6], survive=11, rocks=rk6,
+                teaches="Tatus dos dois lados."))
+    lv.append(L("13-7", 13, "Miragem Ninja",
+                "Ninjas somem na poeira da tempestade! Abrigo sem nenhuma fresta.",
+                [animal("plim", 360)], [hive(600, 320, insect="ninja", count=8, interval=0.35), hive(120, 320, insect="ninja", count=5, interval=0.5, delay=1.2)],
+                [dome_over("plim", 360, pad=24, apex_gap=96)], survive=11,
+                props=[{"type": "sandstorm", "rect": [-40, 100, 800, 700], "on": 2.2, "off": 1.8, "delay": 1.0}],
+                teaches="Inseto invisível + poeira."))
+    du8 = animal("duda", 170)
+    nh8 = animal("nhoque", 560)
+    lv.append(L("13-8", 13, "Duas Dunas",
+                "Dois amigos separados pela areia movediça. Dois traços com as pontas no chão firme!",
+                [du8, nh8], [hive(360, 280, count=9, interval=0.3), hive(640, 320, insect="aphid", count=4, interval=0.7, delay=1.0)],
+                [dome_over("duda", 170, pad=26, apex_gap=30), dome_over("nhoque", 560, pad=24)], survive=11, strokes=2,
+                terrain=pit_ground(300, 440), props=[sand(300, 440)],
+                teaches="Dois abrigos e um buraco de areia."))
+    bo9 = animal("bolota", 360)
+    lv.append(L("13-9", 13, "Areia Funda",
+                "Buracos de formiga do lado da Bolota e areia movediça mais longe. Pontas nos buracos!",
+                [bo9], holes_beside("bolota", 360, insect="ant", count=4, interval=0.7) + [hive(600, 320, count=6, interval=0.4, delay=1.2)],
+                [dome_over("bolota", 360, pad=30, apex_gap=40)], survive=11,
+                terrain=[ground(x0=-400, x1=120), {"poly": [[120, 1100], [200, 1100], [200, 1800], [120, 1800]], "style": "ground"}, ground(x0=200, x1=520),
+                         {"poly": [[520, 1100], [600, 1100], [600, 1800], [520, 1800]], "style": "ground"}, ground(x0=600, x1=1120)],
+                props=[sand(120, 200, depth=100), sand(520, 600, depth=100)],
+                naive=[wide_dome([bo9])],
+                teaches="Buracos e areia."))
+    cp10 = animal("capi", 360)
+    q10 = L("13-10", 13, "Rainha Térmita",
+            "A Rainha Térmita abre TÚNEIS no chão — a rachadura avisa onde! Deixe as pontas do abrigo em cima delas.",
+            [cp10], [hive(620, 320, count=6, interval=0.6, delay=2.0)],
+            [dome_over("capi", 360, pad=30, apex_gap=40)], survive=13,
+            bosses=[{"kind": "termite_queen", "pos": [640, 1000], "tunnels": [[274, 2.5], [446, 4.5], [120, 6.0]], "insect": "termite", "count": 4, "interval": 0.5}],
+            teaches="Chefona: túneis que aparecem.")
+    covered(q10, [274, 446])
+    lv.append(q10)
+
+    # ============================================================ Mundo 14 — Castelo Assombrado (Tinta Firme)
+    firm = dict(ink_mode="static")
+    lv.append(L("14-1", 14, "Boo!",
+                "Boo, o fantasminha, ATRAVESSA a tinta comum! Só a Tinta Firme (que brilha) segura ele.",
+                [animal("capi", 360)], [hive(600, 330, insect="ghost", count=3, interval=1.4)],
+                [dome_over("capi", 360)], survive=10, **firm,
+                teaches="Fantasma: só Tinta Firme e luz."))
+    lv.append(L("14-2", 14, "Luz que Pisca",
+                "A lanterna acende e apaga no ritmo! Mariposas giram na luz e atacam no escuro.",
+                [animal("bolota", 360)], [hive(620, 330, insect="moth", count=6, interval=0.5), hive(100, 330, count=5, interval=0.5, delay=2.0)],
+                [dome_over("bolota", 360, pad=34, apex_gap=40)], survive=11, **firm,
+                props=[{"type": "lamp", "pos": [600, 560], "rhythm": [2.0, 3.0, 0.0]}],
+                teaches="Lâmpada ritmada."))
+    cave3 = [ground()] + pocket(300, 362, 880)
+    lv.append(L("14-3", 14, "Corredor Assombrado",
+                "Pedra o Boo não atravessa! Só falta uma tampa firme em cima do Plim.",
+                [animal("plim", 331)], [hive(600, 330, insect="ghost", count=4, interval=1.0), hive(120, 300, insect="mosquito", count=6, interval=0.4)],
+                [lid(300, 362, 880)], survive=11, terrain=cave3, ink=160, **firm,
+                teaches="Usar o castelo."))
+    lv.append(L("14-4", 14, "Morcego no Lustre",
+                "A Lua dorme pendurada no lustre. Uma concha de Tinta Firme em volta dela!",
+                [hang("lua", 360, 600)], [hive(620, 900, insect="ghost", count=3, interval=1.2), hive(100, 880, insect="mosquito", count=6, interval=0.4, delay=0.8)],
+                [cup(360, 600)], survive=10, terrain=[ground(), block(220, 560, 500, 600, "stone")], **firm,
+                teaches="Concha pendurada contra fantasmas."))
+    lv.append(L("14-5", 14, "Fantasmas e Lanternas",
+                "Os fantasmas fogem da luz acesa. Quando ela apaga, eles vêm! Abrigo firme.",
+                [animal("duda", 360)], [hive(110, 320, insect="ghost", count=4, interval=1.0), hive(610, 320, insect="ghost", count=4, interval=1.0, delay=0.8)],
+                [dome_over("duda", 360, pad=26, apex_gap=30)], survive=11, **firm,
+                props=[{"type": "lamp", "pos": [360, 520], "rhythm": [2.0, 2.0, 0.5]}],
+                teaches="Luz que protege às vezes."))
+    nh6 = animal("nhoque", 360)
+    lv.append(L("14-6", 14, "Porão Úmido",
+                "Buracos de cupim no porão e fantasmas no ar. Pontas nos buracos!",
+                [nh6], holes_beside("nhoque", 360, insect="termite", count=4, interval=0.7) + [hive(600, 320, insect="ghost", count=3, interval=1.2, delay=1.0)],
+                [dome_over("nhoque", 360, pad=30)], survive=11, **firm,
+                naive=[wide_dome([nh6])],
+                teaches="Tampar no castelo."))
+    lv.append(L("14-7", 14, "Baile das Mariposas",
+                "Duas lanternas piscando fora de ritmo. As mariposas trocam de luz! Abrigo fechado.",
+                [animal("plim", 360)], [hive(110, 330, insect="moth", count=6, interval=0.5), hive(610, 330, insect="moth", count=6, interval=0.5, delay=0.6),
+                                         hive(360, 250, insect="mosquito", count=4, interval=0.5, delay=2.5)],
+                [dome_over("plim", 360, pad=24, apex_gap=96)], survive=11, **firm,
+                props=[{"type": "lamp", "pos": [120, 560], "rhythm": [2.0, 2.6, 0.0]}, {"type": "lamp", "pos": [600, 560], "rhythm": [2.0, 2.6, 1.0]}],
+                teaches="Luzes alternadas."))
+    bo8c = animal("bolota", 200)
+    du8c = animal("duda", 520)
+    lv.append(L("14-8", 14, "Salão dos Retratos",
+                "Dois amigos e dois traços firmes. Fantasmas, mosquitos e joaninhas!",
+                [bo8c, du8c], [hive(360, 280, insect="ghost", count=4, interval=1.0), hive(640, 330, insect="mosquito", count=7, interval=0.35, delay=0.8),
+                               hive(80, 330, insect="ladybug", count=2, interval=1.6, delay=1.2)],
+                [dome_over("bolota", 200, pad=34, apex_gap=40), dome_over("duda", 520, pad=26, apex_gap=30)], survive=11, strokes=2, **firm,
+                teaches="Dois abrigos firmes."))
+    lv.append(L("14-9", 14, "Torre do Relógio",
+                "Libélulas arrancam, ninjas somem e o Boo atravessa paredes. Tudo de uma vez!",
+                [animal("capi", 360)], [hive(110, 300, insect="dragonfly", count=2, interval=2.0), hive(610, 300, insect="ninja", count=6, interval=0.4, delay=0.6),
+                                         hive(360, 240, insect="ghost", count=3, interval=1.2, delay=1.4)],
+                [dome_over("capi", 360, pad=26, apex_gap=36)], survive=11, **firm,
+                teaches="Revisão do castelo."))
+    lv.append(L("14-10", 14, "Noite do Boo",
+                "O grande final: a Rainha sopra vento, os fantasmas vêm no escuro e as lanternas piscam. Abrigo firme!",
+                [animal("capi", 360)], [hive(90, 320, insect="ghost", count=5, interval=1.0, delay=0.5), hive(630, 320, insect="ghost", count=5, interval=1.0, delay=1.0),
+                                         hive(360, 240, insect="moth", count=4, interval=0.8, delay=1.5)],
+                [dome_over("capi", 360)], survive=14, **firm,
+                rocks=[{"pos": [200, 941], "r": 30}, {"pos": [520, 941], "r": 30}],
+                props=[{"type": "lamp", "pos": [140, 600], "rhythm": [2.5, 2.0, 0.0]}, {"type": "lamp", "pos": [580, 600], "rhythm": [2.5, 2.0, 2.2]}],
+                bosses=[{"pos": [360, 330], "sway": 180}],
+                teaches="Chefona no castelo."))
+    cover_exit_width(lv)
+    strategic = {"11-6", "11-9", "13-8", "14-8"}
+    for level in lv:
+        level["stars"] = [0.94, 0.99]
+        level["no_daily"] = True
+        if level["id"] in strategic:
+            level["strategy_required"] = True
+            level["reject_individual_circles"] = True
+            level["reject_double_arches"] = True
     return lv
 
 

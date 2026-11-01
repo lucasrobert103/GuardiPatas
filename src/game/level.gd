@@ -45,6 +45,10 @@ var projectiles: Array[Projectile] = []
 var honeys: Array[HoneyPot] = []
 var coconuts: Array[Coconut] = []
 var winds: Array[WindZone] = []
+var trains: Array[ToyTrain] = []
+var clouds: Array[CloudPlatform] = []
+var quicksands: Array[Quicksand] = []
+var diggers: Array[TermiteQueen] = []
 var goal: GoalZone
 
 ## "static": as linhas não caem (Tinta Firme). "normal": linhas com peso.
@@ -175,6 +179,12 @@ func _build() -> void:
 		world.add_child(nest)
 		nests.append(nest)
 	for b in data.get("bosses", []):
+		if str(b.get("kind", "")) == "termite_queen":
+			var tq := TermiteQueen.new()
+			tq.setup(self, b)
+			world.add_child(tq)
+			diggers.append(tq)
+			continue
 		if str(b.get("kind", "queen")) != "queen":
 			var boss := Boss.new()
 			boss.setup(self, b)
@@ -228,16 +238,21 @@ func _build() -> void:
 
 func _build_prop(p: Dictionary) -> void:
 	match str(p.get("type", "")):
-		"crate", "plank":
+		"crate", "plank", "toyblock":
 			var c := Crate.new()
 			c.position = _v(p["pos"])
 			c.setup(_v(p.get("size", [60, 60])), p["type"] == "plank", deg_to_rad(float(p.get("rot", 0))))
+			if p["type"] == "toyblock":
+				c.make_toy(float(p.get("drop", 0.0)), Color(str(p.get("color", "ff6b6b"))))
 			world.add_child(c)
 			props.append(c)
 		"lamp":
 			var l := Lamp.new()
 			l.position = _v(p["pos"])
 			l.setup(float(p.get("duration", -1)))
+			if p.has("rhythm"):
+				var rh: Array = p["rhythm"]
+				l.set_rhythm(float(rh[0]), float(rh[1]), float(rh[2]) if rh.size() > 2 else 0.0)
 			world.add_child(l)
 			lamps.append(l)
 		"water":
@@ -257,6 +272,25 @@ func _build_prop(p: Dictionary) -> void:
 			cn.setup(self, float(p.get("drop", 3.0)))
 			world.add_child(cn)
 			coconuts.append(cn)
+		"train":
+			var tr := ToyTrain.new()
+			tr.setup(self, p)
+			world.add_child(tr)
+			trains.append(tr)
+		"cloud":
+			var cl := CloudPlatform.new()
+			cl.setup(p)
+			world.add_child(cl)
+			clouds.append(cl)
+		"quicksand":
+			var qs := Quicksand.new()
+			qs.setup(p)
+			world.add_child(qs)
+			quicksands.append(qs)
+		"sandstorm":
+			var ss := Sandstorm.new()
+			ss.setup(self, p)
+			world.add_child(ss)
 		"platform":
 			var m := MovingPlatform.new()
 			var r: Array = p["rect"]
@@ -413,7 +447,7 @@ func start_simulation() -> void:
 	for a in animals:
 		a.freeze = false
 	for c in props:
-		c.freeze = false
+		c.freeze = c.drop_at > 0.0
 	for l in lines:
 		if not l.static_ink:
 			l.freeze = false
@@ -427,6 +461,12 @@ func start_simulation() -> void:
 		q.begin()
 	for b in bosses:
 		b.begin()
+	for tr in trains:
+		tr.begin()
+	for cl in clouds:
+		cl.begin()
+	for dg in diggers:
+		dg.begin()
 	if replay != null: replay.begin(self)
 	state_changed.emit(state)
 
@@ -464,10 +504,22 @@ func _physics_process(delta: float) -> void:
 		time_left -= delta
 		for l in lamps:
 			l.tick(delta)
+		for c in props:
+			if is_instance_valid(c) and c.freeze and c.drop_at > 0.0 and _sim_time >= c.drop_at:
+				c.freeze = false
+				c.queue_redraw()
+				Sfx.play("pop", -4.0, 0.7)
 		for c in coconuts:
 			if is_instance_valid(c):
 				c.tick(_sim_time)
 		_apply_wind(delta)
+		for qs in quicksands:
+			for l in lines:
+				if is_instance_valid(l) and not l.static_ink and not l.freeze:
+					qs.sink(l, delta)
+			for c in props:
+				if is_instance_valid(c) and not c.freeze:
+					qs.sink(c, delta)
 		for a in animals:
 			if a.global_position.y > FALL_Y:
 				lose("fall", a.global_position, "", a.get_instance_id())
@@ -706,7 +758,10 @@ func win() -> void:
 	for a in animals:
 		met.append(a.species)
 	var info: Dictionary
-	if mode == "daily":
+	if mode in ["demo", "practice", "infinite"]:
+		info = {mode: true, "coins": 0, "new_friends": [], "achievements": []}
+		stars = 0
+	elif mode == "daily":
 		info = Game.complete_daily(str(data.get("daily_key", "")))
 		stars = 0
 	elif mode == "custom":
@@ -720,6 +775,13 @@ func win() -> void:
 		var medals := {"paw": paw_got, "first": first_try, "quick": quick}
 		info = Game.complete_level(str(data.get("id", "?")), stars, used, met, boss_kind(), medals)
 		info["medals"] = medals
+		info["ink_used"] = used
+		info["missions_new"] = Missions.evaluate(self, info)
+		var treats := Treats.reward_for(str(data.get("id", "")), stars)
+		for k in treats:
+			Treats.grant(k, int(treats[k]))
+		info["treats"] = treats
+		Game.save()
 	info["stars"] = stars
 	info["ink_used"] = used
 	last_result = info
@@ -742,7 +804,8 @@ func lose(reason: String, point: Vector2 = Vector2.INF, attacker: String = "", s
 		n.running = false
 	for a in animals:
 		a.be_sad()
-	Game.record_loss(str(data.get("id", "")) if mode == "campaign" and not free_mode else "")
+	if not mode in ["demo", "practice", "infinite"]:
+		Game.record_loss(str(data.get("id", "")) if mode == "campaign" and not free_mode else "")
 	if not point.is_finite():
 		point = goal.rect.get_center() if reason == "time" and goal != null else (animals[0].global_position if not animals.is_empty() else Vector2(360, 640))
 	var analysis := "O inseto alcançou o bichinho. Observe o caminho até o contato."

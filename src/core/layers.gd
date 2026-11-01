@@ -9,6 +9,8 @@ const WALKER := 16      # insetos que andam
 const PROP := 32        # caixas e tábuas soltas
 const NEST := 64        # ninhos/colmeias/formigueiros (andarilhos passam por cima)
 const PROJECTILE := 128 # neve e conchas dos chefões (não batem em insetos)
+const GLOW := 256       # Tinta Firme (além de LINE): única tinta que segura o fantasma Boo
+const GHOST := 512      # fantasma Boo: atravessa a tinta comum
 
 const LINE_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP | NEST
 const ANIMAL_MASK := TERRAIN | LINE | ANIMAL | FLYER | WALKER | PROP | NEST
