@@ -12,3 +12,4 @@ export/
 export_credentials.cfg
 # Python
 __pycache__/
+override.cfg
