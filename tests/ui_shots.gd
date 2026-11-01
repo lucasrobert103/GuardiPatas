@@ -63,6 +63,9 @@ func _ready() -> void:
 			var inf := InfiniteScreen.new()
 			inf.director = InfiniteDirector.new()
 			inf.add_child(inf.director)
+			if "--loading" in OS.get_cmdline_user_args():
+				Infinite.start_run()
+				inf.waiting_stage = 7
 			c = inf
 		"magic":
 			c = Control.new()

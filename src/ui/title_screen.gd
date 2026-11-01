@@ -83,8 +83,12 @@ func _ready() -> void:
 	play.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_menu.add_child(play)
 	UiKit.pop_in(play, 0.2)
-	var inf := UiKit.button(tr("Modo Infinito · Recorde %d") % Infinite.best(), Color("b18cff"), "bolt", 420, 76)
-	inf.add_theme_font_size_override("font_size", UiKit.fs(24))
+	var inf := InfiniteCard.new()
+	inf.best = Infinite.best()
+	inf.running = Infinite.active()
+	inf.reduce = _reduce
+	inf.custom_minimum_size = Vector2(420, 92)
+	inf.tooltip_text = tr("Modo Infinito")
 	inf.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	inf.pressed.connect(func(): go.emit("infinite", null))
 	_menu.add_child(inf)
@@ -96,10 +100,11 @@ func _ready() -> void:
 		["Bichinhos", "paw", Palette.UI_PRIMARY, "collection"],
 		["Casinha", "house", Color("8fd3a0"), "home"],
 		["Criar", "pencil", Color("b18cff"), "editor"],
+		["Pintar", "palette", Color("ff9ec4"), "paint"],
 	]
 	for i in tiles.size():
 		var spec: Array = tiles[i]
-		var b := UiKit.tile(spec[0], spec[1], spec[2], 128, 118)
+		var b := UiKit.tile(spec[0], spec[1], spec[2], 124, 118)
 		var dest: String = spec[3]
 		b.pressed.connect(func(): go.emit(dest, null))
 		row.add_child(b)
@@ -430,3 +435,94 @@ class TitleShield:
 		for i in range(6, 15):
 			shine.append(pts[i] + Vector2(-2, -3))
 		draw_polyline(shine, Palette.INK_HI, 4.0, true)
+
+
+## Botão do Modo Infinito: cartão roxo com o símbolo ∞ desenhado, brilhinhos e o recorde.
+class InfiniteCard:
+	extends Button
+	var best := 0
+	var running := false
+	var reduce := false
+	var _t := 0.0
+	var _title: Label
+	var _sub: Label
+	func _ready() -> void:
+		text = ""
+		for st in ["normal", "hover", "pressed", "focus", "disabled"]:
+			add_theme_stylebox_override(st, StyleBoxEmpty.new())
+		_title = UiKit.label("Modo Infinito", 30, Palette.WHITE, 8, Palette.OUTLINE)
+		_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_title)
+		var sub := tr("Continue sua corrida!") if running else (tr("Recorde: %d fases") % best if best > 0 else tr("Fases novas sem parar"))
+		_sub = UiKit.label(sub, 19, Palette.WHITE, 6, Color("5b3fa8"))
+		_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		_sub.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_sub)
+		resized.connect(_place)
+		_place()
+	func _place() -> void:
+		var left := 112.0
+		_title.position = Vector2(left, size.y * 0.5 - 40)
+		_title.size = Vector2(size.x - left - 16, 42)
+		_sub.position = Vector2(left + 2, size.y * 0.5 + 2)
+		_sub.size = Vector2(size.x - left - 16, 28)
+	func _process(delta: float) -> void:
+		if not reduce:
+			_t += delta
+			queue_redraw()
+	func _draw() -> void:
+		var down := 4.0 if is_pressed() else 0.0
+		var r := Rect2(Vector2(0, down), size - Vector2(0, 8))
+		# sombra/base grossa como os outros botões do jogo
+		var base := StyleBoxFlat.new()
+		base.bg_color = Palette.OUTLINE
+		base.set_corner_radius_all(30)
+		draw_style_box(base, Rect2(Vector2(0, 8), size - Vector2(0, 8)))
+		var top := Color("9b6bff").lightened(0.06 if is_hovered() else 0.0)
+		var bottom := Color("ff7ac8")
+		var card := StyleBoxFlat.new()
+		card.bg_color = top
+		card.set_corner_radius_all(30)
+		card.set_border_width_all(5)
+		card.border_color = Palette.OUTLINE
+		draw_style_box(card, r)
+		# faixa de cor (degradê simples) por dentro da borda
+		var inner := r.grow(-6)
+		var steps := 12
+		for i in steps:
+			var k := float(i) / steps
+			var col := top.lerp(bottom, k)
+			var x := inner.position.x + inner.size.x * k
+			var seg := StyleBoxFlat.new()
+			seg.bg_color = col
+			var rr := 24
+			seg.corner_radius_top_left = rr if i == 0 else 0
+			seg.corner_radius_bottom_left = rr if i == 0 else 0
+			seg.corner_radius_top_right = rr if i == steps - 1 else 0
+			seg.corner_radius_bottom_right = rr if i == steps - 1 else 0
+			draw_style_box(seg, Rect2(x, inner.position.y, inner.size.x / steps + 1, inner.size.y))
+		# brilho em cima
+		draw_rect(Rect2(inner.position + Vector2(18, 4), Vector2(inner.size.x - 36, 6)), Color(1, 1, 1, 0.25))
+		# símbolo ∞ com uma estrelinha correndo por ele
+		var c := Vector2(58, r.get_center().y)
+		var pts := PackedVector2Array()
+		for i in 49:
+			var a := TAU * i / 48.0
+			var d := 1.0 + pow(sin(a), 2)
+			pts.append(c + Vector2(34 * cos(a) / d, 30 * sin(a) * cos(a) / d))
+		draw_polyline(pts, Palette.OUTLINE, 15.0, true)
+		draw_polyline(pts, Color.WHITE, 8.0, true)
+		var k := fmod(_t * 0.45, 1.0)
+		var a2 := TAU * k
+		var d2 := 1.0 + pow(sin(a2), 2)
+		var p := c + Vector2(34 * cos(a2) / d2, 30 * sin(a2) * cos(a2) / d2)
+		DrawUtil.shape(self, DrawUtil.star_points(p, 11.0, 5.0, _t * 2.0), Palette.GOLD, Palette.OUTLINE, 2.5)
+		# brilhinhos piscando
+		for i in 4:
+			var sp := Vector2(r.size.x * (0.55 + 0.13 * i), r.position.y + 16 + (i % 2) * (r.size.y - 34))
+			var tw := 0.5 + 0.5 * sin(_t * 3.0 + i * 1.7)
+			DrawUtil.shape(self, DrawUtil.star_points(sp, 3.0 + 4.0 * tw, 1.6 + 1.6 * tw), Color(1, 1, 1, 0.4 + 0.5 * tw), Color(1, 1, 1, 0), 0.0)
+		# selo "∞" de corrida em andamento
+		if running:
+			DrawUtil.disc(self, Vector2(r.end.x - 26, r.position.y + 10), 12.0, Palette.DANGER, Palette.OUTLINE, 3.0)

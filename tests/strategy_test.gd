@@ -1,5 +1,7 @@
 extends Node
 ## Tenta soluções genéricas pela mesma validação do desenho do jogador.
+## A tinta não acaba nas fases normais; um atalho só conta se vencer dentro do orçamento
+## (gastar além dele vale 1 estrela, e isso é permitido de propósito).
 ## --level=6-5 / --world=6 filtram o teste; --audit só relata resultados.
 ## --extended acrescenta paredes, teto curto e arcos largos aos padrões obrigatórios.
 ## --omissions remove um traço da solução por vez. Só os índices declarados em
@@ -32,9 +34,14 @@ func _ready() -> void:
 		var wins: Array[String] = []
 		for probe in probes(data):
 			var result := await run_probe(index, data, probe["strokes"])
-			if result: wins.append(probe["name"])
+			if result and float(_last_probe_info.get("ink", 0.0)) <= 1.0001: wins.append(probe["name"])
+			# a tinta não acaba nas fases normais: uma vitória que passa do orçamento só vale
+			# 1 estrela (o castigo é a pontuação), então só conta como atalho se couber nele
+			var within_budget := result and float(_last_probe_info.get("ink", 0.0)) <= 1.0001
+			if result and not within_budget:
+				print("  %s · %s venceu só estourando a tinta (%.0f%%, 1 estrela)" % [data["id"], probe["name"], float(_last_probe_info["ink"]) * 100])
 			if not audit and bool(probe.get("required", false)):
-				if result:
+				if within_budget:
 					failures += 1
 					print("FALHOU: %s · %s venceu (traços=%d, tinta=%.0f%%, t=%.1fs)" % [data["id"], probe["name"], _last_probe_info["lines"], _last_probe_info["ink"] * 100, _last_probe_info["time"]])
 				else:

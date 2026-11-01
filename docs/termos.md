@@ -28,7 +28,7 @@ Personagens, desenhos, músicas, sons, fases, textos, a marca GuardiPatas e a ma
 
 ### 5. Suas criações e fotos
 
-As fases criadas no editor e as fotos do Álbum (capturas da tela do próprio jogo) ficam apenas no seu aparelho. O GuardiPatas não publica, não envia e não compartilha esse conteúdo com ninguém.
+As fases criadas no editor, as pinturas do Ateliê e as fotos do Álbum (capturas da tela do próprio jogo) ficam apenas no seu aparelho. O GuardiPatas não publica, não envia e não compartilha esse conteúdo com ninguém.
 
 ### 6. Moedas e itens virtuais
 
@@ -96,7 +96,7 @@ Characters, artwork, music, sounds, levels, texts, the GuardiPatas brand and the
 
 ### 5. Your creations and photos
 
-Levels made in the editor and Album photos (screenshots of the game itself) stay only on your device. GuardiPatas does not publish, upload or share that content with anyone.
+Levels made in the editor, Studio paintings and Album photos (screenshots of the game itself) stay only on your device. GuardiPatas does not publish, upload or share that content with anyone.
 
 ### 6. Coins and virtual items
 
@@ -164,7 +164,7 @@ Los personajes, dibujos, música, sonidos, niveles, textos, la marca GuardiPatas
 
 ### 5. Tus creaciones y fotos
 
-Los niveles creados en el editor y las fotos del Álbum (capturas de la pantalla del propio juego) quedan solo en tu dispositivo. GuardiPatas no publica, no envía ni comparte ese contenido con nadie.
+Los niveles creados en el editor, las pinturas del Taller y las fotos del Álbum (capturas de la pantalla del propio juego) quedan solo en tu dispositivo. GuardiPatas no publica, no envía ni comparte ese contenido con nadie.
 
 ### 6. Monedas y objetos virtuales
 

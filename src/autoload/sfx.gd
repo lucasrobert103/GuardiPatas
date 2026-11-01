@@ -77,9 +77,13 @@ func _set_bus_linear(bus_name: String, v: float) -> void:
 
 
 ## Toca um efeito. `pitch_jitter` varia o tom para sons repetidos não cansarem.
+## Maior que zero enquanto o jogo simula fases escondidas (Modo Infinito): nada toca nem vibra.
+var quiet := 0
+
+
 ## `min_gap` evita empilhar o mesmo som dezenas de vezes no mesmo instante.
 func play(sound: String, volume_db: float = 0.0, pitch: float = 1.0, pitch_jitter: float = 0.0, min_gap: float = 0.03) -> void:
-	if not _streams.has(sound):
+	if quiet > 0 or not _streams.has(sound):
 		return
 	var now := Time.get_ticks_msec() / 1000.0
 	if now - float(_last_play.get(sound, -10.0)) < min_gap:
@@ -95,7 +99,7 @@ func play(sound: String, volume_db: float = 0.0, pitch: float = 1.0, pitch_jitte
 
 ## Inicia (ou ajusta) um som contínuo identificado por `key`.
 func loop(key: String, sound: String, volume_db: float = 0.0, pitch: float = 1.0) -> void:
-	if not _streams.has(sound):
+	if quiet > 0 or not _streams.has(sound):
 		return
 	var p: AudioStreamPlayer = _loops.get(key)
 	if p == null:
@@ -147,5 +151,5 @@ func music(track: String, fade: float = 0.8) -> void:
 
 
 func vibrate(ms: int) -> void:
-	if Game.setting("vibration"):
+	if quiet == 0 and Game.setting("vibration"):
 		Input.vibrate_handheld(ms)

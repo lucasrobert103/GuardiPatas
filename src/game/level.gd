@@ -224,6 +224,7 @@ func _build() -> void:
 		winds.append(wz)
 	drawer.static_ink = ink_mode == "static"
 	drawer.infinite = free_mode
+	drawer.unlimited = mode in ["campaign", "daily", "custom", "practice"]
 	drawer.setup(1000000.0 if free_mode else float(data.get("ink", 800)), nodraw)
 	drawer.stroke_finished.connect(_on_stroke_finished)
 	add_child(drawer)
@@ -736,7 +737,7 @@ func on_animal_in_water(animal: Animal) -> void:
 func ink_used() -> float:
 	if free_mode:
 		return 0.0
-	return 1.0 - drawer.ink_left / maxf(drawer.ink_total, 1.0)
+	return maxf(0.0, 1.0 - drawer.ink_left / maxf(drawer.ink_total, 1.0))
 
 
 func win() -> void:

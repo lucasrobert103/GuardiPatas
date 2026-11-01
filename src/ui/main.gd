@@ -50,7 +50,9 @@ func _notification(what: int) -> void:
 			var lv := _current as Level
 			if lv.hud != null:
 				lv.hud.on_back_pressed()
-		elif _current is SettingsScreen or _current is LegalScreen:
+		elif _current is InfiniteScreen and (_current as InfiniteScreen).loading():
+			pass   # preparando a fase: espera terminar (leva poucos segundos)
+		elif _current is SettingsScreen or _current is LegalScreen or _current is PaintScreen:
 			_current.on_back_pressed()
 		elif _current is TitleScreen:
 			get_tree().quit()
@@ -84,6 +86,8 @@ func go(screen: String, arg: Variant) -> void:
 func _open(screen: String, arg: Variant, _animated: bool) -> void:
 	get_tree().paused = false
 	Sfx.stop_all_loops()
+	if screen != "infinite":
+		infinite.halt()   # nunca deixa simulação escondida rodando fora do carregamento
 	if _current != null:
 		_current.queue_free()
 		_current = null
@@ -121,6 +125,8 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 		"splash":
 			_fade.color = SplashScreen.INDIGO
 			_current = SplashScreen.new()
+		"paint":
+			_current = PaintScreen.new()
 		"settings":
 			var st := SettingsScreen.new()
 			if arg is String:
@@ -166,9 +172,6 @@ func _start_level(index: int) -> void:
 ## Fase fora da campanha (Desafio do Dia ou fase do editor): os dados vêm prontos.
 func _start_custom(data: Dictionary) -> void:
 	Game.current_custom = data
-	# Modo Infinito: já prepara (e valida escondida) a próxima fase enquanto esta é jogada
-	if str(data.get("mode", "")) == "infinite":
-		infinite.prepare(int(data.get("stage", 1)) + 1)
 	var lv := Level.new()
 	lv.setup(-1, data, true)
 	lv.navigate.connect(_on_level_nav)

@@ -113,9 +113,9 @@
      },
      "p": [
       {
-       "pt": "As fases criadas no editor e as fotos do Álbum (capturas da tela do próprio jogo) ficam apenas no seu aparelho. O GuardiPatas não publica, não envia e não compartilha esse conteúdo com ninguém.",
-       "en": "Levels made in the editor and Album photos (screenshots of the game itself) stay only on your device. GuardiPatas does not publish, upload or share that content with anyone.",
-       "es": "Los niveles creados en el editor y las fotos del Álbum (capturas de la pantalla del propio juego) quedan solo en tu dispositivo. GuardiPatas no publica, no envía ni comparte ese contenido con nadie."
+       "pt": "As fases criadas no editor, as pinturas do Ateliê e as fotos do Álbum (capturas da tela do próprio jogo) ficam apenas no seu aparelho. O GuardiPatas não publica, não envia e não compartilha esse conteúdo com ninguém.",
+       "en": "Levels made in the editor, Studio paintings and Album photos (screenshots of the game itself) stay only on your device. GuardiPatas does not publish, upload or share that content with anyone.",
+       "es": "Los niveles creados en el editor, las pinturas del Taller y las fotos del Álbum (capturas de la pantalla del propio juego) quedan solo en tu dispositivo. GuardiPatas no publica, no envía ni comparte ese contenido con nadie."
       }
      ]
     },
@@ -283,9 +283,9 @@
      },
      "p": [
       {
-       "pt": "Para o jogo funcionar, ele guarda no armazenamento privado do app: fases vencidas e estrelas, moedas e dicas, itens e acessórios, conquistas e missões, recordes do Modo Infinito, cuidados da Casinha, ajustes (som, idioma, acessibilidade, dificuldade), fases criadas no editor, fotos do Álbum e a versão dos termos aceita.",
-       "en": "To work, the game saves in the app's private storage: levels cleared and stars, coins and hints, items and accessories, achievements and missions, Infinite Mode records, Little House care, settings (sound, language, accessibility, difficulty), levels made in the editor, Album photos and the version of the terms you accepted.",
-       "es": "Para funcionar, el juego guarda en el almacenamiento privado de la aplicación: niveles superados y estrellas, monedas y pistas, objetos y accesorios, logros y misiones, récords del Modo Infinito, cuidados de la Casita, ajustes (sonido, idioma, accesibilidad, dificultad), niveles creados en el editor, fotos del Álbum y la versión de los términos aceptada."
+       "pt": "Para o jogo funcionar, ele guarda no armazenamento privado do app: fases vencidas e estrelas, moedas e dicas, itens e acessórios, conquistas e missões, recordes do Modo Infinito, cuidados da Casinha, ajustes (som, idioma, acessibilidade, dificuldade), fases criadas no editor, pinturas do Ateliê e fotos do Álbum, e a versão dos termos aceita.",
+       "en": "To work, the game saves in the app's private storage: levels cleared and stars, coins and hints, items and accessories, achievements and missions, Infinite Mode records, Little House care, settings (sound, language, accessibility, difficulty), levels made in the editor, Studio paintings and Album photos, and the version of the terms you accepted.",
+       "es": "Para funcionar, el juego guarda en el almacenamiento privado de la aplicación: niveles superados y estrellas, monedas y pistas, objetos y accesorios, logros y misiones, récords del Modo Infinito, cuidados de la Casita, ajustes (sonido, idioma, accesibilidad, dificultad), niveles creados en el editor, pinturas del Taller y fotos del Álbum, y la versión de los términos aceptada."
       },
       {
        "pt": "Essas informações não identificam você, não saem do aparelho e não são enviadas para a RetroNexa nem para ninguém. O backup automático do Android para este app está desligado.",

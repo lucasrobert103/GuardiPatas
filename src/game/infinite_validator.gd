@@ -9,6 +9,21 @@ signal done(data: Dictionary, ok: bool)
 var data: Dictionary
 var _results := {}
 var _views: Array[SubViewport] = []
+var _levels: Array[Level] = []
+var _limit := 1.0
+
+
+## Quanto das duas simulações já andou (0..1), para a barra de carregamento.
+func fraction() -> float:
+	if _levels.is_empty():
+		return 0.0
+	var total := 0.0
+	for lv in _levels:
+		if not is_instance_valid(lv) or lv.state == Level.State.WON or lv.state == Level.State.LOST:
+			total += 1.0
+		else:
+			total += clampf(lv._sim_time / maxf(_limit, 0.1), 0.0, 1.0)
+	return total / _levels.size()
 
 
 func check(p_data: Dictionary) -> void:
@@ -31,6 +46,7 @@ func _simulate(with_solution: bool) -> void:
 	lv.setup(-1, d, false)
 	lv.set_process_unhandled_input(false)
 	view.add_child(lv)
+	_levels.append(lv)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	if with_solution:
@@ -41,7 +57,8 @@ func _simulate(with_solution: bool) -> void:
 			await get_tree().physics_frame
 	if lv.state == Level.State.DRAWING:
 		lv.start_simulation()
-	var limit := lv.survive + 4.0
+	var limit := lv.survive + 2.0
+	_limit = limit
 	while is_instance_valid(lv) and lv.state == Level.State.RUNNING and lv._sim_time < limit:
 		await get_tree().physics_frame
 	var won := is_instance_valid(lv) and lv.state == Level.State.WON

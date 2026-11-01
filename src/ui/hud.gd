@@ -900,7 +900,7 @@ class InkBar:
 		var frac := clampf(level.drawer.ink_left / maxf(level.drawer.ink_total, 1.0), 0.0, 1.0)
 		if frac > 0.0:
 			var fill := StyleBoxFlat.new()
-			fill.bg_color = Palette.INK if frac > 0.2 else Palette.INK_LOW
+			fill.bg_color = Palette.INK if frac > 0.2 or level.drawer.unlimited else Palette.INK_LOW
 			fill.set_corner_radius_all(int(r.size.y * 0.5) - 4)
 			draw_style_box(fill, Rect2(r.position + Vector2(5, 5), Vector2((r.size.x - 10) * frac, r.size.y - 10)))
 		var th: Array = level.data.get("stars", [0.4, 0.7])

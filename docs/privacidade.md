@@ -12,7 +12,7 @@ A RetroNexa, desenvolvedora do GuardiPatas, é a controladora para os fins da Le
 
 ### 2. O que fica salvo no seu aparelho
 
-Para o jogo funcionar, ele guarda no armazenamento privado do app: fases vencidas e estrelas, moedas e dicas, itens e acessórios, conquistas e missões, recordes do Modo Infinito, cuidados da Casinha, ajustes (som, idioma, acessibilidade, dificuldade), fases criadas no editor, fotos do Álbum e a versão dos termos aceita.
+Para o jogo funcionar, ele guarda no armazenamento privado do app: fases vencidas e estrelas, moedas e dicas, itens e acessórios, conquistas e missões, recordes do Modo Infinito, cuidados da Casinha, ajustes (som, idioma, acessibilidade, dificuldade), fases criadas no editor, pinturas do Ateliê e fotos do Álbum, e a versão dos termos aceita.
 
 Essas informações não identificam você, não saem do aparelho e não são enviadas para a RetroNexa nem para ninguém. O backup automático do Android para este app está desligado.
 
@@ -68,7 +68,7 @@ RetroNexa, the developer of GuardiPatas, is the controller under Brazil's Genera
 
 ### 2. What is saved on your device
 
-To work, the game saves in the app's private storage: levels cleared and stars, coins and hints, items and accessories, achievements and missions, Infinite Mode records, Little House care, settings (sound, language, accessibility, difficulty), levels made in the editor, Album photos and the version of the terms you accepted.
+To work, the game saves in the app's private storage: levels cleared and stars, coins and hints, items and accessories, achievements and missions, Infinite Mode records, Little House care, settings (sound, language, accessibility, difficulty), levels made in the editor, Studio paintings and Album photos, and the version of the terms you accepted.
 
 This information does not identify you, does not leave the device and is not sent to RetroNexa or anyone else. Android automatic backup is turned off for this app.
 
@@ -124,7 +124,7 @@ RetroNexa, desarrolladora de GuardiPatas, es la responsable a efectos de la Ley 
 
 ### 2. Qué se guarda en tu dispositivo
 
-Para funcionar, el juego guarda en el almacenamiento privado de la aplicación: niveles superados y estrellas, monedas y pistas, objetos y accesorios, logros y misiones, récords del Modo Infinito, cuidados de la Casita, ajustes (sonido, idioma, accesibilidad, dificultad), niveles creados en el editor, fotos del Álbum y la versión de los términos aceptada.
+Para funcionar, el juego guarda en el almacenamiento privado de la aplicación: niveles superados y estrellas, monedas y pistas, objetos y accesorios, logros y misiones, récords del Modo Infinito, cuidados de la Casita, ajustes (sonido, idioma, accesibilidad, dificultad), niveles creados en el editor, pinturas del Taller y fotos del Álbum, y la versión de los términos aceptada.
 
 Esta información no te identifica, no sale del dispositivo y no se envía a RetroNexa ni a nadie. La copia de seguridad automática de Android está desactivada para esta aplicación.
 

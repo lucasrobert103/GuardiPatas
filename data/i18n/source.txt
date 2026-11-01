@@ -417,6 +417,12 @@ Nova corrida
 Quase!
 Ir para a fase
 Ver onde falhou
+Escolhendo o cenário…
+Chamando os bichinhos…
+Espalhando os ninhos de insetos…
+Ajeitando pedras e plataformas…
+Deixando tudo prontinho…
+Quase lá!
 Modo Infinito
 Fases novas sem parar, cada vez mais difíceis.
 Três corações: perdeu, tenta de novo. Acabaram, fim da corrida!
@@ -425,8 +431,7 @@ Corridas: %d  ·  Fases vencidas no total: %d
 A cada 5 fases: baú com 40 moedas e petiscos!
 Continuar · Fase %d
 Começar corrida
-Preparando a Fase %d…
-Testando se ela tem solução!
+Fase %d
 Termos
 Privacidade
 Seus direitos
@@ -442,6 +447,64 @@ Fases %d a %d
 %d de %d fases vencidas
 Missões %d/%d
 Insetos deste mundo
+Papel em branco
+Caderno de pontinhos
+Capitu para colorir
+Casinha
+Corações
+Jardim de flores
+Fundo do mar
+Arco-íris
+Noite estrelada
+Prado ensolarado
+Dia de praia
+Montanha de neve
+Coração
+Estrela
+Flor
+Borboleta
+Balão
+Laço
+Coroa
+Nuvem
+Sol
+Lua
+Brilho
+Notinha
+Patinha
+Bolinho
+Folha
+Lápis
+Pincel
+Giz
+Neon
+Spray
+Balde
+Borracha
+Adesivos
+shape:heart
+Modelos
+Refazer
+Apagar tudo
+Salvar no Álbum
+Formas
+Bichinhos
+Insetos
+shape:
+animal:
+insect:
+shader_type canvas_item;
+render_mode blend_disabled;
+void fragment() { COLOR = vec4(0.0); }
+
+Minha pintura
+Salva no Álbum!
+Apagar tudo?
+A pintura e os adesivos somem. O modelo continua.
+Salvar a pintura?
+Ela fica guardada no Álbum para você ver quando quiser.
+Continuar pintando
+Sair
 Ver em outro bichinho
 O que vem: %s
 Faltam %d moedas. Vença fases para juntar mais!
@@ -511,16 +574,17 @@ Pagar (simulação)
 Peça ajuda a um responsável e tente novamente
 GuardiPatas
 Próxima: Fase %d  ·  %d de %d vencidas
-Modo Infinito · Recorde %d
-Bichinhos
-Casinha
 Criar
+Pintar
 Atualizamos os termos
 Boas-vindas ao GuardiPatas!
 O GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.
 Ao continuar e usar o jogo, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.
 Se você tem menos de 18 anos, leia com um adulto responsável.
 Concordar e continuar
+Continue sua corrida!
+Recorde: %d fases
+Fases novas sem parar
 Vença fases para ganhar petiscos!
 Mais estrelas, mais petiscos.
 %s  ×%d
@@ -706,7 +770,6 @@ Chuva de Corações
 Brilho Dourado
 Poeira de Estrelas
 Chama Mágica
-Arco-íris
 Primeiro Abraço
 Vença a primeira fase.
 Protetor de Plantão
@@ -962,10 +1025,8 @@ Nino
 Gelinho
 Tatá
 Pompom
-Nuvem
 Fofa
 Tito
-Patinha
 Kiko
 Zeca
 Mel
@@ -974,7 +1035,6 @@ Bolota
 Plim
 Duda
 Nhoque
-Lua
 Quá!
 toc!
 Bééé!

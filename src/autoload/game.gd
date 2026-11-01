@@ -437,15 +437,15 @@ const ALBUM_MAX := 40
 
 ## Guarda a foto da vitória (PNG no aparelho) e o que aconteceu nela. As mais antigas saem
 ## quando passa de ALBUM_MAX.
-func add_photo(img: Image, caption: String) -> Dictionary:
+func add_photo(img: Image, caption: String, max_width: int = 540) -> Dictionary:
 	if img == null or img.is_empty():
 		return {}
 	DirAccess.make_dir_recursive_absolute(album_dir())
 	var stamp := Time.get_datetime_string_from_system().replace(":", "-")
 	var file := "%s/%s_%d.png" % [album_dir(), stamp, randi() % 1000]
 	var w := img.get_width()
-	if w > 540:
-		img.resize(540, int(img.get_height() * 540.0 / w), Image.INTERPOLATE_BILINEAR)
+	if w > max_width:
+		img.resize(max_width, int(img.get_height() * float(max_width) / w), Image.INTERPOLATE_BILINEAR)
 	img.save_png(file)
 	var entry := {"file": file, "caption": caption, "date": Time.get_date_string_from_system()}
 	var album: Array = data["album"]

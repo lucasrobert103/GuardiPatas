@@ -108,6 +108,18 @@ jobs:
           timeout 120 ~/godot/godot --headless --path . res://tests/legal_test.tscn 2>&1 | tee legal.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" legal.log; then exit 1; fi
 
+      - name: Novidades 1.1 (carregamento do Infinito, tinta sem fim, tela inicial)
+        run: |
+          set -o pipefail
+          timeout 300 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/v11_test.tscn 2>&1 | tee v11.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" v11.log; then exit 1; fi
+
+      - name: Ateliê (pintar e desenhar)
+        run: |
+          set -o pipefail
+          timeout 300 ~/godot/godot --headless --path . res://tests/paint_test.tscn 2>&1 | tee paint.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" paint.log; then exit 1; fi
+
       - name: Rolagem por arraste
         run: |
           set -o pipefail

@@ -19,6 +19,20 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Versão 1.1: Ateliê, Modo Infinito mais rápido e tinta sem fim
+
+**Ateliê** para pintar e desenhar à vontade:
+- lápis, pincel, giz, arco-íris, brilho, neon, spray, balde e borracha;
+- 22 cores e 4 tamanhos;
+- adesivos de formas fofas, de todos os bichinhos e de todos os insetos;
+- 12 modelos para colorir ou enfeitar;
+- desfazer e refazer;
+- salvar no Álbum.
+
+No **Modo Infinito**, a fase é preparada numa tela de carregamento rápida e silenciosa. Nada roda escondido durante a partida, e o botão na tela inicial é novo.
+
+Nas fases normais, **a tinta não acaba**: gastar mais só tira estrelas. Veja o [doc 27](docs/27-versao-1-1-atelie-infinito-tinta.md).
+
 ## Termos de Uso e Política de Privacidade
 
 Termos de Uso, Política de Privacidade conforme a **LGPD**, "Seus direitos" (com o que está salvo no aparelho) e um guia para responsáveis, em PT/EN/ES, nos Ajustes e no aviso de aceite da primeira abertura. A RetroNexa aparece como desenvolvedora. As páginas para a Play Console ficam em `docs/site/`. Veja o [doc 26](docs/26-termos-e-privacidade.md).
@@ -101,6 +115,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 27 | [Versão 1.1: Ateliê, carregamento do Modo Infinito e tinta sem fim](docs/27-versao-1-1-atelie-infinito-tinta.md) |
 | 26 | [Termos de Uso, Política de Privacidade (LGPD) e Google Play](docs/26-termos-e-privacidade.md) |
 | 25 | [Versão 1.0: Modo Infinito, mundos 11–14, missões, tutoriais e petiscos](docs/25-versao-1-0-infinito-mundos-missoes.md) |
 | 24 | [Versão 0.9: rolagem, pausa ilustrada, prévias e dificuldade](docs/24-versao-0-9-pausa-previas-dificuldade.md) |

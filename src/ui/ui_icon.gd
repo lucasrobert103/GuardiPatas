@@ -121,6 +121,19 @@ func _draw() -> void:
 			draw_rect(Rect2(c + Vector2(-0.38, -0.2) * s, Vector2(0.76, 0.5) * s), o, false, w * 0.6)
 			draw_rect(Rect2(c + Vector2(-0.14, -0.32) * s, Vector2(0.28, 0.12) * s), o, true)
 			DrawUtil.disc(self, c + Vector2(0, 0.05) * s, s * 0.15, Palette.WHITE, o, w * 0.6)
+		"palette":
+			# paleta de pintor com pincel
+			var pts := DrawUtil.ellipse(c + Vector2(-0.03, 0.03) * s, Vector2(0.4, 0.33) * s, -0.25, 30)
+			DrawUtil.shape(self, pts, Palette.CREAM, o, w * 0.7)
+			DrawUtil.disc(self, c + Vector2(0.14, 0.14) * s, s * 0.08, Color(Palette.CREAM).darkened(0.08), o, w * 0.45)
+			var dots := [[Vector2(-0.22, -0.06), Color("ff6b8b")], [Vector2(-0.07, -0.18), Color("ffd23f")], [Vector2(0.12, -0.14), Color("6bc4ff")], [Vector2(-0.2, 0.13), Color("7ed957")]]
+			for d in dots:
+				DrawUtil.disc(self, c + d[0] * s, s * 0.075, d[1], o, w * 0.35)
+			var a := c + Vector2(0.05, 0.36) * s
+			var b := c + Vector2(0.4, -0.34) * s
+			draw_line(a, b, o, w * 2.2, true)
+			draw_line(a, b, Color("c98a4a"), w * 1.2, true)
+			DrawUtil.oval(self, b + Vector2(-0.03, 0.07) * s, Vector2(0.05, 0.09) * s, Color("b18cff"), o, w * 0.4, 0.45)
 		"pencil":
 			var a := c + Vector2(-0.3, 0.3) * s
 			var b := c + Vector2(0.28, -0.28) * s

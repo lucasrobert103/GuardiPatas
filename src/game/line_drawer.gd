@@ -25,6 +25,9 @@ var hint_strokes: Array = []
 var static_ink := false
 ## Modo Livre: a prévia ganha cores de arco-íris.
 var infinite := false
+## Fases normais: a tinta nunca acaba. Gastar além do orçamento só tira estrelas (o
+## medidor esvazia), sem aviso nem som; dá para continuar desenhando à vontade.
+var unlimited := false
 
 var _pending: Array[Vector2] = []
 var _end_requested := false
@@ -54,7 +57,7 @@ func setup(p_ink: float, p_nodraw: Array[Rect2]) -> void:
 func press(pos: Vector2) -> void:
 	if not enabled or drawing:
 		return
-	if ink_left < MIN_STEP:
+	if ink_left < MIN_STEP and not unlimited:
 		_warn_empty()
 		return
 	drawing = true
@@ -128,11 +131,11 @@ func _consume(p: Vector2) -> void:
 
 func _extend_to(target: Vector2) -> bool:
 	var last := points[points.size() - 1]
-	if ink_left <= 0.5:
+	if ink_left <= 0.5 and not unlimited:
 		_warn_empty()
 		return false
 	var seg := target - last
-	if seg.length() > ink_left:
+	if seg.length() > ink_left and not unlimited:
 		target = last + seg.normalized() * ink_left
 		seg = target - last
 	if not _in_bounds(target) or _in_nodraw(target):
@@ -169,7 +172,7 @@ func _finish() -> bool:
 	var raw_len := LineMath.length(points)
 	if points.size() < 2 or raw_len < MIN_STROKE:
 		# toque acidental: devolve a tinta e ignora
-		ink_left = minf(ink_left + raw_len, ink_total)
+		ink_left = minf(ink_left + raw_len, ink_total) if not unlimited else ink_left + raw_len
 		ink_changed.emit(ink_left, ink_total)
 		points.clear()
 		queue_redraw()
@@ -307,7 +310,7 @@ func _draw() -> void:
 			var pulse := 10.0 + 3.0 * sin(_t * 6.0)
 			draw_circle(pts[0], pulse, Color(Palette.GOLD, 0.8), true, -1.0, true)
 	if points.size() >= 1:
-		var low := ink_left / maxf(ink_total, 1.0) < 0.2 and not infinite
+		var low := ink_left / maxf(ink_total, 1.0) < 0.2 and not infinite and not unlimited
 		var col := Palette.INK_LOW if low else (Palette.INK_STATIC if static_ink else Palette.INK)
 		if infinite:
 			col = Color.from_hsv(fmod(_t * 0.25, 1.0), 0.55, 1.0)
