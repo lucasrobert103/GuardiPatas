@@ -106,6 +106,52 @@ func _ready() -> void:
 	check(again.consent == null, "aviso não volta depois de aceito")
 	again.queue_free()
 
+	# --- persistência real: fechar e abrir o jogo não mostra o aviso de novo
+	var path := Game.save_path()
+	var had_save := FileAccess.file_exists(path)
+	var old_save := FileAccess.get_file_as_string(path) if had_save else ""
+	var had_rec := FileAccess.file_exists(Legal.RECORD)
+	var old_rec := FileAccess.get_file_as_string(Legal.RECORD) if had_rec else ""
+	Game.persist = true
+	Game.data["legal"] = {"accepted": "", "date": ""}
+	Legal.accept()
+	Game.load_save()
+	check(Legal.accepted(), "aceite sobrevive a fechar e abrir o jogo")
+	var reopened: TitleScreen = await _screen(TitleScreen.new())
+	check(reopened.consent == null, "reabrir o jogo não mostra o aviso")
+	reopened.queue_free()
+	DirAccess.remove_absolute(path)
+	Game.load_save()
+	check(Legal.accepted(), "save apagado: o aceite volta da cópia de segurança")
+	check(FileAccess.file_exists(path) and Game.data["legal"]["accepted"] == Legal.version(), "cópia restaura o aceite no save")
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_string("{corrompido")
+	f.close()
+	Game.load_save()
+	var broken: TitleScreen = await _screen(TitleScreen.new())
+	check(broken.consent == null, "save corrompido não traz o aviso de volta")
+	broken.queue_free()
+	Game.reset_progress()
+	Game.load_save()
+	check(Legal.accepted(), "apagar progresso e reabrir: aviso não volta")
+	DirAccess.remove_absolute(Legal.RECORD)
+	DirAccess.remove_absolute(path)
+	Game.load_save()
+	check(not Legal.accepted(), "dados do app limpos: aviso volta (instalação nova)")
+	# restaura os arquivos do desenvolvedor
+	if had_save:
+		var fs := FileAccess.open(path, FileAccess.WRITE)
+		fs.store_string(old_save)
+		fs.close()
+	if had_rec:
+		var fr := FileAccess.open(Legal.RECORD, FileAccess.WRITE)
+		fr.store_string(old_rec)
+		fr.close()
+	Game.persist = false
+	Game.load_save()
+	Game.set_setting("lang", "pt_BR")
+	Legal.accept()
+
 	# --- termos atualizados
 	Game.data["legal"]["accepted"] = "0.1"
 	check(Legal.is_update(), "versão antiga = termos atualizados")

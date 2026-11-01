@@ -59,7 +59,7 @@ O jogo agora tem uma parte completa de **Termos e privacidade**, com a **RetroNe
 
 O CI roda o gerador e falha se os arquivos gerados estiverem desatualizados. Para mudar um texto, edite o script e rode `python3 tools/make_legal.py`. Quando a mudança alterar direitos ou obrigações, aumente `VERSION` para o aviso aparecer de novo.
 
-O aceite fica em `save.json`, no campo `"legal": {"accepted": "1.0", "date": "AAAA-MM-DD"}`. **Apagar progresso** mantém esse registro, assim como mantém os ajustes. Valores adulterados viram texto e não valem como aceite.
+O aceite fica em `save.json`, no campo `"legal": {"accepted": "1.0", "date": "AAAA-MM-DD"}`. **Apagar progresso** mantém esse registro, assim como mantém os ajustes. Valores adulterados viram texto e não valem como aceite. Uma **cópia do aceite** fica em `user://legal.cfg`. Se o save for apagado, corrompido ou trocado, o aceite é restaurado dessa cópia e o aviso **não volta**. Ele só reaparece se os dados do app forem limpos, se o jogo for reinstalado ou se a versão dos termos mudar.
 
 ## Antes de publicar: o que a RetroNexa precisa confirmar
 
@@ -94,7 +94,7 @@ Os demais requisitos estão em [16 — publicação, segurança e compras](16-pu
 
 ## Testes
 
-`tests/legal_test.gd` faz 316 verificações:
+`tests/legal_test.gd` faz 323 verificações:
 
 - todos os documentos, nos três idiomas;
 - citações obrigatórias (LGPD, art. 14 e 18, ANPD, COPPA, Google Play, CDC);

@@ -5,6 +5,9 @@ class_name Legal
 
 const PATH := "res://data/legal.json"
 const ORDER := ["terms", "privacy", "rights", "parents"]
+## Cópia do aceite fora do save: se o save for apagado/corrompido, o aviso não volta.
+## (Só some limpando os dados do app ou desinstalando: aí o aviso volta, como deve.)
+const RECORD := "user://legal.cfg"
 
 static var _data: Dictionary = {}
 
@@ -57,7 +60,31 @@ static func by_line() -> String:
 
 
 static func accepted_version() -> String:
-	return str(Game.data.get("legal", {}).get("accepted", ""))
+	var v := str(Game.data.get("legal", {}).get("accepted", ""))
+	if v != version():
+		var rec := _record()
+		if rec[0] == version():
+			# o save perdeu o aceite (apagado, corrompido, versão antiga): restaura da cópia
+			_restore(rec)
+			return rec[0]
+	return v
+
+
+static func _record() -> Array:
+	if not Game.persist:
+		return ["", ""]
+	var cfg := ConfigFile.new()
+	if cfg.load(RECORD) != OK:
+		return ["", ""]
+	return [str(cfg.get_value("legal", "accepted", "")).left(20), str(cfg.get_value("legal", "date", "")).left(20)]
+
+
+static func _restore(rec: Array) -> void:
+	if not Game.data.get("legal") is Dictionary:
+		Game.data["legal"] = {}
+	Game.data["legal"]["accepted"] = rec[0]
+	Game.data["legal"]["date"] = rec[1]
+	Game.save()
 
 
 static func accepted_date() -> String:
@@ -79,11 +106,16 @@ static func is_update() -> bool:
 
 
 static func accept() -> void:
-	if not Game.data.has("legal"):
+	if not Game.data.get("legal") is Dictionary:
 		Game.data["legal"] = {}
 	Game.data["legal"]["accepted"] = version()
 	Game.data["legal"]["date"] = Time.get_date_string_from_system()
 	Game.save()
+	if Game.persist:
+		var cfg := ConfigFile.new()
+		cfg.set_value("legal", "accepted", version())
+		cfg.set_value("legal", "date", Game.data["legal"]["date"])
+		cfg.save(RECORD)
 
 
 ## Resumo do que o jogo guarda agora neste aparelho (direito de acesso, LGPD art. 18 II).
