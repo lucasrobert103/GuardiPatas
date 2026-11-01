@@ -1,6 +1,6 @@
 # GuardiPatas — Termos de Uso / Terms of Use / Términos de Uso
 
-*Gerado por `tools/make_legal.py` (não edite à mão). Versão 1.0 · 2026-11-01*
+*Gerado por `tools/make_legal.py` (não edite à mão). Versão 1.1 · 2026-11-01*
 
 ## Português
 
@@ -68,7 +68,7 @@ Se mudarmos estes termos de forma importante, avisaremos dentro do jogo antes de
 
 Estes termos seguem as leis da República Federativa do Brasil. Fica eleito o foro do domicílio do consumidor para resolver qualquer questão.
 
-*Última atualização: 01/11/2026 · versão 1.0 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última atualização: 01/11/2026 · versão 1.1 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## English
 
@@ -136,7 +136,7 @@ If we change these terms in a meaningful way, we will let you know inside the ga
 
 These terms are governed by the laws of the Federative Republic of Brazil. Any dispute will be handled by the courts of the consumer's place of residence, without prejudice to mandatory rights in your country.
 
-*Last updated: November 1, 2026 · version 1.0 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Last updated: November 1, 2026 · version 1.1 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Español
 
@@ -204,4 +204,4 @@ Si cambiamos estos términos de forma importante, te avisaremos dentro del juego
 
 Estos términos se rigen por las leyes de la República Federativa de Brasil. Cualquier cuestión se resolverá en los tribunales del domicilio del consumidor, sin perjuicio de los derechos obligatorios de tu país.
 
-*Última actualización: 1 de noviembre de 2026 · versión 1.0 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última actualización: 1 de noviembre de 2026 · versión 1.1 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*

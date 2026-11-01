@@ -126,6 +126,7 @@ const DEFAULT_SETTINGS := {
 	"big_text": false,
 	"colorblind": 0,     # 0 nenhum, 1 protanopia, 2 deuteranopia, 3 tritanopia
 	"difficulty": 1,     # 0 Normal, 1 Difícil, 2 Extremo (ver Difficulty)
+	"reminders": 2,      # recados dos bichinhos: 0 desligados, 1/3/5 por dia (ver Reminders)
 }
 const LANGS := [["pt_BR", "Português"], ["en", "English"], ["es", "Español"]]
 
@@ -178,6 +179,7 @@ func _default_data() -> Dictionary:
 		"care": {},
 		# versão dos Termos/Privacidade aceita neste aparelho (vazio = ainda não viu o aviso)
 		"legal": {"accepted": "", "date": ""},
+		"reminders": {"asked": false},
 	}
 
 
@@ -207,6 +209,8 @@ func load_save() -> void:
 			data["settings"][key] = DEFAULT_SETTINGS[key]
 	data["settings"]["colorblind"] = clampi(int(data["settings"]["colorblind"]), 0, 3)
 	data["settings"]["difficulty"] = clampi(int(data["settings"]["difficulty"]), 0, 2)
+	data["settings"]["reminders"] = clampi(int(data["settings"]["reminders"]), 0, 3)
+	data["reminders"]["asked"] = bool(data["reminders"].get("asked", false))
 	for key in ["music", "sfx"]:
 		data["settings"][key] = clampf(float(data["settings"][key]), 0.0, 1.0)
 	if not data["settings"]["lang"] in ["", "pt_BR", "en", "es"]:

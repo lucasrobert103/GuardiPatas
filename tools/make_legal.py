@@ -16,7 +16,7 @@ import html, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-VERSION = "1.0"
+VERSION = "1.1"
 UPDATED = "2026-11-01"
 DEVELOPER = "RetroNexa"
 SITE = "retronexa.com.br"
@@ -143,9 +143,12 @@ PRIVACY = {
               "The game has no ads, uses no third-party advertising or analytics SDKs, does no cross-app tracking and never sells or rents data.",
               "El juego no tiene anuncios, no usa SDK de terceros de publicidad ni analíticas, no hace rastreo entre aplicaciones y nunca vende ni alquila datos.")),
         sec(t("4. Permissões do Android", "4. Android permissions", "4. Permisos de Android"),
-            t("O app pede apenas a permissão de vibração, usada para dar um toque de resposta no jogo. Ela pode ser desligada em Ajustes > Vibração. Nenhuma outra permissão sensível é usada.",
-              "The app only requests the vibration permission, used for haptic feedback in the game. You can turn it off in Settings > Vibration. No other sensitive permission is used.",
-              "La aplicación solo solicita el permiso de vibración, que se usa para dar una respuesta táctil en el juego. Se puede apagar en Ajustes > Vibración. No se usa ningún otro permiso sensible.")),
+            t("O app usa a permissão de vibração, para dar um toque de resposta no jogo (pode ser desligada em Ajustes > Vibração).",
+              "The app uses the vibration permission for haptic feedback in the game (you can turn it off in Settings > Vibration).",
+              "La aplicación usa el permiso de vibración para dar una respuesta táctil en el juego (se puede apagar en Ajustes > Vibración)."),
+            t("Se você permitir, o jogo também mostra notificações: os recados dos bichinhos (pedidos de ajuda e lembretes do Desafio do Dia, da Casinha e do progresso). Eles são montados e agendados no próprio aparelho, sem internet e sem enviar dados, nunca à noite e sem propaganda. Para continuarem depois que o celular reinicia, o app pode ser avisado quando o aparelho liga. Você escolhe quantos recados quer ou desliga tudo em Ajustes > Recados dos bichinhos, ou nas configurações do Android.",
+              "If you allow it, the game also shows notifications: messages from the critters (requests for help and reminders about the Daily Challenge, the Little House and your progress). They are created and scheduled on the device itself, without internet and without sending any data, never at night and with no advertising. So they keep working after the phone restarts, the app may be notified when the device turns on. You choose how many messages you want, or turn them all off, in Settings > Critter messages or in Android settings.",
+              "Si lo permites, el juego también muestra notificaciones: los mensajes de los animalitos (pedidos de ayuda y recordatorios del Desafío del Día, la Casita y tu progreso). Se crean y programan en el propio dispositivo, sin internet y sin enviar datos, nunca de noche y sin publicidad. Para que sigan funcionando después de reiniciar el teléfono, la aplicación puede recibir un aviso cuando el dispositivo se enciende. Tú eliges cuántos mensajes quieres, o los apagas todos, en Ajustes > Mensajes de los animalitos o en los ajustes de Android.")),
         sec(t("5. Compras pelo Google Play", "5. Google Play purchases", "5. Compras en Google Play"),
             t("Se você fizer uma compra com dinheiro real, o pagamento é processado pelo Google, conforme a Política de Privacidade do Google. A RetroNexa não recebe nome, e-mail nem dados de cartão.",
               "If you make a real-money purchase, payment is processed by Google under Google's Privacy Policy. RetroNexa does not receive your name, email or card details.",
@@ -234,6 +237,10 @@ PARENTS = {
             t("Nos Ajustes há opções para reduzir movimento, texto grande, destaque dos insetos, filtros para daltonismo, volume e vibração. O jogo pausa sozinho quando o app é minimizado.",
               "Settings include reduced motion, large text, insect highlighting, color-blind filters, volume and vibration. The game pauses automatically when the app is minimized.",
               "En Ajustes hay opciones para reducir el movimiento, texto grande, resaltar insectos, filtros para daltonismo, volumen y vibración. El juego se pausa solo cuando la aplicación se minimiza.")),
+        sec(t("Recados dos bichinhos", "Critter messages", "Mensajes de los animalitos"),
+            t("Se a família permitir, os bichinhos mandam notificações pedindo ajuda e lembrando do Desafio do Dia (3 por dia no padrão, no máximo 5, só entre 9h30 e 20h e nunca com propaganda ou convite para comprar). Em Ajustes > Recados dos bichinhos dá para escolher 1, 3 ou 5 por dia ou desligar.",
+              "If the family allows it, the critters send notifications asking for help and reminding about the Daily Challenge (3 a day by default, 5 at most, only between 9:30 and 20:00 and never with ads or invitations to buy). In Settings > Critter messages you can choose 1, 3 or 5 a day, or turn them off.",
+              "Si la familia lo permite, los animalitos envían notificaciones pidiendo ayuda y recordando el Desafío del Día (3 al día por defecto, 5 como máximo, solo entre las 9:30 y las 20:00 y nunca con publicidad ni invitaciones a comprar). En Ajustes > Mensajes de los animalitos puedes elegir 1, 3 o 5 al día, o apagarlos.")),
         sec(t("Tempo de tela", "Screen time", "Tiempo de pantalla"),
             t("As fases são curtas e podem ser interrompidas a qualquer momento sem perder o que já foi conquistado. Combine pausas com a criança e use o Family Link se quiser limitar o tempo de uso.",
               "Levels are short and can be stopped at any time without losing what has been earned. Agree on breaks with your child and use Family Link if you want to limit screen time.",

@@ -114,6 +114,12 @@ jobs:
           timeout 300 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/v11_test.tscn 2>&1 | tee v11.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" v11.log; then exit 1; fi
 
+      - name: Recados dos bichinhos (notificações locais)
+        run: |
+          set -o pipefail
+          timeout 120 ~/godot/godot --headless --path . res://tests/reminders_test.tscn 2>&1 | tee reminders.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" reminders.log; then exit 1; fi
+
       - name: Ateliê (pintar e desenhar)
         run: |
           set -o pipefail

@@ -1,6 +1,6 @@
 # GuardiPatas — Política de Privacidade / Privacy Policy / Política de Privacidad
 
-*Gerado por `tools/make_legal.py` (não edite à mão). Versão 1.0 · 2026-11-01*
+*Gerado por `tools/make_legal.py` (não edite à mão). Versão 1.1 · 2026-11-01*
 
 ## Português
 
@@ -24,7 +24,9 @@ O jogo não tem anúncios, não usa SDKs de terceiros para publicidade ou análi
 
 ### 4. Permissões do Android
 
-O app pede apenas a permissão de vibração, usada para dar um toque de resposta no jogo. Ela pode ser desligada em Ajustes > Vibração. Nenhuma outra permissão sensível é usada.
+O app usa a permissão de vibração, para dar um toque de resposta no jogo (pode ser desligada em Ajustes > Vibração).
+
+Se você permitir, o jogo também mostra notificações: os recados dos bichinhos (pedidos de ajuda e lembretes do Desafio do Dia, da Casinha e do progresso). Eles são montados e agendados no próprio aparelho, sem internet e sem enviar dados, nunca à noite e sem propaganda. Para continuarem depois que o celular reinicia, o app pode ser avisado quando o aparelho liga. Você escolhe quantos recados quer ou desliga tudo em Ajustes > Recados dos bichinhos, ou nas configurações do Android.
 
 ### 5. Compras pelo Google Play
 
@@ -56,7 +58,7 @@ Pela LGPD (art. 18) você tem direito a confirmação e acesso, correção, anon
 
 Se esta política mudar, a nova versão aparecerá no jogo e na página https://retronexa.com.br/guardipatas/privacidade, com a data de atualização. Mudanças importantes serão avisadas dentro do jogo.
 
-*Última atualização: 01/11/2026 · versão 1.0 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última atualização: 01/11/2026 · versão 1.1 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## English
 
@@ -80,7 +82,9 @@ The game has no ads, uses no third-party advertising or analytics SDKs, does no 
 
 ### 4. Android permissions
 
-The app only requests the vibration permission, used for haptic feedback in the game. You can turn it off in Settings > Vibration. No other sensitive permission is used.
+The app uses the vibration permission for haptic feedback in the game (you can turn it off in Settings > Vibration).
+
+If you allow it, the game also shows notifications: messages from the critters (requests for help and reminders about the Daily Challenge, the Little House and your progress). They are created and scheduled on the device itself, without internet and without sending any data, never at night and with no advertising. So they keep working after the phone restarts, the app may be notified when the device turns on. You choose how many messages you want, or turn them all off, in Settings > Critter messages or in Android settings.
 
 ### 5. Google Play purchases
 
@@ -112,7 +116,7 @@ Under the LGPD (art. 18) and, where applicable, the GDPR, you have the right to 
 
 If this policy changes, the new version will appear in the game and at https://retronexa.com.br/guardipatas/privacidade, with the update date. Important changes will be announced inside the game.
 
-*Last updated: November 1, 2026 · version 1.0 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Last updated: November 1, 2026 · version 1.1 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Español
 
@@ -136,7 +140,9 @@ El juego no tiene anuncios, no usa SDK de terceros de publicidad ni analíticas,
 
 ### 4. Permisos de Android
 
-La aplicación solo solicita el permiso de vibración, que se usa para dar una respuesta táctil en el juego. Se puede apagar en Ajustes > Vibración. No se usa ningún otro permiso sensible.
+La aplicación usa el permiso de vibración para dar una respuesta táctil en el juego (se puede apagar en Ajustes > Vibración).
+
+Si lo permites, el juego también muestra notificaciones: los mensajes de los animalitos (pedidos de ayuda y recordatorios del Desafío del Día, la Casita y tu progreso). Se crean y programan en el propio dispositivo, sin internet y sin enviar datos, nunca de noche y sin publicidad. Para que sigan funcionando después de reiniciar el teléfono, la aplicación puede recibir un aviso cuando el dispositivo se enciende. Tú eliges cuántos mensajes quieres, o los apagas todos, en Ajustes > Mensajes de los animalitos o en los ajustes de Android.
 
 ### 5. Compras en Google Play
 
@@ -168,7 +174,7 @@ Según la LGPD (art. 18) y, cuando corresponda, el RGPD, tienes derecho a confir
 
 Si esta política cambia, la nueva versión aparecerá en el juego y en https://retronexa.com.br/guardipatas/privacidade, con la fecha de actualización. Los cambios importantes se avisarán dentro del juego.
 
-*Última actualización: 1 de noviembre de 2026 · versión 1.0 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última actualización: 1 de noviembre de 2026 · versión 1.1 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Português
 
@@ -194,7 +200,7 @@ Você pode deixar de concordar com os termos a qualquer momento: basta parar de 
 
 Dúvidas, pedidos ou reclamações sobre privacidade: contato@retronexa.com.br. Respondemos em até 15 dias. Você também pode procurar a ANPD (gov.br/anpd).
 
-*Última atualização: 01/11/2026 · versão 1.0 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última atualização: 01/11/2026 · versão 1.1 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## English
 
@@ -220,7 +226,7 @@ You can stop agreeing to the terms at any time: just stop using and uninstall th
 
 Privacy questions, requests or complaints: contato@retronexa.com.br. We reply within 15 days. You can also contact Brazil's ANPD (gov.br/anpd) or your local data protection authority.
 
-*Last updated: November 1, 2026 · version 1.0 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Last updated: November 1, 2026 · version 1.1 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Español
 
@@ -246,7 +252,7 @@ Puedes dejar de aceptar los términos en cualquier momento: basta con dejar de u
 
 Dudas, solicitudes o reclamaciones sobre privacidad: contato@retronexa.com.br. Respondemos en un máximo de 15 días. También puedes acudir a la ANPD de Brasil (gov.br/anpd) o a la autoridad de tu país.
 
-*Última actualización: 1 de noviembre de 2026 · versión 1.0 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última actualización: 1 de noviembre de 2026 · versión 1.1 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Português
 
@@ -264,11 +270,15 @@ As moedas do jogo são ganhas jogando. Compras com dinheiro real são opcionais,
 
 Nos Ajustes há opções para reduzir movimento, texto grande, destaque dos insetos, filtros para daltonismo, volume e vibração. O jogo pausa sozinho quando o app é minimizado.
 
+### Recados dos bichinhos
+
+Se a família permitir, os bichinhos mandam notificações pedindo ajuda e lembrando do Desafio do Dia (3 por dia no padrão, no máximo 5, só entre 9h30 e 20h e nunca com propaganda ou convite para comprar). Em Ajustes > Recados dos bichinhos dá para escolher 1, 3 ou 5 por dia ou desligar.
+
 ### Tempo de tela
 
 As fases são curtas e podem ser interrompidas a qualquer momento sem perder o que já foi conquistado. Combine pausas com a criança e use o Family Link se quiser limitar o tempo de uso.
 
-*Última atualização: 01/11/2026 · versão 1.0 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última atualização: 01/11/2026 · versão 1.1 — GuardiPatas é desenvolvido por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## English
 
@@ -286,11 +296,15 @@ In-game coins are earned by playing. Real-money purchases are optional, go throu
 
 Settings include reduced motion, large text, insect highlighting, color-blind filters, volume and vibration. The game pauses automatically when the app is minimized.
 
+### Critter messages
+
+If the family allows it, the critters send notifications asking for help and reminding about the Daily Challenge (3 a day by default, 5 at most, only between 9:30 and 20:00 and never with ads or invitations to buy). In Settings > Critter messages you can choose 1, 3 or 5 a day, or turn them off.
+
 ### Screen time
 
 Levels are short and can be stopped at any time without losing what has been earned. Agree on breaks with your child and use Family Link if you want to limit screen time.
 
-*Last updated: November 1, 2026 · version 1.0 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Last updated: November 1, 2026 · version 1.1 — GuardiPatas is developed by RetroNexa · retronexa.com.br · contato@retronexa.com.br*
 
 ## Español
 
@@ -308,8 +322,12 @@ Las monedas del juego se ganan jugando. Las compras con dinero real son opcional
 
 En Ajustes hay opciones para reducir el movimiento, texto grande, resaltar insectos, filtros para daltonismo, volumen y vibración. El juego se pausa solo cuando la aplicación se minimiza.
 
+### Mensajes de los animalitos
+
+Si la familia lo permite, los animalitos envían notificaciones pidiendo ayuda y recordando el Desafío del Día (3 al día por defecto, 5 como máximo, solo entre las 9:30 y las 20:00 y nunca con publicidad ni invitaciones a comprar). En Ajustes > Mensajes de los animalitos puedes elegir 1, 3 o 5 al día, o apagarlos.
+
 ### Tiempo de pantalla
 
 Los niveles son cortos y se pueden interrumpir en cualquier momento sin perder lo conseguido. Acuerda pausas con el niño y usa Family Link si quieres limitar el tiempo de uso.
 
-*Última actualización: 1 de noviembre de 2026 · versión 1.0 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*
+*Última actualización: 1 de noviembre de 2026 · versión 1.1 — GuardiPatas es desarrollado por RetroNexa · retronexa.com.br · contato@retronexa.com.br*

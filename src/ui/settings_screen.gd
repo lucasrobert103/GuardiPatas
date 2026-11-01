@@ -114,6 +114,23 @@ func _build(scroll_position: int = 0) -> void:
 	_toggle(access, "Texto grande", "big_text")
 	_separator(access)
 	_picker(access, "Daltonismo", "colorblind", COLOR_OPTIONS, int(Game.setting("colorblind")))
+	var remind := _section("Recados dos bichinhos", "bell", Color("fde8c8"))
+	_picker(remind, "Lembretes", "reminders", Reminders.OPTION_NAMES, clampi(int(Game.setting("reminders")), 0, 3))
+	var rnote := _label("Os bichinhos mandam recadinhos pedindo ajuda e lembrando do Desafio do Dia e da Casinha. Nunca à noite: só das 9h30 às 20h.", 20, MUTED, true)
+	rnote.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	remind.add_child(rnote)
+	if Reminders.available() and not Reminders.has_permission() and Reminders.per_day() > 0:
+		var allow := _button("Permitir notificações", true)
+		allow.pressed.connect(func():
+			Reminders.mark_asked()
+			Reminders.request_permission())
+		allow.focus_entered.connect(func(): _scroll.ensure_control_visible(allow))
+		remind.add_child(allow)
+		_controls["reminders_allow"] = allow
+	elif not Reminders.available():
+		var off := _label("Este aparelho ainda não recebe recados: eles chegam numa versão do jogo com notificações.", 18, MUTED, true)
+		off.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		remind.add_child(off)
 	var language := _section("Idioma", "globe", Color("f5e6d2"))
 	_picker(language, "Idioma", "lang", Game.LANGS.map(func(item): return item[1]), _lang_index(), false)
 	var legal := _section("Termos e privacidade", "doc", Color("f1e8d9"))
@@ -172,7 +189,7 @@ func _section(title: String, icon: String, tint: Color) -> VBoxContainer:
 	badge.custom_minimum_size = Vector2(38, 38)
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	heading.add_child(badge)
-	var label := _label(title, 25)
+	var label := _label(title, 25, INK, true)
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	heading.add_child(label)
 	var panel := PanelContainer.new()
@@ -484,6 +501,10 @@ class Badge:
 				draw_line(center + Vector2(-10, 0), center + Vector2(10, 0), ink, 1, true)
 			"star":
 				DrawUtil.shape(self, DrawUtil.star_points(center, 12, 5), Color("ffd23f"), ink, 1.5)
+			"bell":
+				DrawUtil.shape(self, PackedVector2Array([center + Vector2(-10, 7), center + Vector2(-8, -4), center + Vector2(-5, -10), center + Vector2(0, -12), center + Vector2(5, -10), center + Vector2(8, -4), center + Vector2(10, 7)]), Color("ffd23f"), ink, 1.5)
+				draw_line(center + Vector2(-12, 7), center + Vector2(12, 7), ink, 2, true)
+				draw_circle(center + Vector2(0, 10), 3, ink, true, -1, true)
 			"doc":
 				DrawUtil.shape(self, PackedVector2Array([center + Vector2(-9, -12), center + Vector2(5, -12), center + Vector2(10, -7), center + Vector2(10, 12), center + Vector2(-9, 12)]), Color("fffaf3"), ink, 1.5)
 				for k in 3:

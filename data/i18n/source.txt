@@ -534,6 +534,11 @@ Reduzir movimento
 Destacar insetos (alto contraste)
 Texto grande
 Daltonismo
+Recados dos bichinhos
+Lembretes
+Os bichinhos mandam recadinhos pedindo ajuda e lembrando do Desafio do Dia e da Casinha. Nunca à noite: só das 9h30 às 20h.
+Permitir notificações
+Este aparelho ainda não recebe recados: eles chegam numa versão do jogo com notificações.
 Idioma
 Ao usar o GuardiPatas, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.
 Termos de Uso
@@ -576,6 +581,9 @@ GuardiPatas
 Próxima: Fase %d  ·  %d de %d vencidas
 Criar
 Pintar
+Os bichinhos podem te chamar?
+Eles mandam recadinhos quando precisarem de ajuda e lembram do Desafio do Dia. Nunca à noite, e dá para mudar nos Ajustes.
+Sim, pode chamar!
 Atualizamos os termos
 Boas-vindas ao GuardiPatas!
 O GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.
@@ -930,6 +938,45 @@ Não foi possível abrir o Google Play.
 Content-Type: application/json
 Não foi possível confirmar a compra. Ela será conferida de novo depois.
 A compra não foi confirmada. Nada foi entregue.
+NotificationSchedulerPlugin
+Desligados
+1 por dia
+3 por dia
+5 por dia
+Os bichinhos pedem ajuda e lembram do Desafio do Dia e da Casinha.
+Capitu
+%s precisa de ajuda!
+Tem abelhas rondando a toca. Vem desenhar um abrigo?
+Socorro!
+%s está cercado de insetos. Só você pode proteger!
+%s está te chamando
+Bora jogar mais uma fase juntos?
+Zum zum zum…
+As vespas voltaram! %s conta com você.
+%s sentiu saudade
+Faz tempo que vocês não brincam. Volta logo!
+Os insetos estão chegando!
+Desenhe rápido: %s está sozinho no campo.
+Missão de resgate
+%s ficou preso entre as pedras. Vem ajudar?
+Próxima: Fase %d
+Você já venceu %d fases. A próxima está esperando!
+%d estrelas esperando
+Volte a uma fase vencida e gaste menos tinta para ganhar mais estrelas.
+O desafio de hoje já está pronto. Consegue vencer?
+Não perca a sequência do Desafio do Dia.
+%s está com fome
+Leva um petisco na Casinha?
+Hora do banho!
+%s quer um banho de bolhas na Casinha.
+%s está com sono
+Põe para dormir na caminha da Casinha?
+Será que você passa do seu recorde no Modo Infinito?
+Fases novas sem parar. Quantas você aguenta?
+Ateliê
+Que tal pintar um desenho fofo hoje?
+%s quer um retrato
+Pinte um desenho no Ateliê e salve no Álbum!
 .wav
 Music
 Master
@@ -1016,7 +1063,6 @@ Pedido inválido ou em andamento.
 Este pedido já foi entregue.
 Limite de pedidos atingido.
 Não foi possível salvar. Nada foi entregue; tente novamente.
-Capitu
 Brasa
 Pingo
 Lulu

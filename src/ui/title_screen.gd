@@ -117,6 +117,54 @@ func _ready() -> void:
 	Sfx.music("music_menu")
 	if not Legal.accepted():
 		_show_consent()
+	elif Reminders.should_ask():
+		_show_reminder_invite()
+
+
+## Convite (uma vez) para os bichinhos mandarem recados. O Android pede a permissão depois.
+func _show_reminder_invite() -> void:
+	consent = Control.new()
+	consent.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(consent)
+	consent.add_child(UiKit.dim(0.5))
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	consent.add_child(center)
+	var panel := UiKit.panel(Palette.CREAM)
+	panel.custom_minimum_size.x = minf(size.x - 48, 600) if size.x > 0 else 600
+	center.add_child(panel)
+	var col := UiKit.vbox(14)
+	panel.add_child(col)
+	var holder := Control.new()
+	holder.custom_minimum_size = Vector2(0, 100)
+	col.add_child(holder)
+	for i in 3:
+		var a := AnimalArt.new()
+		a.species = ["capi", "pingo", "lulu"][i]
+		a.preview = true
+		a.mood = "happy"
+		a.scale = Vector2.ONE * 0.75
+		holder.add_child(a)
+		holder.resized.connect(func(): a.position = Vector2(holder.size.x / 2 + (i - 1) * 110, 72))
+	var ink := Color("5c5669")
+	col.add_child(UiKit.label("Os bichinhos podem te chamar?", 30, ink, 0, Color.WHITE, true))
+	col.add_child(UiKit.label("Eles mandam recadinhos quando precisarem de ajuda e lembram do Desafio do Dia. Nunca à noite, e dá para mudar nos Ajustes.", 21, ink, 0, Color.WHITE, true))
+	var yes := UiKit.button("Sim, pode chamar!", Palette.UI_GOOD, "", 0, 80)
+	yes.add_theme_font_size_override("font_size", UiKit.fs(26))
+	yes.pressed.connect(func():
+		Reminders.mark_asked()
+		Reminders.request_permission()
+		consent.queue_free()
+		consent = null)
+	col.add_child(yes)
+	var no := UiKit.button("Agora não", Palette.UI_PANEL, "", 0, 64)
+	no.pressed.connect(func():
+		Reminders.mark_asked()
+		consent.queue_free()
+		consent = null)
+	col.add_child(no)
+	UiKit.pop_in(panel, 0.1)
 
 
 ## "Ao usar, você concorda": cartão na primeira abertura (e quando os termos mudam).
