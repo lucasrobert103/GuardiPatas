@@ -33,28 +33,16 @@ Foi pedido algo como 15 notificações por dia. O jogo oferece no máximo 5, por
 
 Se mesmo assim quiser mais, basta mudar `FREQUENCIES` em `src/autoload/reminders.gd` e o texto da política em `tools/make_legal.py`.
 
-## O que falta para os recados chegarem no celular
+## Como os recados chegam no celular (sozinhos)
 
-O Godot não tem notificações nativas no Android. É preciso o plugin **Notification Scheduler**, versão 6.0, que é compatível com o Godot 4.7:
-- código: https://github.com/godot-mobile-plugins/godot-notification-scheduler
-- licença: MIT
-- autor: Cengiz / Godot Mobile Plugins
-
-O plugin é código de terceiros (um arquivo `.aar` compilado), então ele **não foi incluído sem a aprovação da RetroNexa**. Enquanto ele não estiver no APK:
-- o jogo funciona normalmente;
-- a seção dos Ajustes avisa que o aparelho ainda não recebe recados;
-- nada é agendado.
-
-Para incluir o plugin:
-
-1. Baixar `NotificationSchedulerPlugin-Android-v6.0.zip` da página de releases e copiar a pasta `addons/NotificationSchedulerPlugin` (e `addons/GMPShared/GmpLogger.gd` e `SpmDependency.gd`) para o projeto. O menu "GMP" do pacote não é necessário.
-2. Ativar o plugin em Projeto > Configurações > Plugins.
-3. Criar o ícone pequeno da notificação, branco com fundo transparente, em `assets/NotificationSchedulerPlugin/android/drawable-*/ic_default_notification.png`.
-4. Remover do APK as permissões que o plugin declara e o jogo não usa: `SCHEDULE_EXACT_ALARM`, `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` e `WAKE_LOCK`. A Google Play restringe as duas primeiras, e o plugin usa alarme inexato quando não tem a permissão de alarme exato. Isso se faz com um pequeno plugin de exportação que adiciona `tools:node="remove"` no manifesto.
-5. Exportar com o **build Gradle** (Modelo de Build Android instalado). Plugins Android só entram nesse tipo de build.
-6. Atualizar a Segurança dos dados na Play Console. Nenhum dado é coletado, e as notificações são locais. Declarar também a permissão de notificações.
-
-A política de privacidade e o guia para responsáveis já descrevem os recados (versão 1.1 dos termos).
+- **Nada é enviado por você:** não há servidor nem envio manual. O próprio jogo agenda os recados no Android com o plugin **Notification Scheduler** (versão 6.0, para Godot 4.7, licença MIT, https://github.com/godot-mobile-plugins/godot-notification-scheduler). Ele está em `addons/NotificationSchedulerPlugin`, aprovado pela RetroNexa.
+- **Funcionamento sozinho:** o Android mostra cada recado na hora marcada, **mesmo com o jogo fechado**. Tocar no recado abre o jogo. Se o celular for reiniciado, o plugin reagenda os recados sozinho.
+- **Atualização dos recados:** toda vez que o jogo é minimizado ou fechado, os recados são refeitos com o progresso atual para os próximos 3 dias.
+- **Ícone:** uma patinha branca, em `assets/NotificationSchedulerPlugin/android/drawable-*/ic_default_notification.png`. A pasta tem `.gdignore`, então o Godot não a importa; o plugin copia o ícone para o APK.
+- **Permissões removidas:** `addons/guardipatas_android` tira do APK as permissões que o plugin declara e o jogo não usa (`SCHEDULE_EXACT_ALARM`, `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` e `WAKE_LOCK`). A Google Play restringe as duas primeiras. Sem alarme exato, o plugin usa alarmes inexatos, que podem atrasar alguns minutos, o que é ótimo para recados.
+- **Build:** plugins Android só entram no **build Gradle**. O `tools/atualizar.sh` instala o Modelo de Build Android na primeira vez, junto com o export, e gera o APK pelo Gradle. Na primeira vez ele baixa o Gradle e as bibliotecas do Android, o que leva alguns minutos e exige internet e o Android Studio instalado.
+- **Se o Gradle falhar:** o script gera o APK sem as notificações e avisa. O jogo funciona igual, e a seção dos Ajustes diz que o aparelho ainda não recebe recados.
+- **Play Console:** na Segurança dos dados, nenhum dado é coletado, porque as notificações são locais. A permissão de notificações aparece no APK. A política de privacidade e o guia para responsáveis (versão 1.1 dos termos) já descrevem os recados.
 
 ## Testes
 

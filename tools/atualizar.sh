@@ -8,8 +8,9 @@
 #
 # Variáveis opcionais: GODOT=/caminho/Godot  ADB=/caminho/adb  ANDROID_HOME=/caminho/sdk
 #
-# Não precisa do "Modelo de Build Android" (pasta android/): sem ele, o APK sai dos modelos
-# de exportação oficiais do Godot (baixados sozinhos na primeira vez, ~1,3 GB).
+# Baixa sozinho os modelos de exportação do Godot (~1,3 GB, só na primeira vez), instala o
+# Modelo de Build Android e gera o APK pelo Gradle, com as notificações dos bichinhos. Se o
+# Gradle não funcionar no computador, gera o APK sem as notificações (o jogo funciona igual).
 
 # Tudo fica dentro de main(): o git troca este arquivo no meio da execução, então o bash
 # precisa ler o script inteiro antes de começar.
@@ -125,22 +126,26 @@ echo "ok"
 
 # ---------------------------------------------------------------- 4. APK novo
 passo "Gerando APK de debug novo em $APK"
-GRADLE=0
-[ -f android/build/build.gradle ] && GRADLE=1
-if [ "$GRADLE" = 0 ]; then
-  # sem o Modelo de Build Android: usa os modelos oficiais (android_debug.apk)
-  if [ ! -f "$TPL_DIR/android_debug.apk" ]; then
-    URL="https://github.com/godotengine/godot/releases/download/${TPL_NUMBER}-${TPL_CHANNEL}/Godot_v${TPL_NUMBER}-${TPL_CHANNEL}_export_templates.tpz"
-    echo "Baixando os modelos de exportação do Godot $TPL_NAME (~1,3 GB, só na primeira vez)..."
-    echo "$URL"
-    TMP_TPZ="$(mktemp -t godot-templates.XXXXXX)"
-    curl -fL --progress-bar -o "$TMP_TPZ" "$URL" || falha "não consegui baixar os modelos. No Godot: Editor > Gerenciar Modelos de Exportação > Baixar e Instalar."
-    mkdir -p "$TPL_DIR"
-    unzip -o -j -q "$TMP_TPZ" 'templates/android_debug.apk' 'templates/android_release.apk' 'templates/android_source.zip' 'templates/version.txt' -d "$TPL_DIR" \
-      || falha "o arquivo de modelos baixado está incompleto"
-    rm -f "$TMP_TPZ"
-  fi
-  echo "Modelos: $TPL_DIR"
+# modelos de exportação do Godot (o APK base e o Modelo de Build Android), uma vez só
+if [ ! -f "$TPL_DIR/android_debug.apk" ] || [ ! -f "$TPL_DIR/android_source.zip" ]; then
+  URL="https://github.com/godotengine/godot/releases/download/${TPL_NUMBER}-${TPL_CHANNEL}/Godot_v${TPL_NUMBER}-${TPL_CHANNEL}_export_templates.tpz"
+  echo "Baixando os modelos de exportação do Godot $TPL_NAME (~1,3 GB, só na primeira vez)..."
+  echo "$URL"
+  TMP_TPZ="$(mktemp -t godot-templates.XXXXXX)"
+  curl -fL --progress-bar -o "$TMP_TPZ" "$URL" || falha "não consegui baixar os modelos. No Godot: Editor > Gerenciar Modelos de Exportação > Baixar e Instalar."
+  mkdir -p "$TPL_DIR"
+  unzip -o -j -q "$TMP_TPZ" 'templates/android_debug.apk' 'templates/android_release.apk' 'templates/android_source.zip' 'templates/version.txt' -d "$TPL_DIR" \
+    || falha "o arquivo de modelos baixado está incompleto"
+  rm -f "$TMP_TPZ"
+fi
+echo "Modelos: $TPL_DIR"
+# as notificações (recados dos bichinhos) vêm de um plugin Android, que só entra no build
+# Gradle; o Modelo de Build Android (pasta android/) é instalado junto com o export
+GRADLE=1
+INSTALL_TEMPLATE=""
+if [ ! -f android/build/build.gradle ]; then
+  echo "O Modelo de Build Android será instalado agora (necessário para as notificações)."
+  INSTALL_TEMPLATE="--install-android-build-template"
 fi
 [ -n "$SDK" ] && [ -d "$SDK/build-tools" ] || falha "Android SDK com Build-Tools não encontrado. No Android Studio: Settings > Android SDK > SDK Tools > marque \"Android SDK Build-Tools\" (ou defina ANDROID_HOME)."
 echo "Android SDK: $SDK"
@@ -174,16 +179,36 @@ done
 rm -f "$APK"
 # o preset do repositório gera AAB para a loja; para o celular troca para APK só durante o export
 cp export_presets.cfg build/export_presets.cfg.original
-restaurar() { cp build/export_presets.cfg.original export_presets.cfg 2>/dev/null || true; }
+cp project.godot build/project.godot.original
+restaurar() {
+  cp build/export_presets.cfg.original export_presets.cfg 2>/dev/null || true
+  cp build/project.godot.original project.godot 2>/dev/null || true
+}
 trap restaurar EXIT
-perl -pi -e 's/^gradle_build\/export_format=.*/gradle_build\/export_format=0/' export_presets.cfg
-if [ "$GRADLE" = 0 ]; then
-  # sem Gradle o Godot recusa SDK mínimo/alvo personalizados: usa os padrões dele
-  perl -pi -e 's/^gradle_build\/use_gradle_build=.*/gradle_build\/use_gradle_build=false/; s/^gradle_build\/min_sdk=.*/gradle_build\/min_sdk=""/; s/^gradle_build\/target_sdk=.*/gradle_build\/target_sdk=""/' export_presets.cfg
+COM_RECADOS=0
+if [ "$GRADLE" = 1 ]; then
+  echo "Build Gradle com as notificações (a primeira vez demora alguns minutos: baixa o Gradle)..."
+  perl -pi -e 's/^gradle_build\/export_format=.*/gradle_build\/export_format=0/; s/^gradle_build\/use_gradle_build=.*/gradle_build\/use_gradle_build=true/' export_presets.cfg
+  set +e
+  TIMEOUT_CMD=""
+  command -v timeout >/dev/null 2>&1 && TIMEOUT_CMD="timeout 1800"
+  $TIMEOUT_CMD "$GODOT" --headless --path . $INSTALL_TEMPLATE --export-debug "Android" "$APK" >>"$LOG" 2>&1
+  set -e
+  [ -f "$APK" ] && COM_RECADOS=1
+  if [ ! -f "$APK" ]; then
+    aviso "O build Gradle falhou (detalhes em $LOG). Gerando o APK sem as notificações..."
+    grep -iE "error|failed|FAILURE" "$LOG" | tail -6 || true
+  fi
 fi
-set +e
-"$GODOT" --headless --path . --export-debug "Android" "$APK" >>"$LOG" 2>&1
-set -e
+if [ ! -f "$APK" ]; then
+  # sem Gradle: APK base do Godot, sem plugins (sem as notificações) e com os SDKs padrão
+  restaurar
+  perl -pi -e 's/^gradle_build\/export_format=.*/gradle_build\/export_format=0/; s/^gradle_build\/use_gradle_build=.*/gradle_build\/use_gradle_build=false/; s/^gradle_build\/min_sdk=.*/gradle_build\/min_sdk=""/; s/^gradle_build\/target_sdk=.*/gradle_build\/target_sdk=""/' export_presets.cfg
+  perl -0pi -e 's/\n\[editor_plugins\]\n\nenabled=PackedStringArray\([^)]*\)\n/\n/' project.godot
+  set +e
+  "$GODOT" --headless --path . --export-debug "Android" "$APK" >>"$LOG" 2>&1
+  set -e
+fi
 restaurar
 trap - EXIT
 if [ ! -f "$APK" ]; then
@@ -192,6 +217,7 @@ if [ ! -f "$APK" ]; then
   falha "o APK não foi gerado"
 fi
 echo "APK gerado: $APK ($(du -h "$APK" | cut -f1))"
+if [ "$COM_RECADOS" = 1 ]; then echo "Com as notificações dos bichinhos."; else aviso "Este APK não tem as notificações (o build Gradle não funcionou neste computador)."; fi
 
 # ---------------------------------------------------------------- 5. celular
 [ -x "$ADB" ] || command -v "$ADB" >/dev/null 2>&1 || falha "adb não encontrado (defina ADB=/caminho/adb)"
@@ -217,6 +243,9 @@ VERSAO="$("$ADB" shell dumpsys package "$PACKAGE" 2>/dev/null | grep -m1 version
 passo "Pronto! O jogo abriu no celular."
 echo "Commit: $COMMIT"
 echo "No celular: $VERSAO  (o rodapé dos Ajustes mostra a mesma versão)"
+if [ "$COM_RECADOS" = 1 ]; then
+  echo "Notificações: depois de vencer 3 fases o jogo pergunta se os bichinhos podem chamar (ou use Ajustes > Recados dos bichinhos)."
+fi
 }
 
 main "$@"
