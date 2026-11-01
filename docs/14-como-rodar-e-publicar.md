@@ -10,7 +10,7 @@ bash tools/atualizar.sh          # mantém o progresso do celular
 bash tools/atualizar.sh --limpo  # desinstala antes e começa do zero
 ```
 
-O script guarda alterações locais no `git stash` antes de atualizar. Ele também troca o preset para APK só durante o export e mostra no fim a versão instalada (a mesma que aparece no rodapé dos Ajustes).
+O script guarda alterações locais no `git stash` antes de atualizar. Ele também troca o preset para APK só durante o export e mostra no fim a versão instalada (a mesma que aparece no rodapé dos Ajustes). O **Modelo de Build Android** (pasta `android/`) não é necessário: sem ele, o script usa os modelos de exportação oficiais do Godot, que baixa sozinho na primeira vez (~1,3 GB). Para assinar o APK, ele usa a chave de debug do Android em `~/.android/debug.keystore` e o Android SDK do Android Studio, que precisa ter o **Build-Tools** instalado. O registro completo fica em `build/atualizar.log`.
 
 ## Requisitos
 - **Godot 4.7.2** (versão padrão, não a .NET): https://godotengine.org/download
