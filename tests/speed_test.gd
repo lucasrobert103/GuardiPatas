@@ -22,6 +22,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Game.persist = false
 	Game.load_save()
+	# os cartões de "Novo inseto!" têm teste próprio (features_test)
+	Game.data["seen_insects"] = Nest.KINDS.duplicate() + ["termite_queen"]
 	Game.set_setting("lang", "pt_BR")
 	var original_ticks := Engine.physics_ticks_per_second
 	var original_scale := Engine.time_scale

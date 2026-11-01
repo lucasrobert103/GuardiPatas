@@ -11,6 +11,8 @@ var failures := 0
 func _ready() -> void:
 	Game.persist = false
 	Game.load_save()
+	# os cartões de "Novo inseto!" têm teste próprio (features_test)
+	Game.data["seen_insects"] = Nest.KINDS.duplicate() + ["termite_queen"]
 	# o fluxo procura botões pelo texto em português
 	Game.set_setting("lang", "pt_BR")
 	main = load("res://scenes/main.tscn").instantiate()
