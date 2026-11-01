@@ -1,5 +1,17 @@
 # 14 — Como rodar, testar, compilar e publicar
 
+
+## Atualizar e instalar no celular (um comando)
+
+O APK em `build/` não se atualiza sozinho: reinstalar o mesmo arquivo instala a versão antiga de novo. Para baixar o código novo, limpar o cache do Godot, gerar um APK novo e instalar:
+
+```bash
+bash tools/atualizar.sh          # mantém o progresso do celular
+bash tools/atualizar.sh --limpo  # desinstala antes e começa do zero
+```
+
+O script guarda alterações locais no `git stash` antes de atualizar. Ele também troca o preset para APK só durante o export e mostra no fim a versão instalada (a mesma que aparece no rodapé dos Ajustes).
+
 ## Requisitos
 - **Godot 4.7.2** (versão padrão, não a .NET): https://godotengine.org/download
 - Para Android: **JDK 17**, **Android SDK** (Platform-Tools, Build-Tools, Platform 36) e os **export templates 4.7.2** (Editor → Gerenciar Modelos de Exportação).
