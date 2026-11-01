@@ -427,6 +427,16 @@ Continuar · Fase %d
 Começar corrida
 Preparando a Fase %d…
 Testando se ela tem solução!
+Termos
+Privacidade
+Seus direitos
+Responsáveis
+Termos e privacidade
+Ir para Apagar progresso
+%s
+%s · %s · %s
+Guardado neste aparelho agora
+Nada disso é enviado para servidores.
 Fases %d a %d
 %d / %d
 %d de %d fases vencidas
@@ -462,8 +472,15 @@ Destacar insetos (alto contraste)
 Texto grande
 Daltonismo
 Idioma
+Ao usar o GuardiPatas, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.
+Termos de Uso
+Política de Privacidade
+Seus direitos (LGPD)
+Para pais e responsáveis
+Versão dos termos: %s · aceita em %s
+Versão dos termos: %s
 Seus dados
-Privacidade: o GuardiPatas não coleta dados pessoais. Seu progresso fica salvo só neste aparelho.
+Privacidade: o GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.
 Apagar progresso
 Desenvolvido por RetroNexa · retronexa.com.br
 Apagar todo o progresso?
@@ -498,6 +515,12 @@ Modo Infinito · Recorde %d
 Bichinhos
 Casinha
 Criar
+Atualizamos os termos
+Boas-vindas ao GuardiPatas!
+O GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.
+Ao continuar e usar o jogo, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.
+Se você tem menos de 18 anos, leia com um adulto responsável.
+Concordar e continuar
 Vença fases para ganhar petiscos!
 Mais estrelas, mais petiscos.
 %s  ×%d
@@ -636,6 +659,12 @@ Difícil
 Extremo
 Infinito · Fase %d
 Quantas você consegue passar seguidas?
+Fases vencidas
+Moedas
+Itens e acessórios
+Fotos do Álbum
+Fases criadas no editor
+Termos aceitos
 Use até %d%% da tinta
 Vença no Extremo
 Vença no Difícil ou no Extremo
@@ -912,7 +941,6 @@ Bambu, o panda
 Companheiro permanente da Casinha. Sem vantagem nas fases.
 Gotinha, a lontra
 Destaques
-Moedas
 Efeitos
 Você já possui este conteúdo.
 Abrindo o Google Play…

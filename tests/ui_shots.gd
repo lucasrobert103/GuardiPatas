@@ -24,6 +24,10 @@ func _ready() -> void:
 	Game.data["coins"] = 1250
 	if not "--intro" in OS.get_cmdline_user_args():
 		Game.data["seen_insects"] = Nest.KINDS.duplicate() + ["termite_queen"]
+	if not "--consent" in OS.get_cmdline_user_args():
+		Legal.accept()
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--lang="): Game.set_setting("lang", a.substr(7))
 	get_window().size = sz
 	get_tree().root.content_scale_size = Vector2i(720, 1280)
 	await get_tree().process_frame
@@ -98,6 +102,11 @@ func _ready() -> void:
 				ia.position = Vector2(90 + (i % 3) * 270, 1180 + (i / 3) * 70)
 				c.add_child(ia)
 		"collection": c = CollectionScreen.new()
+		"settings": c = SettingsScreen.new()
+		"terms", "privacy", "rights", "parents":
+			var lg := LegalScreen.new()
+			lg.setup(screen)
+			c = lg
 		"map", "map9", "map10":
 			var m := LevelSelect.new()
 			m.setup(-1 if screen == "map" else int(screen.substr(3)))

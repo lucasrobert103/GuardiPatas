@@ -23,6 +23,7 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(out_dir)
 	Game.persist = false
 	Game.load_save()
+	Legal.accept()
 	Game.data["settings"]["lang"] = "pt_BR"
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--lang="):

@@ -92,8 +92,9 @@ Materiais de referência para preparar a Play Console. Imagens em `store/` (gera
 | Classificação (IARC) | Sem violência (os insetos não se machucam: desistem e vão embora), sem linguagem imprópria, sem medo intenso, sem jogos de azar, sem interação entre usuários, sem compartilhamento de localização → esperado **Livre / PEGI 3 / Everyone** |
 | Segurança dos dados | **Nenhum dado coletado e nenhum dado compartilhado.** O progresso, as fotos do Álbum e as fases do editor ficam só no aparelho (`user://`). Sem conta, sem internet. |
 | Permissões | Vibração (opcional, nos Ajustes). Nenhuma outra. |
-| Política de privacidade | Texto pronto em [privacidade.md](privacidade.md) — publique numa página (ex.: `retronexa.com.br/guardipatas/privacidade`) e cole o link na Play Console. |
-| Contato | e-mail de suporte da RetroNexa (preencher na Console) |
+| Política de privacidade | Página pronta em `docs/site/privacidade.html` (gerada por `tools/make_legal.py`, igual à do jogo). Publique em `retronexa.com.br/guardipatas/privacidade` e cole o link na Play Console. Veja o [doc 26](26-termos-e-privacidade.md). |
+| Termos de Uso | `docs/site/termos.html` → `retronexa.com.br/guardipatas/termos` (também dentro do jogo, em Ajustes). |
+| Contato | `contato@retronexa.com.br` (o mesmo dos textos legais; confirme que a caixa existe) |
 
 ## Como regenerar as imagens
 ```bash

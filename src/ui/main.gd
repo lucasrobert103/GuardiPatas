@@ -50,7 +50,7 @@ func _notification(what: int) -> void:
 			var lv := _current as Level
 			if lv.hud != null:
 				lv.hud.on_back_pressed()
-		elif _current is SettingsScreen:
+		elif _current is SettingsScreen or _current is LegalScreen:
 			_current.on_back_pressed()
 		elif _current is TitleScreen:
 			get_tree().quit()
@@ -122,7 +122,14 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 			_fade.color = SplashScreen.INDIGO
 			_current = SplashScreen.new()
 		"settings":
-			_current = SettingsScreen.new()
+			var st := SettingsScreen.new()
+			if arg is String:
+				st.focus_target = arg
+			_current = st
+		"legal":
+			var lg := LegalScreen.new()
+			lg.setup(arg)
+			_current = lg
 		"infinite":
 			var inf := InfiniteScreen.new()
 			inf.director = infinite

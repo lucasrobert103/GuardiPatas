@@ -19,6 +19,10 @@ Feito em **Godot 4.7.2 (GDScript)**, renderizador Compatibility, para todas as i
 
 *(capturas reais do jogo renderizadas pelo próprio Godot)*
 
+## Termos de Uso e Política de Privacidade
+
+Termos de Uso, Política de Privacidade conforme a **LGPD**, "Seus direitos" (com o que está salvo no aparelho) e um guia para responsáveis, em PT/EN/ES, nos Ajustes e no aviso de aceite da primeira abertura. A RetroNexa aparece como desenvolvedora. As páginas para a Play Console ficam em `docs/site/`. Veja o [doc 26](docs/26-termos-e-privacidade.md).
+
 ## Versão 1.0: 123 fases, Modo Infinito e muito mais
 
 **Modo Infinito** com fases geradas sem parar (cada uma é simulada escondida antes de aparecer, então sempre tem solução), **4 mundos novos** (Cidade dos Brinquedos, Nuvens Altas, Deserto das Dunas e Castelo Assombrado), 5 bichinhos e 7 insetos novos, **tutorial jogável** quando um inseto aparece pela primeira vez, **369 missões extras**, petiscos e banho de bolhas na Casinha, e a campanha numerada de 1 a 123. Veja [o que mudou](docs/25-versao-1-0-infinito-mundos-missoes.md).
@@ -97,6 +101,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 26 | [Termos de Uso, Política de Privacidade (LGPD) e Google Play](docs/26-termos-e-privacidade.md) |
 | 25 | [Versão 1.0: Modo Infinito, mundos 11–14, missões, tutoriais e petiscos](docs/25-versao-1-0-infinito-mundos-missoes.md) |
 | 24 | [Versão 0.9: rolagem, pausa ilustrada, prévias e dificuldade](docs/24-versao-0-9-pausa-previas-dificuldade.md) |
 | 23 | [Versão 0.8: editor, tela inicial, mundos 9–10, novos insetos, loja e compras reais](docs/23-versao-0-8-mundos-loja-editor.md) |

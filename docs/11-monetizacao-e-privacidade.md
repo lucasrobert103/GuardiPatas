@@ -37,7 +37,7 @@ Fluxo de consentimento: UMP (User Messaging Platform) do Google onde aplicável;
 - O protótipo **não coleta nem transmite nenhum dado** (sem rede, sem analytics, sem IDs). Save local em `user://save.json`.
 - Permissões Android: apenas **VIBRATE** (para a vibração opcional). Nenhuma permissão perigosa.
 - Formulário de **Segurança de dados** da Play: hoje "nenhum dado coletado/compartilhado". Mudará com o SDK de anúncios — atualizar antes de enviar.
-- Política de privacidade (obrigatória para Famílias) — rascunho a publicar numa página própria antes do teste fechado.
+- Política de privacidade (obrigatória para Famílias), Termos de Uso e aviso de aceite já estão no jogo (Ajustes > Termos e privacidade) e em páginas prontas para publicar. Veja o [doc 26](26-termos-e-privacidade.md).
 
 ## Classificação etária
 Questionário IARC: sem violência (picadas são cômicas, sem dano), sem linguagem imprópria, sem compras aleatórias → esperado **Livre / PEGI 3 / ESRB E**. Público-alvo no Play Console: **"todas as idades" incluindo menores de 13** → seguir a Política de Famílias integralmente (ou, se optar por 13+, remover apelo infantil, o que não combina com o jogo).

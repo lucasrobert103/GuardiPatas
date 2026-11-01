@@ -176,6 +176,8 @@ func _default_data() -> Dictionary:
 		"album": [],
 		"store": {"owned": [], "receipts": []},
 		"care": {},
+		# versão dos Termos/Privacidade aceita neste aparelho (vazio = ainda não viu o aviso)
+		"legal": {"accepted": "", "date": ""},
 	}
 
 
@@ -238,6 +240,8 @@ func load_save() -> void:
 		if not (Cast.ORDER.has(pet) or Store.PETS.has(pet)) or not data["fx_owned"].has(data["fx_equipped"][pet]):
 			data["fx_equipped"].erase(pet)
 	data["custom"] = data["custom"].filter(func(level): return level is Dictionary).slice(0, CUSTOM_MAX)
+	for key in ["accepted", "date"]:
+		data["legal"][key] = str(data["legal"].get(key, "")).left(20)
 	data["coins"] = clampi(int(data["coins"]), 0, 10000000)
 	data["hints"] = clampi(int(data["hints"]), 0, 100000)
 	for key in ["owned", "receipts"]:
@@ -278,12 +282,15 @@ func safe_album_path(path: String) -> bool:
 
 func reset_progress() -> void:
 	var keep_settings: Dictionary = data.get("settings", DEFAULT_SETTINGS).duplicate()
+	var keep_legal: Dictionary = data.get("legal", {}).duplicate()
 	for entry in data.get("album", []):
 		var path := str(entry.get("file", ""))
 		if safe_album_path(path):
 			DirAccess.remove_absolute(path)
 	data = _default_data()
 	data["settings"] = keep_settings
+	if not keep_legal.is_empty():
+		data["legal"] = keep_legal
 	save()
 	coins_changed.emit(coins())
 	hints_changed.emit(hints())

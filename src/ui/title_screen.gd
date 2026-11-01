@@ -29,6 +29,8 @@ var _menu: VBoxContainer
 var _settings_btn: Button
 var _store_btn: Button
 var _safe := Rect2()
+## Aviso de Termos e Privacidade (primeira abertura ou termos atualizados).
+var consent: Control
 
 
 func _ready() -> void:
@@ -108,6 +110,79 @@ func _ready() -> void:
 	resized.connect(_layout)
 	_layout()
 	Sfx.music("music_menu")
+	if not Legal.accepted():
+		_show_consent()
+
+
+## "Ao usar, você concorda": cartão na primeira abertura (e quando os termos mudam).
+## Bloqueia o menu até tocar em "Concordar e continuar"; os documentos abrem completos.
+func _show_consent() -> void:
+	consent = Control.new()
+	consent.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(consent)
+	consent.add_child(UiKit.dim(0.5))
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	consent.add_child(center)
+	var panel := PanelContainer.new()
+	var st := StyleBoxFlat.new()
+	st.bg_color = Color("fffaf3")
+	st.set_corner_radius_all(32)
+	st.border_color = Color("e5d9d6")
+	st.set_border_width_all(2)
+	st.content_margin_left = 30
+	st.content_margin_right = 30
+	st.content_margin_top = 26
+	st.content_margin_bottom = 26
+	panel.add_theme_stylebox_override("panel", st)
+	panel.custom_minimum_size.x = minf(size.x - 48, 600) if size.x > 0 else 600
+	center.add_child(panel)
+	var col := UiKit.vbox(14)
+	panel.add_child(col)
+	var pet := AnimalArt.new()
+	pet.species = "capi"
+	pet.preview = true
+	pet.mood = "happy"
+	pet.scale = Vector2.ONE * 0.9
+	var holder := Control.new()
+	holder.custom_minimum_size = Vector2(0, 96)
+	holder.add_child(pet)
+	holder.resized.connect(func(): pet.position = Vector2(holder.size.x / 2, 70))
+	col.add_child(holder)
+	var ink := Color("5c5669")
+	var head := UiKit.label("Atualizamos os termos" if Legal.is_update() else "Boas-vindas ao GuardiPatas!", 32, ink, 0, Color.WHITE, true)
+	col.add_child(head)
+	var lines := [
+		"O GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.",
+		"Ao continuar e usar o jogo, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.",
+		"Se você tem menos de 18 anos, leia com um adulto responsável.",
+	]
+	for i in lines.size():
+		var l := UiKit.label(lines[i], 21 if i < 2 else 19, ink if i < 2 else Color("847e8d"), 0, Color.WHITE, true)
+		col.add_child(l)
+	var row := UiKit.hbox(10)
+	col.add_child(row)
+	for spec in [["Termos de Uso", "terms"], ["Privacidade", "privacy"]]:
+		var doc: String = spec[1]
+		var b := UiKit.button(tr(spec[0]), Color("e8e0ef"), "", 0, 64)
+		b.add_theme_font_size_override("font_size", UiKit.fs(22))
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.pressed.connect(func(): go.emit("legal", {"doc": doc, "back": "title"}))
+		row.add_child(b)
+	var ok := UiKit.button(tr("Concordar e continuar"), Palette.UI_GOOD, "", 0, 80)
+	ok.add_theme_font_size_override("font_size", UiKit.fs(28))
+	ok.pressed.connect(_accept_consent)
+	col.add_child(ok)
+	UiKit.pop_in(panel, 0.1)
+	ok.grab_focus.call_deferred()
+
+
+func _accept_consent() -> void:
+	Legal.accept()
+	Sfx.play("ui_click")
+	if consent != null:
+		consent.queue_free()
+		consent = null
 
 
 ## Turma do palco: os já conhecidos primeiro (sorteados), completando com a turma inicial.

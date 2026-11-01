@@ -22,6 +22,8 @@ var _rows: Dictionary = {}
 var _safe := Rect2()
 var _small := false
 var _rebuilding := false
+## "reset" = rola até "Apagar progresso" e foca o botão (vindo de Termos e privacidade).
+var focus_target := ""
 
 
 func _ready() -> void:
@@ -114,8 +116,23 @@ func _build(scroll_position: int = 0) -> void:
 	_picker(access, "Daltonismo", "colorblind", COLOR_OPTIONS, int(Game.setting("colorblind")))
 	var language := _section("Idioma", "globe", Color("f5e6d2"))
 	_picker(language, "Idioma", "lang", Game.LANGS.map(func(item): return item[1]), _lang_index(), false)
+	var legal := _section("Termos e privacidade", "doc", Color("f1e8d9"))
+	var agree := _label("Ao usar o GuardiPatas, você concorda com os Termos de Uso e a Política de Privacidade da RetroNexa.", 22, INK, true)
+	agree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	legal.add_child(agree)
+	for spec in [["Termos de Uso", "terms"], ["Política de Privacidade", "privacy"], ["Seus direitos (LGPD)", "rights"], ["Para pais e responsáveis", "parents"]]:
+		var doc: String = spec[1]
+		var open := _button(spec[0], true)
+		open.tooltip_text = tr(spec[0])
+		open.pressed.connect(func(): go.emit("legal", {"doc": doc, "back": "settings"}))
+		open.focus_entered.connect(func(): _scroll.ensure_control_visible(open))
+		legal.add_child(open)
+		_controls["legal_" + doc] = open
+	var accepted := _label(tr("Versão dos termos: %s · aceita em %s") % [Legal.version(), Legal.accepted_date()] if Legal.accepted() else tr("Versão dos termos: %s") % Legal.version(), 18, MUTED, true)
+	accepted.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	legal.add_child(accepted)
 	var privacy := _section("Seus dados", "shield", Color("dde9ef"))
-	var note := _label("Privacidade: o GuardiPatas não coleta dados pessoais. Seu progresso fica salvo só neste aparelho.", 22, MUTED, true)
+	var note := _label("Privacidade: o GuardiPatas não coleta dados pessoais, não tem anúncios e não compartilha nada. Seu progresso fica salvo só neste aparelho.", 22, MUTED, true)
 	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	privacy.add_child(note)
 	var reset := _button("Apagar progresso", false)
@@ -133,6 +150,14 @@ func _build(scroll_position: int = 0) -> void:
 	_layout()
 	_scroll.set_deferred("scroll_vertical", scroll_position)
 	_rebuilding = false
+	if focus_target != "" and _controls.has(focus_target):
+		var target: Control = _controls[focus_target]
+		focus_target = ""
+		(func():
+			await get_tree().process_frame
+			if is_instance_valid(target):
+				_scroll.ensure_control_visible(target)
+				target.grab_focus()).call_deferred()
 
 
 func _section(title: String, icon: String, tint: Color) -> VBoxContainer:
@@ -459,6 +484,10 @@ class Badge:
 				draw_line(center + Vector2(-10, 0), center + Vector2(10, 0), ink, 1, true)
 			"star":
 				DrawUtil.shape(self, DrawUtil.star_points(center, 12, 5), Color("ffd23f"), ink, 1.5)
+			"doc":
+				DrawUtil.shape(self, PackedVector2Array([center + Vector2(-9, -12), center + Vector2(5, -12), center + Vector2(10, -7), center + Vector2(10, 12), center + Vector2(-9, 12)]), Color("fffaf3"), ink, 1.5)
+				for k in 3:
+					draw_line(center + Vector2(-5, -4 + k * 5), center + Vector2(6, -4 + k * 5), ink, 1.5, true)
 			"shield":
 				DrawUtil.shape(self, PackedVector2Array([center + Vector2(-11, -10), center + Vector2(11, -10), center + Vector2(10, 4), center + Vector2(0, 13), center + Vector2(-10, 4)]), Color("fffaf3"), ink, 1.5)
 				HomeArt.heart(self, center, 0.34, ink)

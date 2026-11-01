@@ -42,6 +42,8 @@ jobs:
         run: |
           python3 tools/make_levels.py
           git diff --exit-code data/levels.json || (echo "data/levels.json desatualizado: rode tools/make_levels.py" && exit 1)
+          python3 tools/make_legal.py
+          git diff --exit-code data/legal.json docs/termos.md docs/privacidade.md docs/site || (echo "textos legais desatualizados: rode tools/make_legal.py" && exit 1)
 
       - name: Importar projeto
         run: |
@@ -99,6 +101,12 @@ jobs:
           set -o pipefail
           timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/infinite_test.tscn -- --stages=30 2>&1 | tee infinite.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" infinite.log; then exit 1; fi
+
+      - name: Termos de Uso e Política de Privacidade
+        run: |
+          set -o pipefail
+          timeout 120 ~/godot/godot --headless --path . res://tests/legal_test.tscn 2>&1 | tee legal.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" legal.log; then exit 1; fi
 
       - name: Rolagem por arraste
         run: |

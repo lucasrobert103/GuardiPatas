@@ -1,0 +1,593 @@
+{
+ "version": "1.0",
+ "updated": "2026-11-01",
+ "developer": "RetroNexa",
+ "site": "retronexa.com.br",
+ "email": "contato@retronexa.com.br",
+ "pages": {
+  "privacy": "https://retronexa.com.br/guardipatas/privacidade",
+  "terms": "https://retronexa.com.br/guardipatas/termos"
+ },
+ "date": {
+  "pt": "01/11/2026",
+  "en": "November 1, 2026",
+  "es": "1 de noviembre de 2026"
+ },
+ "ui": {
+  "updated": {
+   "pt": "Última atualização: %s · versão %s",
+   "en": "Last updated: %s · version %s",
+   "es": "Última actualización: %s · versión %s"
+  },
+  "by": {
+   "pt": "GuardiPatas é desenvolvido por RetroNexa",
+   "en": "GuardiPatas is developed by RetroNexa",
+   "es": "GuardiPatas es desarrollado por RetroNexa"
+  }
+ },
+ "docs": [
+  {
+   "id": "terms",
+   "title": {
+    "pt": "Termos de Uso",
+    "en": "Terms of Use",
+    "es": "Términos de Uso"
+   },
+   "summary": {
+    "pt": "Regras simples para usar o GuardiPatas: o jogo é seu para se divertir, as moedas são de mentirinha e qualquer compra com dinheiro de verdade passa pelo Google Play, com um adulto.",
+    "en": "Simple rules for using GuardiPatas: the game is yours to enjoy, coins are make-believe and any real-money purchase goes through Google Play, with an adult.",
+    "es": "Reglas sencillas para usar GuardiPatas: el juego es tuyo para divertirte, las monedas son de mentirijillas y cualquier compra con dinero real pasa por Google Play, con un adulto."
+   },
+   "sections": [
+    {
+     "h": {
+      "pt": "1. Aceitação",
+      "en": "1. Acceptance",
+      "es": "1. Aceptación"
+     },
+     "p": [
+      {
+       "pt": "Ao baixar, instalar ou usar o GuardiPatas, você concorda com estes Termos de Uso e com a Política de Privacidade. Se não concordar, não use o aplicativo e desinstale-o do seu aparelho.",
+       "en": "By downloading, installing or using GuardiPatas, you agree to these Terms of Use and to the Privacy Policy. If you do not agree, do not use the app and uninstall it from your device.",
+       "es": "Al descargar, instalar o usar GuardiPatas, aceptas estos Términos de Uso y la Política de Privacidad. Si no estás de acuerdo, no uses la aplicación y desinstálala de tu dispositivo."
+      },
+      {
+       "pt": "Crianças e adolescentes devem usar o jogo com o conhecimento de um pai, mãe ou responsável legal, que aceita estes termos em nome deles.",
+       "en": "Children and teenagers should use the game with the knowledge of a parent or legal guardian, who accepts these terms on their behalf.",
+       "es": "Los niños y adolescentes deben usar el juego con el conocimiento de su padre, madre o tutor legal, que acepta estos términos en su nombre."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "2. Quem somos",
+      "en": "2. Who we are",
+      "es": "2. Quiénes somos"
+     },
+     "p": [
+      {
+       "pt": "O GuardiPatas é desenvolvido e publicado pela RetroNexa (retronexa.com.br). Fale com a gente pelo e-mail contato@retronexa.com.br.",
+       "en": "GuardiPatas is developed and published by RetroNexa (retronexa.com.br). Contact us at contato@retronexa.com.br.",
+       "es": "GuardiPatas es desarrollado y publicado por RetroNexa (retronexa.com.br). Escríbenos a contato@retronexa.com.br."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "3. Licença de uso",
+      "en": "3. License",
+      "es": "3. Licencia de uso"
+     },
+     "p": [
+      {
+       "pt": "A RetroNexa concede a você uma licença pessoal, gratuita, limitada, não exclusiva, intransferível e revogável para usar o jogo em aparelhos que você possui ou controla, para fins não comerciais.",
+       "en": "RetroNexa grants you a personal, free, limited, non-exclusive, non-transferable and revocable license to use the game on devices you own or control, for non-commercial purposes.",
+       "es": "RetroNexa te concede una licencia personal, gratuita, limitada, no exclusiva, intransferible y revocable para usar el juego en dispositivos que posees o controlas, con fines no comerciales."
+      },
+      {
+       "pt": "Não é permitido: vender, alugar ou redistribuir o aplicativo; publicar versões modificadas; burlar compras, a barreira para responsáveis ou outras proteções; nem usar o jogo para qualquer finalidade ilegal. Engenharia reversa só é permitida nos limites que a lei autoriza.",
+       "en": "You may not: sell, rent or redistribute the app; publish modified versions; bypass purchases, the parental gate or other protections; or use the game for any unlawful purpose. Reverse engineering is only allowed to the extent permitted by law.",
+       "es": "No está permitido: vender, alquilar o redistribuir la aplicación; publicar versiones modificadas; eludir las compras, la barrera para adultos u otras protecciones; ni usar el juego con fines ilegales. La ingeniería inversa solo se permite en los límites que autoriza la ley."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "4. Propriedade intelectual",
+      "en": "4. Intellectual property",
+      "es": "4. Propiedad intelectual"
+     },
+     "p": [
+      {
+       "pt": "Personagens, desenhos, músicas, sons, fases, textos, a marca GuardiPatas e a marca RetroNexa pertencem à RetroNexa ou aos seus licenciantes e são protegidos por lei. Estes termos não transferem a você nenhum desses direitos.",
+       "en": "Characters, artwork, music, sounds, levels, texts, the GuardiPatas brand and the RetroNexa brand belong to RetroNexa or its licensors and are protected by law. These terms do not transfer any of those rights to you.",
+       "es": "Los personajes, dibujos, música, sonidos, niveles, textos, la marca GuardiPatas y la marca RetroNexa pertenecen a RetroNexa o a sus licenciantes y están protegidos por la ley. Estos términos no te transfieren ninguno de esos derechos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "5. Suas criações e fotos",
+      "en": "5. Your creations and photos",
+      "es": "5. Tus creaciones y fotos"
+     },
+     "p": [
+      {
+       "pt": "As fases criadas no editor e as fotos do Álbum (capturas da tela do próprio jogo) ficam apenas no seu aparelho. O GuardiPatas não publica, não envia e não compartilha esse conteúdo com ninguém.",
+       "en": "Levels made in the editor and Album photos (screenshots of the game itself) stay only on your device. GuardiPatas does not publish, upload or share that content with anyone.",
+       "es": "Los niveles creados en el editor y las fotos del Álbum (capturas de la pantalla del propio juego) quedan solo en tu dispositivo. GuardiPatas no publica, no envía ni comparte ese contenido con nadie."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "6. Moedas e itens virtuais",
+      "en": "6. Coins and virtual items",
+      "es": "6. Monedas y objetos virtuales"
+     },
+     "p": [
+      {
+       "pt": "Moedas, dicas, petiscos, acessórios, efeitos e bichinhos são itens virtuais do jogo. Eles não têm valor em dinheiro, não podem ser trocados por dinheiro ou bens reais, nem transferidos para outra pessoa.",
+       "en": "Coins, hints, treats, accessories, effects and pets are virtual in-game items. They have no cash value and cannot be exchanged for money or real goods, or transferred to another person.",
+       "es": "Las monedas, pistas, golosinas, accesorios, efectos y mascotas son objetos virtuales del juego. No tienen valor monetario, no pueden cambiarse por dinero ni bienes reales, ni transferirse a otra persona."
+      },
+      {
+       "pt": "O progresso fica salvo no aparelho. Desinstalar o app, limpar os dados do app ou usar \"Apagar progresso\" nos Ajustes remove os itens e não pode ser desfeito.",
+       "en": "Progress is saved on the device. Uninstalling the app, clearing the app's data or using \"Erase progress\" in Settings removes the items and cannot be undone.",
+       "es": "El progreso se guarda en el dispositivo. Desinstalar la aplicación, borrar sus datos o usar \"Borrar progreso\" en Ajustes elimina los objetos y no se puede deshacer."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "7. Compras com dinheiro real",
+      "en": "7. Real-money purchases",
+      "es": "7. Compras con dinero real"
+     },
+     "p": [
+      {
+       "pt": "O jogo pode ser terminado sem gastar nada. Quando houver compras opcionais com dinheiro real, elas são feitas exclusivamente pelo sistema de pagamentos do Google Play, com o preço final (incluindo impostos aplicáveis) mostrado pelo Google antes da confirmação. A RetroNexa não recebe dados do seu cartão ou forma de pagamento.",
+       "en": "The game can be completed without spending anything. When optional real-money purchases are available, they are made exclusively through Google Play's payment system, with the final price (including applicable taxes) shown by Google before you confirm. RetroNexa never receives your card or payment details.",
+       "es": "El juego se puede terminar sin gastar nada. Cuando haya compras opcionales con dinero real, se realizan exclusivamente mediante el sistema de pagos de Google Play, que muestra el precio final (con los impuestos aplicables) antes de confirmar. RetroNexa no recibe los datos de tu tarjeta ni de tu forma de pago."
+      },
+      {
+       "pt": "Antes de qualquer compra com dinheiro real, o jogo pede que um adulto resolva uma conta (barreira para responsáveis). Os responsáveis também podem exigir senha para compras nas configurações do Google Play ou no Family Link.",
+       "en": "Before any real-money purchase, the game asks an adult to solve a math question (parental gate). Parents can also require a password for purchases in Google Play settings or in Family Link.",
+       "es": "Antes de cualquier compra con dinero real, el juego pide a un adulto que resuelva una cuenta (barrera para adultos). Los padres también pueden exigir contraseña para las compras en los ajustes de Google Play o en Family Link."
+      },
+      {
+       "pt": "Pedidos de reembolso seguem as regras do Google Play e podem ser feitos pelo próprio Google Play. Se precisar de ajuda, escreva para contato@retronexa.com.br. Nada nestes termos limita os direitos que o Código de Defesa do Consumidor garante a você.",
+       "en": "Refund requests follow Google Play's rules and can be made through Google Play itself. If you need help, write to contato@retronexa.com.br. Nothing in these terms limits your statutory consumer rights.",
+       "es": "Las solicitudes de reembolso siguen las reglas de Google Play y se pueden hacer desde Google Play. Si necesitas ayuda, escribe a contato@retronexa.com.br. Nada en estos términos limita tus derechos legales como consumidor."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "8. Sem anúncios e sem conversas",
+      "en": "8. No ads and no chat",
+      "es": "8. Sin anuncios y sin chat"
+     },
+     "p": [
+      {
+       "pt": "O GuardiPatas não exibe anúncios, não tem chat, não tem perfis, não abre links externos e não conecta você a outras pessoas.",
+       "en": "GuardiPatas does not show ads, has no chat or profiles, does not open external links and does not connect you to other people.",
+       "es": "GuardiPatas no muestra anuncios, no tiene chat ni perfiles, no abre enlaces externos y no te conecta con otras personas."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "9. Atualizações e disponibilidade",
+      "en": "9. Updates and availability",
+      "es": "9. Actualizaciones y disponibilidad"
+     },
+     "p": [
+      {
+       "pt": "Podemos atualizar o jogo para corrigir erros, ajustar a dificuldade, mudar fases ou incluir novidades. Fazemos o possível para que tudo funcione bem, mas não garantimos que o jogo esteja livre de falhas ou disponível em todos os aparelhos.",
+       "en": "We may update the game to fix bugs, tune difficulty, change levels or add new content. We do our best to keep everything working, but we do not guarantee that the game is error-free or available on every device.",
+       "es": "Podemos actualizar el juego para corregir errores, ajustar la dificultad, cambiar niveles o añadir novedades. Hacemos lo posible para que todo funcione bien, pero no garantizamos que el juego esté libre de fallos o disponible en todos los dispositivos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "10. Uso saudável",
+      "en": "10. Healthy play",
+      "es": "10. Juego saludable"
+     },
+     "p": [
+      {
+       "pt": "Faça pausas e jogue em um lugar seguro. Nos Ajustes você pode reduzir os movimentos da tela, aumentar o texto, usar filtros para daltonismo e desligar a vibração e os sons.",
+       "en": "Take breaks and play somewhere safe. In Settings you can reduce screen motion, enlarge text, use color-blind filters and turn off vibration and sounds.",
+       "es": "Haz pausas y juega en un lugar seguro. En Ajustes puedes reducir el movimiento de la pantalla, agrandar el texto, usar filtros para daltonismo y apagar la vibración y los sonidos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "11. Responsabilidade",
+      "en": "11. Liability",
+      "es": "11. Responsabilidad"
+     },
+     "p": [
+      {
+       "pt": "Na medida permitida pela lei, a RetroNexa não responde por perdas de progresso causadas por desinstalação, troca ou defeito do aparelho, nem por uso do jogo em desacordo com estes termos. Esta cláusula não afasta nenhum direito previsto no Código de Defesa do Consumidor.",
+       "en": "To the extent permitted by law, RetroNexa is not liable for loss of progress caused by uninstalling, replacing or a fault in the device, or for use of the game contrary to these terms. This clause does not exclude any mandatory consumer right.",
+       "es": "En la medida que lo permita la ley, RetroNexa no responde por la pérdida de progreso causada por desinstalar, cambiar o averiarse el dispositivo, ni por el uso del juego en contra de estos términos. Esta cláusula no excluye ningún derecho obligatorio del consumidor."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "12. Mudanças nestes termos",
+      "en": "12. Changes to these terms",
+      "es": "12. Cambios en estos términos"
+     },
+     "p": [
+      {
+       "pt": "Se mudarmos estes termos de forma importante, avisaremos dentro do jogo antes de você continuar. A data e a versão ficam no fim desta página. Continuar usando o jogo depois do aviso significa que você concorda com a nova versão.",
+       "en": "If we change these terms in a meaningful way, we will let you know inside the game before you continue. The date and version are shown at the end of this page. Continuing to use the game after the notice means you accept the new version.",
+       "es": "Si cambiamos estos términos de forma importante, te avisaremos dentro del juego antes de continuar. La fecha y la versión aparecen al final de esta página. Seguir usando el juego después del aviso significa que aceptas la nueva versión."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "13. Lei aplicável",
+      "en": "13. Governing law",
+      "es": "13. Ley aplicable"
+     },
+     "p": [
+      {
+       "pt": "Estes termos seguem as leis da República Federativa do Brasil. Fica eleito o foro do domicílio do consumidor para resolver qualquer questão.",
+       "en": "These terms are governed by the laws of the Federative Republic of Brazil. Any dispute will be handled by the courts of the consumer's place of residence, without prejudice to mandatory rights in your country.",
+       "es": "Estos términos se rigen por las leyes de la República Federativa de Brasil. Cualquier cuestión se resolverá en los tribunales del domicilio del consumidor, sin perjuicio de los derechos obligatorios de tu país."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "privacy",
+   "title": {
+    "pt": "Política de Privacidade",
+    "en": "Privacy Policy",
+    "es": "Política de Privacidad"
+   },
+   "summary": {
+    "pt": "Resumo: o GuardiPatas não coleta dados pessoais. Não tem conta, anúncios, rastreamento, análise de uso nem SDKs de terceiros. Tudo o que o jogo guarda fica só no seu aparelho.",
+    "en": "Summary: GuardiPatas does not collect personal data. There are no accounts, ads, tracking, analytics or third-party SDKs. Everything the game saves stays only on your device.",
+    "es": "Resumen: GuardiPatas no recopila datos personales. No tiene cuentas, anuncios, rastreo, analíticas ni SDK de terceros. Todo lo que el juego guarda se queda solo en tu dispositivo."
+   },
+   "sections": [
+    {
+     "h": {
+      "pt": "1. Quem cuida dos seus dados",
+      "en": "1. Who is responsible",
+      "es": "1. Quién es responsable"
+     },
+     "p": [
+      {
+       "pt": "A RetroNexa, desenvolvedora do GuardiPatas, é a controladora para os fins da Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018). Canal de privacidade e do encarregado: contato@retronexa.com.br.",
+       "en": "RetroNexa, the developer of GuardiPatas, is the controller under Brazil's General Data Protection Law (LGPD, Law No. 13,709/2018) and, where applicable, the GDPR. Privacy and data-protection contact: contato@retronexa.com.br.",
+       "es": "RetroNexa, desarrolladora de GuardiPatas, es la responsable a efectos de la Ley General de Protección de Datos de Brasil (LGPD, Ley n.º 13.709/2018) y, cuando corresponda, del RGPD. Contacto de privacidad y protección de datos: contato@retronexa.com.br."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "2. O que fica salvo no seu aparelho",
+      "en": "2. What is saved on your device",
+      "es": "2. Qué se guarda en tu dispositivo"
+     },
+     "p": [
+      {
+       "pt": "Para o jogo funcionar, ele guarda no armazenamento privado do app: fases vencidas e estrelas, moedas e dicas, itens e acessórios, conquistas e missões, recordes do Modo Infinito, cuidados da Casinha, ajustes (som, idioma, acessibilidade, dificuldade), fases criadas no editor, fotos do Álbum e a versão dos termos aceita.",
+       "en": "To work, the game saves in the app's private storage: levels cleared and stars, coins and hints, items and accessories, achievements and missions, Infinite Mode records, Little House care, settings (sound, language, accessibility, difficulty), levels made in the editor, Album photos and the version of the terms you accepted.",
+       "es": "Para funcionar, el juego guarda en el almacenamiento privado de la aplicación: niveles superados y estrellas, monedas y pistas, objetos y accesorios, logros y misiones, récords del Modo Infinito, cuidados de la Casita, ajustes (sonido, idioma, accesibilidad, dificultad), niveles creados en el editor, fotos del Álbum y la versión de los términos aceptada."
+      },
+      {
+       "pt": "Essas informações não identificam você, não saem do aparelho e não são enviadas para a RetroNexa nem para ninguém. O backup automático do Android para este app está desligado.",
+       "en": "This information does not identify you, does not leave the device and is not sent to RetroNexa or anyone else. Android automatic backup is turned off for this app.",
+       "es": "Esta información no te identifica, no sale del dispositivo y no se envía a RetroNexa ni a nadie. La copia de seguridad automática de Android está desactivada para esta aplicación."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "3. O que não coletamos",
+      "en": "3. What we do not collect",
+      "es": "3. Qué no recopilamos"
+     },
+     "p": [
+      {
+       "pt": "Não pedimos nem coletamos nome, e-mail, telefone, idade, localização, contatos, fotos ou arquivos da galeria, câmera, microfone, identificador de publicidade, identificadores do aparelho, histórico de uso, dados de análise ou relatórios de falhas.",
+       "en": "We do not ask for or collect name, email, phone number, age, location, contacts, gallery photos or files, camera, microphone, advertising ID, device identifiers, usage history, analytics or crash reports.",
+       "es": "No pedimos ni recopilamos nombre, correo, teléfono, edad, ubicación, contactos, fotos o archivos de la galería, cámara, micrófono, identificador de publicidad, identificadores del dispositivo, historial de uso, analíticas ni informes de fallos."
+      },
+      {
+       "pt": "O jogo não tem anúncios, não usa SDKs de terceiros para publicidade ou análise, não faz rastreamento entre apps e nunca vende ou aluga dados.",
+       "en": "The game has no ads, uses no third-party advertising or analytics SDKs, does no cross-app tracking and never sells or rents data.",
+       "es": "El juego no tiene anuncios, no usa SDK de terceros de publicidad ni analíticas, no hace rastreo entre aplicaciones y nunca vende ni alquila datos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "4. Permissões do Android",
+      "en": "4. Android permissions",
+      "es": "4. Permisos de Android"
+     },
+     "p": [
+      {
+       "pt": "O app pede apenas a permissão de vibração, usada para dar um toque de resposta no jogo. Ela pode ser desligada em Ajustes > Vibração. Nenhuma outra permissão sensível é usada.",
+       "en": "The app only requests the vibration permission, used for haptic feedback in the game. You can turn it off in Settings > Vibration. No other sensitive permission is used.",
+       "es": "La aplicación solo solicita el permiso de vibración, que se usa para dar una respuesta táctil en el juego. Se puede apagar en Ajustes > Vibración. No se usa ningún otro permiso sensible."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "5. Compras pelo Google Play",
+      "en": "5. Google Play purchases",
+      "es": "5. Compras en Google Play"
+     },
+     "p": [
+      {
+       "pt": "Se você fizer uma compra com dinheiro real, o pagamento é processado pelo Google, conforme a Política de Privacidade do Google. A RetroNexa não recebe nome, e-mail nem dados de cartão.",
+       "en": "If you make a real-money purchase, payment is processed by Google under Google's Privacy Policy. RetroNexa does not receive your name, email or card details.",
+       "es": "Si haces una compra con dinero real, el pago lo procesa Google según la Política de Privacidad de Google. RetroNexa no recibe tu nombre, correo ni datos de tarjeta."
+      },
+      {
+       "pt": "Para entregar o item, o app recebe do Google uma confirmação da compra (produto, número do pedido e código de verificação). Quando as compras reais estiverem ativas, essa confirmação é enviada a um servidor da RetroNexa apenas para checar com o Google se a compra é verdadeira, evitar fraudes e tratar reembolsos. Base legal: execução de contrato e cumprimento de obrigação legal (LGPD, art. 7º, V e II). Guardamos esse registro somente pelo tempo exigido para comprovar a compra e cumprir obrigações legais e fiscais.",
+       "en": "To deliver the item, the app receives a purchase confirmation from Google (product, order number and verification token). When real purchases are active, this confirmation is sent to a RetroNexa server only to check with Google that the purchase is genuine, prevent fraud and handle refunds. Legal basis: performance of a contract and compliance with legal obligations (LGPD art. 7, V and II). We keep this record only as long as required to prove the purchase and meet legal and tax obligations.",
+       "es": "Para entregar el objeto, la aplicación recibe de Google una confirmación de la compra (producto, número de pedido y código de verificación). Cuando las compras reales estén activas, esa confirmación se envía a un servidor de RetroNexa solo para comprobar con Google que la compra es auténtica, evitar fraudes y gestionar reembolsos. Base legal: ejecución de contrato y cumplimiento de obligaciones legales (LGPD, art. 7, V y II). Conservamos ese registro solo el tiempo necesario para acreditar la compra y cumplir obligaciones legales y fiscales."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "6. Crianças",
+      "en": "6. Children",
+      "es": "6. Niños"
+     },
+     "p": [
+      {
+       "pt": "O GuardiPatas foi feito para toda a família, inclusive crianças. Seguimos o princípio do melhor interesse da criança (LGPD, art. 14), as regras do programa Famílias do Google Play e a lei COPPA dos Estados Unidos: não coletamos dados de crianças, não há anúncios, chat, links externos ou redes sociais, e compras com dinheiro real exigem a barreira para responsáveis.",
+       "en": "GuardiPatas is made for the whole family, including children. We follow the best interests of the child principle (LGPD art. 14), Google Play's Families policies and the US COPPA law: we do not collect children's data, there are no ads, chat, external links or social networks, and real-money purchases require the parental gate.",
+       "es": "GuardiPatas está hecho para toda la familia, incluidos los niños. Seguimos el principio del interés superior del niño (LGPD, art. 14), las políticas de Familias de Google Play y la ley COPPA de Estados Unidos: no recopilamos datos de niños, no hay anuncios, chat, enlaces externos ni redes sociales, y las compras con dinero real exigen la barrera para adultos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "7. Compartilhamento",
+      "en": "7. Sharing",
+      "es": "7. Compartir datos"
+     },
+     "p": [
+      {
+       "pt": "Não compartilhamos dados com terceiros. A única exceção é o próprio Google, que processa os pagamentos feitos pelo Google Play. Não há transferência internacional de dados além do que o Google realiza para processar essas compras.",
+       "en": "We do not share data with third parties. The only exception is Google itself, which processes payments made through Google Play. There is no international data transfer beyond what Google performs to process those purchases.",
+       "es": "No compartimos datos con terceros. La única excepción es el propio Google, que procesa los pagos hechos en Google Play. No hay transferencia internacional de datos más allá de la que Google realiza para procesar esas compras."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "8. Segurança",
+      "en": "8. Security",
+      "es": "8. Seguridad"
+     },
+     "p": [
+      {
+       "pt": "O progresso fica no armazenamento privado do app, protegido pelo próprio Android. O jogo salva de forma cuidadosa para evitar perdas. Recomendamos manter o aparelho com bloqueio de tela.",
+       "en": "Progress is kept in the app's private storage, protected by Android itself. The game saves carefully to avoid losses. We recommend keeping a screen lock on your device.",
+       "es": "El progreso se guarda en el almacenamiento privado de la aplicación, protegido por el propio Android. El juego guarda con cuidado para evitar pérdidas. Recomendamos tener el bloqueo de pantalla activado."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "9. Quanto tempo guardamos e como apagar",
+      "en": "9. Retention and deletion",
+      "es": "9. Conservación y borrado"
+     },
+     "p": [
+      {
+       "pt": "Os dados do jogo ficam no aparelho até você apagá-los. Você pode apagar tudo a qualquer momento em Ajustes > Apagar progresso, limpando os dados do app nas configurações do Android ou desinstalando o jogo. Não há conta para excluir, porque não criamos contas.",
+       "en": "Game data stays on the device until you delete it. You can erase everything at any time in Settings > Erase progress, by clearing the app's data in Android settings or by uninstalling the game. There is no account to delete because we do not create accounts.",
+       "es": "Los datos del juego se quedan en el dispositivo hasta que los borres. Puedes borrarlo todo en cualquier momento en Ajustes > Borrar progreso, borrando los datos de la aplicación en los ajustes de Android o desinstalando el juego. No hay cuenta que eliminar porque no creamos cuentas."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "10. Seus direitos",
+      "en": "10. Your rights",
+      "es": "10. Tus derechos"
+     },
+     "p": [
+      {
+       "pt": "Pela LGPD (art. 18) você tem direito a confirmação e acesso, correção, anonimização, bloqueio ou eliminação, portabilidade, informação sobre compartilhamento e revogação do consentimento. Como os dados ficam sob seu controle no aparelho, a maioria desses direitos pode ser exercida direto no jogo. Para qualquer pedido, escreva para contato@retronexa.com.br; responderemos em até 15 dias. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD), em gov.br/anpd.",
+       "en": "Under the LGPD (art. 18) and, where applicable, the GDPR, you have the right to confirmation and access, correction, anonymization, restriction or deletion, portability, information about sharing and withdrawal of consent. Because the data stays under your control on the device, most of these rights can be exercised directly in the game. For any request, write to contato@retronexa.com.br; we will reply within 15 days. You may also complain to Brazil's data protection authority (ANPD, gov.br/anpd) or your local authority.",
+       "es": "Según la LGPD (art. 18) y, cuando corresponda, el RGPD, tienes derecho a confirmación y acceso, rectificación, anonimización, bloqueo o eliminación, portabilidad, información sobre el intercambio de datos y revocación del consentimiento. Como los datos quedan bajo tu control en el dispositivo, la mayoría de estos derechos se pueden ejercer directamente en el juego. Para cualquier solicitud, escribe a contato@retronexa.com.br; responderemos en un máximo de 15 días. También puedes reclamar ante la autoridad de protección de datos de Brasil (ANPD, gov.br/anpd) o la de tu país."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "11. Mudanças nesta política",
+      "en": "11. Changes to this policy",
+      "es": "11. Cambios en esta política"
+     },
+     "p": [
+      {
+       "pt": "Se esta política mudar, a nova versão aparecerá no jogo e na página https://retronexa.com.br/guardipatas/privacidade, com a data de atualização. Mudanças importantes serão avisadas dentro do jogo.",
+       "en": "If this policy changes, the new version will appear in the game and at https://retronexa.com.br/guardipatas/privacidade, with the update date. Important changes will be announced inside the game.",
+       "es": "Si esta política cambia, la nueva versión aparecerá en el juego y en https://retronexa.com.br/guardipatas/privacidade, con la fecha de actualización. Los cambios importantes se avisarán dentro del juego."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rights",
+   "title": {
+    "pt": "Seus direitos (LGPD)",
+    "en": "Your rights (LGPD)",
+    "es": "Tus derechos (LGPD)"
+   },
+   "summary": {
+    "pt": "Os dados do GuardiPatas são seus e ficam com você. Veja como exercer cada direito sem precisar falar com ninguém.",
+    "en": "GuardiPatas data is yours and stays with you. Here is how to exercise each right without having to ask anyone.",
+    "es": "Los datos de GuardiPatas son tuyos y se quedan contigo. Así puedes ejercer cada derecho sin tener que pedírselo a nadie."
+   },
+   "live": true,
+   "sections": [
+    {
+     "h": {
+      "pt": "Confirmar e acessar",
+      "en": "Confirm and access",
+      "es": "Confirmar y acceder"
+     },
+     "p": [
+      {
+       "pt": "O quadro acima mostra tudo o que o jogo guarda agora neste aparelho. Nada disso está em servidores.",
+       "en": "The box above shows everything the game keeps on this device right now. None of it is on servers.",
+       "es": "El cuadro de arriba muestra todo lo que el juego guarda ahora en este dispositivo. Nada de eso está en servidores."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Corrigir",
+      "en": "Correct",
+      "es": "Rectificar"
+     },
+     "p": [
+      {
+       "pt": "Ajustes como idioma, som, acessibilidade e dificuldade podem ser mudados a qualquer momento nos Ajustes.",
+       "en": "Settings such as language, sound, accessibility and difficulty can be changed at any time in Settings.",
+       "es": "Los ajustes como idioma, sonido, accesibilidad y dificultad se pueden cambiar en cualquier momento en Ajustes."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Eliminar",
+      "en": "Delete",
+      "es": "Eliminar"
+     },
+     "p": [
+      {
+       "pt": "Use Ajustes > Apagar progresso para eliminar fases, moedas, itens, fotos do Álbum e fases do editor. Para remover também os ajustes, limpe os dados do app nas configurações do Android ou desinstale o jogo.",
+       "en": "Use Settings > Erase progress to delete levels, coins, items, Album photos and editor levels. To remove settings too, clear the app's data in Android settings or uninstall the game.",
+       "es": "Usa Ajustes > Borrar progreso para eliminar niveles, monedas, objetos, fotos del Álbum y niveles del editor. Para quitar también los ajustes, borra los datos de la aplicación en los ajustes de Android o desinstala el juego."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Revogar o aceite",
+      "en": "Withdraw acceptance",
+      "es": "Revocar la aceptación"
+     },
+     "p": [
+      {
+       "pt": "Você pode deixar de concordar com os termos a qualquer momento: basta parar de usar e desinstalar o jogo.",
+       "en": "You can stop agreeing to the terms at any time: just stop using and uninstall the game.",
+       "es": "Puedes dejar de aceptar los términos en cualquier momento: basta con dejar de usar y desinstalar el juego."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Falar com a RetroNexa",
+      "en": "Contact RetroNexa",
+      "es": "Hablar con RetroNexa"
+     },
+     "p": [
+      {
+       "pt": "Dúvidas, pedidos ou reclamações sobre privacidade: contato@retronexa.com.br. Respondemos em até 15 dias. Você também pode procurar a ANPD (gov.br/anpd).",
+       "en": "Privacy questions, requests or complaints: contato@retronexa.com.br. We reply within 15 days. You can also contact Brazil's ANPD (gov.br/anpd) or your local data protection authority.",
+       "es": "Dudas, solicitudes o reclamaciones sobre privacidad: contato@retronexa.com.br. Respondemos en un máximo de 15 días. También puedes acudir a la ANPD de Brasil (gov.br/anpd) o a la autoridad de tu país."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "parents",
+   "title": {
+    "pt": "Para pais e responsáveis",
+    "en": "For parents",
+    "es": "Para padres y tutores"
+   },
+   "summary": {
+    "pt": "O GuardiPatas foi pensado para crianças jogarem com segurança. Veja o que o jogo faz e o que ele nunca faz.",
+    "en": "GuardiPatas was designed so children can play safely. Here is what the game does and what it never does.",
+    "es": "GuardiPatas se pensó para que los niños jueguen con seguridad. Esto es lo que hace el juego y lo que nunca hace."
+   },
+   "sections": [
+    {
+     "h": {
+      "pt": "O que o jogo nunca faz",
+      "en": "What the game never does",
+      "es": "Lo que el juego nunca hace"
+     },
+     "p": [
+      {
+       "pt": "Não mostra anúncios, não tem chat nem perfis, não pede nome, e-mail ou idade, não abre links externos, não usa câmera, microfone ou localização e não coleta dados.",
+       "en": "It does not show ads, has no chat or profiles, does not ask for name, email or age, does not open external links, does not use the camera, microphone or location, and does not collect data.",
+       "es": "No muestra anuncios, no tiene chat ni perfiles, no pide nombre, correo ni edad, no abre enlaces externos, no usa la cámara, el micrófono ni la ubicación, y no recopila datos."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Compras",
+      "en": "Purchases",
+      "es": "Compras"
+     },
+     "p": [
+      {
+       "pt": "As moedas do jogo são ganhas jogando. Compras com dinheiro real são opcionais, passam pelo Google Play e só aparecem depois que um adulto resolve uma conta. Para mais proteção, ative \"Exigir autenticação para compras\" no Google Play ou use o Google Family Link.",
+       "en": "In-game coins are earned by playing. Real-money purchases are optional, go through Google Play and only appear after an adult solves a math question. For extra protection, turn on \"Require authentication for purchases\" in Google Play or use Google Family Link.",
+       "es": "Las monedas del juego se ganan jugando. Las compras con dinero real son opcionales, pasan por Google Play y solo aparecen después de que un adulto resuelva una cuenta. Para más protección, activa \"Pedir autenticación para las compras\" en Google Play o usa Google Family Link."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Conforto e acessibilidade",
+      "en": "Comfort and accessibility",
+      "es": "Comodidad y accesibilidad"
+     },
+     "p": [
+      {
+       "pt": "Nos Ajustes há opções para reduzir movimento, texto grande, destaque dos insetos, filtros para daltonismo, volume e vibração. O jogo pausa sozinho quando o app é minimizado.",
+       "en": "Settings include reduced motion, large text, insect highlighting, color-blind filters, volume and vibration. The game pauses automatically when the app is minimized.",
+       "es": "En Ajustes hay opciones para reducir el movimiento, texto grande, resaltar insectos, filtros para daltonismo, volumen y vibración. El juego se pausa solo cuando la aplicación se minimiza."
+      }
+     ]
+    },
+    {
+     "h": {
+      "pt": "Tempo de tela",
+      "en": "Screen time",
+      "es": "Tiempo de pantalla"
+     },
+     "p": [
+      {
+       "pt": "As fases são curtas e podem ser interrompidas a qualquer momento sem perder o que já foi conquistado. Combine pausas com a criança e use o Family Link se quiser limitar o tempo de uso.",
+       "en": "Levels are short and can be stopped at any time without losing what has been earned. Agree on breaks with your child and use Family Link if you want to limit screen time.",
+       "es": "Los niveles son cortos y se pueden interrumpir en cualquier momento sin perder lo conseguido. Acuerda pausas con el niño y usa Family Link si quieres limitar el tiempo de uso."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
