@@ -98,15 +98,27 @@ if [ -z "$ADB" ]; then
   else ADB="$HOME/Library/Android/sdk/platform-tools/adb"; fi
 fi
 
-if [ -z "${JAVA_HOME:-}" ]; then
-  for c in "/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
-           "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"; do
-    if [ -x "$c/bin/java" ]; then export JAVA_HOME="$c"; break; fi
-  done
-  if [ -z "${JAVA_HOME:-}" ] && [ -x /usr/libexec/java_home ]; then
-    JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null || true)"
-    [ -n "$JAVA_HOME" ] && export JAVA_HOME
-  fi
+# o Gradle do Android precisa do Java 17 a 21: escolhe um desses (o do Android Studio primeiro)
+java_major() {
+  "$1/bin/java" -version 2>&1 | grep -m1 'version "' | sed -E 's/.*version "([0-9]+)(\.([0-9]+))?.*/\1 \3/' | awk '{ print ($1 == "1") ? $2 : $1 }'
+}
+java_ok() { [ -x "$1/bin/java" ] && v="$(java_major "$1")" && [ -n "$v" ] && [ "$v" -ge 17 ] 2>/dev/null && [ "$v" -le 21 ] 2>/dev/null; }
+CANDIDATOS=("${JAVA_HOME:-}" "/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
+  "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
+  "/Applications/Android Studio Preview.app/Contents/jbr/Contents/Home")
+if [ -x /usr/libexec/java_home ]; then
+  for v in 21 17; do CANDIDATOS+=("$(/usr/libexec/java_home -v "$v" 2>/dev/null || true)"); done
+fi
+for c in /usr/lib/jvm/java-21-openjdk* /usr/lib/jvm/java-17-openjdk*; do CANDIDATOS+=("$c"); done
+JAVA_ESCOLHIDO=""
+for c in "${CANDIDATOS[@]}"; do
+  if [ -n "$c" ] && java_ok "$c"; then JAVA_ESCOLHIDO="$c"; break; fi
+done
+if [ -n "$JAVA_ESCOLHIDO" ]; then
+  export JAVA_HOME="$JAVA_ESCOLHIDO"
+  echo "Java: $JAVA_HOME (versão $(java_major "$JAVA_HOME"))"
+else
+  aviso "Não achei Java 17 a 21 (o do Android Studio serve). O APK sai sem as notificações."
 fi
 KEYTOOL="keytool"
 if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/keytool" ]; then KEYTOOL="$JAVA_HOME/bin/keytool"; fi
@@ -196,8 +208,14 @@ if [ "$GRADLE" = 1 ]; then
   set -e
   [ -f "$APK" ] && COM_RECADOS=1
   if [ ! -f "$APK" ]; then
-    aviso "O build Gradle falhou (detalhes em $LOG). Gerando o APK sem as notificações..."
-    grep -iE "error|failed|FAILURE" "$LOG" | tail -6 || true
+    aviso "O build Gradle falhou. Gerando o APK sem as notificações..."
+    echo "--- o que deu errado (mande esta parte se precisar de ajuda) ---"
+    if grep -q "What went wrong" "$LOG"; then
+      grep -A14 "What went wrong" "$LOG" | head -30
+    else
+      grep -iE "error|exception|failed|not found|unsupported|license" "$LOG" | grep -viE "fontconfig|system_font" | tail -12
+    fi
+    echo "--- (log completo: $LOG) ---"
   fi
 fi
 if [ ! -f "$APK" ]; then
