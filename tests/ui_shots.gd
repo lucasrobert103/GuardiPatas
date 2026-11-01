@@ -37,6 +37,9 @@ func _ready() -> void:
 		if lv.state == Level.State.DRAWING:
 			lv.start_simulation()
 		await get_tree().create_timer(wait).timeout
+		if "--pause" in OS.get_cmdline_user_args():
+			lv.hud._open_pause()
+			await get_tree().create_timer(0.8, true).timeout
 		await RenderingServer.frame_post_draw
 		get_viewport().get_texture().get_image().save_png(out)
 		print("salvo ", out)
@@ -95,6 +98,10 @@ func _ready() -> void:
 	c.theme = UiKit.make_theme()
 	add_child(c)
 	await get_tree().process_frame
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--preview="):
+			var parts := a.substr(10).split(":")
+			ProductPreview.open(c, parts[0], parts[1], func(): pass)
 	if c is EditorScreen:
 		var ed: EditorScreen = c
 		ed.draft["animals"] = [{"type": "capi", "pos": [360, 969], "flip": false}]

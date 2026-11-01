@@ -883,3 +883,20 @@ T.update({
     'Cortou!': ('Snip!', '¡Cortó!'),
     'Upa!': ('Heave!', '¡Upa!'),
 })
+
+# ---------------------------------------------------------------- 0.9: prévias da loja, dificuldade
+T.update({
+    'Ver em outro bichinho': ('Try it on another critter', 'Ver en otro animalito'),
+    'O que vem: %s': ("What's inside: %s", 'Qué incluye: %s'),
+    'Faltam %d moedas. Vença fases para juntar mais!': ('You need %d more coins. Win levels to earn more!', 'Faltan %d monedas. ¡Gana niveles para juntar más!'),
+    'Acessório para vestir em qualquer bichinho. É só enfeite: não muda o jogo.': ('An accessory any critter can wear. Just for looks: it does not change the game.', 'Accesorio para cualquier animalito. Es solo adorno: no cambia el juego.'),
+    'Efeito especial em volta do bichinho, nas fases e na Casinha. É só enfeite: não muda o jogo.': ('A special effect around the critter, in levels and in the Cottage. Just for looks: it does not change the game.', 'Efecto especial alrededor del animalito, en los niveles y en la Casita. Es solo adorno: no cambia el juego.'),
+    'Comprar · %d': ('Buy · %d', 'Comprar · %d'),
+    '%d dicas': ('%d hints', '%d pistas'),
+    '%d efeitos especiais': ('%d special effects', '%d efectos especiales'),
+    'dobro de moedas para sempre': ('double coins forever', 'el doble de monedas para siempre'),
+    'Dificuldade das fases': ('Level difficulty', 'Dificultad de los niveles'),
+    'Difícil e Extremo soltam mais insetos, mais rápidos, e dão mais moedas.': ('Hard and Extreme release more bugs, faster, and give more coins.', 'Difícil y Extremo sueltan más insectos, más rápidos, y dan más monedas.'),
+    'Difícil': ('Hard', 'Difícil'),
+    'Extremo': ('Extreme', 'Extremo'),
+})

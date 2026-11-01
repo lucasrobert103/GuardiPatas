@@ -80,6 +80,20 @@ jobs:
           timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --daily-all 2>&1 | tee daily.log
           if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" daily.log; then exit 1; fi
 
+      - name: Fases nas dificuldades Difícil e Extremo
+        run: |
+          set -o pipefail
+          for d in 1 2; do
+            timeout 900 ~/godot/godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --world=0 --difficulty=$d 2>&1 | tee difficulty-$d.log
+          done
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" difficulty-*.log; then exit 1; fi
+
+      - name: Rolagem por arraste
+        run: |
+          set -o pipefail
+          timeout 120 ~/godot/godot --headless --path . res://tests/scroll_test.tscn 2>&1 | tee scroll.log
+          if grep -E "SCRIPT ERROR|Parse Error|Invalid call|Invalid access" scroll.log; then exit 1; fi
+
       - name: Loja simulada, persistência e bloqueio de produção
         run: |
           set -o pipefail

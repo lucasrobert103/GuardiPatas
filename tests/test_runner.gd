@@ -19,6 +19,8 @@ var trace := false
 var trace_step := 1.0
 var variants := false
 var daily_all := false
+## --difficulty=N: roda as fases com a dificuldade N aplicada.
+var difficulty := 0
 
 
 func _ready() -> void:
@@ -35,6 +37,8 @@ func _ready() -> void:
 			variants = true
 		if a == "--daily-all":
 			daily_all = true
+		if a.begins_with("--difficulty="):
+			difficulty = int(a.substr(13))
 	Game.persist = false
 	Game.load_save()
 	Game.set_setting("lang", "pt_BR")
@@ -191,7 +195,7 @@ func _test_levels() -> void:
 		var lost := await _run_level(i, data, false)
 		check(lost["state"] == Level.State.LOST, "%s: sem linha, perde (estado=%s t=%.1fs)" % [id, lost["state_name"], lost["time"]])
 		var naive_txt := ""
-		if not data.get("naive", []).is_empty():
+		if not data.get("naive", []).is_empty() and difficulty == 0:
 			if trace:
 				print("    --- ingênuo ---")
 			var nv := await _run_level(i, data, true, Level._to_poly_list(data["naive"]))
@@ -330,6 +334,9 @@ func _trace(lv: Level, with_solution: bool) -> void:
 
 func _run_level(index: int, data: Dictionary, with_solution: bool, custom: Array = []) -> Dictionary:
 	Game.data = Game._default_data()
+	if difficulty > 0 and index >= 0:
+		# com a dificuldade (e os limites de Difficulty.CAPS), a solução registrada tem que vencer
+		data = Difficulty.apply(data, difficulty)
 	var lv := Level.new()
 	lv.setup(index, data, false)
 	add_child(lv)

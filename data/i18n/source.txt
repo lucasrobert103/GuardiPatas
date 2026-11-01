@@ -170,7 +170,6 @@ Inseto
 Pedra
 Bloco
 Desfazer
-Android
 Tempo %ds
 Tinta: %s
 Traços: %d
@@ -214,6 +213,7 @@ Soneca
 Roupas
 room:
 pet:
+Android
 Sabão
 Enxaguar
 Secar
@@ -257,10 +257,8 @@ Trocar
 Pausa
 Continuar
 Mapa
-Música: sim
-Sons: sim
-Música: não
-Sons: não
+Música
+Sons
 O tempo acabou!
 Desenhe uma rampa de Tinta Firme que leve o bichinho até a toca.
 Bonk!
@@ -304,14 +302,28 @@ Ver onde falhou
 De novo!
 %d / %d
 Insetos deste mundo
+Ver em outro bichinho
+O que vem: %s
+Faltam %d moedas. Vença fases para juntar mais!
+Acessório para vestir em qualquer bichinho. É só enfeite: não muda o jogo.
+Efeito especial em volta do bichinho, nas fases e na Casinha. É só enfeite: não muda o jogo.
+Testar · 
+Comprar · 
+Comprar · %d
+%d moedas
+%d dicas
+%d efeitos especiais
+dobro de moedas para sempre
 Nenhum
 Protanopia (vermelho)
 Deuteranopia (verde)
 Tritanopia (azul)
 Ajustes
 Do seu jeito
+Desafio
+Dificuldade das fases
+Difícil e Extremo soltam mais insetos, mais rápidos, e dão mais moedas.
 Som e toque
-Música
 Efeitos sonoros
 Vibração
 Acessibilidade
@@ -339,8 +351,6 @@ Os bichinhos da loja vivem na Casinha e os efeitos são só enfeite: nada muda a
 Visitar os bichinhos na Casinha
 Usar moedas em roupinhas
 Adquirido
-Testar · 
-Comprar · 
 Escolha quem vai usar o efeito:
 %s liberado!
 Área dos responsáveis
@@ -353,7 +363,6 @@ Resposta
 Pagar (simulação)
 Peça ajuda a um responsável e tente novamente
 GuardiPatas
-Desafio
 Bichinhos
 Casinha
 Criar
@@ -463,6 +472,8 @@ Pressa
 Os insetos estão 30% mais rápidos!
 T12:00:00
 Desafio: %s
+Difícil
+Extremo
 Refeição
 Frutinhas
 Petisco

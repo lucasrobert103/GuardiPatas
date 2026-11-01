@@ -44,6 +44,8 @@ var _opts: HBoxContainer
 var _dock: PanelContainer
 var _modal: Control
 var _undo: Array = []
+## Câmera do cenário: em telas baixas desce para o chão não ficar escondido atrás da doca.
+var _cam_y := 640.0
 var _animal_preview: PreviewBox
 var _insect_preview: PreviewBox
 
@@ -267,13 +269,10 @@ func _layout() -> void:
 	var size := _ui.size
 	if size.x <= 0 or size.y <= 0 or _top == null:
 		return
-	var safe := Rect2(Vector2.ZERO, size)
-	if OS.has_feature("Android"):
-		var area := DisplayServer.get_display_safe_area()
-		var window_size := Vector2(get_window().size)
-		if area.size.x > 0 and area.size.y > 0 and window_size.x > 0 and window_size.y > 0:
-			var factor := size / window_size
-			safe = safe.intersection(Rect2(Vector2(area.position) * factor, Vector2(area.size) * factor))
+	# área segura + faixa de gestos do Android embaixo (toques colados na borda se perdem)
+	var ins := UiKit.safe_insets(_ui)
+	var bottom := maxf(ins.w + 12.0, UiKit.GESTURE_GAP)
+	var safe := Rect2(ins.x, ins.y, size.x - ins.x - ins.z, size.y - ins.y - bottom + 12.0)
 	var margin := 12.0
 	var left := safe.position.x + margin
 	var width := safe.size.x - margin * 2
@@ -291,6 +290,10 @@ func _layout() -> void:
 	var dock_h := _dock.get_combined_minimum_size().y
 	_dock.position = Vector2(left, safe.end.y - dock_h - margin)
 	_dock.size = Vector2(width, dock_h)
+	# o chão (e o que fica nele) precisa aparecer acima da doca
+	_cam_y = maxf(640.0, GROUND + 40.0 + size.y * 0.5 - (_dock.position.y - 8.0))
+	if _lv != null and _lv.camera != null:
+		_lv.camera.position.y = _cam_y
 
 
 func _option_text(key: String) -> String:
@@ -388,6 +391,8 @@ func _rebuild() -> void:
 	add_child(_lv)
 	move_child(_lv, 0)
 	_lv.drawer.enabled = false
+	if _lv.camera != null:
+		_lv.camera.position.y = _cam_y
 	_update_labels()
 
 
@@ -637,6 +642,7 @@ func _close_modal() -> void:
 func _open_picker(which: String) -> void:
 	var col := _open_modal(tr("Escolha o bichinho") if which == "animal" else tr("Escolha o inseto"))
 	var scroll := ScrollContainer.new()
+	DragScroll.attach(scroll)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.custom_minimum_size.y = clampf(_ui.size.y * 0.56, 300.0, 900.0)
 	col.add_child(scroll)

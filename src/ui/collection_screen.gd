@@ -15,10 +15,7 @@ func _ready() -> void:
 	add_child(MenuBg.new())
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right"]:
-		margin.add_theme_constant_override("margin_" + side, 20)
-	margin.add_theme_constant_override("margin_top", 28)
-	margin.add_theme_constant_override("margin_bottom", 30)
+	UiKit.keep_safe(margin, 20, 28, 20, 30)
 	add_child(margin)
 	var col := UiKit.vbox(16)
 	col.alignment = BoxContainer.ALIGNMENT_BEGIN
@@ -48,6 +45,7 @@ func _ready() -> void:
 			_refresh())
 		tabs.add_child(b)
 	var scroll := ScrollContainer.new()
+	DragScroll.attach(scroll)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	col.add_child(scroll)
@@ -132,6 +130,7 @@ func _build_wardrobe() -> void:
 		_selected = str(Game.data["met"][0]) if not Game.data["met"].is_empty() else str(Store.companions()[0])
 	var who := UiKit.hbox(8)
 	var selector := ScrollContainer.new()
+	DragScroll.attach(selector)
 	selector.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	selector.add_child(who)
 	_content.add_child(selector)
@@ -172,12 +171,12 @@ func _build_wardrobe() -> void:
 		else:
 			var price: int = cfg["price"]
 			var b := UiKit.button(str(price), Palette.GOLD, "coin", 160, 72)
-			b.disabled = Game.coins() < price
 			b.pressed.connect(func():
-				if Game.buy_item(it):
-					Sfx.play("coin")
-					Game.equip(_selected, it)
-					_refresh())
+				ProductPreview.open(self, "item", it, func():
+					if Game.buy_item(it):
+						Sfx.play("coin")
+						Game.equip(_selected, it)
+						_refresh(), _selected))
 			row.add_child(b)
 		_content.add_child(card)
 	_content.add_child(UiKit.label("Efeitos especiais", 30, Palette.WHITE, 10, Palette.OUTLINE))

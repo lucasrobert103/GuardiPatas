@@ -127,6 +127,22 @@ func _draw() -> void:
 			draw_line(a, b, o, w * 3.0, true)
 			draw_line(a + Vector2(0.06, -0.06) * s, b, Palette.GOLD, w * 2.0, true)
 			DrawUtil.tri(self, a, a + Vector2(0.14, -0.02) * s, a + Vector2(0.02, -0.14) * s, Palette.CREAM, o, w * 0.4)
+		"music", "music_off":
+			for x in [-0.18, 0.18]:
+				DrawUtil.oval(self, c + Vector2(x - 0.06, 0.22) * s, Vector2(0.11, 0.08) * s, o, o, 0.0, -0.4)
+				draw_line(c + Vector2(x + 0.03, 0.2) * s, c + Vector2(x + 0.03, -0.26) * s, o, w * 0.8, true)
+			draw_line(c + Vector2(-0.15, -0.26) * s, c + Vector2(0.21, -0.34) * s, o, w * 1.4, true)
+			if icon.ends_with("_off"):
+				draw_line(c + Vector2(-0.38, -0.38) * s, c + Vector2(0.38, 0.38) * s, Palette.DANGER, w * 1.2, true)
+		"sound", "sound_off":
+			DrawUtil.shape(self, PackedVector2Array([c + Vector2(-0.38, -0.12) * s, c + Vector2(-0.2, -0.12) * s, c + Vector2(0.02, -0.32) * s,
+				c + Vector2(0.02, 0.32) * s, c + Vector2(-0.2, 0.12) * s, c + Vector2(-0.38, 0.12) * s]), o, o, 0.0)
+			if icon.ends_with("_off"):
+				draw_line(c + Vector2(0.12, -0.14) * s, c + Vector2(0.38, 0.14) * s, Palette.DANGER, w * 1.1, true)
+				draw_line(c + Vector2(0.12, 0.14) * s, c + Vector2(0.38, -0.14) * s, Palette.DANGER, w * 1.1, true)
+			else:
+				draw_arc(c + Vector2(0.04, 0) * s, s * 0.16, -0.9, 0.9, 10, o, w * 0.7, true)
+				draw_arc(c + Vector2(0.04, 0) * s, s * 0.3, -0.9, 0.9, 12, o, w * 0.7, true)
 		"timer":
 			DrawUtil.disc(self, c + Vector2(0, 0.05) * s, s * 0.34, Palette.WHITE, o, w * 0.7)
 			draw_line(c + Vector2(0, 0.05) * s, c + Vector2(0, -0.17) * s, o, w * 0.8, true)

@@ -227,3 +227,48 @@ static func pop_in(c: Control, delay: float = 0.0) -> void:
 	tw.tween_callback(func(): c.pivot_offset = c.size * 0.5)
 	tw.tween_property(c, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(c, "modulate:a", 1.0, 0.2)
+
+
+## Distância mínima da borda de baixo para botões: no Android a faixa de gestos
+## (deslizar para voltar/abrir apps) "come" toques colados na borda.
+const GESTURE_GAP := 64.0
+const TOP_GAP := 12.0
+
+
+## Recuos da área segura do aparelho (entalhe, barras), em unidades da tela do jogo:
+## Vector4(esquerda, cima, direita, baixo).
+static func safe_insets(c: Control) -> Vector4:
+	var view := c.get_viewport_rect().size if c.is_inside_tree() else Vector2(720, 1280)
+	var ins := Vector4.ZERO
+	if OS.has_feature("Android") and c.is_inside_tree():
+		var area := DisplayServer.get_display_safe_area()
+		var window_size := Vector2(c.get_window().size)
+		if area.size.x > 0 and area.size.y > 0 and window_size.x > 0 and window_size.y > 0:
+			var k := view / window_size
+			ins = Vector4(area.position.x * k.x, area.position.y * k.y,
+				(window_size.x - area.end.x) * k.x, (window_size.y - area.end.y) * k.y)
+	return ins
+
+
+## Aplica margens que respeitam a área segura e a faixa de gestos (MarginContainer ou
+## Control em tela cheia com offsets) e reaplica quando a tela muda de tamanho.
+static func keep_safe(target: Control, l: float, t: float, r: float, b: float) -> void:
+	var apply := func():
+		if not is_instance_valid(target):
+			return
+		var ins := safe_insets(target)
+		var m := Vector4(l + ins.x, maxf(t + ins.y, TOP_GAP), r + ins.z, maxf(b + ins.w, GESTURE_GAP))
+		if target is MarginContainer:
+			target.add_theme_constant_override("margin_left", int(m.x))
+			target.add_theme_constant_override("margin_top", int(m.y))
+			target.add_theme_constant_override("margin_right", int(m.z))
+			target.add_theme_constant_override("margin_bottom", int(m.w))
+		else:
+			target.offset_left = m.x
+			target.offset_top = m.y
+			target.offset_right = -m.z
+			target.offset_bottom = -m.w
+	apply.call()
+	if not target.is_inside_tree():
+		target.tree_entered.connect(apply, CONNECT_ONE_SHOT)
+	target.item_rect_changed.connect(func(): apply.call_deferred())

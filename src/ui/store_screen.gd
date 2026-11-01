@@ -23,10 +23,7 @@ func _ready() -> void:
 	add_child(MenuBg.new())
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right"]:
-		margin.add_theme_constant_override("margin_" + side, 18)
-	margin.add_theme_constant_override("margin_top", 22)
-	margin.add_theme_constant_override("margin_bottom", 22)
+	UiKit.keep_safe(margin, 18, 22, 18, 22)
 	add_child(margin)
 	var box := UiKit.vbox(10)
 	box.alignment = BoxContainer.ALIGNMENT_BEGIN
@@ -69,6 +66,7 @@ func _ready() -> void:
 	_status = UiKit.label("", 21, Palette.WHITE, 8, Palette.OUTLINE, true)
 	box.add_child(_status)
 	var scroll := ScrollContainer.new()
+	DragScroll.attach(scroll)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	box.add_child(scroll)
@@ -122,7 +120,13 @@ func _product_card(id: String) -> Control:
 	var row := UiKit.hbox(14)
 	row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	panel.add_child(row)
-	row.add_child(_preview(product))
+	var pic := _preview(product)
+	# tocar no desenho também abre a prévia
+	pic.mouse_filter = Control.MOUSE_FILTER_STOP
+	pic.gui_input.connect(func(e: InputEvent):
+		if e is InputEventMouseButton and not e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+			_show_product(id))
+	row.add_child(pic)
 	var col := UiKit.vbox(6)
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(col)
@@ -152,9 +156,18 @@ func _product_card(id: String) -> Control:
 	var buy := UiKit.button(label, Palette.UI_GOOD, "" if have else "coin", 0, 68)
 	buy.add_theme_font_size_override("font_size", UiKit.fs(22))
 	buy.disabled = have or not Store.can_buy()
-	buy.pressed.connect(_ask.bind(id))
+	buy.pressed.connect(_show_product.bind(id))
 	col.add_child(buy)
 	return panel
+
+
+## Sempre mostra a prévia antes; o "Comprar" da prévia leva à Área dos responsáveis.
+func _show_product(id: String) -> void:
+	if _modal != null or not Store.PRODUCTS.has(id):
+		return
+	var p := ProductPreview.open(self, "product", id, func(): _ask.call_deferred(id))
+	if Store.fully_owned(id) or not Store.can_buy():
+		p._confirm.disabled = true
 
 
 ## Desenho do produto: o bichinho (com o efeito dele), o efeito num amigo ou um montinho de moedas.
@@ -199,6 +212,7 @@ func _build_effects() -> void:
 		_content.add_child(_product_card(pack))
 	_content.add_child(UiKit.label("Escolha quem vai usar o efeito:", 22, Palette.WHITE, 8, Palette.OUTLINE))
 	var scroll := ScrollContainer.new()
+	DragScroll.attach(scroll)
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.custom_minimum_size.y = 96
 	_content.add_child(scroll)
@@ -257,13 +271,13 @@ func _effect_card(fx: String) -> Control:
 	else:
 		var price: int = cfg["price"]
 		b = UiKit.button(str(price), Palette.GOLD, "coin", 150, 68)
-		b.disabled = Game.coins() < price
 		b.pressed.connect(func():
-			if Game.buy_effect(fx):
-				Sfx.play("coin")
-				Game.equip_effect(_fx_target, fx)
-				_status.text = tr("%s liberado!") % tr(str(cfg["name"]))
-			_refresh())
+			ProductPreview.open(self, "effect", fx, func():
+				if Game.buy_effect(fx):
+					Sfx.play("coin")
+					Game.equip_effect(_fx_target, fx)
+					_status.text = tr("%s liberado!") % tr(str(cfg["name"]))
+				_refresh(), _fx_target))
 	row.add_child(b)
 	return panel
 

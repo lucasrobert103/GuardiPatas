@@ -13,10 +13,7 @@ func _ready() -> void:
 	add_child(MenuBg.new())
 	var col := UiKit.vbox(14)
 	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	col.offset_left = 20
-	col.offset_right = -20
-	col.offset_top = 24
-	col.offset_bottom = -24
+	UiKit.keep_safe(col, 20, 24, 20, 24)
 	add_child(col)
 	var top := UiKit.hbox(14)
 	col.add_child(top)
@@ -35,6 +32,7 @@ func _ready() -> void:
 		p.add_child(l)
 		return
 	var scroll := ScrollContainer.new()
+	DragScroll.attach(scroll)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	col.add_child(scroll)

@@ -115,6 +115,7 @@ const DEFAULT_SETTINGS := {
 	"lang": "",          # "" = idioma do aparelho (pt/en/es), senão "pt_BR" | "en" | "es"
 	"big_text": false,
 	"colorblind": 0,     # 0 nenhum, 1 protanopia, 2 deuteranopia, 3 tritanopia
+	"difficulty": 1,     # 0 Normal, 1 Difícil, 2 Extremo (ver Difficulty)
 }
 const LANGS := [["pt_BR", "Português"], ["en", "English"], ["es", "Español"]]
 
@@ -131,6 +132,8 @@ var pending_hint := false
 var free_mode := false
 ## Fase fora da campanha em jogo agora (Desafio do Dia / editor); vazio = campanha.
 var current_custom: Dictionary = {}
+## Dificuldade aplicada na fase em andamento (para o bônus de moedas).
+var current_level_difficulty := 0
 ## Mostra a abertura (RetroNexa) só uma vez por execução.
 var splash_shown := false
 
@@ -187,6 +190,7 @@ func load_save() -> void:
 		if typeof(data["settings"][key]) != typeof(DEFAULT_SETTINGS[key]) and not ((DEFAULT_SETTINGS[key] is float or DEFAULT_SETTINGS[key] is int) and (data["settings"][key] is float or data["settings"][key] is int)):
 			data["settings"][key] = DEFAULT_SETTINGS[key]
 	data["settings"]["colorblind"] = clampi(int(data["settings"]["colorblind"]), 0, 3)
+	data["settings"]["difficulty"] = clampi(int(data["settings"]["difficulty"]), 0, 2)
 	for key in ["music", "sfx"]:
 		data["settings"][key] = clampf(float(data["settings"][key]), 0.0, 1.0)
 	if not data["settings"]["lang"] in ["", "pt_BR", "en", "es"]:
@@ -310,6 +314,8 @@ func complete_level(id: String, stars: int, ink_used: float, animals: Array, bos
 			new_medals.append(m)
 	data["levels"][id] = rec
 	var gained := Scoring.coins_for(prev, stars) + 5 * new_medals.size()
+	if int(current_level_difficulty) > 0:
+		gained = int(round(gained * Difficulty.COIN_BONUS[clampi(current_level_difficulty, 0, 2)]))
 	if Store.has_vip():
 		gained *= 2
 	data["coins"] = coins() + gained

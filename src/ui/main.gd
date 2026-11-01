@@ -129,6 +129,9 @@ func _open(screen: String, arg: Variant, _animated: bool) -> void:
 
 func _start_level(index: int) -> void:
 	var data := LevelDB.get_level(index)
+	if not Game.free_mode:
+		data = Difficulty.apply(data)
+	Game.current_level_difficulty = int(data.get("difficulty", 0))
 	if data.is_empty():
 		_open("map", null, false)
 		return

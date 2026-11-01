@@ -83,6 +83,9 @@ func _ready() -> void:
 	Game.data["coins"] = 500
 	await _press_text("Roupinhas")
 	await _press_text("60")
+	_expect(_find_button(main, "Comprar", true) != null, "prévia aparece antes de comprar")
+	_expect(not Game.owns("bone") and not Game.owns("laco"), "prévia não compra sozinha")
+	await _press_text("Comprar", true)
 	_expect(Game.owns("bone") or Game.owns("laco"), "compra um acessório")
 	_expect(Game.equipped("capi") != "", "equipa na Capitu")
 	await _press_text("Conquistas")

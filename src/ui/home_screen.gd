@@ -152,6 +152,7 @@ func _build_ui() -> void:
 		object.dock = true
 		_dock[spec[0]] = object
 	_roster_scroll = ScrollContainer.new()
+	DragScroll.attach(_roster_scroll)
 	_roster_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_roster_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_ui.add_child(_roster_scroll)
@@ -186,7 +187,7 @@ func _build_ui() -> void:
 func _layout() -> void:
 	if not _built or size.x <= 0 or size.y <= 0:
 		return
-	_safe = Rect2(18, 16, size.x - 36, size.y - 32)
+	_safe = Rect2(18, 16, size.x - 36, size.y - 16 - UiKit.GESTURE_GAP)
 	if OS.has_feature("Android"):
 		var area := DisplayServer.get_display_safe_area()
 		var window_size := Vector2(get_window().size)
@@ -327,6 +328,7 @@ func _build_actions() -> void:
 			_objects["lamp"] = _object("lamp", "lamp", "Apagar a luz e dormir")
 		"clothes":
 			_wardrobe_scroll = ScrollContainer.new()
+			DragScroll.attach(_wardrobe_scroll)
 			_wardrobe_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 			_wardrobe_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 			_ui.add_child(_wardrobe_scroll)

@@ -85,6 +85,7 @@ func _build(scroll_position: int = 0) -> void:
 	_mascot.set_process(false)
 	_header.add_child(_mascot)
 	_scroll = ScrollContainer.new()
+	DragScroll.attach(_scroll)
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_scroll.add_theme_constant_override("scrollbar_h_separation", 10)
@@ -92,6 +93,11 @@ func _build(scroll_position: int = 0) -> void:
 	_content = UiKit.vbox(22)
 	_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_scroll.add_child(_content)
+	var challenge := _section("Desafio", "star", Color("f6e3d6"))
+	_picker(challenge, "Dificuldade das fases", "difficulty", Difficulty.NAMES, Difficulty.current())
+	var dnote := _label("Difícil e Extremo soltam mais insetos, mais rápidos, e dão mais moedas.", 20, MUTED, true)
+	dnote.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	challenge.add_child(dnote)
 	var sound := _section("Som e toque", "music", Color("ddece6"))
 	_slider(sound, "Música", "music")
 	_separator(sound)
@@ -309,7 +315,7 @@ func _on_resize() -> void:
 
 
 func _layout() -> void:
-	_safe = Rect2(18, 14, maxf(100, size.x - 36), maxf(100, size.y - 28))
+	_safe = Rect2(18, 14, maxf(100, size.x - 36), maxf(100, size.y - 14 - UiKit.GESTURE_GAP))
 	if OS.has_feature("Android"):
 		var area := DisplayServer.get_display_safe_area()
 		var window_size := Vector2(get_window().size)
@@ -451,6 +457,8 @@ class Badge:
 				draw_circle(center, 12, ink, false, 2, true)
 				HomeArt.oval(self, center, Vector2(5, 12), Color.TRANSPARENT, ink, 1)
 				draw_line(center + Vector2(-10, 0), center + Vector2(10, 0), ink, 1, true)
+			"star":
+				DrawUtil.shape(self, DrawUtil.star_points(center, 12, 5), Color("ffd23f"), ink, 1.5)
 			"shield":
 				DrawUtil.shape(self, PackedVector2Array([center + Vector2(-11, -10), center + Vector2(11, -10), center + Vector2(10, 4), center + Vector2(0, 13), center + Vector2(-10, 4)]), Color("fffaf3"), ink, 1.5)
 				HomeArt.heart(self, center, 0.34, ink)

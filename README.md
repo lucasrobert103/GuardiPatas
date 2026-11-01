@@ -93,6 +93,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 24 | [Versão 0.9: rolagem, pausa ilustrada, prévias e dificuldade](docs/24-versao-0-9-pausa-previas-dificuldade.md) |
 | 23 | [Versão 0.8: editor, tela inicial, mundos 9–10, novos insetos, loja e compras reais](docs/23-versao-0-8-mundos-loja-editor.md) |
 
 ## Decisão técnica

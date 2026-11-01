@@ -244,31 +244,131 @@ func _open_pause() -> void:
 	# pausa DEPOIS de abrir o painel (_open_overlay fecha o anterior e despausa)
 	get_tree().paused = true
 	Sfx.stop_all_loops()
-	box.add_child(UiKit.label("Pausa", 52))
-	var cont := UiKit.button("Continuar", Palette.UI_GOOD, "play", 420)
-	cont.pressed.connect(_close_overlay)
-	box.add_child(cont)
-	var rs := UiKit.button("Recomeçar", Palette.UI_SECONDARY, "restart", 420)
+	var head := UiKit.vbox(2)
+	head.add_child(UiKit.label("Pausa", 46))
+	var lname := str(level.data.get("name", ""))
+	if lname != "":
+		head.add_child(UiKit.label(lname, 22, Color(Palette.UI_TEXT, 0.7)))
+	box.add_child(head)
+	box.add_child(PauseScene.new().setup(level))
+	var tip := str(level.data.get("tip", ""))
+	if tip != "":
+		var tl := UiKit.label(tip, 20, Palette.UI_TEXT, 0, Palette.WHITE, true)
+		tl.custom_minimum_size = Vector2(480, 0)
+		box.add_child(tl)
+	# três ações grandes e redondas, com desenho e nome embaixo
+	var row := UiKit.hbox(26)
+	box.add_child(row)
+	var rs := _round_action("Recomeçar", "restart", Palette.UI_SECONDARY, 112)
 	rs.pressed.connect(func():
 		_close_overlay()
 		action.emit("restart"))
-	box.add_child(rs)
-	var mp := UiKit.button("Mapa", Palette.UI_PRIMARY, "home", 420)
+	row.add_child(rs)
+	var cont := _round_action("Continuar", "play", Palette.UI_GOOD, 140)
+	cont.pressed.connect(_close_overlay)
+	row.add_child(cont)
+	var mp := _round_action("Mapa", "house", Palette.UI_PRIMARY, 112)
 	mp.pressed.connect(func():
 		_close_overlay()
 		action.emit("menu"))
-	box.add_child(mp)
-	var toggles := UiKit.hbox(12)
+	row.add_child(mp)
+	# música e sons: interruptores desenhados (nota musical / alto-falante, riscados quando desligados)
+	var toggles := UiKit.hbox(18)
 	box.add_child(toggles)
 	for key in ["music", "sfx"]:
-		var on: bool = float(Game.setting(key)) > 0.01
-		var names := {true: tr("Música: sim") if key == "music" else tr("Sons: sim"), false: tr("Música: não") if key == "music" else tr("Sons: não")}
-		var b := UiKit.button(names[on], Palette.UI_PANEL, "", 200, 76)
-		b.pressed.connect(func():
-			var now_on: bool = float(Game.setting(key)) > 0.01
-			Game.set_setting(key, 0.0 if now_on else (0.6 if key == "music" else 0.9))
-			b.text = names[not now_on])
-		toggles.add_child(b)
+		toggles.add_child(_sound_toggle(key))
+
+
+## Botão redondo com ícone desenhado e o nome logo abaixo (o nome é filho do botão).
+func _round_action(text: String, icon: String, color: Color, d: int) -> Button:
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(d, d + 34)
+	b.focus_mode = Control.FOCUS_NONE
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		var st := StyleBoxEmpty.new()
+		b.add_theme_stylebox_override(state, st)
+	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	var disc := RoundFace.new()
+	disc.color = color
+	disc.icon = icon
+	disc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	disc.position = Vector2.ZERO
+	disc.size = Vector2(d, d)
+	b.add_child(disc)
+	b.button_down.connect(func(): disc.pressed = true)
+	b.button_up.connect(func(): disc.pressed = false)
+	var l := UiKit.label(text, 20, Palette.UI_TEXT)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.position = Vector2(-20, d + 2)
+	l.size = Vector2(d + 40, 30)
+	b.add_child(l)
+	b.pressed.connect(func(): Sfx.play("ui_click", -2.0, 1.0, 0.05))
+	return b
+
+
+func _sound_toggle(key: String) -> Button:
+	var on: bool = float(Game.setting(key)) > 0.01
+	var b := UiKit.button("", Palette.UI_GOOD if on else Palette.UI_MUTED, "", 210, 76)
+	var ic := UiIcon.new()
+	ic.icon = ("music" if key == "music" else "sound") + ("" if on else "_off")
+	ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ic.position = Vector2(14, 12)
+	ic.size = Vector2(48, 48)
+	b.add_child(ic)
+	var l := UiKit.label("Música" if key == "music" else "Sons", 22)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.position = Vector2(66, 12)
+	l.size = Vector2(130, 46)
+	b.add_child(l)
+	b.pressed.connect(func():
+		var now_on: bool = float(Game.setting(key)) > 0.01
+		Game.set_setting(key, 0.0 if now_on else (0.6 if key == "music" else 0.9))
+		var col := Palette.UI_MUTED if now_on else Palette.UI_GOOD
+		b.add_theme_stylebox_override("normal", UiKit.btn_style(col, false))
+		b.add_theme_stylebox_override("hover", UiKit.btn_style(col.lightened(0.06), false))
+		ic.icon = ("music" if key == "music" else "sound") + ("_off" if now_on else "")
+		ic.queue_redraw()
+		var tw := ic.create_tween()
+		ic.pivot_offset = ic.size * 0.5
+		tw.tween_property(ic, "scale", Vector2(1.25, 1.25), 0.08)
+		tw.tween_property(ic, "scale", Vector2.ONE, 0.12))
+	return b
+
+
+class RoundFace:
+	extends Control
+	## Círculo "gordinho" com sombra embaixo e o ícone no meio (afunda quando apertado).
+	var color := Palette.UI_GOOD
+	var icon := "play"
+	var pressed := false:
+		set(v):
+			pressed = v
+			queue_redraw()
+	var _ic: UiIcon
+
+	func _ready() -> void:
+		_ic = UiIcon.new()
+		_ic.icon = icon
+		_ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_ic)
+		resized.connect(_fit)
+		_fit()
+
+	func _fit() -> void:
+		if _ic == null:
+			return
+		var drop := 4.0 if pressed else 0.0
+		_ic.position = size * 0.24 + Vector2(0, drop)
+		_ic.size = size * 0.52
+
+	func _draw() -> void:
+		var r := minf(size.x, size.y) * 0.5
+		var c := Vector2(r, r)
+		var drop := 6.0 if pressed else 0.0
+		draw_circle(c + Vector2(0, 8), r - 2.0, Palette.OUTLINE, true, -1.0, true)
+		DrawUtil.disc(self, c + Vector2(0, drop), r - 4.0, color, Palette.OUTLINE, 5.0)
+		draw_arc(c + Vector2(-r * 0.15, -r * 0.2 + drop), r * 0.55, PI * 1.1, PI * 1.5, 12, Color(1, 1, 1, 0.45), 6.0, true)
+		_fit()
 
 
 func on_back_pressed() -> void:

@@ -60,6 +60,10 @@ func _ready() -> void:
 		check(ed._dock.get_global_rect().end.y <= screen.y - 8, "%s: doca de ferramentas acima da borda" % tag)
 		# a doca fica numa camada fora da câmera: o desenho da fase não a desloca
 		check(ed._dock.get_viewport_transform().origin == Vector2.ZERO and ed._dock.get_canvas_transform() == Transform2D.IDENTITY, "%s: doca fora do deslocamento da câmera" % tag)
+		# o chão aparece acima da doca e longe da faixa de gestos
+		var ground_y: float = (get_viewport().get_canvas_transform() * Vector2(360, EditorScreen.GROUND)).y
+		check(ground_y < ed._dock.get_global_rect().position.y, "%s: chão visível acima da doca (chão %.0f, doca %.0f)" % [tag, ground_y, ed._dock.get_global_rect().position.y])
+		check(ed._dock.get_global_rect().end.y <= screen.y - UiKit.GESTURE_GAP + 1, "%s: doca fora da faixa de gestos" % tag)
 		# toque na doca não coloca nada no cenário
 		await tap(ed._tool_btns["rock"].get_global_rect().get_center())
 		check(ed.tool == "rock" and ed.draft["rocks"].is_empty(), "%s: tocar em Pedra escolhe a ferramenta" % tag)

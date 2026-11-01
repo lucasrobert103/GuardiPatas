@@ -5,6 +5,7 @@ extends Control
 signal go(screen: String, arg: Variant)
 
 var world_id := 1
+var _diff_btn: Button
 var _bg: MenuBg
 var _grid: GridContainer
 var _title: Label
@@ -26,10 +27,7 @@ func _ready() -> void:
 	add_child(_bg)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["left", "right"]:
-		margin.add_theme_constant_override("margin_" + side, 24)
-	margin.add_theme_constant_override("margin_top", 28)
-	margin.add_theme_constant_override("margin_bottom", 40)
+	UiKit.keep_safe(margin, 24, 28, 24, 40)
 	add_child(margin)
 	var col := UiKit.vbox(22)
 	col.alignment = BoxContainer.ALIGNMENT_BEGIN
@@ -42,6 +40,19 @@ func _ready() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(spacer)
+	# dificuldade: toque para trocar (Normal → Difícil → Extremo)
+	var diff := UiKit.button(Difficulty.NAMES[Difficulty.current()], [Palette.UI_GOOD, Palette.GOLD, Palette.DANGER][Difficulty.current()], "flame", 0, 72)
+	diff.add_theme_font_size_override("font_size", UiKit.fs(22))
+	diff.pressed.connect(func():
+		var n := (Difficulty.current() + 1) % Difficulty.NAMES.size()
+		Game.set_setting("difficulty", n)
+		diff.text = "     " + tr(Difficulty.NAMES[n])
+		var tint: Color = [Palette.UI_GOOD, Palette.GOLD, Palette.DANGER][n]
+		diff.add_theme_stylebox_override("normal", UiKit.btn_style(tint, false))
+		diff.add_theme_stylebox_override("hover", UiKit.btn_style(tint.lightened(0.06), false))
+		Sfx.play("pop", -2.0, 0.8 + n * 0.2))
+	header.add_child(diff)
+	_diff_btn = diff
 	var star_ic := UiIcon.new()
 	star_ic.icon = "star"
 	star_ic.custom_minimum_size = Vector2(52, 52)

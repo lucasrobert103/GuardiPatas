@@ -78,6 +78,25 @@ func _ready() -> void:
 	add_child(screen)
 	await get_tree().process_frame
 	var balance := Game.coins()
+	# prévia antes de qualquer compra: abrir não compra; "Comprar" leva à Área dos responsáveis
+	screen._show_product("coins_900")
+	await get_tree().process_frame
+	var pv: ProductPreview = null
+	for ch in screen.get_children():
+		if ch is ProductPreview: pv = ch
+	check(pv != null and pv._arts.size() >= 0 and Game.coins() == balance, "prévia do produto aparece sem comprar")
+	check(pv != null and pv._contents().has(tr("%d moedas") % 900), "prévia lista o que vem no pacote")
+	pv._confirm.pressed.emit()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	check(screen._modal != null and screen._pending == "coins_900" and Game.coins() == balance, "comprar na prévia pede o responsável")
+	screen._cancel()
+	var fx_pv := ProductPreview.open(screen, "effect", "estrelas", func(): pass, "capi")
+	await get_tree().process_frame
+	check(fx_pv._arts.size() == 1 and fx_pv._arts[0].effect == "estrelas", "prévia de efeito mostra o efeito num bichinho")
+	fx_pv._cycle(1)
+	check(fx_pv._arts.size() == 1 and fx_pv._arts[0].effect == "estrelas", "trocar o bichinho da prévia mantém o efeito")
+	fx_pv.close()
 	screen._ask("coins_300")
 	screen._cancel()
 	check(Game.coins() == balance, "cancelar não entrega")
