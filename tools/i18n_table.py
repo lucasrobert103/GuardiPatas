@@ -1234,3 +1234,11 @@ T.update({
     'Missão de resgate': ('Rescue mission', 'Misión de rescate'),
     '%s ficou preso entre as pedras. Vem ajudar?': ('%s is stuck between the rocks. Come help?', '%s quedó atrapado entre las piedras. ¿Vienes a ayudar?'),
 })
+
+# versão para testadores da Play Store (tudo grátis)
+T.update({
+    'Pegar grátis': ('Get it free', 'Conseguir gratis'),
+    'VERSÃO DE TESTE · Tudo grátis': ('TEST VERSION · Everything free', 'VERSIÓN DE PRUEBA · Todo gratis'),
+    'Grátis': ('Free', 'Gratis'),
+    'Liberado de graça na versão de testes!': ('Unlocked for free in the test version!', '¡Desbloqueado gratis en la versión de prueba!'),
+})

@@ -510,6 +510,7 @@ O que vem: %s
 Faltam %d moedas. Vença fases para juntar mais!
 Acessório para vestir em qualquer bichinho. É só enfeite: não muda o jogo.
 Efeito especial em volta do bichinho, nas fases e na Casinha. É só enfeite: não muda o jogo.
+Pegar grátis
 Testar · 
 Comprar · 
 Comprar · %d
@@ -559,6 +560,7 @@ RtNh
 desenvolvido por
 toque para continuar
 Lojinha da Turma
+VERSÃO DE TESTE · Tudo grátis
 TESTE · Sem cobrança
 Compras indisponíveis neste aparelho
 %d moedas · %d dicas
@@ -1052,7 +1054,9 @@ Companheiro permanente da Casinha. Sem vantagem nas fases.
 Gotinha, a lontra
 Destaques
 Efeitos
+Grátis
 Você já possui este conteúdo.
+Liberado de graça na versão de testes!
 Abrindo o Google Play…
 Compras indisponíveis neste aparelho. Nenhuma cobrança foi feita.
 Compras indisponíveis. Nenhuma cobrança foi feita.

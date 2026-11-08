@@ -47,7 +47,7 @@ func _ready() -> void:
 	head.add_child(chip)
 	_balance = UiKit.label("", 22)
 	chip.add_child(_balance)
-	var mode := "TESTE · Sem cobrança" if Store.test_mode() else ("" if Store.real_mode() else "Compras indisponíveis neste aparelho")
+	var mode := "VERSÃO DE TESTE · Tudo grátis" if Store.free_mode() else ("TESTE · Sem cobrança" if Store.test_mode() else ("" if Store.real_mode() else "Compras indisponíveis neste aparelho"))
 	if mode != "":
 		box.add_child(UiKit.label(mode, 22, Palette.WHITE, 8, Palette.OUTLINE))
 	var tabs := UiKit.hbox(8)
@@ -152,7 +152,7 @@ func _product_card(id: String) -> Control:
 	desc.custom_minimum_size = Vector2(300, 0)
 	col.add_child(desc)
 	var have: bool = Store.fully_owned(id)
-	var label := "Adquirido" if have else (("Testar · " if Store.test_mode() else "Comprar · ") + Store.price_of(id))
+	var label := "Adquirido" if have else ("Pegar grátis" if Store.free_mode() else (("Testar · " if Store.test_mode() else "Comprar · ") + Store.price_of(id)))
 	var buy := UiKit.button(label, Palette.UI_GOOD, "" if have else "coin", 0, 68)
 	buy.add_theme_font_size_override("font_size", UiKit.fs(22))
 	buy.disabled = have or not Store.can_buy()
@@ -285,6 +285,12 @@ func _effect_card(fx: String) -> Control:
 # ------------------------------------------------------------------ compra com responsável
 func _ask(id: String) -> void:
 	if _modal != null or not Store.can_buy() or not Store.PRODUCTS.has(id):
+		return
+	if Store.free_mode():
+		# versão de testadores: sem dinheiro envolvido, não precisa da Área dos responsáveis
+		var free := Store.buy(id)
+		_status.text = tr(str(free["message"]))
+		_refresh()
 		return
 	_pending = id
 	_modal = Control.new()

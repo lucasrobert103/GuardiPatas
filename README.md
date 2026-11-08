@@ -115,6 +115,7 @@ Testes: `godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn` 
 | 13 | [Riscos técnicos e mitigação](docs/13-riscos.md) |
 | 14 | [Como rodar, testar, exportar e publicar](docs/14-como-rodar-e-publicar.md) |
 | 15 | [Loja: textos PT/EN/ES, imagens, formulários e privacidade](docs/15-loja-google-play.md) |
+| 29 | [Versão para testadores na Google Play (tudo grátis) e build do AAB](docs/29-versao-testadores-play.md) |
 | 28 | [Recados dos bichinhos (notificações locais)](docs/28-recados-dos-bichinhos.md) |
 | 27 | [Versão 1.1: Ateliê, carregamento do Modo Infinito e tinta sem fim](docs/27-versao-1-1-atelie-infinito-tinta.md) |
 | 26 | [Termos de Uso, Política de Privacidade (LGPD) e Google Play](docs/26-termos-e-privacidade.md) |

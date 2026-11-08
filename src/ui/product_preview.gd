@@ -146,6 +146,8 @@ func _affordable() -> bool:
 
 func _buy_text() -> String:
 	if kind == "product":
+		if Store.free_mode():
+			return tr("Pegar grátis")
 		return ("Testar · " if Store.test_mode() else "Comprar · ") + Store.price_of(id)
 	return tr("Comprar · %d") % _price()
 

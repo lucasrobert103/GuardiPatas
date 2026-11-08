@@ -19,6 +19,17 @@ func _ready() -> void:
 		check(not Store.checkout("coins_300", "release-order")["ok"], "produção rejeita compra simulada")
 		check(before == Game.data, "produção não entrega moedas nem direitos")
 		check(Game.save_path() == Game.SAVE_PATH, "produção usa save original")
+		if Store.FREE_FOR_TESTERS:
+			# versão de testadores: tudo grátis pela loja, sem Google Play Billing
+			check(Store.free_mode() and Store.can_buy() and Store.billing == null, "testadores: grátis e sem Billing")
+			check(Store.price_of("pet_lumi") == UiKit.tr_text("Grátis"), "testadores: preço Grátis")
+			var r := Store.buy("pet_lumi")
+			check(r["ok"] and Store.has_pet("lumi"), "testadores: bichinho liberado de graça")
+			check(not Store.buy("pet_lumi")["ok"], "testadores: não repete o que já tem")
+			var c := Game.coins()
+			check(Store.buy("coins_300")["ok"] and Game.coins() == c + 300, "testadores: moedas de graça")
+			check(not Store.checkout("coins_300", "x")["ok"], "testadores: simulação continua bloqueada")
+			Game.data = before
 		_finish()
 		return
 	check(Game.save_path() != Game.SAVE_PATH, "save de teste isolado")

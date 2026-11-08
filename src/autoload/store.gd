@@ -1,7 +1,9 @@
 extends Node
 ## Loja do GuardiPatas: catálogo, entrega de direitos e adaptador de pagamento.
 ##
-## Dois modos:
+## Três modos:
+##  * Grátis para testadores (FREE_FOR_TESTERS, builds de release): nada é cobrado e os
+##    produtos saem de graça. O pagamento real fica DESLIGADO (ver bloco abaixo).
 ##  * Teste (builds de debug): compra SIMULADA, sem cobrança, com save separado.
 ##  * Real (Android + plugin Google Play Billing + servidor de verificação): a compra é
 ##    feita pelo Google Play e o conteúdo só é entregue depois que o SEU servidor confirma
@@ -46,17 +48,36 @@ const PRODUCTS := {
 }
 const CATEGORIES := [["destaque", "Destaques"], ["moedas", "Moedas"], ["bichinhos", "Bichinhos"], ["efeitos", "Efeitos"]]
 
+## ====================================================================== VERSÃO DE TESTADORES
+## true  = versão para testadores da Play Store: TUDO GRÁTIS, nenhuma cobrança, sem Google Play
+##         Billing (o APK/AAB nem pede a permissão de compra).
+## false = versão paga: ligue o bloco "INTEGRAÇÃO DE PAGAMENTO" em _ready() — instale o plugin
+##         GodotGooglePlayBilling, configure guardipatas/billing/verify_url (servidor que confere o
+##         token com a Google Play Developer API) e crie os produtos na Play Console (docs/16, docs/29).
+const FREE_FOR_TESTERS := true
+
 var _sequence := 0
 var _busy := false
 var billing: PlayBilling
 
 
 func _ready() -> void:
+	# ------------------------------------------------------------------ INTEGRAÇÃO DE PAGAMENTO
+	# Desligada enquanto FREE_FOR_TESTERS = true. Quando a integração estiver pronta, basta
+	# FREE_FOR_TESTERS = false: este bloco conecta o Google Play Billing (PlayBilling) e as
+	# compras passam a ser cobradas pelo Google Play e entregues só depois que o servidor confirma.
+	if free_mode():
+		return
 	if not test_mode() and PlayBilling.plugin_available():
 		billing = PlayBilling.new()
 		billing.delivered.connect(_on_real_delivery)
 		billing.failed.connect(func(product: String, message: String): purchase_finished.emit(product, false, message))
 		add_child(billing)
+
+
+## Versão de testadores: tudo grátis (só em builds de release; o debug continua simulando).
+func free_mode() -> bool:
+	return FREE_FOR_TESTERS and not test_mode()
 
 
 func test_mode() -> bool:
@@ -69,11 +90,13 @@ func real_mode() -> bool:
 
 
 func can_buy() -> bool:
-	return test_mode() or real_mode()
+	return free_mode() or test_mode() or real_mode()
 
 
 ## Preço mostrado: o do Google Play no modo real; o ilustrativo nos testes.
 func price_of(product: String) -> String:
+	if free_mode():
+		return UiKit.tr_text("Grátis")
 	if real_mode():
 		var p := billing.price_of(product)
 		if p != "":
@@ -128,6 +151,14 @@ func fully_owned(product: String) -> bool:
 ## Ponto de entrada da interface: no modo teste entrega na hora; no modo real abre o
 ## fluxo do Google Play e responde depois pelo sinal purchase_finished.
 func buy(product: String) -> Dictionary:
+	if free_mode():
+		if not PRODUCTS.has(product) or fully_owned(product):
+			return {"ok": false, "message": "Você já possui este conteúdo."}
+		_sequence += 1
+		var r := _deliver(product, "gratis-%s-%s-%s" % [Time.get_unix_time_from_system(), Time.get_ticks_usec(), _sequence],
+			"Liberado de graça na versão de testes!")
+		purchase_finished.emit(product, r["ok"], r["message"])
+		return r
 	if test_mode():
 		var r := checkout(product, new_order_id())
 		purchase_finished.emit(product, r["ok"], r["message"])
