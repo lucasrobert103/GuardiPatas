@@ -18,7 +18,7 @@ main() {
 set -euo pipefail
 
 BRANCH="ccr-69427eab-1v26vu"
-PACKAGE="br.com.guardipatas"
+PACKAGE="com.guardiPata.com"
 APK="build/GuardiPatas-debug.apk"
 LIMPO=0
 GIT=1

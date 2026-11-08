@@ -45,7 +45,7 @@ python3 tools/gen_audio.py     # assets/audio/*.wav (requer numpy)
    - `min_sdk 24`, `target_sdk 36` (requisito atual da Google Play);
    - arquiteturas `arm64-v8a` + `armeabi-v7a`;
    - permissões: só **VIBRATE**; internet desligada;
-   - pacote: `br.com.guardipatas` (**troque** para um domínio que você controle antes de publicar — o ID não pode mudar depois).
+   - pacote: `com.guardiPata.com` (o ID do app na Play Console; não pode mudar).
 3. Na 1ª vez: **Projeto → Instalar modelo de build Android** (cria a pasta `android/`, ignorada pelo git).
 4. Para APK de teste: mude o formato para APK, conecte o celular com depuração USB e use o ícone Android ("Implantação remota") ou exporte o APK.
 

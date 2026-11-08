@@ -26,9 +26,7 @@ O script:
 
 ## Antes do primeiro envio (não dá para mudar depois)
 
-- **ID do pacote:** hoje é `br.com.guardipatas` (em `export_presets.cfg`, `package/unique_name`). Depois do primeiro envio ele **nunca mais muda**, nem se o nome do jogo mudar.
-  - O usual é usar o domínio da empresa ao contrário, por exemplo `br.com.retronexa.guardipatas`.
-  - Se for trocar, troque antes do primeiro envio. Mude também `PACKAGE` em `tools/atualizar.sh`.
+- **ID do pacote:** `com.guardiPata.com` (em `export_presets.cfg`, `package/unique_name`). É o ID do app criado na Play Console e **nunca mais muda**, nem se o nome do jogo mudar.
 - **Play App Signing:** aceite o "Play App Signing" na criação do app. O Google guarda a chave final e você só usa a chave de upload.
 
 ## Na Play Console (versão de testadores)

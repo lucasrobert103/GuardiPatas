@@ -80,7 +80,7 @@ O teste com escrita exige `--test-io` e `XDG_DATA_HOME` terminando em `/guardipa
 
 | Item | Situação |
 |---|---|
-| Identidade do pacote | `br.com.guardipatas` é um placeholder documentado. Confirmar domínio/identidade e app existente; não mudar depois de publicado. |
+| Identidade do pacote | `com.guardiPata.com`, definido pelo app criado na Play Console. Não muda mais. |
 | Target/min SDK | Preset declara target 36 / min 24 e ARM32/ARM64. Confirmar requisitos vigentes na data do envio; configuração não prova o manifesto final. |
 | Build | Faltam SDK Android, templates 4.7.2, build Gradle e validação do AAB assinado. JDK/SDK compatíveis precisam ser instalados e configurados para esse fluxo. |
 | Bibliotecas nativas | Confirmar suporte a páginas de memória de **16 KiB** da engine e de todos os plugins no artefato final, além de ARM64. Testar instalação/dispositivo ou emulador apropriado; não inferir só pela versão. |
